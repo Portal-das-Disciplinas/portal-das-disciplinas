@@ -38,7 +38,7 @@
 
     @include('components.sidebar')
 
-    <div class="container mb-5">
+    <div class="mb-5">
         @yield('content')
     </div>
 

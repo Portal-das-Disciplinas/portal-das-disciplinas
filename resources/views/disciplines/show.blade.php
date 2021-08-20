@@ -9,11 +9,10 @@
 @endsection
 
 @section('content')
-
-    <div class='discipline-banner'>
-        <h2 class="container-fluid text-white text-center">{{ $discipline->name }} - {{ $discipline->code }}</h2>
-    </div>
-    
+<div class='discipline-banner text-center align-items-center text-white'>
+    <h2>{{ $discipline->name }} - {{ $discipline->code }}</h2>
+</div>
+<div class="container">
 
     @if(isset($can) && $can)
         <div class="row">
@@ -40,7 +39,7 @@
         </div>
 
         <div class="col-md-4">
-            <h3 class="text-white"></h3>
+            <!--<h3 class="text-white">Teste</h3>-->
             @foreach ($discipline->classificationsDisciplines as $classificationDiscipline)
                 <div class="row">
                     <div class="col-md-5 mt-1">
@@ -48,8 +47,10 @@
                             {{$classificationDiscipline->classification->name}}
                         </label>
                     </div>
+                    <p>{{$classificationDiscipline->value}}</p>
                     <div class="col-md-6">
                         <div class="progress">
+                            
                             <div id="{{$classificationDiscipline->classification_id}}"
                                  class="progress-bar progress-bar-striped" role="progressbar"
                                  style="width: {{($classificationDiscipline->value/6)*100}}%"
@@ -186,4 +187,6 @@
     @if(isset($can) && $can)
         @include('faqs.create_modal', ['discipline' => $discipline])
     @endif
+</div>
+    
 @endsection
