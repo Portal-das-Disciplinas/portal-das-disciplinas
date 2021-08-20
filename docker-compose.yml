@@ -1,0 +1,41 @@
+version: '3.7'
+
+networks:
+  portal_disciplina-network:
+    driver: bridge
+
+services:
+# Database
+  mysql-database:
+    image: mysql:8.0.22
+    container_name: portal_disciplina_mysql
+    restart: unless-stopped
+    tty: true
+    networks:
+      - portal_disciplina-network
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: portal_disciplina
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: portal_disciplina_passw0rd
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 7s
+      timeout: 5s
+    volumes:
+      - ./data/mysql:/docker-entrypoint-initdb.d
+
+# Web / API
+  portal_disciplina-web:
+    image: ambientum/php:7.4-nginx
+    container_name: portal_disciplina_laravel
+    volumes:
+      - ./:/var/www/app
+      - ./.env.development:/var/www/app/.env
+    networks:
+      - portal_disciplina-network
+    ports:
+      - "8000:8080"
+    links:
+      - mysql-database

@@ -1,0 +1,88 @@
+:root {
+    --main-bg-color: #0c3f7c;
+    --main-md-color: #acb2b8;
+    --main-title-bg-color: white;
+    --main-text-color: black;
+}
+
+body {
+    background: -webkit-linear-gradient(left, rgba(0,0,0,0) 50%,rgba(0,0,0,0.4) 100%);
+    background-color: var(--main-bg-color);
+}
+
+.label-btn{
+    margin: 0;
+}
+
+#navbar_btn{
+    font-size: 20px;
+    padding: 20px 16px;
+}
+
+.container{
+    margin-top : 40px
+}
+
+.title-subject {
+    color: var(--main-title-bg-color);
+}
+
+.response-search{
+    margin-top: 5px;
+    color: var(--main-title-bg-color);
+    font-size: 16px;
+}
+
+.card{
+    border: none;
+}
+
+.card-img-top{
+    height: 143px;
+    /* width: 255px; */
+    background: white;
+    padding: 0px 5px;
+}
+
+.card-auth{
+    margin-bottom: 50px;
+}
+
+.card-text{
+    height: 70px;
+}
+
+.text {
+    color: #b1b1b1;
+}
+
+/* Cores para testes */
+/* .bg-color {
+    background-color: #1A5A7E;
+}
+
+.bg-color1 {
+    background-color: #516D87;
+}
+
+.bg-color2 {
+    background-color: white;
+}
+
+.bg-color3 {
+    background-color: #081B38;
+} */
+
+.bg-color4 {
+    background-color: #183561;
+    font-size: 20px;
+}
+
+.info-portal{
+    color: white;
+}
+
+.span-info{
+    color: var(--main-md-color);
+}
+

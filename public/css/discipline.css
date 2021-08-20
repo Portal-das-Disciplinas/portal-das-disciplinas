@@ -1,0 +1,15 @@
+.materiais-on {
+    color:#B0C4DE;
+}
+
+.materiais-on:hover {
+    color:#E6E6FA;
+}
+
+.materiais-off {
+    color:#C0C0C0;
+}
+
+.discipline-banner{
+    background: url('https://hongkong.imd.ufrn.br/filemanagerportal/source/2020/CURSOS%20TECNICOS%20IMD%20POLOS%20INTERIOR.jpg')
+}
