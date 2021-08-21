@@ -52,6 +52,17 @@ body {
     height: 70px;
 }
 
+
+h1,h2,h3,h4,h5,h6{
+    font-weight: bold;
+}
+
+h3{
+    font-size: 2.5rem;
+    text-transform: capitalize;
+}
+
+
 .text {
     color: #b1b1b1;
 }
@@ -85,4 +96,3 @@ body {
 .span-info{
     color: var(--main-md-color);
 }
-

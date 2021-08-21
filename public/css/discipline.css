@@ -12,5 +12,18 @@
 
 .discipline-banner{
     background: url('https://hongkong.imd.ufrn.br/filemanagerportal/source/2020/CURSOS%20TECNICOS%20IMD%20POLOS%20INTERIOR.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     min-height: 400px;
 }
+
+.classifications{
+    margin-top: 48px;
+}
+
+.p-text{
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
