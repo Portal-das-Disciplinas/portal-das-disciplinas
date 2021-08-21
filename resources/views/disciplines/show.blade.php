@@ -10,13 +10,14 @@
 
 @section('content')
 <div class='discipline-banner text-center d-flex align-items-center justify-content-center  text-white'>
-    <h3>{{ $discipline->name }} - {{ $discipline->code }}</h3>
+    <h1>{{ $discipline->name }} - {{ $discipline->code }}</h1>
 </div>
 
 
 
 
-<div class="container">
+<div class="container" >
+    <button onclick="test()"> Test </button>
 
     <!-- Botão de cadastro FAQ -->
     @if(isset($can) && $can)
@@ -35,7 +36,7 @@
     <div class="row">
         <!-- main -->
         <div class="main col-md-8">
-            <div>
+            <div class='section'>
                 <h3 class="text-white">Trailer e Classificações</h3>
                 @if($discipline->has_trailer_media)
                     <div class="embed-responsive embed-responsive-16by9">
@@ -47,19 +48,19 @@
             </div>
 
             <!-- SINOPSE -->
-            <div class="mt-3">
+            <div class="section mt-3">
+                
+                <h3 class="text-white">Sinopse</h3>
                 <div>
-                    <h3 class="text-white">Sinopse</h3>
                     <div>
-                        <div>
-                            <div class="text-white ln-30 p-text"> {{ $discipline->synopsis }} </div>
-                        </div>
+                        <div class="text-white ln-30 p-text"> {{ $discipline->synopsis }} </div>
                     </div>
                 </div>
+                
             </div>
 
             <!-- VÍDEO -->
-            <div>
+            <div class='section'>
                 <h3 class="text-white">Vídeo</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO))
                     <div class="embed-responsive embed-responsive-16by9">
@@ -71,7 +72,7 @@
                 @endif
             </div>
             <!-- OBSTACULOS -->
-            <div>
+            <div class='section'>
                 <h3 class="text-white">Obstáculos</h3>
                 <div>
                     <div>
@@ -80,7 +81,7 @@
                 </div>
             </div>
             <!-- PROFESSOR -->
-            <div>
+            <div class='section'>
                 <h3 class="text-white">Professor</h3>
                 <div class="border border-info rounded">
                     <div class="bg-color4">
@@ -90,45 +91,7 @@
                 </div>
             </div>
 
-            <!-- FAQ -->
-            @if($discipline->faqs->count())
-            <h2 class="container-fluid text-white text-center mt-5">FAQ</h2>
-            <div class="row mt-3" id="faqs">
-                @foreach($discipline->faqs as $faq)
-                    <div class="col-md-12 card">
-                        <div class="card-header" id="faq-header-{{$faq->id}}">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse"
-                                        data-target="#faq-content-{{$faq->id}}"
-                                        aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
-                                    {!! $faq->title !!}
-                                </button>
-
-                                @if(isset($can) && $can)
-                                    <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}"
-                                        class="d-inline float-right" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
-                                    </form>
-                                @endif
-                            </h5>
-                        </div>
-
-                        <div id="faq-content-{{$faq->id}}" class="collapse" aria-labelledby="faq-header-{{$faq->id}}"
-                            data-parent="#faqs">
-                            <div class="card-body">
-                                {!! $faq->content !!}
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-            @endif
-
-            @if(isset($can) && $can)
-                @include('faqs.create_modal', ['discipline' => $discipline])
-            @endif
+     
 
         </div>
 
@@ -158,6 +121,8 @@
                         </div>
                     </div>
                 @endforeach
+
+
             </div>
              <!-- PODCAST -->
             <div>
@@ -185,11 +150,11 @@
                         <br/>
                     </div>
                 @else
-                    <a href="#" class="text">
-                        {{-- <i class="fas fa-file-download fa-7x materiais-off"></i> --}}
-                        <i class="fas fa-file-excel fa-9x materiais-off"></i>
-                    </a>
-                    <br/>
+                <div class="materiais-off d-flex">
+                    <i class="fas fa-sad-tear fa-8x"></i>
+                    <p>Sem materiais disponiveis</p>
+                </div>
+                    
                 @endif
             </div>
 
@@ -197,8 +162,52 @@
 
         </div>
     </div>
+    <!-- FAQ -->
+    @if($discipline->faqs->count())
+    <h2 class="container-fluid text-white text-center mt-5">FAQ</h2>
+    <div class="row mt-3" id="faqs">
+        @foreach($discipline->faqs as $faq)
+            <div class="col-md-12 card">
+                <div class="card-header" id="faq-header-{{$faq->id}}">
+                    <h5 class="mb-0 d-flex justify-content-between">
+                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                data-target="#faq-content-{{$faq->id}}"
+                                aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
+                            {!! $faq->title !!}
+                        </button>
+
+                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                data-target="#faq-content-{{$faq->id}}"
+                                aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
+                            <i class="fas fa-caret-down"></i>
+                        </button>
+
+                        @if(isset($can) && $can)
+                            <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}"
+                                class="d-inline float-right" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
+                            </form>
+                        @endif
+                    </h5>
+                </div>
+
+                <div id="faq-content-{{$faq->id}}" class="collapse" aria-labelledby="faq-header-{{$faq->id}}"
+                    data-parent="#faqs">
+                    <div class="card-body">
+                        {!! $faq->content !!}
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    @endif
+
+    @if(isset($can) && $can)
+        @include('faqs.create_modal', ['discipline' => $discipline])
+    @endif
 
     
 </div>
-    
 @endsection
