@@ -15,15 +15,11 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    min-height: 400px;
+    min-height: 300px;
 }
 
 .classifications{
     margin-top: 48px;
 }
 
-.p-text{
-    font-size: 1rem;
-    line-height: 1.8;
-}
 

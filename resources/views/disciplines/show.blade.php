@@ -17,6 +17,8 @@
 
 
 <div class="container">
+
+    <!-- Botão de cadastro FAQ -->
     @if(isset($can) && $can)
         <div >
             <div class="w-25 my-5">
@@ -29,9 +31,9 @@
         </div>
     @endif
 
-
+    <!-- ROW Da PAGE -->
     <div class="row">
-
+        <!-- main -->
         <div class="main col-md-8">
             <div>
                 <h3 class="text-white">Trailer e Classificações</h3>
@@ -44,7 +46,7 @@
                 @endif
             </div>
 
-
+            <!-- SINOPSE -->
             <div class="mt-3">
                 <div>
                     <h3 class="text-white">Sinopse</h3>
@@ -56,7 +58,7 @@
                 </div>
             </div>
 
-
+            <!-- VÍDEO -->
             <div>
                 <h3 class="text-white">Vídeo</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO))
@@ -68,7 +70,7 @@
                     <img class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
                 @endif
             </div>
-
+            <!-- OBSTACULOS -->
             <div>
                 <h3 class="text-white">Obstáculos</h3>
                 <div>
@@ -77,7 +79,7 @@
                     </div>
                 </div>
             </div>
-
+            <!-- PROFESSOR -->
             <div>
                 <h3 class="text-white">Professor</h3>
                 <div class="border border-info rounded">
@@ -88,7 +90,7 @@
                 </div>
             </div>
 
-
+            <!-- FAQ -->
             @if($discipline->faqs->count())
             <h2 class="container-fluid text-white text-center mt-5">FAQ</h2>
             <div class="row mt-3" id="faqs">
@@ -133,8 +135,10 @@
         
 
         <div class="side col-md-4">
-            <div>
+            <!-- classificacoes -->
+            <div class='classifications'>
                 <!--<h3 class="text-white">Teste</h3>-->
+                
                 @foreach ($discipline->classificationsDisciplines as $classificationDiscipline)
                     <div class="row">
                         <div class="col-md-5 mt-1">
@@ -155,9 +159,9 @@
                     </div>
                 @endforeach
             </div>
-
+             <!-- PODCAST -->
             <div>
-                <h3 class="text-white">Podcast</h3>
+                <h3 class="text-white mt-5">Podcast</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST))
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item" allowfullscreen
@@ -168,8 +172,10 @@
                 @endif
             </div>
 
+
+             <!-- MATERIAIS -->
             <div>
-                <h3 class="text-white">Materiais</h3>
+                <h3 class="text-white mt-5">Materiais</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS))
                     <div class="d-flex align-center">
                         <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->url}}"
