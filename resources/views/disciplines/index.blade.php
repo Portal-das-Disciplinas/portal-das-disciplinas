@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container">
+    
+
     <div class="row">
         <div class="col-12 text-center my-4 title-subject-container">
             <h1 class="title-subject">Portal das Disciplinas - IMD/UFRN</h1>
@@ -88,4 +91,5 @@
             </div>
         @endif
     @endisset
+</div>
 @endsection
