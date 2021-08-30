@@ -43,51 +43,52 @@ Sobre nós - Portal das Disciplinas IMD
                         <p>Professor Orientador</p>
                     </div>
             </div>
-
-            <div class="d-flex flex-wrap justify-content-around mt-4">
-                
-                <div class="d-flex flex-column justify-content-center align-items-center mx-4">
-                        <img class="fluid clip-path" src="" alt="foto-dev">
-                            <div class="text-center">
-                                <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                                <p>Desenvolvedor <code>back-end</code></p>
-                            </div>
-                        
-                        <img class="fluid clip-path" src="" alt="foto-dev">
-                            <div class="text-center">
-                                <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                                <p>Desenvolvedor <code>back-end</code></p>
-                            </div>
-
-                        <img class="fluid clip-path" src="" alt="foto-dev">
-                            <div class="text-center">
-                                <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                                <p>Desenvolvedor <code>back-end</code></p>
-                            </div>
-
-                        <img class="fluid clip-path" src="" alt="foto-dev">
-                            <div class="text-center">
-                                <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                                <p>Desenvolvedor <code>back-end</code></p>
-                            </div>
-
-                        <img class="fluid clip-path" src="" alt="foto-dev">
-                            <div class="text-center">
-                                <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                                <p>Desenvolvedor <code>front-end</code></p>
-                            </div>
-
-                        <img class="fluid clip-path" src="" alt="foto-dev">
-                            <div class="text-center">
-                                <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                                <p>Desenvolvedor <code>front-end</code></p>
-                            </div>
-                </div>
-            </div>
-
             
 
+            <div class="d-flex justify-content-center align-items-center mx-4">
+
+                <div class="col-md-6">
+                    <img class="fluid clip-path" src="" alt="foto-dev">
+                    <div class="text-center">
+                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
+                        <p>Desenvolvedor <code>back-end</code></p>
+                    </div>
                 
+                <img class="fluid clip-path" src="" alt="foto-dev">
+                    <div class="text-center">
+                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
+                        <p>Desenvolvedor <code>back-end</code></p>
+                    </div>
+
+                <img class="fluid clip-path" src="" alt="foto-dev">
+                    <div class="text-center">
+                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
+                        <p>Desenvolvedor <code>back-end</code></p>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <img class="fluid clip-path" src="" alt="foto-dev">
+                    <div class="text-center">
+                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
+                        <p>Desenvolvedor <code>back-end</code></p>
+                    </div>
+                
+                <img class="fluid clip-path" src="" alt="foto-dev">
+                    <div class="text-center">
+                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
+                        <p>Desenvolvedor <code>back-end</code></p>
+                    </div>
+
+                <img class="fluid clip-path" src="" alt="foto-dev">
+                    <div class="text-center">
+                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
+                        <p>Desenvolvedor <code>back-end</code></p>
+                    </div>
+                </div>     
+
+        </div>
+
         </div>
         
         
