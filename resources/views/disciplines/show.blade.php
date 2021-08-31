@@ -170,7 +170,7 @@
             <div class="col-md-12 card">
                 <div class="card-header" id="faq-header-{{$faq->id}}">
                     <h5 class="mb-0 d-flex justify-content-between">
-                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                        <button class="btn btn-link collapsed mr-auto" data-toggle="collapse"
                                 data-target="#faq-content-{{$faq->id}}"
                                 aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
                             {!! $faq->title !!}
@@ -185,7 +185,7 @@
                             </form>
                         @endif
 
-                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                        <button class="btn btn-link collapsed ml-2" data-toggle="collapse"
                                 data-target="#faq-content-{{$faq->id}}"
                                 aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
                             <i class="fas fa-caret-down"></i>
