@@ -168,7 +168,7 @@
     <div class="row mt-3" id="faqs">
         @foreach($discipline->faqs as $faq)
             <div class="col-md-12 card">
-                <div class="card-header" id="faq-header-{{$faq->id}}">
+                <div class="card-header" id="faq-header-{{$faq->id}}" data-toggle="collapse" data-target="#faq-content-{{$faq->id}}">
                     <h5 class="mb-0 d-flex justify-content-between">
                         <button class="btn btn-link collapsed mr-auto" data-toggle="collapse"
                                 data-target="#faq-content-{{$faq->id}}"
