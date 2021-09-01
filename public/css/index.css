@@ -88,6 +88,17 @@ h3{
     color: #b1b1b1;
 }
 
+/* custom margins */
+.mt-6{
+    margin-top:calc(1rem*4);
+}
+.mt-7{
+    margin-top:calc(1rem*5.5);
+}
+.mt-7{
+    margin-top:calc(1rem*7);
+}
+
 /* Cores para testes */
 /* .bg-color {
     background-color: #1A5A7E;

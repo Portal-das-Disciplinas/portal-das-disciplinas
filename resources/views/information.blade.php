@@ -10,7 +10,7 @@ Sobre nós - Portal das Disciplinas IMD
     <h1>Sobre & Colabore</h1>
 </div>
 
-<div class='mt-8 container text-white'  id="top-container">
+<div class='mt-6 container text-white'  id="top-container">
     <div class='row'>
         <div class="col-md-5 p-text">
                 <div>
