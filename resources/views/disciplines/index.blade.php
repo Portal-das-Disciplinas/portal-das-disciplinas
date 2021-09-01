@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    
+
 
     <div class="row">
         <div class="col-12 text-center my-4 title-subject-container">
@@ -67,22 +67,22 @@
                                 <a href="{{ route('disciplinas.show', $discipline->id) }}" class="btn btn-primary mt-2">Ver
                                     mais</a>
 
-                            @auth
-                                 @if (Auth::user()->canDiscipline($discipline->id))
-                                    <form action=" {{route('disciplinas.destroy', $discipline->id)}}" class="d-inline"
-                                          method="post">
+                                @auth
+                                    @if (Auth::user()->canDiscipline($discipline->id))
+                                        <form action=" {{route('disciplinas.destroy', $discipline->id)}}" class="d-inline"
+                                            method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
+                                        </form>
+                                        <form action=" {{route('disciplinas.edit', $discipline->id)}}" class="d-inline"
+                                            method="get">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
-                                    </form>
-                                    <form action=" {{route('disciplinas.edit', $discipline->id)}}" class="d-inline"
-                                        method="get">
-                                      @csrf
-                                      @method('UPDATE')
-                                      <button type="submit" class="btn btn-warning mt-2" value="Editar">Editar</button>
-                                    </form>
-                                @endif
-                            @endauth
+                                        @method('UPDATE')
+                                        <button type="submit" class="btn btn-warning mt-2" value="Editar">Editar</button>
+                                        </form>
+                                    @endif
+                                @endauth
                             </div>
                             <div class="card-footer">{{ $discipline->professor->name}}</div>
                         </div>

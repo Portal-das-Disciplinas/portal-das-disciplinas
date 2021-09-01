@@ -49,14 +49,14 @@
 
             <!-- SINOPSE -->
             <div class="section mt-3">
-                
+
                 <h3 class="text-white">Sinopse</h3>
                 <div>
                     <div>
                         <div class="text-white ln-30 p-text"> {{ $discipline->synopsis }} </div>
                     </div>
                 </div>
-                
+
             </div>
 
             <!-- VÍDEO -->
@@ -91,17 +91,17 @@
                 </div>
             </div>
 
-     
+
 
         </div>
 
-        
+
 
         <div class="side col-md-4">
             <!-- classificacoes -->
             <div class='classifications'>
                 <!--<h3 class="text-white">Teste</h3>-->
-                
+
                 @foreach ($discipline->classificationsDisciplines as $classificationDiscipline)
                     <div class="row">
                         <div class="col-md-5 mt-1">
@@ -112,7 +112,7 @@
                         <p>{{$classificationDiscipline->value}}</p>
                         <div class="col-md-6">
                             <div class="progress">
-                                
+
                                 <div id="{{$classificationDiscipline->classification_id}}"
                                      class="progress-bar progress-bar-striped" role="progressbar"
                                      style="width: {{($classificationDiscipline->value/6)*100}}%"
@@ -154,11 +154,11 @@
                     <i class="fas fa-sad-tear fa-8x"></i>
                     <p>Sem materiais disponiveis</p>
                 </div>
-                    
+
                 @endif
             </div>
 
-            
+
 
         </div>
     </div>
@@ -168,18 +168,12 @@
     <div class="row mt-3" id="faqs">
         @foreach($discipline->faqs as $faq)
             <div class="col-md-12 card">
-                <div class="card-header" id="faq-header-{{$faq->id}}">
+                <div class="card-header" id="faq-header-{{$faq->id}}" data-toggle="collapse" data-target="#faq-content-{{$faq->id}}">
                     <h5 class="mb-0 d-flex justify-content-between">
-                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                        <button class="btn btn-link collapsed mr-auto" data-toggle="collapse"
                                 data-target="#faq-content-{{$faq->id}}"
                                 aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
                             {!! $faq->title !!}
-                        </button>
-
-                        <button class="btn btn-link collapsed" data-toggle="collapse"
-                                data-target="#faq-content-{{$faq->id}}"
-                                aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
-                            <i class="fas fa-caret-down"></i>
                         </button>
 
                         @if(isset($can) && $can)
@@ -190,6 +184,12 @@
                                 <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
                             </form>
                         @endif
+
+                        <button class="btn btn-link collapsed ml-2" data-toggle="collapse"
+                                data-target="#faq-content-{{$faq->id}}"
+                                aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
+                            <i class="fas fa-caret-down"></i>
+                        </button>
                     </h5>
                 </div>
 
@@ -208,6 +208,6 @@
         @include('faqs.create_modal', ['discipline' => $discipline])
     @endif
 
-    
+
 </div>
 @endsection
