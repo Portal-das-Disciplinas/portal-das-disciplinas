@@ -30,11 +30,5 @@ Está disposto a nos ajudar a melhorar o site? Clique aqui e saiba como!
         <span class="d-block span-info">victor_brandao@outlook.com</span>
     </div>
 
-        
-
-
-        
-        
-
 </div>
 @endsection

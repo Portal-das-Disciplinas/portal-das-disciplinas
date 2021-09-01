@@ -12,15 +12,15 @@ Sobre nós - Portal das Disciplinas IMD
 
 <div class='mt-8 container text-white'  id="top-container">
     <div class='row'>
-        <div class="col-md-5">
+        <div class="col-md-5 p-text">
                 <div>
                     <h2>Nossa equipe</h2>
-                    <p class="text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias eveniet temporibus dolorum facere ullam repellat doloribus architecto tempore unde quae? Tempore cumque dolor velit enim aliquam laboriosam, dignissimos doloremque odio? Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <p class="text-justify ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias eveniet temporibus dolorum facere ullam repellat doloribus architecto tempore unde quae? Tempore cumque dolor velit enim aliquam laboriosam, dignissimos doloremque odio? Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                 </div>
 
                 <div>
                     <h2>Colabore</h2>
-                    <p class="text-justify">Caso tenha interesse em colaborar na adição de novas funcionalidades do site como sistema de classificações dinâmicos, refinamento de mecanismos de busca, interação com o portal de dados abertos da UFRN para recuperação de índices de aprovação de disciplinas, implementação de fóruns no portal, entre outros, por favor, entre em contato conosco.</p>
+                    <p class="text-justify ">Caso tenha interesse em colaborar na adição de novas funcionalidades do site como sistema de classificações dinâmicos, refinamento de mecanismos de busca, interação com o portal de dados abertos da UFRN para recuperação de índices de aprovação de disciplinas, implementação de fóruns no portal, entre outros, por favor, entre em contato conosco.</p>
                 </div>
 
                 <div class="break-word">
@@ -37,55 +37,67 @@ Sobre nós - Portal das Disciplinas IMD
         
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
             <div class="row">
-                <img class="fluid clip-path" src="" alt="foto-dev">
+                <div class='d-flex flex-column align-items-center'>
+                    <img class="fluid clip-path" style="width:8rem" src="img/user2.png" alt="foto-dev">
                     <div class="text-center">
-                        <h1 style="font-size: 1.4rem" class="mb-0">Eugênio Paccelli</h1>
-                        <p>Professor Orientador</p>
+                        <h4>IMD Dev</h4>
+                        <p>Docente <code> disciplina</code></p>
                     </div>
+                </div>
             </div>
             
 
-            <div class="d-flex justify-content-center align-items-center mx-4">
+            <div class="d-flex flex-wrap justify-content-around mt-4">
 
-                <div class="col-md-6">
-                    <img class="fluid clip-path" src="" alt="foto-dev">
-                    <div class="text-center">
-                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                        <p>Desenvolvedor <code>back-end</code></p>
+                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
+                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
+                        <div class="text-center">
+                            <h4>IMD Dev</h4>
+                            <p>Desenvolvedor <code>back-end</code></p>
+                        </div>
                     </div>
                 
-                <img class="fluid clip-path" src="" alt="foto-dev">
-                    <div class="text-center">
-                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                        <p>Desenvolvedor <code>back-end</code></p>
+                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
+                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
+                        <div class="text-center">
+                            <h4>IMD Dev</h4>
+                            <p>Desenvolvedor <code>back-end</code></p>
+                        </div>
                     </div>
 
-                <img class="fluid clip-path" src="" alt="foto-dev">
-                    <div class="text-center">
-                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                        <p>Desenvolvedor <code>back-end</code></p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6">
-                    <img class="fluid clip-path" src="" alt="foto-dev">
-                    <div class="text-center">
-                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                        <p>Desenvolvedor <code>back-end</code></p>
-                    </div>
-                
-                <img class="fluid clip-path" src="" alt="foto-dev">
-                    <div class="text-center">
-                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                        <p>Desenvolvedor <code>back-end</code></p>
+                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
+                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
+                        <div class="text-center">
+                            <h4>IMD Dev</h4>
+                            <p>Desenvolvedor <code>back-end</code></p>
+                        </div>
                     </div>
 
-                <img class="fluid clip-path" src="" alt="foto-dev">
-                    <div class="text-center">
-                        <h1 style="font-size: 1.4rem" class="mb-0">IMD Dev</h1>
-                        <p>Desenvolvedor <code>back-end</code></p>
+
+                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
+                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
+                        <div class="text-center">
+                            <h4>IMD Dev</h4>
+                            <p>Desenvolvedor <code>back-end</code></p>
+                        </div>
                     </div>
-                </div>     
+                
+                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
+                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
+                        <div class="text-center">
+                            <h4>IMD Dev</h4>
+                            <p>Desenvolvedor <code>back-end</code></p>
+                        </div>
+                    </div>
+
+                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
+                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
+                        <div class="text-center">
+                            <h4>IMD Dev</h4>
+                            <p>Desenvolvedor <code>back-end</code></p>
+                        </div>
+                    </div>
+                
 
         </div>
 
