@@ -1,16 +1,12 @@
-<header>
-    <nav class="navbar  navbar-light bg-light">
+<header class="w-100 bg-light ">
+    
+    <nav class="container mt-0">
+      <div class="row">
 
-      {{-- Desativado por enquanto --}}
-      <label class="label-btn">
-        <i class="fas fa-bars" id='navbar_btn' onclick="move(true)"></i>
-      </label>
-
-        <a class="navbar-brand mr-0" href="{{route('index')}}">
+        <div class="d-flex align-items-center justify-content-between w-100" id="navbarNav" style="height:80px">
+          <a class="navbar-brand mr-0" href="{{route('index')}}">
             <img src="{{asset('img/imdLogo.png')}}"  class='logo-navbar'alt="Logo do IMD">
-        </a>
-
-        <div class="" id="navbarNav">
+          </a>
           {{-- <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link" href="#">Sobre</a>
@@ -42,7 +38,13 @@
                 </li>
             @endguest
           </ul>
+          <label class="label-btn">
+            <i class="fas fa-bars" id='navbar_btn' onclick="move(true)"></i>
+          </label>
         </div>
+        
+      </div>
+      
 
 
 
