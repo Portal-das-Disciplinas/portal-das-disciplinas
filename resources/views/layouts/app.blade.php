@@ -11,6 +11,7 @@
     <meta name="robots" content="@yield('robots','all')">
     <title>@yield('title', 'Portal das Disciplinas IMD')</title>
     <meta name="description" content="@yield('description','Conheça as disciplinas do IMD de forma mais prática!')">
+    <link rel="shortcut icon" href="favicon.ico" />
     {{-- bootstrap CSS --}}
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     {{-- CSS --}}
