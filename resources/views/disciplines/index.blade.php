@@ -1,23 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
+<div class='wrapper'>
+
+
 <div class="container">
 
 
     <div class="row">
         <div class="col-12 text-center my-4 title-subject-container">
-            <h1 class="title-subject">Portal das Disciplinas - IMD/UFRN</h1>
-        </div>
-    </div>
-
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qG4ATq0qJlE" allowfullscreen></iframe>
+            <h1 class="title-subject display-title">Portal das Disciplinas - IMD/UFRN</h1>
+            <div class="row justify-content-center">
+                <p class='p-text mt-3 text-white text-center col-md-9 '>Lorem ipsum dolor sit, Qui sequi iusto sed possimus quos accusamus necessitatibus expedita excepturi, eius mollitia, dolorum odit quas nemo libero saepe architecto repudiandae sint nostrum?<p>
             </div>
         </div>
     </div>
 
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qG4ATq0qJlE" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container mt-0">
     {{-- Modificar para apenas o user adm ou professor --}}
 
     @auth
@@ -92,4 +100,6 @@
         @endif
     @endisset
 </div>
+</div>
+
 @endsection
