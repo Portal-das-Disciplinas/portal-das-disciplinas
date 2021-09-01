@@ -4,6 +4,10 @@
 noindex, follow
 @endsection
 
+@section('styles-head')
+<link rel="stylesheet" href="{{asset('css/login.css')}}">
+@endsection
+
 @section('content')
 
 <div class='discipline-banner'>
@@ -82,14 +86,6 @@ noindex, follow
     </div>
 </div>
 
-<style>
-.vertical-center{
-    min-height: 100%; 
-    min-height: 100vh; 
 
-    display: flex;
-    align-items: center;
-}
 
-</style>
 @endsection
