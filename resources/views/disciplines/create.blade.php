@@ -70,7 +70,9 @@
                             class="form-control {{ $errors->has('synopsis') ? 'is-invalid' : ''}}"
                             id="synopsis"
                             name="synopsis"
-                            rows="8"
+                            {{-- rows="8" --}}
+                            rows="12"
+                            max-rows="12"
                             placeholder="Explique aqui como funciona a disciplina">{{old('synopsis')}}</textarea>
                         @error('synopsis')
                         <div class="invalid-feedback">{{ $message }}</div>
