@@ -17,7 +17,7 @@
 
 
 <div class="container" >
-    <button onclick="test()"> Test </button>
+   
 
     <!-- Botão de cadastro FAQ -->
     @if(isset($can) && $can)
@@ -210,4 +210,15 @@
 
 
 </div>
+@endsection
+@section('scripts-bottom')
+<script>
+    let classificationsPairs = []
+    let classificationsDisciplines = {prop: @json($discipline->classificationsDisciplines)}
+    for (let i = 0; i < classificationsDisciplines.prop.length; i+=2) {
+        classificationsPairs.push(classificationsDisciplines.prop.slice(i,i+2)) 
+    }
+    console.log(classificationsPairs)
+</script>
+
 @endsection

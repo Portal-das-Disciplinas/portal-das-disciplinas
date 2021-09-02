@@ -48,7 +48,7 @@
     <script src="{{asset('js/app.js')}}" type="text/javascript"></script>
     {{-- Sidebar JS --}}
     <script src="{{asset('js/sidebar.js')}}" type="text/javascript"></script>
-    <script src="{{asset('js/disciplines.js')}}" type="text/javascript"></script>
+    
     @yield('scripts-bottom')
 
 </body>
