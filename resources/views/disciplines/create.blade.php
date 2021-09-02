@@ -70,137 +70,157 @@
                             class="form-control {{ $errors->has('synopsis') ? 'is-invalid' : ''}}"
                             id="synopsis"
                             name="synopsis"
-                            rows="8"
+                            rows="12"
+                            max-rows="12"
                             placeholder="Explique aqui como funciona a disciplina">{{old('synopsis')}}</textarea>
                         @error('synopsis')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="form-group mt-3 ml-2">
-                        <h3 class="text-white">Classificações</h3>
-                        <div class="row">
-                            <div class="col-md-5 mt-1">
-                                <label class="text-white">
-                                    Metodologias Clássicas
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <input id="classificacao-metodologias-classicas" name="classificacao-metodologias-classicas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5 mt-1">
-                                <label class="text-white">
-                                    Metodologias Ativas
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <input class="form-range" id="classificacao-metodologias-ativas" name="classificacao-metodologias-ativas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5 mt-1">
-                                <label class="text-white">
-                                    Discussão Social
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <input class="form-range" id="classificacao-discussao-social" name="classificacao-discussao-social" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5 mt-1">
-                                <label class="text-white">
-                                    Discussão Técnica
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <input class="form-range" id="classificacao-discussao-tecnica" name="classificacao-discussao-tecnica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5 mt-1">
-                                <label class="text-white">
-                                    Abordagem Teórica
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <input class="form-range" id="classificacao-abordagem-teorica" name="classificacao-abordagem-teorica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5 mt-1">
-                                <label class="text-white">
-                                    Abordagem Prática
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <input class="form-range" id="classificacao-abordagem-pratica" name="classificacao-abordagem-pratica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5 mt-1">
-                                <label class="text-white">
-                                    Avaliação por Provas
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <input class="form-range" id="classificacao-av-provas" name="classificacao-av-provas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-5 mt-1">
-                                <label class="text-white">
-                                    Avaliação por Atividades
-                                </label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <input class="form-range form-group" id="classificacao-av-atividades" name="classificacao-av-atividades" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                </div>
-                            </div>
-                        </div>
-                        {{-- TODO --}}
-                        {{-- tentar fazer texto aparecer abaixo do range --}}
-                        <datalist id="tickmarks" style="--list-length: 9;">
-                            <option value="0">1</option>
-                            <option value="1">2</option>
-                            <option value="2">A</option>
-                            <option value="3">B</option>
-                            <option value="4">C</option>
-                            <option value="5">C</option>
-                            <option value="6">C</option>
-                        </datalist>
-                        @error('classificacao')
+                    <div class="form-group">
+                        <label class="text-white" for="difficulties">
+                            Obstáculos
+                        </label>
+                        <textarea
+                            class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}"
+                            id="difficulties"
+                            name="difficulties"
+                            rows="12"
+                            max-rows="12"
+                            placeholder="Explique aqui como funciona a disciplina">{{old('difficulties')}}</textarea>
+                        @error('difficulties')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="text-white">Classificações</label>
+                        <div class="form-group mt-3 ml-2">
+                            {{-- <h3 class="text-white">Classificações</h3> --}}
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label class="text-white">
+                                        Metodologias Clássicas
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input id="classificacao-metodologias-classicas" name="classificacao-metodologias-classicas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label class="text-white">
+                                        Metodologias Ativas
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range" id="classificacao-metodologias-ativas" name="classificacao-metodologias-ativas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label class="text-white">
+                                        Discussão Social
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range" id="classificacao-discussao-social" name="classificacao-discussao-social" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label class="text-white">
+                                        Discussão Técnica
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range" id="classificacao-discussao-tecnica" name="classificacao-discussao-tecnica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label class="text-white">
+                                        Abordagem Teórica
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range" id="classificacao-abordagem-teorica" name="classificacao-abordagem-teorica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label class="text-white">
+                                        Abordagem Prática
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range" id="classificacao-abordagem-pratica" name="classificacao-abordagem-pratica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label class="text-white">
+                                        Avaliação por Provas
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range" id="classificacao-av-provas" name="classificacao-av-provas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label class="text-white">
+                                        Avaliação por Atividades
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range form-group" id="classificacao-av-atividades" name="classificacao-av-atividades" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- TODO --}}
+                            {{-- tentar fazer texto aparecer abaixo do range --}}
+                            <datalist id="tickmarks" style="--list-length: 9;">
+                                <option value="0">1</option>
+                                <option value="1">2</option>
+                                <option value="2">A</option>
+                                <option value="3">B</option>
+                                <option value="4">C</option>
+                                <option value="5">C</option>
+                                <option value="6">C</option>
+                            </datalist>
+                            @error('classificacao')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <label class="text-white" for="media-trailer">
                             Trailer da disciplina
                         </label>
@@ -272,7 +292,7 @@
                 </div>
             </div>
 
-            <div class="form-row mt-3">
+            {{-- <div class="form-row mt-3">
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="text-white" for="difficulties">
@@ -291,7 +311,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row d-flex p-2 mt-3 justify-content-center">
                 <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
