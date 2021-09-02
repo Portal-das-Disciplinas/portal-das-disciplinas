@@ -69,7 +69,7 @@ p{
 }
 
 .footer-sub{
-    color: var(--grey-500);
+    color: #6B7280;
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -89,7 +89,7 @@ hr{
 }
 
 .info-imd, .eqp-link{
-    color: var(--grey-500);
+    color: #6B7280;
 }
 
 .eqp-link{
