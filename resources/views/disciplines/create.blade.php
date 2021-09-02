@@ -99,9 +99,9 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="text-white">Classificações</label>
                         <div class="form-group mt-3 ml-2">
                             {{-- <h3 class="text-white">Classificações</h3> --}}
-                            <h5 class="text-white">Classificações</h5>
                             <div class="row">
                                 <div class="col-md-5 mt-1">
                                     <label class="text-white">
