@@ -32,6 +32,7 @@ Sobre nós - Portal das Disciplinas IMD
                     </ul>
                 </div>
         </div>
+    
 
 
         
@@ -100,13 +101,19 @@ Sobre nós - Portal das Disciplinas IMD
                 
 
         </div>
-
-        </div>
-        
-        
-
-
-        
+        </div>   
     </div>
+    <div class="row ">
+        <p class='col-md-12'>colaboradores anteriores</p>
+    </div>
+   
+    
+    
+        
+        
+
+
+        
+    
 </div>
 @endsection
