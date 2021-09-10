@@ -43,7 +43,7 @@
                         <iframe class="embed-responsive-item light-border-radius" src="{{ $discipline->trailer->url}}" allowfullscreen ></iframe>
                     </div>
                 @else
-                    <img class="img-fluid" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
+                    <img class="img-fluid light-border-radius" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
                 @endif
             </div>
 
@@ -68,7 +68,7 @@
                                 src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->url }}"></iframe>
                     </div>
                 @else
-                    <img class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
+                    <img class="img-fluid light-border-radius" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
                 @endif
             </div>
             <!-- OBSTACULOS -->
@@ -140,7 +140,7 @@
                                 src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->url}}"></iframe>
                     </div>
                 @else
-                    <img class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem podcast">
+                    <img class="img-fluid light-border-radius" src="{{ asset('img/nopodcast.png') }}" alt="Sem podcast">
                 @endif
                 
             </div>
