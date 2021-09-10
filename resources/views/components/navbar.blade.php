@@ -1,4 +1,4 @@
-<header class="w-100 bg-light ">
+<header class="w-100 bg-light sticky-top shadow ">
     
     <nav class="container mt-0">
       <div class="row">
