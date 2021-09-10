@@ -1,14 +1,16 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
 :root {
     --main-bg-color: #0c3f7c;
     --main-md-color: #acb2b8;
     --main-title-bg-color: white;
     --main-text-color: black;
 }
-
+/*
 body {
     background: -webkit-linear-gradient(left, rgba(0,0,0,0) 50%,rgba(0,0,0,0.4) 100%);
     background-color: var(--main-bg-color);
-}
+}*/
 
 .label-btn{
     margin: 0;
@@ -31,6 +33,10 @@ body {
     margin-top: 5px;
     color: var(--main-title-bg-color);
     font-size: 16px;
+}
+
+.light-border-radius{
+    border-radius: 5px;
 }
 
 .card{
@@ -57,9 +63,17 @@ body {
     width: 7rem;
 }
 
+hr{
+    margin-top: 1.5rem !important; 
+    margin-bottom: 1,5rem !important;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
 
 h1,h2,h3,h4,h5,h6{
-    font-weight: bold;
+    font-weight: bolder;
+    font-family: 'Nunito Sans';
+    
 }
 
 .display-title{
@@ -126,6 +140,11 @@ h3{
 .bg-color4 {
     background-color: #183561;
     font-size: 20px;
+}
+
+.grey-bg{
+    background-color: #E9E9E9;
+    color: #212529;
 }
 
 .info-portal{

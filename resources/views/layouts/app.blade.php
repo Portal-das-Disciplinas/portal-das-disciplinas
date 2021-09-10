@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="{{asset('css/index.css')}}">
     <link rel="stylesheet" href="{{asset('css/sidebar.css')}}">
     <link rel="stylesheet" href="{{asset('css/discipline.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700;900&display=swap" rel="stylesheet">
     {{-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> --}}
     @yield('styles-head')
     {{-- CSRF Laravel --}}
@@ -27,7 +30,7 @@
     @yield('scripts-head')
 </head>
 
-<body class="content-body d-flex flex-column min-vh-100">
+<body class="content-body d-flex flex-column min-vh-100 grey-bg">
     @include('components.navbar')
 
     {{-- Sidebar desativado por enquanto --}}
@@ -39,7 +42,7 @@
 
     @include('components.sidebar')
 
-    <div class="mb-5">
+    <div class="mb-5 ">
         @yield('content')
     </div>
 

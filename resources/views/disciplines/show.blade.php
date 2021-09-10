@@ -24,8 +24,8 @@
         <div >
             <div class="w-25 my-5">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-outline-light btn-block"
-                        data-toggle="modal" data-target="#faqs-create">
+                <button type="button" class="btn btn-outline-white btn-block text-white"
+                        data-toggle="modal" data-target="#faqs-create" style='background-color:#1155CC'>
                     Registrar FAQ
                 </button>
             </div>
@@ -37,10 +37,10 @@
         <!-- main -->
         <div class="main col-md-8">
             <div class='section'>
-                <h3 class="text-white">Trailer e Classificações</h3>
+                <h3 class="mb-3">Trailer & Classificações</h3>
                 @if($discipline->has_trailer_media)
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="{{ $discipline->trailer->url}}" allowfullscreen></iframe>
+                        <iframe class="embed-responsive-item light-border-radius" src="{{ $discipline->trailer->url}}" allowfullscreen ></iframe>
                     </div>
                 @else
                     <img class="img-fluid" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
@@ -50,10 +50,10 @@
             <!-- SINOPSE -->
             <div class="section mt-3">
 
-                <h3 class="text-white">Sinopse</h3>
+                <h3 class="mb-3">Sinopse</h3>
                 <div>
                     <div>
-                        <div class="text-white ln-30 p-text"> {{ $discipline->synopsis }} </div>
+                        <div class=" ln-30 p-text"> {{ $discipline->synopsis }} </div>
                     </div>
                 </div>
 
@@ -61,10 +61,10 @@
 
             <!-- VÍDEO -->
             <div class='section'>
-                <h3 class="text-white">Vídeo</h3>
+                <h3 class="mb-3">Vídeo</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO))
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" allowfullscreen
+                        <iframe class="embed-responsive-item light-border-radius" allowfullscreen
                                 src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->url }}"></iframe>
                     </div>
                 @else
@@ -73,20 +73,25 @@
             </div>
             <!-- OBSTACULOS -->
             <div class='section'>
-                <h3 class="text-white">Obstáculos</h3>
+                <h3 class="mb-3">Obstáculos</h3>
                 <div>
                     <div>
-                        <div class="text-white p-text">{{ $discipline->difficulties }}</div>
+                        <div class=" p-text">{{ $discipline->difficulties }}</div>
                     </div>
                 </div>
             </div>
             <!-- PROFESSOR -->
-            <div class='section'>
-                <h3 class="text-white">Professor</h3>
-                <div class="border border-info rounded">
-                    <div class="bg-color4">
-                        <div class="text-white text-justify px-lg-3"> {{ $discipline->professor->name }} </div>
-                        <div class="text-white text-justify px-lg-3"> Email: {{ $discipline->professor->public_email }} </div>
+            <div class='section mb-5'>
+                <h3 class="mb-3">Professor</h3>
+                <div class="">
+                    <div class="d-flex align-items-center">
+                        
+                        <i class="fas fa-user fa-8x mr-4" ></i>
+                        <div class="wrapper-teacher-info">
+                            <div class=" text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
+                            <div class=" text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -100,23 +105,24 @@
         <div class="side col-md-4">
             <!-- classificacoes -->
             <div class='classifications'>
-                <!--<h3 class="text-white">Teste</h3>-->
+                <!--<h3 class="">Teste</h3>-->
 
                 @foreach ($discipline->classificationsDisciplines as $classificationDiscipline)
-                    <div class="row">
+                    <div class="row d-flex align-items-center">
                         <div class="col-md-5 mt-1">
-                            <label class="text-white">
+                            <label class="">
                                 {{$classificationDiscipline->classification->name}}
                             </label>
                         </div>
-                        <p>{{$classificationDiscipline->value}}</p>
+                        
                         <div class="col-md-6">
-                            <div class="progress">
+                            <div class="progress" style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px;">
 
                                 <div id="{{$classificationDiscipline->classification_id}}"
-                                     class="progress-bar progress-bar-striped" role="progressbar"
-                                     style="width: {{($classificationDiscipline->value/6)*100}}%"
-                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"></div>
+                                     class="progress-bar" role="progressbar"
+
+                                     style="width: {{($classificationDiscipline->value/6)*100}}% ; background-color:#1155CC; border-radius: 100px"
+                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"><!--{{(number_format(($classificationDiscipline->value/6*100),1))}}%--></div>
                             </div>
                         </div>
                     </div>
@@ -124,23 +130,27 @@
 
 
             </div>
+            <hr>
              <!-- PODCAST -->
             <div>
-                <h3 class="text-white mt-5">Podcast</h3>
+                <h3 class=" mt-4 mb-2">Podcast</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST))
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" allowfullscreen
+                        <iframe class="embed-responsive-item light-border-radius" allowfullscreen
                                 src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->url}}"></iframe>
                     </div>
                 @else
                     <img class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem podcast">
                 @endif
+                
             </div>
+            <hr>
 
 
              <!-- MATERIAIS -->
+            
             <div>
-                <h3 class="text-white mt-5">Materiais</h3>
+                <h3 class=" mt-4 mb-2">Materiais</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS))
                     <div class="d-flex align-center">
                         <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->url}}"
@@ -150,24 +160,32 @@
                         <br/>
                     </div>
                 @else
-                <div class="materiais-off d-flex">
-                    <i class="fas fa-sad-tear fa-8x"></i>
-                    <p>Sem materiais disponiveis</p>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-sad-tear fa-7x mr-3" ></i>
+                    <strong>Sem materiais disponiveis...</strong>
                 </div>
 
                 @endif
             </div>
+            <hr>
+
 
 
 
         </div>
     </div>
-    <!-- FAQ -->
-    @if($discipline->faqs->count())
-    <h2 class="container-fluid text-white text-center mt-5">FAQ</h2>
+    
+
+
+</div>
+<!-- FAQ -->
+<div class="text-white pt-4 pb-5" style='background-color:#014C8C; margin-bottom: -3rem;'>
+@if($discipline->faqs->count())
+<div class="container">
+    <h2 class="container-fluid  text-center mt-5">Perguntas Frequentes</h2>
     <div class="row mt-3" id="faqs">
         @foreach($discipline->faqs as $faq)
-            <div class="col-md-12 card">
+            <div class="col-md-12 card mb-3 text-dark">
                 <div class="card-header" id="faq-header-{{$faq->id}}" data-toggle="collapse" data-target="#faq-content-{{$faq->id}}">
                     <h5 class="mb-0 d-flex justify-content-between">
                         <button class="btn btn-link collapsed mr-auto" data-toggle="collapse"
@@ -175,7 +193,7 @@
                                 aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
                             {!! $faq->title !!}
                         </button>
-
+    
                         @if(isset($can) && $can)
                             <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}"
                                 class="d-inline float-right" method="POST">
@@ -184,7 +202,7 @@
                                 <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
                             </form>
                         @endif
-
+    
                         <button class="btn btn-link collapsed ml-2" data-toggle="collapse"
                                 data-target="#faq-content-{{$faq->id}}"
                                 aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
@@ -192,7 +210,7 @@
                         </button>
                     </h5>
                 </div>
-
+    
                 <div id="faq-content-{{$faq->id}}" class="collapse" aria-labelledby="faq-header-{{$faq->id}}"
                     data-parent="#faqs">
                     <div class="card-body">
@@ -203,11 +221,11 @@
         @endforeach
     </div>
     @endif
-
+    
     @if(isset($can) && $can)
         @include('faqs.create_modal', ['discipline' => $discipline])
     @endif
-
+</div>
 
 </div>
 @endsection
