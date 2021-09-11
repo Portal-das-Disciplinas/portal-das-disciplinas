@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
-@section('content')    
+@section('content')  
 
+
+<div class="container">
   <div class="card">
     @if (session('success'))
       <div class="alert alert-success border-left-success" role="alert">
@@ -18,7 +20,7 @@
       <form action="{{route('updateUser')}}" method="POST">
         @csrf
         <div class="form-row">
-          <div class="form-group col-12">
+          <div class="form-group col-12 pb-3">
             <label for="name">Nome</label>
             <input type="text" class="form-control @error('name') is-invalid @enderror"  id="name" name='name' value="{{Auth::user()->name}}">
             @error('name')
@@ -26,7 +28,7 @@
             @enderror
           </div>
 
-          <div class="form-group col-12">
+          <div class="form-group col-12 pb-3">
             <label for="email">Email</label>
             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name='email' value="{{Auth::user()->email}}" >
             @error('email')
@@ -34,7 +36,7 @@
             @enderror
           </div>
 
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-6 pb-3">
             <label for="new_password">Nova senha</label>
             <input type="password" class="form-control @error('new_password') is-invalid @enderror" name='new_password' id="new_password" >
             @error('new_password')
@@ -42,7 +44,7 @@
             @enderror
           </div>
 
-          <div class="form-group col-md-6">
+          <div class="form-group col-md-6 pb-3">
             <label for="password_confirmation">Confirmação da senha </label>
             <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name='password_confirmation'>
             @error('password_confirmation')
@@ -50,7 +52,7 @@
             @enderror
           </div>
 
-          <div class="form-group col-6">
+          <div class="form-group col-6 pb-2">
             <label for="current_password">Senha atual</label>
             <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name='current_password'>
             @error('current_password')
@@ -64,4 +66,5 @@
     </div>
     {{-- {{dd($errors->all())}} --}}
   </div>
+</div>
 @endsection
