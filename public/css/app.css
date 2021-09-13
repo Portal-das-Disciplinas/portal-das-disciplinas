@@ -3213,12 +3213,12 @@ fieldset:disabled a.btn {
 
 .btn-outline-light {
   color: #f8f9fa;
-  background-color: #1d68a7;
+  background-color: #3490dc;
 }
 
 .btn-outline-light:hover {
   color: #f8f9fa;
-  background-color: #155081;
+  background-color: #1d68a7;
 }
 
 .btn-outline-light:focus,
