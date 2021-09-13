@@ -9,7 +9,8 @@ Cadastro de Professor
 
 @section('content')
 
- <div>
+<div class="container">
+    <h4 class="text-center m-4">Cadastrar professor</h4>
      <form action="{{route('professores.store')}}" method="post">
         @csrf
         <div class="form-row">
@@ -61,6 +62,7 @@ Cadastro de Professor
                         class="form-control {{ $errors->has('password') ? 'is-invalid' : ''}}"
                         name="password"
                         id="password"
+                        placeholder="Senha"
                         autocomplete="off">
                 @error('password')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -72,6 +74,7 @@ Cadastro de Professor
                         class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : ''}}"
                         name="password_confirmation"
                         id="password_confirmation"
+                        placeholder="Confirme a senha"
                         autocomplete="off">
                 @error('password_confirmation')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -79,10 +82,10 @@ Cadastro de Professor
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-4">
-                <input type="submit" value="Cadastrar" class="btn btn-outline-light btn-block">
+            <div class="form-group col-md-4 mt-2">
+                <input type="submit" value="Cadastrar" class="btn btn-outline-light btn-block w-50">
             </div>
         </div>
      </form>
- </div>
+</div>
 @endsection
