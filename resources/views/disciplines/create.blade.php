@@ -10,13 +10,13 @@
 
 @section('content')
     <div class="container mt-4">
-        <h2 class="mb-4 text-white">Cadastro de disciplinas</h2>
+        <h2 class="mb-4">Cadastro de disciplinas</h2>
 
         <form action="{{ route("disciplinas.store") }}" method="post">
             @csrf
             <div class="form-row">
                 <div class="form-group col-md-10">
-                    <label class="text-white" for="name">
+                    <label class="" for="name">
                         Nome da disciplina
                     </label>
                     <input type="text"
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="form-group col-md-2">
-                    <label class="text-white" for="code">
+                    <label class="" for="code">
                         Código
                     </label>
                     <input type="text"
@@ -49,7 +49,7 @@
             </div>
             <div class="col-md-6 px-0">
                 @if (Auth::user()->isAdmin)
-                <label for="professor" class="text-white">Professor</label>
+                <label for="professor" class="">Professor</label>
                     <div class="form-group">
                         <select name="professor" id="professor" class="form-control" aria-label="Professor">
                             <option selected>Selecione um professor</option>
@@ -63,7 +63,7 @@
             <div class="form-row mt-3">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="text-white" for="synopsis">
+                        <label class="" for="synopsis">
                             Sinopse
                         </label>
                         <textarea
@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="text-white" for="difficulties">
+                        <label class="" for="difficulties">
                             Obstáculos
                         </label>
                         <textarea
@@ -99,12 +99,12 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="text-white">Classificações</label>
+                        <label class="">Classificações</label>
                         <div class="form-group mt-3 ml-2">
-                            {{-- <h3 class="text-white">Classificações</h3> --}}
+                            {{-- <h3 class="">Classificações</h3> --}}
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label class="text-white">
+                                    <label class="">
                                         Metodologias Clássicas
                                     </label>
                                 </div>
@@ -117,7 +117,7 @@
 
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label class="text-white">
+                                    <label class="">
                                         Metodologias Ativas
                                     </label>
                                 </div>
@@ -130,7 +130,7 @@
 
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label class="text-white">
+                                    <label class="">
                                         Discussão Social
                                     </label>
                                 </div>
@@ -143,7 +143,7 @@
 
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label class="text-white">
+                                    <label class="">
                                         Discussão Técnica
                                     </label>
                                 </div>
@@ -156,7 +156,7 @@
 
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label class="text-white">
+                                    <label class="">
                                         Abordagem Teórica
                                     </label>
                                 </div>
@@ -169,7 +169,7 @@
 
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label class="text-white">
+                                    <label class="">
                                         Abordagem Prática
                                     </label>
                                 </div>
@@ -182,7 +182,7 @@
 
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label class="text-white">
+                                    <label class="">
                                         Avaliação por Provas
                                     </label>
                                 </div>
@@ -195,7 +195,7 @@
 
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label class="text-white">
+                                    <label class="">
                                         Avaliação por Atividades
                                     </label>
                                 </div>
@@ -221,7 +221,7 @@
                             @enderror
                         </div>
 
-                        <label class="text-white" for="media-trailer">
+                        <label class="" for="media-trailer">
                             Trailer da disciplina
                         </label>
                         <div class="input-group">
@@ -239,7 +239,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="text-white" for="media-video">
+                        <label class="" for="media-video">
                             Vídeo
                         </label>
                         <div class="input-group">
@@ -256,7 +256,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="text-white" for="media-podcast">
+                        <label class="" for="media-podcast">
                             Podcast
                         </label>
                         <div class="input-group">
@@ -273,7 +273,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="text-white" for="media-material">
+                        <label class="" for="media-material">
                             Materiais
                         </label>
                         <div class="input-group">
@@ -295,7 +295,7 @@
             {{-- <div class="form-row mt-3">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="text-white" for="difficulties">
+                        <label class="" for="difficulties">
                             Obstáculos
                         </label>
                         <div class="input-group">
