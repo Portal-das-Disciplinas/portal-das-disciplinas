@@ -27,7 +27,7 @@
                 <p id="pdd-sub" class="mt-3 footer-sub">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus culpa est recusandae.</p>
             </div>
             <div>
-                <img id="ufrn-logo" class='blackImg' fluid src="../img/ufrnlogo-alt.png"/>
+                <img id="ufrn-logo" class='blackImg' fluid src="{{ asset('img/ufrnlogo-alt.png') }}"/>
             </div>
         </div>
         <div class="row">
