@@ -18,42 +18,29 @@
 
           <div class="ml-auto d-flex align-items-center">
             
-            <a href="{{route("index")}}" class='nav-link'>Inicio</a>
-            <a href="{{route('information')}}" class='nav-link'>Sobre & Colabore</a>
+            <a href="{{route("index")}}" class='nav-link grey-link'>Inicio</a>
+            <a href="{{route('information')}}" class='nav-link grey-link'>Sobre & Colabore</a>
             
             
 
             @guest
                 @if (Route::has('login'))
-                    
-                        <a class="btn btn-outline-primary" href="{{ route('login') }}">{{ __('Entrar') }}</a>
-                    
+                        <a class="btn btn-primary" href="{{ route('login') }}">{{ __('Entrar') }}</a>
                 @endif
-            @else
-                
-                    <a href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                      document.getElementById('logout-form').submit();" class='nav-link'>
-                        {{ __('Logout') }}
-                        
-                    </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                
+            @else   
             @endguest
           </div>
-          <label class="label-btn">
+
+          <label class="label-btn d-none">
             <i class="fas fa-bars" id='navbar_btn' onclick="move(true)"></i>
           </label>
           @auth
             <div class="dropdown show">
               <div class="d-flex align-items-center" data-toggle="dropdown">
-                <i class="far fa-user-circle fa-lg mr-2"></i>
+                <i class="far fa-user-circle mr-2" style='font-size: 1.5rem'></i>
                 <i class="fas fa-caret-down"></i>
               </div>
-              <div class="dropdown-menu">
+              <div class="user-dropdown dropdown-menu">
                 <h6 class="dropdown-header">Olá, <span>{{ Str::words( Auth::user()->name, 2, '' ) }}</span><h6>
                 <div class="dropdown-divider"></div>
                 
@@ -61,7 +48,18 @@
                 @if (auth()->user()->is_admin)
                 <a href="{{ route("professores.index") }}"><div class="dropdown-item py-3"> <i class="fas fa-users-cog mr-2"></i>Painel de Administração</div></a>
                 @endif
-                
+
+                <a href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                      document.getElementById('logout-form').submit();" class=''>
+                                      <div class="dropdown-item py-3"><i class="fas fa-sign-out-alt mr-2"></i></i>{{ __('Logout') }}</div>
+                        
+                        
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" >
+                  @csrf
+                </form>
+
               </div>
             </div>
           @endauth

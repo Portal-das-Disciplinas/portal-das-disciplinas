@@ -21,6 +21,12 @@ body {
     padding: 20px 16px;
 }
 
+.grey-link{
+    color: #6B7280;
+    font-size: 1rem !important; 
+    font-weight: 400;
+}
+
 .container{
     margin-top : 40px
 }
@@ -74,6 +80,10 @@ h1,h2,h3,h4,h5,h6{
     font-weight: bolder;
     font-family: 'Nunito Sans';
     
+}
+
+.user-dropdown a:hover{
+    text-decoration: none;
 }
 
 .display-title{
