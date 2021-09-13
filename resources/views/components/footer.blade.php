@@ -21,13 +21,13 @@
         <div id="info-div" class=" row justify-content-between align-items-center">
             <div id="section1">
                 <div class="d-flex align-items-center">
-                    <img fluid id="imd-footer" src="img/imd-footer-2.png"/>
+                    <img fluid id="imd-footer" src="../img/imd-footer-2.png"/>
                     <p id="pdd-title" class="ml-3 footer-title">Portal das Disciplinas - IMD/UFRN</p>
                 </div>
                 <p id="pdd-sub" class="mt-3 footer-sub">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus culpa est recusandae.</p>
             </div>
             <div>
-                <img id="ufrn-logo" class='blackImg' fluid src="img/ufrnlogo-alt.png"/>
+                <img id="ufrn-logo" class='blackImg' fluid src="../img/ufrnlogo-alt.png"/>
             </div>
         </div>
         <div class="row">
@@ -98,7 +98,7 @@ hr{
 }
 
 .eqp-link:hover{
-    color: var(--azul-links);
+    color: #3490dc;
 }
 
 .info-imd{
