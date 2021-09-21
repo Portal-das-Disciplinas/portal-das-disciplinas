@@ -224,8 +224,9 @@
                 
                 <i class="fas fa-user fa-8x mr-4" ></i>
                 <div class="wrapper-teacher-info">
-                    <div class=" text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
-                    <div class=" text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
+                    <div class="text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
+                    <div class="text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
+                    <div class="text-justify px-lg-3"> <a href="https://www.google.com/"  class="">Link pessoal</a></div>
                 </div>
                 
             </div>
