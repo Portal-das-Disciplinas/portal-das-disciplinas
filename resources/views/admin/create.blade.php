@@ -15,7 +15,7 @@ Cadastro de Professor
         @csrf
         <div class="form-row">
             <div class="form-group col-12">
-                <label for="name" class="text-white">Nome</label>
+                <label for="name" class="text-black">Nome</label>
                 <input  type="text"
                         class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}"
                         name="name"
@@ -29,7 +29,7 @@ Cadastro de Professor
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <label for="email" class="text-white">Email</label>
+                <label for="email" class="text-black">Email</label>
                 <input  type="text"
                         class="form-control {{ $errors->has('email') ? 'is-invalid' : ''}}"
                         name="email"
@@ -43,7 +43,7 @@ Cadastro de Professor
         </div>
         <div class="form-row">
             <div class="form-group col-12">
-                <label for="public_email" class="text-white">Email Público</label>
+                <label for="public_email" class="text-black">Email Público</label>
                 <input  type="text"
                         class="form-control {{ $errors->has('public-email') ? 'is-invalid' : ''}}"
                         name="public_email"
@@ -57,7 +57,7 @@ Cadastro de Professor
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label for="password" class="text-white">Senha</label>
+                <label for="password" class="text-black">Senha</label>
                 <input  type="password"
                         class="form-control {{ $errors->has('password') ? 'is-invalid' : ''}}"
                         name="password"
@@ -69,7 +69,7 @@ Cadastro de Professor
                 @enderror
             </div>
             <div class="form-group col-md-6">
-                <label for="password_confirmation" class="text-white">Confirmar senha</label>
+                <label for="password_confirmation" class="text-black">Confirmar senha</label>
                 <input  type="password"
                         class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : ''}}"
                         name="password_confirmation"
