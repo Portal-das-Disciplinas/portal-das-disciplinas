@@ -81,20 +81,7 @@
                 </div>
             </div>
             <!-- PROFESSOR -->
-            <div class='section mb-5'>
-                <h3 class="mb-3">Professor</h3>
-                <div class="">
-                    <div class="d-flex align-items-center">
-                        
-                        <i class="fas fa-user fa-8x mr-4" ></i>
-                        <div class="wrapper-teacher-info">
-                            <div class=" text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
-                            <div class=" text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
+           
 
 
 
@@ -179,18 +166,18 @@
 
 </div>
 <!-- FAQ -->
-<div class="text-white pt-4 pb-5" style='background-color:#014C8C; margin-bottom: -3rem;'>
+<div class=" pt-4 pb-5" style=' margin-bottom: -3rem;'>
 @if($discipline->faqs->count())
 <div class="container">
     <h2 class="container-fluid  text-center mt-5">Perguntas Frequentes</h2>
     <div class="row mt-3" id="faqs">
         @foreach($discipline->faqs as $faq)
-            <div class="col-md-12 card mb-3 text-dark">
-                <div class="card-header" id="faq-header-{{$faq->id}}" data-toggle="collapse" data-target="#faq-content-{{$faq->id}}">
-                    <h5 class="mb-0 d-flex justify-content-between">
+            <div class="w-100 card mb-3 text-dark "style='border:2px solid #014C8C;'>
+                <div class="card-header" id="faq-header-{{$faq->id}}" data-toggle="collapse" data-target="#faq-content-{{$faq->id}}" >
+                    <h5 class="mb-0 d-flex justify-content-between" >
                         <button class="btn btn-link collapsed mr-auto" data-toggle="collapse"
                                 data-target="#faq-content-{{$faq->id}}"
-                                aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
+                                aria-expanded="true" aria-controls="faq-header-{{$faq->id}}"  >
                             {!! $faq->title !!}
                         </button>
     
@@ -228,6 +215,23 @@
 </div>
 
 </div>
+<div class="container">
+    <div class='section mb-5'>
+        <h3 class="mb-3">Professor</h3>
+        <div class="">
+            <div class="d-flex align-items-center">
+                
+                <i class="fas fa-user fa-8x mr-4" ></i>
+                <div class="wrapper-teacher-info">
+                    <div class=" text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
+                    <div class=" text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @section('scripts-bottom')
 <script>
