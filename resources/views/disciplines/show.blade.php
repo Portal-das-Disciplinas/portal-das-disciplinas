@@ -142,7 +142,8 @@
                     <div class="d-flex align-center">
                         <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->url}}"
                            class="text">
-                            <i class="fas fa-file-download fa-9x materiais-on"></i>
+                            <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
+                            <button class="btn btn-primary">Download dos materiais<img src="{{ asset('img/Download1.png') }}" alt="Download dos materiais" class="ml-2"></button>
                         </a>
                         <br/>
                     </div>
