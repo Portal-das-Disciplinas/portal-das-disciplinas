@@ -43,6 +43,7 @@ Sobre nós - Portal das Disciplinas IMD
                     <div class="text-center">
                         <h4>IMD Dev</h4>
                         <p>Docente <code> disciplina</code></p>
+                        
                     </div>
                 </div>
             </div>
@@ -55,6 +56,7 @@ Sobre nós - Portal das Disciplinas IMD
                         <div class="text-center">
                             <h4>IMD Dev</h4>
                             <p>Desenvolvedor <code>back-end</code></p>
+                            <p> <a href="mailto:henrymedeiros77@gmail.com" class=""> Email </a> | <a href="http://lattes.cnpq.br/9829493020424534" class=""> Lattes </a> </p>
                         </div>
                     </div>
                 
