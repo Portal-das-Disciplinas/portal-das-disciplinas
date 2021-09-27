@@ -55,6 +55,22 @@ Cadastro de Professor
                     @enderror
             </div>
         </div>
+
+        <div class="form-row">
+            <div class="form-group col-12">
+                <label for="public_link" class="text-black">Link público</label>
+                <input  type="url"
+                        class="form-control {{ $errors->has('public-link') ? 'is-invalid' : ''}}"
+                        name="public_link"
+                        id="public_link"
+                        placeholder="Link pessoal para algum perfil do professor (será informação pública no portal)"
+                        autocomplete="off">
+                    @error('public_link')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+            </div>
+        </div>
+
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="password" class="text-black">Senha</label>
