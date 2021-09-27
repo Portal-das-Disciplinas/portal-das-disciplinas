@@ -104,7 +104,7 @@
                 Card de midias com "x" para excluir --}}
                 <div class="col-md-6">
                     <div class="form-group font-weight-normal">
-                            <h3>Classificações</h3>
+                            <label class="font-weight-bold">Classificações</label>
                             <div class="row">
                                 <div class="col-md-5 mt-1">
                                     <label">
