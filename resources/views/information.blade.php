@@ -38,71 +38,45 @@ Sobre nós - Portal das Disciplinas IMD
         
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
             <div class="row">
-                <div class='d-flex flex-column align-items-center'>
-                    <img class="fluid clip-path" style="width:8rem" src="img/user2.png" alt="foto-dev">
-                    <div class="text-center">
-                        <h4>IMD Dev</h4>
-                        <p>Docente <code> disciplina</code></p>
-                        
-                    </div>
-                </div>
+                @component('components.info_contributors')
+                    @slot('name', 'Docente')
+                    @slot('profession', 'Docente')
+                    @slot('occupation', 'disciplina')
+                @endcomponent
             </div>
             
-
             <div class="d-flex flex-wrap justify-content-around mt-4">
+                @component('components.info_contributors')
+                    @slot('name', 'Henry')
+                    @slot('profession', 'Desenvolvedor')
+                    @slot('alt_image', 'foto-dev')
+                    @slot('occupation', 'front-end')
+                    @slot('email', 'henrymedeiros77@gmail.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/9829493020424534')
+                @endcomponent
 
-                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
-                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
-                        <div class="text-center">
-                            <h4>IMD Dev</h4>
-                            <p>Desenvolvedor <code>back-end</code></p>
-                            <p> <a href="mailto:henrymedeiros77@gmail.com" class=""> Email </a> | <a href="http://lattes.cnpq.br/9829493020424534" class=""> Lattes </a> </p>
-                        </div>
-                    </div>
-                
-                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
-                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
-                        <div class="text-center">
-                            <h4>IMD Dev</h4>
-                            <p>Desenvolvedor <code>back-end</code></p>
-                        </div>
-                    </div>
+                @component('components.info_contributors')
+                    @slot('name', 'Pedro')
+                    @slot('profession', 'Desenvolvedor')
+                    @slot('alt_image', 'foto-dev')
+                    @slot('occupation', 'back-end')
+                @endcomponent
 
-                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
-                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
-                        <div class="text-center">
-                            <h4>IMD Dev</h4>
-                            <p>Desenvolvedor <code>back-end</code></p>
-                        </div>
-                    </div>
+                @component('components.info_contributors')
+                    @slot('name', 'IMD Dev')
+                    @slot('profession', 'Desenvolvedor')
+                    @slot('alt_image', 'foto-dev')
+                    @slot('occupation', 'back-end')
+                @endcomponent
 
+                @component('components.info_contributors')
+                    @slot('name', 'IMD Dev')
+                    @slot('profession', 'Desenvolvedor')
+                    @slot('alt_image', 'foto-dev')
+                    @slot('occupation', 'back-end')
+                @endcomponent
 
-                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
-                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
-                        <div class="text-center">
-                            <h4>IMD Dev</h4>
-                            <p>Desenvolvedor <code>back-end</code></p>
-                        </div>
-                    </div>
-                
-                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
-                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
-                        <div class="text-center">
-                            <h4>IMD Dev</h4>
-                            <p>Desenvolvedor <code>back-end</code></p>
-                        </div>
-                    </div>
-
-                    <div class='d-flex flex-column justify-content-center align-items-center mx-4'>
-                        <img class="fluid clip-path" src="img/user2.png" alt="foto-dev">
-                        <div class="text-center">
-                            <h4>IMD Dev</h4>
-                            <p>Desenvolvedor <code>back-end</code></p>
-                        </div>
-                    </div>
-                
-
-        </div>
+            </div>
         </div>   
     </div>
 
