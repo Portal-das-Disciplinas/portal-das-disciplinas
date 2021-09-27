@@ -87,12 +87,12 @@ class DisciplineController extends Controller
                 ]);
             }
 
-            if ($request->filled('media-podcast') && YoutubeService::match($request->input('media-podcast'))) {
-                $mediaId = YoutubeService::getIdFromUrl($request->input('media-podcast'));
+            if ($request->filled('media-podcast') && GoogleDriveService::match($request->input('media-podcast'))) {
+                $mediaId = GoogleDriveService::getIdFromUrl($request->input('media-podcast'));
                 Media::create([
                     'title' => "Podcast de " . $discipline->name,
                     'type' => MediaType::PODCAST,
-                    'url' => "https://www.youtube.com/embed/" . $mediaId,
+                    'url' => "https://drive.google.com/uc?export=open&id=" . $mediaId,
                     'is_trailer' => false,
                     'discipline_id' => $discipline->id
                 ]);
@@ -131,7 +131,7 @@ class DisciplineController extends Controller
                 ClassificationID::AVALIACAO_ATIVIDADES => "classificacao-av-atividades"
             ];
 
-            foreach ($classificationsMap as $classificationId => $inputValue){
+            foreach ($classificationsMap as $classificationId => $inputValue) {
                 ClassificationDiscipline::create([
                     'classification_id' => $classificationId,
                     'discipline_id' => $discipline->id,
@@ -183,17 +183,16 @@ class DisciplineController extends Controller
     public function edit($id)
     {
         $professors = new Professor();
-        if(Auth::user()->isAdmin)
-        {
-            $professors = Professor::query()->orderBy('name','ASC')->get();
+        if (Auth::user()->isAdmin) {
+            $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
         $discipline = Discipline::query()
-        ->with([
-            'professor',
-            'medias',
-            'faqs',
-        ])
-        ->findOrFail($id);
+            ->with([
+                'professor',
+                'medias',
+                'faqs',
+            ])
+            ->findOrFail($id);
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'));
     }
 
@@ -212,8 +211,7 @@ class DisciplineController extends Controller
             $user = Auth::user();
             $professor = new Professor();
 
-            if($user->isAdmin)
-            {
+            if ($user->isAdmin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
 
@@ -228,7 +226,7 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
                 $mediaId = YoutubeService::getIdFromUrl($request->input('media-trailer'));
-                if(!$discipline->has_trailer_media){
+                if (!$discipline->has_trailer_media) {
                     Media::create([
                         'title' => 'Trailer de ' . $discipline->name,
                         'type' => MediaType::VIDEO,
@@ -236,7 +234,7 @@ class DisciplineController extends Controller
                         'url' => 'https://www.youtube.com/embed/' . $mediaId,
                         'discipline_id' => $discipline->id,
                     ]);
-                }else{
+                } else {
                     Media::query()->find($discipline->trailer->id)->update([
                         'url' => "https://www.youtube.com/embed/" . $mediaId
                     ]);
@@ -244,26 +242,26 @@ class DisciplineController extends Controller
             }
 
 
-            if ($request->filled('media-podcast') && YoutubeService::match($request->input('media-podcast'))) {
-                $mediaId = YoutubeService::getIdFromUrl($request->input('media-podcast'));
-                if(!$discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST)){
+            if ($request->filled('media-podcast') && GoogleDriveService::match($request->input('media-podcast'))) {
+                $mediaId = GoogleDriveService::getIdFromUrl($request->input('media-podcast'));
+                if (!$discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST)) {
                     Media::create([
                         'title' => 'Podcast de ' . $discipline->name,
                         'type' => MediaType::PODCAST,
                         'is_trailer' => false,
-                        'url' => 'https://www.youtube.com/embed/' . $mediaId,
+                        'url' => "https://drive.google.com/uc?export=open&id=" . $mediaId,
                         'discipline_id' => $discipline->id,
                     ]);
-                }else{
+                } else {
                     Media::query()->find($discipline->getMediaByType("podcast")->id)->update([
-                        'url' => "https://www.youtube.com/embed/" . $mediaId
+                        'url' => "https://drive.google.com/uc?export=open&id=" . $mediaId,
                     ]);
                 }
             }
 
             if ($request->filled('media-video') && YoutubeService::match($request->input('media-video'))) {
                 $mediaId = YoutubeService::getIdFromUrl($request->input('media-video'));
-                if(!$discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO)){
+                if (!$discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO)) {
                     Media::create([
                         'title' => 'Video de ' . $discipline->name,
                         'type' => MediaType::VIDEO,
@@ -271,7 +269,7 @@ class DisciplineController extends Controller
                         'url' => 'https://www.youtube.com/embed/' . $mediaId,
                         'discipline_id' => $discipline->id,
                     ]);
-                }else{
+                } else {
                     Media::query()->find($discipline->getMediaByType("video")->id)->update([
                         'url' => "https://www.youtube.com/embed/" . $mediaId
                     ]);
@@ -280,7 +278,7 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-material') && GoogleDriveService::match($request->input('media-material'))) {
                 $mediaId = GoogleDriveService::getIdFromUrl($request->input('media-material'));
-                if(!$discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS)){
+                if (!$discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS)) {
                     Media::create([
                         'title' => 'Material de ' . $discipline->name,
                         'type' => MediaType::MATERIAIS,
@@ -288,7 +286,7 @@ class DisciplineController extends Controller
                         'url' => 'https://www.youtube.com/embed/' . $mediaId,
                         'discipline_id' => $discipline->id,
                     ]);
-                }else{
+                } else {
                     Media::query()->find($discipline->getMediaByType("material")->id)->update([
                         'url' => "https://www.youtube.com/embed/" . $mediaId
                     ]);
@@ -306,11 +304,11 @@ class DisciplineController extends Controller
                 ClassificationID::AVALIACAO_ATIVIDADES => "classificacao-av-atividades"
             ];
 
-            foreach ($classificationsMap as $classificationId => $inputValue){
-                ClassificationDiscipline::query()->where('discipline_id',$discipline->id)
-                ->where('classification_id',$classificationId)->update([
-                    'value' => $request->input($inputValue)
-                ]);
+            foreach ($classificationsMap as $classificationId => $inputValue) {
+                ClassificationDiscipline::query()->where('discipline_id', $discipline->id)
+                    ->where('classification_id', $classificationId)->update([
+                        'value' => $request->input($inputValue)
+                    ]);
             }
 
             DB::commit();
@@ -336,7 +334,6 @@ class DisciplineController extends Controller
             ->delete();
 
         return redirect()->route('index');
-
     }
 
     public function search(Request $request)
@@ -344,15 +341,16 @@ class DisciplineController extends Controller
         $search = $request->input('search');
 
         $disciplines = DB::table('disciplines')
-            ->select('disciplines.*',
-                (DB::raw("(SELECT medias.url FROM medias WHERE medias.discipline_id = disciplines.id and medias.type = 'video' and medias.is_trailer = '1' ) AS urlMedia")))
+            ->select(
+                'disciplines.*',
+                (DB::raw("(SELECT medias.url FROM medias WHERE medias.discipline_id = disciplines.id and medias.type = 'video' and medias.is_trailer = '1' ) AS urlMedia"))
+            )
             ->where('disciplines.name', 'like', "%$search%")
             ->get();
 
         return view('disciplines-search')
             ->with('disciplines', $disciplines)
             ->with('search', $search);
-
     }
 
     public function mydisciplines()

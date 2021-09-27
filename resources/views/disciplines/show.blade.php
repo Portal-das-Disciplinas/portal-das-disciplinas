@@ -122,10 +122,10 @@
             <div>
                 <h3 class=" mt-4 mb-2">Podcast</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST))
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item light-border-radius" allowfullscreen
-                                src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->url}}"></iframe>
-                    </div>
+                    <audio class="w-100" controls="controls">
+                        <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->url}}" type="audio/mp3" />
+                        seu navegador não suporta HTML5
+                    </audio>
                 @else
                     <img class="img-fluid light-border-radius" src="{{ asset('img/nopodcast.png') }}" alt="Sem podcast">
                 @endif
