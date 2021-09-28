@@ -40,7 +40,7 @@
                 <h3 class="mb-3">Trailer & Classificações</h3>
                 @if($discipline->has_trailer_media)
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item light-border-radius" src="{{ $discipline->trailer->url}}" allowfullscreen ></iframe>
+                        <iframe class="embed-responsive-item light-border-radius" src="{{ $discipline->trailer->view_url}}" allowfullscreen ></iframe>
                     </div>
                 @else
                     <img class="img-fluid light-border-radius" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
@@ -65,7 +65,7 @@
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO))
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item light-border-radius" allowfullscreen
-                                src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->url }}"></iframe>
+                                src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url }}"></iframe>
                     </div>
                 @else
                     <img class="img-fluid light-border-radius" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
