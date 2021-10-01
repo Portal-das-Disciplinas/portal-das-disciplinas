@@ -47,7 +47,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-6 px-0">
+            <div class="col-md-12 px-0">
                 @if (Auth::user()->isAdmin)
                 <label for="professor" class="">Professor</label>
                     <div class="form-group">
