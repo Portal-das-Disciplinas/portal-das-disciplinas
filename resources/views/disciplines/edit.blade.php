@@ -107,13 +107,26 @@
                             <label class="font-weight-bold">Classificações</label>
                             <div class="row">
                                 <div class="col-md-5 mt-1">
-                                    <label">
-                                        Metodologias Clássicas
+                                    <label>
+                                        Metodologias
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <div>
-                                        <input id="classificacao-metodologias-classicas" name="classificacao-metodologias-classicas" type="range" step="1" min="0" max="6" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS_CLASSICAS)}}" list="tickmarks">
+                                        <input id="classificacao-metodologias" name="classificacao-metodologias" type="range" step="1" min="0" max="100" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS)}}" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label>
+                                        Discussão
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range" id="classificacao-discussao" name="classificacao-discussao" type="range" step="1" min="0" max="100" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO)}}" list="tickmarks">
                                     </div>
                                 </div>
                             </div>
@@ -121,93 +134,29 @@
                             <div class="row">
                                 <div class="col-md-5 mt-1">
                                     <label>
-                                        Metodologias Ativas
+                                        Abordagem
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <div>
-                                        <input class="form-range" id="classificacao-metodologias-ativas" name="classificacao-metodologias-ativas" type="range" step="1" min="0" max="6" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS_ATIVAS)}}" list="tickmarks">
+                                        <input class="form-range" id="classificacao-abordagem" name="classificacao-abordagem" type="range" step="1" min="0" max="100" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM)}}" list="tickmarks">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-5 mt-1">
+                                    <label>
+                                        Avaliação
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <div>
+                                        <input class="form-range" id="classificacao-avaliacao" name="classificacao-avaliacao" type="range" step="1" min="0" max="100" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO)}}" list="tickmarks">
                                     </div>
                                 </div>
                             </div>
         
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Discussão Social
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-discussao-social" name="classificacao-discussao-social" type="range" step="1" min="0" max="6" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO_SOCIAL)}}" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Discussão Técnica
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-discussao-tecnica" name="classificacao-discussao-tecnica" type="range" step="1" min="0" max="6" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO_TECNICA)}}" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Abordagem Teórica
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-abordagem-teorica" name="classificacao-abordagem-teorica" type="range" step="1" min="0" max="6" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM_TEORICA)}}" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Abordagem Prática
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-abordagem-pratica" name="classificacao-abordagem-pratica" type="range" step="1" min="0" max="6" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM_PRATICA)}}" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Avaliação por Provas
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-av-provas" name="classificacao-av-provas" type="range" step="1" min="0" max="6" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO_PROVAS)}}" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Avaliação por Atividades
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range form-group" id="classificacao-av-atividades" name="classificacao-av-atividades" type="range" step="1" min="0" max="6" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO_ATIVIDADES)}}" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
                             {{-- TODO --}}
                             {{-- tentar fazer texto aparecer abaixo do range --}}
                             <datalist id="tickmarks" style="--list-length: 9;">

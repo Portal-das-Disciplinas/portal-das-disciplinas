@@ -27,6 +27,7 @@ class Media extends Model
         'url',
         'is_trailer',
         'discipline_id',
+        'view_url',
     ];
 
     /**
