@@ -99,7 +99,7 @@ Cadastro de Professor
         </div>
         <div class="form-row">
             <div class="form-group col-md-4 mt-2">
-                <input type="submit" value="Cadastrar" class="btn btn-outline-light btn-block w-50">
+                <input type="submit" value="Cadastrar" class="btn btn-block btn-primary w-50">
             </div>
         </div>
      </form>
