@@ -13,7 +13,7 @@ Painel de Administração
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-3 mt-2 mb-2">
-            <a name="createProfessor" class="btn btn-outline-light btn-block"
+            <a name="createProfessor" class="btn btn-block btn-primary"
                href="{{ route("professores.create") }}" role="button">Cadastrar professor</a>
         </div>
     </div>

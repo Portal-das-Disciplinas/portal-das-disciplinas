@@ -137,13 +137,12 @@
                 <h3 class=" mt-4 mb-2">Podcast</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST))
                     <audio class="w-100" controls="controls">
-                        <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->url}}" type="audio/mp3" />
+                        <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
                         seu navegador não suporta HTML5
                     </audio>
                 @else
                     <img class="img-fluid light-border-radius" src="{{ asset('img/nopodcast.png') }}" alt="Sem podcast">
                 @endif
-                
             </div>
             <hr>
 
@@ -154,7 +153,7 @@
                 <h3 class=" mt-4 mb-2">Materiais</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS))
                     <div class="d-flex align-center">
-                        <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->url}}"
+                        <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}"
                            class="text">
                             <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
                             <button class="btn btn-primary">Download dos materiais<img src="{{ asset('img/Download1.png') }}" alt="Download dos materiais" class="ml-2"></button>

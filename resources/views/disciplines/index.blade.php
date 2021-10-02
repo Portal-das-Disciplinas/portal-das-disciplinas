@@ -65,7 +65,7 @@
                                 @if (!is_null($discipline->trailer))
                                     <div class="teacher-video-container">
                                         <div class="embed-responsive embed-responsive-16by9">
-                                            <iframe class="embed-responsive-item" src="{{ $discipline->trailer->url }}" allowfullscreen></iframe>
+                                            <iframe class="embed-responsive-item" src="{{ $discipline->trailer->view_url }}" allowfullscreen></iframe>
                                         </div>
                                     </div>
                                 @else

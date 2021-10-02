@@ -129,14 +129,10 @@ class DisciplineController extends Controller
             }
 
             $classificationsMap = [
-                ClassificationID::METODOLOGIAS_CLASSICAS => "classificacao-metodologias-classicas",
-                ClassificationID::METODOLOGIAS_ATIVAS => "classificacao-metodologias-ativas",
-                ClassificationID::DISCUSSAO_SOCIAL => "classificacao-discussao-social",
-                ClassificationID::DISCUSSAO_TECNICA => "classificacao-discussao-tecnica",
-                ClassificationID::ABORDAGEM_TEORICA => "classificacao-abordagem-teorica",
-                ClassificationID::ABORDAGEM_PRATICA => "classificacao-abordagem-pratica",
-                ClassificationID::AVALIACAO_PROVAS => "classificacao-av-provas",
-                ClassificationID::AVALIACAO_ATIVIDADES => "classificacao-av-atividades"
+                ClassificationID::METODOLOGIAS => "classificacao-metodologias",
+                ClassificationID::DISCUSSAO => "classificacao-discussao",
+                ClassificationID::ABORDAGEM => "classificacao-abordagem",
+                ClassificationID::AVALIACAO => "classificacao-avaliacao",
             ];
 
             foreach ($classificationsMap as $classificationId => $inputValue) {
@@ -266,7 +262,7 @@ class DisciplineController extends Controller
                         'discipline_id' => $discipline->id,
                     ]);
                 } else {
-                    Media::query()->find($discipline->getMediaByType("podcast")->id)->update([
+                    Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::PODCAST)->id)->update([
                         'view_url' => "https://drive.google.com/uc?export=open&id=" . $mediaId,
                         'url' => $url,
                     ]);
@@ -286,7 +282,7 @@ class DisciplineController extends Controller
                         'discipline_id' => $discipline->id,
                     ]);
                 } else {
-                    Media::query()->find($discipline->getMediaByType("video")->id)->update([
+                    Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::VIDEO)->id)->update([
                         'view_url' => "https://www.youtube.com/embed/" . $mediaId,
                         'url' => $url,
                     ]);
@@ -297,6 +293,7 @@ class DisciplineController extends Controller
                 $url = $request->input('media-material');
                 $mediaId = GoogleDriveService::getIdFromUrl($request->input('media-material'));
                 if (!$discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS)) {
+                    dd('a1');
                     Media::create([
                         'title' => 'Material de ' . $discipline->name,
                         'type' => MediaType::MATERIAIS,
@@ -306,7 +303,7 @@ class DisciplineController extends Controller
                         'discipline_id' => $discipline->id,
                     ]);
                 } else {
-                    Media::query()->find($discipline->getMediaByType("material")->id)->update([
+                    Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::MATERIAIS)->id)->update([
                         'view_url' => "https://www.youtube.com/embed/" . $mediaId,
                         'url' => $url,
                     ]);
@@ -314,14 +311,10 @@ class DisciplineController extends Controller
             }
 
             $classificationsMap = [
-                ClassificationID::METODOLOGIAS_CLASSICAS => "classificacao-metodologias-classicas",
-                ClassificationID::METODOLOGIAS_ATIVAS => "classificacao-metodologias-ativas",
-                ClassificationID::DISCUSSAO_SOCIAL => "classificacao-discussao-social",
-                ClassificationID::DISCUSSAO_TECNICA => "classificacao-discussao-tecnica",
-                ClassificationID::ABORDAGEM_TEORICA => "classificacao-abordagem-teorica",
-                ClassificationID::ABORDAGEM_PRATICA => "classificacao-abordagem-pratica",
-                ClassificationID::AVALIACAO_PROVAS => "classificacao-av-provas",
-                ClassificationID::AVALIACAO_ATIVIDADES => "classificacao-av-atividades"
+                ClassificationID::METODOLOGIAS => "classificacao-metodologias",
+                ClassificationID::DISCUSSAO => "classificacao-discussao",
+                ClassificationID::ABORDAGEM => "classificacao-abordagem",
+                ClassificationID::AVALIACAO => "classificacao-avaliacao",
             ];
 
             foreach ($classificationsMap as $classificationId => $inputValue) {
@@ -335,9 +328,9 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return dd($discipline->has_trailer_media);
-            // return redirect()->route("disciplinas.edit", $discipline->id)
-            //     ->withInput();
+            // return dd($exception, 'teste');
+            return redirect()->route("disciplinas.edit", $discipline->id)
+                ->withInput();
         }
     }
 

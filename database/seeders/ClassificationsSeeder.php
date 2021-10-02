@@ -17,44 +17,23 @@ class ClassificationsSeeder extends Seeder
     public function run()
     {
         Classification::create([
-            'id' => ClassificationID::METODOLOGIAS_CLASSICAS,
-            'name' => 'Metodologias Clássicas',
+            'id' => ClassificationID::METODOLOGIAS,
+            'name' => 'Metodologias',
         ]);
 
         Classification::create([
-            'id' => ClassificationID::METODOLOGIAS_ATIVAS,
-            'name' => 'Metodologias Ativas',
+            'id' => ClassificationID::DISCUSSAO,
+            'name' => 'Discussão',
         ]);
 
         Classification::create([
-            'id' => ClassificationID::DISCUSSAO_SOCIAL,
-            'name' => 'Discussão Social',
+            'id' => ClassificationID::ABORDAGEM,
+            'name' => 'Abordagem',
         ]);
 
         Classification::create([
-            'id' => ClassificationID::DISCUSSAO_TECNICA,
-            'name' => 'Discussão Técnica',
+            'id' => ClassificationID::AVALIACAO,
+            'name' => 'Avaliação',
         ]);
-
-        Classification::create([
-            'id' => ClassificationID::ABORDAGEM_TEORICA,
-            'name' => 'Abordagem Teórica',
-        ]);
-
-        Classification::create([
-            'id' => ClassificationID::ABORDAGEM_PRATICA,
-            'name' => 'Abordagem Prática',
-        ]);
-
-        Classification::create([
-            'id' => ClassificationID::AVALIACAO_PROVAS,
-            'name' => 'Avaliação por Provas',
-        ]);
-
-        Classification::create([
-            'id' => ClassificationID::AVALIACAO_ATIVIDADES,
-            'name' => 'Avaliação por Atividades',
-        ]);
-
     }
 }

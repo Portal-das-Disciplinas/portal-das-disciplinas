@@ -105,12 +105,12 @@
                             <div class="row">
                                 <div class="col-md-5 mt-1">
                                     <label class="">
-                                        Metodologias Clássicas
+                                        Metodologias
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <div>
-                                        <input id="classificacao-metodologias-classicas" name="classificacao-metodologias-classicas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                        <input id="classificacao-metodologias" name="classificacao-metodologias" type="range" step="1" min="0" max="100" value="0" list="tickmarks">
                                     </div>
                                 </div>
                             </div>
@@ -118,12 +118,12 @@
                             <div class="row">
                                 <div class="col-md-5 mt-1">
                                     <label class="">
-                                        Metodologias Ativas
+                                        Discussão
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <div>
-                                        <input class="form-range" id="classificacao-metodologias-ativas" name="classificacao-metodologias-ativas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                        <input class="form-range" id="classificacao-discussao" name="classificacao-discussao" type="range" step="1" min="0" max="100" value="0" list="tickmarks">
                                     </div>
                                 </div>
                             </div>
@@ -131,12 +131,12 @@
                             <div class="row">
                                 <div class="col-md-5 mt-1">
                                     <label class="">
-                                        Discussão Social
+                                        Abordagem
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <div>
-                                        <input class="form-range" id="classificacao-discussao-social" name="classificacao-discussao-social" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                        <input class="form-range" id="classificacao-abordagem-teorica" name="classificacao-abordagem" type="range" step="1" min="0" max="100" value="0" list="tickmarks">
                                     </div>
                                 </div>
                             </div>
@@ -144,64 +144,12 @@
                             <div class="row">
                                 <div class="col-md-5 mt-1">
                                     <label class="">
-                                        Discussão Técnica
+                                        Avaliação
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <div>
-                                        <input class="form-range" id="classificacao-discussao-tecnica" name="classificacao-discussao-tecnica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label class="">
-                                        Abordagem Teórica
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-abordagem-teorica" name="classificacao-abordagem-teorica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label class="">
-                                        Abordagem Prática
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-abordagem-pratica" name="classificacao-abordagem-pratica" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label class="">
-                                        Avaliação por Provas
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-av-provas" name="classificacao-av-provas" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label class="">
-                                        Avaliação por Atividades
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range form-group" id="classificacao-av-atividades" name="classificacao-av-atividades" type="range" step="1" min="0" max="6" value="0" list="tickmarks">
+                                        <input class="form-range" id="classificacao-avaliacao" name="classificacao-avaliacao" type="range" step="1" min="0" max="100" value="0" list="tickmarks">
                                     </div>
                                 </div>
                             </div>
@@ -266,7 +214,7 @@
                                    id="media-podcast"
                                    value="{{old('media-podcast')}}"
                                    aria-describedby="basic-addon3"
-                                   placeholder="Link para podcast no Youtube">
+                                   placeholder="Link para podcast no driver">
                             @error('media-podcast')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
