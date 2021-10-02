@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Professor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+use function PHPSTORM_META\map;
+
 class UsersController extends Controller
 {
 
-    public function index(){
-        return view('profile');
+    public function index()
+    {
+        $is_teacher = Auth::user()->professor ?? false;
+        return view('profile')
+            ->with('is_teacher', $is_teacher);
     }
 
     public function update(Request $request)
@@ -21,27 +27,33 @@ class UsersController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . Auth::user()->id,
             'current_password' => 'required',
             'new_password' => 'nullable|min:8|max:12',
-            'password_confirmation' => 'nullable|required_with:new_password|same:new_password'
+            'password_confirmation' => 'nullable|required_with:new_password|same:new_password',
+            'public_link' => 'nullable'
         ];
 
         $request->validate($rules);
         $user = Auth::user();
+        $professor = Auth::user()->professor;
 
-        if (!is_null($request->input('current_password'))) {
-            if (Hash::check($request->input('current_password'), $user->password)) {
+        if (Hash::check($request->input('current_password'), $user->password)) {
+            if (!empty($request->input('new_password'))) {
                 $user->password = bcrypt($request->input('new_password'));
-                $user->updated_at = now();
-                $user->email = $request->input('email');
-                $user->save();
-            } else {
-                return redirect()->back()->withInput()
-                    ->withErrors(['current_password' => 'Senha atual incorreta']);
             }
+            $user->updated_at = now();
+            $user->email = $request->input('email');
+            $user->save();
+
+            if (isset($professor)) {
+                $professor->public_email = $request->input('public_email');
+                $professor->public_link = $request->input('public_link');
+                $professor->save();
+            }
+        } else {
+            return redirect()->back()->withInput()
+                ->withErrors(['current_password' => 'Senha atual incorreta']);
         }
 
         return back()
             ->with('success', 'Dados atualizado com sucesso!');
-
     }
-
 }

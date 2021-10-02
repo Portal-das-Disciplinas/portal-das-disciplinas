@@ -160,6 +160,13 @@ class DisciplineController extends Controller
      */
     public function show($id)
     {
+        $classificationsTypes = [
+            ClassificationID::METODOLOGIAS => ['Clássicas', 'Ativas'],
+            ClassificationID::DISCUSSAO => ['Social', 'Técnica'],
+            ClassificationID::ABORDAGEM => ['Teórica', 'Prática'],
+            ClassificationID::AVALIACAO => ['Provas', 'Atividades'],
+        ];
+
         $discipline = Discipline::query()
             ->with([
                 'professor',
@@ -172,10 +179,12 @@ class DisciplineController extends Controller
 
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
-            return view(self::VIEW_PATH . 'show', compact('discipline', 'can'));
+            return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))
+                ->with('classificationsTypes', $classificationsTypes);
         }
 
-        return view(self::VIEW_PATH . 'show', compact('discipline'));
+        return view(self::VIEW_PATH . 'show', compact('discipline'))
+            ->with('classificationsTypes', $classificationsTypes);
     }
 
     /**

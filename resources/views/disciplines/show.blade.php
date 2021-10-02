@@ -13,12 +13,7 @@
     <h1>{{ $discipline->name }} - {{ $discipline->code }}</h1>
 </div>
 
-
-
-
 <div class="container" >
-   
-
     <!-- Botão de cadastro FAQ -->
     @if(isset($can) && $can)
         <div >
@@ -109,11 +104,11 @@
             <div class='classifications'>
                 <!--<h3 class="">Teste</h3>-->
 
-                @foreach ($discipline->classificationsDisciplines as $classificationDiscipline)
+                @foreach ($discipline->classificationsDisciplines as $classification)
                     <div class='row'>
                         <div class="d-flex col-md-12 justify-content-center">
                             <label class="">
-                                {{$classificationDiscipline->classification->name}}
+                                {{$classification->classification->name}}
                             </label>
                         </div>
                     
@@ -122,27 +117,27 @@
                         
                         
                         <div class="d-flex col-md-12">
-                            <span class='d-flex justify-content-start' style='width:15%'>{{(number_format(($classificationDiscipline->value),1))}}%</span>
+                            <span class='d-flex justify-content-start' style='width:15%'>{{(number_format(($classification->value),1))}}%</span>
                             <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
 
 
-                                <div id="{{$classificationDiscipline->classification_id}}"
+                                <div id="{{$classification->classification_id}}"
                                      class="progress-bar" role="progressbar"
 
-                                     style="width: {{($classificationDiscipline->value)}}% ; background-color:#1155CC; border-radius: 100px 0 0 100px"
+                                     style="width: {{($classification->value)}}% ; background-color:#1155CC; border-radius: 100px 0 0 100px"
                                      aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
                                 </div>
 
-                                <div id="{{$classificationDiscipline->classification_id}}"
+                                <div id="{{$classification->classification_id}}"
                                     class="progress-bar" role="progressbar"
 
-                                    style="width: {{(100-$classificationDiscipline->value)}}% ; background-color:#4CB944; border-radius: 0 100px 100px 0"
+                                    style="width: {{(100-$classification->value)}}% ; background-color:#4CB944; border-radius: 0 100px 100px 0"
                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
                                </div>
 
 
                             </div>
-                            <span class='d-flex justify-content-end' style='width:15%'>{{(100-number_format(($classificationDiscipline->value),1))}}%</span>
+                            <span class='d-flex justify-content-end' style='width:15%'>{{(100-number_format(($classification->value),1))}}%</span>
 
                         </div>
 
@@ -150,12 +145,11 @@
                     
                     <div class="row ">
                         <div class="col-md-12 d-flex justify-content-between">
-                            <span>Ativa</span>
-                            <span>Clássica</span>
+                            @foreach ($classificationsTypes[$classification->classification_id] as $type)
+                                <span>{{$type}}</span>
+                            @endforeach
                         </div>
-                        
                     </div>
-                
                 @endforeach
 
 
@@ -270,7 +264,7 @@
                 <div class="wrapper-teacher-info">
                     <div class="text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
                     <div class="text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
-                    
+                    <div class="text-justify px-lg-3"> <a href="{{$discipline->professor->public_link}}" target="_blank"> Link publico</a> </div>
                 </div>
                 
             </div>

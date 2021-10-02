@@ -36,12 +36,12 @@ class DatabaseSeeder extends Seeder
                     ->create();
             });
             // Discipline
-            $disciplines = $professors->map(function (Professor $professor) {
-                return Discipline::factory()
-                    ->withProfessor($professor)
-                    ->createMediaAfter(2)
-                    ->create();
-            });
+            // $disciplines = $professors->map(function (Professor $professor) {
+            //     return Discipline::factory()
+            //         ->withProfessor($professor)
+            //         ->createMediaAfter(2)
+            //         ->create();
+            // });
         }
     }
 }
