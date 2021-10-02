@@ -60,6 +60,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('profession', 'Desenvolvedor')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'back-end')
+                    
                 @endcomponent
 
                 @component('components.info_contributors')
