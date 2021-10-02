@@ -105,55 +105,78 @@
                 <div class="col-md-6">
                     <div class="form-group font-weight-normal">
                             <label class="font-weight-bold">Classificações</label>
+                            
+                            <div class="row ">
+                                <div class=" d-flex justify-content-center col-md-12">
+                                    <h4>Metodologia</h4>
+                                </div>
+                            </div>
+                            
                             <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Metodologias
-                                    </label>
+                                <div class="d-flex col-md-3">
+                                    <p>Clássica </p><output id="outMetodologia" class='ml-3'>{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS)}}</output><span>%<span>
                                 </div>
                                 <div class="col-md-6">
-                                    <div>
-                                        <input id="classificacao-metodologias" name="classificacao-metodologias" type="range" step="1" min="0" max="100" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS)}}" list="tickmarks">
-                                    </div>
+                                    <input id="classificacao-metodologias" name="classificacao-metodologias" type="range" step="5" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS)}}" min="0" max="100" oninput="handleInput(outMetodologia, outMetodologiaSecondary, this.value)" >      
+                                </div>
+                                <div class=" d-flex col-md-3">
+                                    <p>Ativa</p> <output id="outMetodologiaSecondary" class='ml-3'>{{100-$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS)}}</output><span>%<span>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Discussão
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-discussao" name="classificacao-discussao" type="range" step="1" min="0" max="100" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO)}}" list="tickmarks">
-                                    </div>
+
+                            <div class="row ">
+                                <div class=" d-flex justify-content-center col-md-12">
+                                    <h4>Discussão</h4>
                                 </div>
                             </div>
-        
+                            
                             <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Abordagem
-                                    </label>
+                                <div class="d-flex col-md-3">
+                                    <p>Social</p><output id="outDiscussao" class='ml-3'>{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO)}}</output><span>%<span>
                                 </div>
                                 <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-abordagem" name="classificacao-abordagem" type="range" step="1" min="0" max="100" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM)}}" list="tickmarks">
-                                    </div>
+                                    <input class="form-range" id="classificacao-discussao" name="classificacao-discussao" type="range" step="5" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO)}}" min="0" max="100" oninput="handleInput(outDiscussao, outDiscussaoSecondary, this.value)">      
+                                </div>
+                                <div class=" d-flex col-md-3">
+                                    <p>Técnica</p> <output id="outDiscussaoSecondary" class='ml-3 ''>{{100-$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO)}}</output><span>%<span>
                                 </div>
                             </div>
 
+
+                            <div class="row ">
+                                <div class=" d-flex justify-content-center col-md-12">
+                                    <h4>Abordagem</h4>
+                                </div>
+                            </div>
+                            
                             <div class="row">
-                                <div class="col-md-5 mt-1">
-                                    <label>
-                                        Avaliação
-                                    </label>
+                                <div class="d-flex col-md-3">
+                                    <p>Prática</p><output id="outAbordagem" class='ml-3 '>{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM)}}</output><span>%<span>
                                 </div>
                                 <div class="col-md-6">
-                                    <div>
-                                        <input class="form-range" id="classificacao-avaliacao" name="classificacao-avaliacao" type="range" step="1" min="0" max="100" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO)}}" list="tickmarks">
-                                    </div>
+                                    <input class="form-range" id="classificacao-abordagem" name="classificacao-abordagem" type="range" step="5" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM)}}" min="0" max="100" oninput="handleInput(outAbordagem, outAbordagemSecondary, this.value)">      
+                                </div>
+                                <div class=" d-flex col-md-3">
+                                    <p>Téorica</p> <output id="outAbordagemSecondary" class='ml-3 '>{{100-$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM)}}</output><span>%<span>
+                                </div>
+                            </div>
+
+                            <div class="row ">
+                                <div class=" d-flex justify-content-center col-md-12">
+                                    <h4>Avaliação</h4>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="d-flex col-md-3">
+                                    <p>Por provas</p><output id="outAvaliacao" class='ml-3 '>{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO)}}</output><span>%<span>
+                                </div>
+                                <div class="col-md-6">
+                                    <input class="form-range" id="classificacao-avaliacao" name="classificacao-avaliacao" type="range" step="5" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO)}}" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">      
+                                </div>
+                                <div class=" d-flex col-md-3">
+                                    <p>Por atividades</p> <output id="outAvaliacaoSecondary" class='ml-3 '>{{100-$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO)}}</output><span>%<span>
                                 </div>
                             </div>
         
@@ -263,4 +286,12 @@
     </div>
 </div>
 
+@endsection
+@section('scripts-bottom')
+<script>
+    function handleInput(outElem, outElemSecondary, value){
+        outElem.value = value;
+        outElemSecondary.value = 100-value
+    }
+</script>
 @endsection

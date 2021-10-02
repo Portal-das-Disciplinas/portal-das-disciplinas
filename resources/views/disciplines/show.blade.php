@@ -38,6 +38,7 @@
         <div class="main col-md-8">
             <div class='section'>
                 
+                <!--
                 <h4 class='text-center'>Avaliação</h4>
                 <div id='classificationBar' class="d-flex" style='background-color:red; height:20px; color:white;'>
                     <div id='classificationBarLeft' class="left-bar" style='background-color:blue; height: 20px; color:white;'>
@@ -47,7 +48,7 @@
                 <div class="labels d-flex justify-content-between">
                     <p id='left-label'></p><p id='right-label'>
                 </div>
-                
+                -->
 
 
                 
@@ -109,24 +110,52 @@
                 <!--<h3 class="">Teste</h3>-->
 
                 @foreach ($discipline->classificationsDisciplines as $classificationDiscipline)
-                    <div class="row d-flex align-items-center">
-                        <div class="col-md-5 mt-1">
+                    <div class='row'>
+                        <div class="d-flex col-md-12 justify-content-center">
                             <label class="">
                                 {{$classificationDiscipline->classification->name}}
                             </label>
                         </div>
+                    
+                    </div>
+                    <div class="row d-flex align-items-center">
                         
-                        <div class="col-md-6">
-                            <div class="progress" style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px;">
+                        
+                        <div class="d-flex col-md-12">
+                            <span class='d-flex justify-content-start' style='width:15%'>{{(number_format(($classificationDiscipline->value),1))}}%</span>
+                            <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
+
 
                                 <div id="{{$classificationDiscipline->classification_id}}"
                                      class="progress-bar" role="progressbar"
 
-                                     style="width: {{($classificationDiscipline->value/6)*100}}% ; background-color:#1155CC; border-radius: 100px"
-                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"><!--{{(number_format(($classificationDiscipline->value/6*100),1))}}%--></div>
+                                     style="width: {{($classificationDiscipline->value)}}% ; background-color:#1155CC; border-radius: 100px 0 0 100px"
+                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
+                                </div>
+
+                                <div id="{{$classificationDiscipline->classification_id}}"
+                                    class="progress-bar" role="progressbar"
+
+                                    style="width: {{(100-$classificationDiscipline->value)}}% ; background-color:#4CB944; border-radius: 0 100px 100px 0"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
+                               </div>
+
+
                             </div>
+                            <span class='d-flex justify-content-end' style='width:15%'>{{(100-number_format(($classificationDiscipline->value),1))}}%</span>
+
                         </div>
+
                     </div>
+                    
+                    <div class="row ">
+                        <div class="col-md-12 d-flex justify-content-between">
+                            <span>Ativa</span>
+                            <span>Clássica</span>
+                        </div>
+                        
+                    </div>
+                
                 @endforeach
 
 
