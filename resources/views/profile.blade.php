@@ -36,6 +36,19 @@
             @enderror
           </div>
 
+          <div class="form-group col-12">
+                <label for="public_email" class="text-black">Email Público</label>
+                <input  type="text"
+                        class="form-control {{ $errors->has('public-email') ? 'is-invalid' : ''}}"
+                        name="public_email"
+                        id="public_email"
+                        placeholder="Email público do professor (será informação pública no portal)"
+                        autocomplete="off">
+                    @error('public_email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+            </div>
+
           
           <div class="form-group col-12">
             <label for="public_link" class="text-black">Link público</label>
