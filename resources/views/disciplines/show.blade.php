@@ -108,7 +108,7 @@
                     <div class='row'>
                         <div class="d-flex col-md-12 justify-content-center">
                             <label class="">
-                                {{$classification->classification->name}}
+                                <h5>{{$classification->classification->name}}</h5>
                             </label>
                         </div>
                     
@@ -117,7 +117,7 @@
                         
                         
                         <div class="d-flex col-md-12">
-                            <span class='d-flex justify-content-start' style='width:15%'>{{(number_format(($classification->value),1))}}%</span>
+                            <span class='d-flex justify-content-start' style='width:15%'><b>{{(number_format(($classification->value),1))}}%</b></span>
                             <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
 
 
@@ -137,7 +137,7 @@
 
 
                             </div>
-                            <span class='d-flex justify-content-end' style='width:15%'>{{(100-number_format(($classification->value),1))}}%</span>
+                            <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($classification->value),1))}}%</b></span>
 
                         </div>
 
