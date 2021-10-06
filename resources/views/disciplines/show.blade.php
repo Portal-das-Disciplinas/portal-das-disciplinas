@@ -175,11 +175,12 @@
             <div>
                 <h3 class=" mt-4 mb-2">Materiais</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS))
-                    <div class="d-flex align-center">
+                    <div class="align-center">
+                        <p>Clique no botão abaixo e faça o download dos materiais da disciplina.</p>
                         <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}"
                            class="text">
                             <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
-                            <button class="btn btn-primary">Download dos materiais<img src="{{ asset('img/Download1.png') }}" alt="Download dos materiais" class="ml-2"></button>
+                            <button class="btn btn-primary mt-3" style='width:50%'> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
                         </a>
                         <br/>
                     </div>
@@ -278,55 +279,7 @@
 @endsection
 @section('scripts-bottom')
 <script>
-/*
-    const classificationBarElement = document.getElementById('classificationBar')
-    const classificationRightLabel = document.getElementById('right-label')
-    const classificationBarLeftElement = document.getElementById('classificationBarLeft')
-    const classificationLeftLabel = document.getElementById('left-label')
 
-    let classificationsPairs = []
-    let classificationsDisciplines = {prop: @json($discipline->classificationsDisciplines)}
-    for (let i = 0; i < classificationsDisciplines.prop.length; i+=2) {
-        classificationsPairs.push(classificationsDisciplines.prop.slice(i,i+2)) 
-    }
-    console.log(classificationsPairs)
-    
-    
-    let classifications = [
-        {name: "Metodologia", values: [{name: null, porcentagem:  null}, {name: null, porcentagem: null}]},
-        {name: "Discussão", values: [{name: null, porcentagem: null}, {name: null, porcentagem: null}]},
-        {name: "Abordagem", values: [{name: null, porcentagem: null}, {name: null, porcentagem: null}]},
-        {name: "Avaliações", values: [{name: null, porcentagem: null}, {name: null, porcentagem: null}]}
-    ]
-    
-    let i = 0;
-    for (classification of classifications){
-        classification.values[0].name =  classificationsPairs[i][0].classification.name
-        classification.values[0].porcentagem = parseFloat(((classificationsPairs[i][0].value/6)*100).toFixed(1))
-        classification.values[1].name = classificationsPairs[i][1].classification.name
-        classification.values[1].porcentagem = parseFloat(((classificationsPairs[i][1].value/6)*100).toFixed(1))
-        i++;
-    }
-    console.log(classifications)
-
-
-    for (classification of classifications){
-        let template = `
-        <h4 class='text-center'>${classification.name}</h4>
-        <div id='classificationBar' class="d-flex" style='background-color:red; height:20px; color:white;'>
-            <div id='classificationBarLeft' class="left-bar" style='background-color:blue; height: 20px; color:white; width:${classification.values[0].porcentagem}%'>
-
-            </div>
-        </div>
-        <div class="labels d-flex justify-content-between">
-            <p id='left-label'>${classification.values[0].name}</p> <p id='right-label'> ${classification.values[1].name} </p>
-        </div>
-        `
-
-        
-        document.body.innerHTML += template
-    }
-*/
 </script>
 
 @endsection
