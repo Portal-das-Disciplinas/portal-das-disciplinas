@@ -63,7 +63,11 @@
                 <h3 class="mb-3">Sinopse</h3>
                 <div>
                     <div>
-                        <div class=" ln-30 p-text"> {{ $discipline->synopsis }} </div>
+                        @if($discipline->synopsis=='')
+                        <div class="p-text">Não há sinopse.</div>
+                        @else
+                        <div>{{ $discipline->synopsis}}</div>
+                        @endif
                     </div>
                 </div>
 
@@ -86,7 +90,11 @@
                 <h3 class="mb-3">Obstáculos</h3>
                 <div>
                     <div>
-                        <div class=" p-text">{{ $discipline->difficulties }}</div>
+                        @if($discipline->difficulties=='')
+                        <div class=" p-text">Nenhum obstáculo.</div>
+                        @else
+                        <div>{{ $discipline->difficulties }}</div>
+                        @endif
                     </div>
                 </div>
             </div>
