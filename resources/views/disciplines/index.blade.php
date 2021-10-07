@@ -61,7 +61,7 @@
                 <div class="row pb-5" >
                     @foreach ($disciplines as $discipline)
                         <div class="col-12 col-sm-6 col-lg-3 mt-5 ">
-                            <div class="card shadow light-border-radius">
+                            <div class="card shadow light-border-radius" style="min-height: 400px; max-height: 400px">
                                 @if (!is_null($discipline->trailer))
                                     <div class="teacher-video-container">
                                         <div class="embed-responsive embed-responsive-16by9">
