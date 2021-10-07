@@ -75,25 +75,40 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $discipline->name }}</h5>
                                     <p class="card-text">{{ Str::limit($discipline->synopsis, 70,' (...)') }}</p>
-                                    <a href="{{ route('disciplinas.show', $discipline->id) }}" class="btn btn-primary mt-2">Ver
+                                    <a href="{{ route('disciplinas.show', $discipline->id) }}" class="btn btn-primary w-100 mt-2">Ver
                                         mais</a>
-    
                                     @auth
+                                    <div class='d-flex justify-content-end'>
                                         @if (Auth::user()->canDiscipline($discipline->id))
-                                            <form action=" {{route('disciplinas.destroy', $discipline->id)}}" class="d-inline"
-                                                method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
-                                            </form>
-                                            <form action=" {{route('disciplinas.edit', $discipline->id)}}" class="d-inline"
-                                                method="get">
-                                            @csrf
-                                            @method('UPDATE')
-                                            <button type="submit" class="btn btn-warning mt-2" value="Editar">Editar</button>
-                                            </form>
-                                        @endif
+                                            <div class="dropdown show">
+                                                <div class="advanced-options d-flex align-items-center mt-2" data-toggle="dropdown">
+                                                    <a class='mr-2'>Opções avançadas</a>
+                                                    <i class="fas fa-caret-down"></i>
+                                                </div>
+                                                <div class="user-dropdown dropdown-menu ">
+                                                  
+                                                    <form action=" {{route('disciplinas.destroy', $discipline->id)}}" class="dropdown-item"
+                                                        method="post">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger w-100 " value="Apagar">Apagar</button>
+                                                    </form>
+                                                    <form action=" {{route('disciplinas.edit', $discipline->id)}}" class="dropdown-item"
+                                                        method="get" class='dropdown-item'>
+                                                    @csrf
+                                                    @method('UPDATE')
+                                                    <button type="submit" class="btn btn-warning w-100 " value="Editar">Editar</button>
+                                                    </form>
+                                
+                                                </div>
+                                            </div>
+                                      @endif
+                                    </div>
+                                        
                                     @endauth
+                                  
+                                            
+                                        
                                 </div>
                                 <div class="card-footer">{{ $discipline->professor->name}}</div>
                             </div>
