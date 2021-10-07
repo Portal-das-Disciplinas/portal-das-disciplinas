@@ -15,7 +15,9 @@
 
 <div class="container" >
     <!-- Botão de cadastro FAQ -->
-    @if(isset($can) && $can)
+   
+    @auth
+        @if(isset($can) && $can)
         <div >
             <div class="w-25 my-5">
                 <!-- Button trigger modal -->
@@ -25,7 +27,24 @@
                 </button>
             </div>
         </div>
-    @endif
+        @endif
+        @if (Auth::user()->canDiscipline($discipline->id))
+            <h4>Menu do professor</h4>
+            <form action=" {{route('disciplinas.edit', $discipline->id)}}" class="d-inline"
+                method="get">
+            @csrf
+            @method('UPDATE')
+            <button type="submit" class="btn btn-warning w-25 mt-2" value="Editar">Editar</button>
+            </form>
+            <form action=" {{route('disciplinas.destroy', $discipline->id)}}" class="d-inline"
+                method="post">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger w-25 mt-2" value="Apagar">Apagar</button>
+            </form>
+            
+        @endif
+    @endauth
 
     <!-- ROW Da PAGE -->
     <div class="row">
