@@ -135,7 +135,7 @@ h3{
 }
 
 .wrapper{
-    height: calc(100vh - 200px);
+    height: calc(100vh - 160px);
 }
 /* Cores para testes */
 /* .bg-color {
