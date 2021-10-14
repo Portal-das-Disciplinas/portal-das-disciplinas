@@ -13,7 +13,7 @@
 
         <div class=" d-flex align-items-center justify-content-between w-100" id="navbarNav" style="height:80px">
           <a class="navbar-brand mr-0" href="{{route('index')}}">
-            <img src="{{asset('img/imdLogo.png')}}"  class='logo-navbar'alt="Logo do IMD">
+            <img src="{{asset('img/imdLogo.png')}}"  class='logo-navbar' alt="Logo do IMD">
           </a>
           {{-- <ul class="navbar-nav">
             <li class="nav-item">
@@ -24,7 +24,7 @@
             </li>
           </ul> --}}
 
-          <div class="ml-auto d-flex align-items-center">
+          <div class="ml-auto d-flex align-items-center nav-list">
             
             <a href="{{route("index")}}" class='nav-link grey-link'>Inicio</a>
             <a href="{{route('information')}}" class='nav-link grey-link'>Sobre & Colabore</a>
@@ -37,6 +37,12 @@
                 @endif
             @else   
             @endguest
+          </div>
+
+          <div class="mobile-menu">
+            <div class = "line1"></div>
+            <div class = "line2"></div>
+            <div class = "line3"></div>
           </div>
 
           <label class="label-btn d-none">
@@ -84,3 +90,41 @@
 
     </nav>
 </header>
+
+@section('scripts-bottom')
+<script>
+  class MobileNavbar {
+    constructor(mobileMenu, navList, navLinks) {
+        this.mobileMenu = document.querySelector(mobileMenu)
+        this.navList = document.querySelector(navList)
+        this.navLinks = document.querySelectorAll(navLinks)
+        this.activeClass = "active"
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick() {
+      this.navList.classList.toggle(this.activeClass)
+    }
+
+    addClickEvent() {
+        this.mobileMenu.addEventListener("click", this.handleClick)
+    }
+
+    init() {
+        if(this.mobileMenu) {
+            this.addClickEvent()
+        }
+        return this
+    }
+}
+
+const mobileNavbar = new MobileNavbar(
+    ".mobile-menu",
+    ".nav-list",
+    ".nav-list a",
+);
+
+mobileNavbar.init()
+</script>
+@endsection
+
