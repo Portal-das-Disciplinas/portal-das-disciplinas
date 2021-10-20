@@ -132,10 +132,10 @@
                 <!--<h3 class="">Teste</h3>-->
 
                 @foreach ($discipline->classificationsDisciplines as $classification)
-                    <div class='row'>
+                    <div class='row mb-0'>
                         <div class="d-flex col-md-12 justify-content-center">
                             <label class="">
-                                <h5>{{$classification->classification->name}}</h5>
+                                <h4 style='margin-bottom: 0; font-size: 25px'>{{$classification->classification->name}}</h4>
                             </label>
                         </div>
                     
@@ -164,16 +164,16 @@
 
 
                             </div>
-                            <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($classification->value),1))}}%</b></span>
+                            <span class='d-flex justify-content-end' style='width:15%'><b style='font-size:16px'>{{(100-number_format(($classification->value),1))}}%</b></span>
 
                         </div>
 
                     </div>
                     
                     <div class="row ">
-                        <div class="col-md-12 d-flex justify-content-between">
+                        <div class="col-md-12 d-flex justify-content-between mt-2">
                             @foreach ($classificationsTypes[$classification->classification_id] as $type)
-                                <span>{{$type}}</span>
+                                <span ><h4 style='margin-bottom: 0'>{{$type}}</h4></span>
                             @endforeach
                         </div>
                     </div>
@@ -191,7 +191,7 @@
                         seu navegador não suporta HTML5
                     </audio>
                 @else
-                    <img class="img-fluid light-border-radius" src="{{ asset('img/nopodcast.png') }}" alt="Sem podcast">
+                    <img class="img-fluid light-border-radius" src="{{asset('img/nopodcast.png') }}" alt="Sem podcast">
                 @endif
             </div>
             <hr>
@@ -203,7 +203,7 @@
                 <h3 class=" mt-4 mb-2">Materiais</h3>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS))
                     <div class="align-center">
-                        <p>Clique no botão abaixo e faça o download dos materiais da disciplina.</p>
+                        
                         <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}"
                            class="text">
                             <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->

@@ -184,7 +184,7 @@ h3{
     margin: 6px;
 }
 
-/* @media (max-width: 630px) {
+ @media (max-width: 630px) {
     body{
         overflow-x: hidden;
     }
@@ -225,4 +225,4 @@ h3{
     .nav-list.active{
         transform: translateX(0);
     }
-} */
+} 
