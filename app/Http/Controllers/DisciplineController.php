@@ -77,8 +77,9 @@ class DisciplineController extends Controller
             ]);
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
+                
                 $url = $request->input('media-trailer');
-                $mediaId = YoutubeService::getIdFromUrl($request->input('media-trailer'));
+                $mediaId = YoutubeService::getIdFromUrl($url);
                 Media::create([
                     'title' => 'Trailer de ' . $discipline->name,
                     'type' => MediaType::VIDEO,
@@ -91,7 +92,7 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-podcast') && GoogleDriveService::match($request->input('media-podcast'))) {
                 $url = $request->input('media-podcast');
-                $mediaId = GoogleDriveService::getIdFromUrl($request->input('media-podcast'));
+                $mediaId = GoogleDriveService::getIdFromUrl($url);
                 Media::create([
                     'title' => "Podcast de " . $discipline->name,
                     'type' => MediaType::PODCAST,
@@ -104,7 +105,7 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-video') && YoutubeService::match($request->input('media-video'))) {
                 $url = $request->input('media-video');
-                $mediaId = YoutubeService::getIdFromUrl($request->input('media-video'));
+                $mediaId = YoutubeService::getIdFromUrl($url);
                 Media::create([
                     'title' => "Video de " . $discipline->name,
                     'type' => MediaType::VIDEO,
@@ -117,7 +118,7 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-material') && GoogleDriveService::match($request->input('media-material'))) {
                 $url = $request->input('media-material');
-                $mediaId = GoogleDriveService::getIdFromUrl($request->input('media-material'));
+                $mediaId = GoogleDriveService::getIdFromUrl($url);
                 Media::create([
                     'title' => "Materiais de " . $discipline->name,
                     'type' => MediaType::MATERIAIS,
@@ -239,7 +240,7 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
                 $url = $request->input('media-trailer');
-                $mediaId = YoutubeService::getIdFromUrl($request->input('media-trailer'));
+                $mediaId = YoutubeService::getIdFromUrl($url);
                 if (!$discipline->has_trailer_media) {
                     Media::create([
                         'title' => 'Trailer de ' . $discipline->name,
@@ -260,7 +261,7 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-podcast') && GoogleDriveService::match($request->input('media-podcast'))) {
                 $url = $request->input('media-podcast');
-                $mediaId = GoogleDriveService::getIdFromUrl($request->input('media-podcast'));
+                $mediaId = GoogleDriveService::getIdFromUrl($url);
                 if (!$discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST)) {
                     Media::create([
                         'title' => 'Podcast de ' . $discipline->name,
@@ -280,7 +281,7 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-video') && YoutubeService::match($request->input('media-video'))) {
                 $url = $request->input('media-video');
-                $mediaId = YoutubeService::getIdFromUrl($request->input('media-video'));
+                $mediaId = YoutubeService::getIdFromUrl($url);
                 if (!$discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO)) {
                     Media::create([
                         'title' => 'Video de ' . $discipline->name,
@@ -300,9 +301,8 @@ class DisciplineController extends Controller
 
             if ($request->filled('media-material') && GoogleDriveService::match($request->input('media-material'))) {
                 $url = $request->input('media-material');
-                $mediaId = GoogleDriveService::getIdFromUrl($request->input('media-material'));
+                $mediaId = GoogleDriveService::getIdFromUrl($url);
                 if (!$discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS)) {
-                    dd('a1');
                     Media::create([
                         'title' => 'Material de ' . $discipline->name,
                         'type' => MediaType::MATERIAIS,
