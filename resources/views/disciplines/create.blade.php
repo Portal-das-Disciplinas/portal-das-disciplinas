@@ -63,9 +63,12 @@
             <div class="form-row mt-3">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="" for="synopsis">
-                            Sinopse
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="synopsis">
+                                Sinopse
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Principais pontos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <textarea
                             class="form-control {{ $errors->has('synopsis') ? 'is-invalid' : ''}}"
                             id="synopsis"
@@ -230,9 +233,12 @@
                             @enderror
                         </div>
 
-                        <label class="" for="media-trailer">
-                            Trailer da disciplina
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="media-trailer">
+                                Trailer da disciplina
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control {{ $errors->has('media-trailer') ? 'is-invalid' : ''}}"
@@ -248,9 +254,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="" for="media-video">
-                            Vídeo
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="media-video">
+                                Vídeo
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control {{ $errors->has('media-video') ? 'is-invalid' : ''}}"
@@ -265,9 +274,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="" for="media-podcast">
-                            Podcast
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="media-podcast">
+                                Podcast
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control {{ $errors->has('media-podcast') ? 'is-invalid' : ''}}"
@@ -282,9 +294,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="" for="media-material">
-                            Materiais
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="media-material">
+                                Materiais
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control {{ $errors->has('media-material') ? 'is-invalid' : ''}}"
