@@ -102,12 +102,12 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="">Classificações</label>
+                        <div class="d-flex justify-content-between">
+                            <label class="">Classificações</label>
+                            <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" >Ajuda <i class="far fa-question-circle" ></i></p>
+                        </div>
                         <div class="form-group font-weight-normal">
-                            <div class="d-flex justify-content-between">
-                                <label class="font-weight-bold">Classificações</label> 
-                                <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" >Ajuda <i class="far fa-question-circle" ></i></p>
-                            </div>
+                
                             
                             <!-- #### METODOLOGIA#### ---> 
                             <div class="row ">
