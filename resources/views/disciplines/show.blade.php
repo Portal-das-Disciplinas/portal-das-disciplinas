@@ -144,7 +144,7 @@
                         
                         
                         <div class="d-flex col-md-12">
-                            <span class='d-flex justify-content-start' style='width:15%'><b>{{(number_format(($classification->value),1))}}%</b></span>
+                            <span class='d-flex justify-content-start' style='width:15%'><b>{{($classification->value)}}%</b></span>
                             <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
 
 
