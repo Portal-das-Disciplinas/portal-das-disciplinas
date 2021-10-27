@@ -82,9 +82,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="" for="difficulties">
-                            Obstáculos
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="difficulties">
+                                Obstáculos
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Pontos que podem ou costumam ser dificultosos na disciplina.
+                            " ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <textarea
                             class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}"
                             id="difficulties"
@@ -102,9 +106,9 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex">
                             <label class="">Classificações</label>
-                            <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" >Ajuda <i class="far fa-question-circle" ></i></p>
+                            <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="form-group font-weight-normal">
                 
@@ -113,6 +117,12 @@
                             <div class="row ">
                                 <div class=" d-flex justify-content-center col-md-12">
                                     <h5>Metodologia</h5>
+                                    <p data-toggle="tooltip" data-placement="top" title="Metodologias Ativas: 
+                                        Menor estruturação, como resolução de problemas abertos, gamificação.
+
+                                        Metodologias Clássicas: 
+                                        Maior estruturação, como atividades com chaves de resposta, exposição didática.
+                                        " ><i class="far fa-question-circle ml-1" ></i></p>
                                 </div>
                             </div>
                             
@@ -319,9 +329,12 @@
             {{-- <div class="form-row mt-3">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="" for="difficulties">
-                            Obstáculos
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="difficulties">
+                                Obstáculos
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <textarea style="resize:none"
                                       class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}"
