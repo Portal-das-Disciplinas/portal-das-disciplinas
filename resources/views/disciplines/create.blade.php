@@ -63,9 +63,12 @@
             <div class="form-row mt-3">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="" for="synopsis">
-                            Sinopse
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="synopsis">
+                                Sinopse
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Principais pontos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <textarea
                             class="form-control {{ $errors->has('synopsis') ? 'is-invalid' : ''}}"
                             id="synopsis"
@@ -79,9 +82,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="" for="difficulties">
-                            Obstáculos
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="difficulties">
+                                Obstáculos
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Pontos que podem ou costumam ser dificultosos na disciplina.
+                            " ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <textarea
                             class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}"
                             id="difficulties"
@@ -99,17 +106,23 @@
 
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="">Classificações</label>
+                        <div class="d-flex">
+                            <label class="">Classificações</label>
+                            <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="form-group font-weight-normal">
-                            <div class="d-flex justify-content-between">
-                                <label class="font-weight-bold">Classificações</label> 
-                                <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" >Ajuda <i class="far fa-question-circle" ></i></p>
-                            </div>
+                
                             
                             <!-- #### METODOLOGIA#### ---> 
                             <div class="row ">
                                 <div class=" d-flex justify-content-center col-md-12">
                                     <h5>Metodologia</h5>
+                                    <p data-toggle="tooltip" data-placement="top" title="Metodologias Ativas: 
+                                        Menor estruturação, como resolução de problemas abertos, gamificação.
+
+                                        Metodologias Clássicas: 
+                                        Maior estruturação, como atividades com chaves de resposta, exposição didática.
+                                        " ><i class="far fa-question-circle ml-1" ></i></p>
                                 </div>
                             </div>
                             
@@ -230,9 +243,12 @@
                             @enderror
                         </div>
 
-                        <label class="" for="media-trailer">
-                            Trailer da disciplina
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="media-trailer">
+                                Trailer da disciplina
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control {{ $errors->has('media-trailer') ? 'is-invalid' : ''}}"
@@ -248,9 +264,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="" for="media-video">
-                            Vídeo
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="media-video">
+                                Vídeo
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control {{ $errors->has('media-video') ? 'is-invalid' : ''}}"
@@ -265,9 +284,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="" for="media-podcast">
-                            Podcast
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="media-podcast">
+                                Podcast
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control {{ $errors->has('media-podcast') ? 'is-invalid' : ''}}"
@@ -282,9 +304,12 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="" for="media-material">
-                            Materiais
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="media-material">
+                                Materiais
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <input type="text"
                                    class="form-control {{ $errors->has('media-material') ? 'is-invalid' : ''}}"
@@ -304,9 +329,12 @@
             {{-- <div class="form-row mt-3">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="" for="difficulties">
-                            Obstáculos
-                        </label>
+                        <div class="d-flex">
+                            <label class="" for="difficulties">
+                                Obstáculos
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
                         <div class="input-group">
                             <textarea style="resize:none"
                                       class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}"
