@@ -221,7 +221,6 @@ class DisciplineController extends Controller
     {
         DB::beginTransaction();
         try {
-
             $user = Auth::user();
             $professor = new Professor();
 
@@ -238,85 +237,94 @@ class DisciplineController extends Controller
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
 
-            if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
-                $url = $request->input('media-trailer');
-                $mediaId = YoutubeService::getIdFromUrl($url);
-                if (!$discipline->has_trailer_media) {
-                    Media::create([
-                        'title' => 'Trailer de ' . $discipline->name,
-                        'type' => MediaType::VIDEO,
-                        'is_trailer' => true,
-                        'view_url' => 'https://www.youtube.com/embed/' . $mediaId,
-                        'url' => $url,
-                        'discipline_id' => $discipline->id,
-                    ]);
-                } else {
-                    Media::query()->find($discipline->trailer->id)->update([
-                        'view_url' => "https://www.youtube.com/embed/" . $mediaId,
-                        'url' => $url,
-                    ]);
+            $url = $request->input('media-trailer') ?? '';
+            $mediaId = YoutubeService::getIdFromUrl($url);
+
+            if (!$discipline->has_trailer_media) {
+                Media::create([
+                    'title' => 'Trailer de ' . $discipline->name,
+                    'type' => MediaType::VIDEO,
+                    'is_trailer' => true,
+                    'view_url' => 'https://www.youtube.com/embed/' . $mediaId,
+                    'url' => $url,
+                    'discipline_id' => $discipline->id,
+                ]);
+            } else {
+                $view_url = 'https://www.youtube.com/embed/' . $mediaId;
+                if ($mediaId == '') {
+                    $view_url = '';
                 }
+                Media::query()->find($discipline->trailer->id)->update([
+                    'view_url' => $view_url,
+                    'url' => $url,
+                ]);
             }
 
 
-            if ($request->filled('media-podcast') && GoogleDriveService::match($request->input('media-podcast'))) {
-                $url = $request->input('media-podcast');
-                $mediaId = GoogleDriveService::getIdFromUrl($url);
-                if (!$discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST)) {
-                    Media::create([
-                        'title' => 'Podcast de ' . $discipline->name,
-                        'type' => MediaType::PODCAST,
-                        'is_trailer' => false,
-                        'view_url' => "https://drive.google.com/uc?export=open&id=" . $mediaId,
-                        'url' => $url,
-                        'discipline_id' => $discipline->id,
-                    ]);
-                } else {
-                    Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::PODCAST)->id)->update([
-                        'view_url' => "https://drive.google.com/uc?export=open&id=" . $mediaId,
-                        'url' => $url,
-                    ]);
+            $url = $request->input('media-podcast') ?? '';
+            $mediaId = GoogleDriveService::getIdFromUrl($url);
+            if (!$discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST)) {
+                Media::create([
+                    'title' => 'Podcast de ' . $discipline->name,
+                    'type' => MediaType::PODCAST,
+                    'is_trailer' => false,
+                    'view_url' => "https://drive.google.com/uc?export=open&id=" . $mediaId,
+                    'url' => $url,
+                    'discipline_id' => $discipline->id,
+                ]);
+            } else {
+                $view_url = 'https://drive.google.com/uc?export=open&id=' . $mediaId;
+                if ($mediaId == '') {
+                    $view_url = '';
                 }
+                Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::PODCAST)->id)->update([
+                    'view_url' => $view_url,
+                    'url' => $url,
+                ]);
             }
 
-            if ($request->filled('media-video') && YoutubeService::match($request->input('media-video'))) {
-                $url = $request->input('media-video');
-                $mediaId = YoutubeService::getIdFromUrl($url);
-                if (!$discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO)) {
-                    Media::create([
-                        'title' => 'Video de ' . $discipline->name,
-                        'type' => MediaType::VIDEO,
-                        'is_trailer' => false,
-                        'view_url' => 'https://www.youtube.com/embed/' . $mediaId,
-                        'url' => $url,
-                        'discipline_id' => $discipline->id,
-                    ]);
-                } else {
-                    Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::VIDEO)->id)->update([
-                        'view_url' => "https://www.youtube.com/embed/" . $mediaId,
-                        'url' => $url,
-                    ]);
+            $url = $request->input('media-video') ?? '';
+            $mediaId = YoutubeService::getIdFromUrl($url);
+            if (!$discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO)) {
+                Media::create([
+                    'title' => 'Video de ' . $discipline->name,
+                    'type' => MediaType::VIDEO,
+                    'is_trailer' => false,
+                    'view_url' => 'https://www.youtube.com/embed/' . $mediaId,
+                    'url' => $url,
+                    'discipline_id' => $discipline->id,
+                ]);
+            } else {
+                $view_url = 'https://www.youtube.com/embed/' . $mediaId;
+                if ($mediaId == '') {
+                    $view_url = '';
                 }
+                Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::VIDEO)->id)->update([
+                    'view_url' => $view_url,
+                    'url' => $url,
+                ]);
             }
 
-            if ($request->filled('media-material') && GoogleDriveService::match($request->input('media-material'))) {
-                $url = $request->input('media-material');
-                $mediaId = GoogleDriveService::getIdFromUrl($url);
-                if (!$discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS)) {
-                    Media::create([
-                        'title' => 'Material de ' . $discipline->name,
-                        'type' => MediaType::MATERIAIS,
-                        'is_trailer' => false,
-                        'view_url' => 'https://www.youtube.com/embed/' . $mediaId,
-                        'url' => $url,
-                        'discipline_id' => $discipline->id,
-                    ]);
-                } else {
-                    Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::MATERIAIS)->id)->update([
-                        'view_url' => "https://www.youtube.com/embed/" . $mediaId,
-                        'url' => $url,
-                    ]);
+            $url = $request->input('media-material') ?? '';
+            $mediaId = GoogleDriveService::getIdFromUrl($url);
+            if (!$discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS)) {
+                Media::create([
+                    'title' => 'Material de ' . $discipline->name,
+                    'type' => MediaType::MATERIAIS,
+                    'is_trailer' => false,
+                    'view_url' => 'https://drive.google.com/uc?export=download&id=' . $mediaId,
+                    'url' => $url,
+                    'discipline_id' => $discipline->id,
+                ]);
+            } else {
+                $view_url = 'https://drive.google.com/uc?export=download&id=' . $mediaId;
+                if ($mediaId == '') {
+                    $view_url = '';
                 }
+                Media::query()->find($discipline->getMediaByType(\App\Enums\MediaType::MATERIAIS)->id)->update([
+                    'view_url' => $view_url,
+                    'url' => $url,
+                ]);
             }
 
             $classificationsMap = [
@@ -337,7 +345,7 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            // return dd($exception, 'teste');
+            // return dd($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput();
         }

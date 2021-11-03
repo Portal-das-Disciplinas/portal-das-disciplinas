@@ -67,7 +67,7 @@
 
                 
                 <h3 class="mb-3">Trailer & Classificações</h3>
-                @if($discipline->has_trailer_media)
+                @if($discipline->has_trailer_media && $discipline->trailer->view_url != '')
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item light-border-radius" src="{{ $discipline->trailer->view_url}}" allowfullscreen ></iframe>
                     </div>
@@ -95,7 +95,7 @@
             <!-- VÍDEO -->
             <div class='section'>
                 <h3 class="mb-3">Vídeo</h3>
-                @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO))
+                @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO) && $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url != '')
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item light-border-radius" allowfullscreen
                                 src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url }}"></iframe>
@@ -185,7 +185,7 @@
              <!-- PODCAST -->
             <div>
                 <h3 class=" mt-4 mb-2">Podcast</h3>
-                @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST))
+                @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) && $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
                     <audio class="w-100" controls="controls">
                         <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
                         seu navegador não suporta HTML5
@@ -201,7 +201,7 @@
             
             <div>
                 <h3 class=" mt-4 mb-2">Materiais</h3>
-                @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS))
+                @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) && $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
                     <div class="align-center">
                         
                         <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}"
