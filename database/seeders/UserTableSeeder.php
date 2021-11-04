@@ -53,6 +53,20 @@ class UserTableSeeder extends Seeder
             'role_id' => $roleAdmin->id,
         ]);
 
+        User::create([
+            'name' => 'Cristian',
+            'email' => 'cristian.filho@hotmail.com',
+            'password' => '$2a$12$0JxVi.rm9L76ywKAWEJYxeaO7UZCjPJRX2QPJCrurqv8rW1zfIFny',
+            'role_id' => $roleAdmin->id,
+        ]);
+
+        User::create([
+            'name' => 'Henry',
+            'email' => 'henrymedeiros77@gmail.com',
+            'password' => '$2a$12$0s4fZEvN4mTK9N0Izny5h.wpb3UKVTI4kSgVNGwbY2O.1TA9s6Fg6',
+            'role_id' => $roleAdmin->id,
+        ]);
+
         if (app()->isLocal()) {
             User::create([
                 'name' => 'Álvaro',
