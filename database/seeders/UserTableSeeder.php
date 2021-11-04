@@ -79,8 +79,8 @@ class UserTableSeeder extends Seeder
         /*
          * Professors
          */
-        // $roleProfessor = Role::query()
-        //     ->firstWhere('name', RoleName::PROFESSOR);
+        $roleProfessor = Role::query()
+            ->firstWhere('name', RoleName::PROFESSOR);
         // $user = User::create([
         //     'name' => 'Eugenio Paccelli',
         //     'email' => 'eugenio@imd.ufrn.br',
