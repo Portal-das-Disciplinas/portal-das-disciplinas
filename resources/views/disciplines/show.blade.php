@@ -172,8 +172,8 @@
                     
                     <div class="row ">
                         <div class="col-md-12 d-flex justify-content-between mt-2">
-                            @foreach ($classificationsTypes[$classification->classification_id] as $type)
-                                <span ><h4 style='margin-bottom: 0'>{{$type}}</h4></span>
+                            @foreach ($classificationsTypes[$classification->classification_id] as $index => $type)
+                                <span ><h4 style='margin-bottom: 0; color:{{ $index == 0 ? '#1155CC' : '#4CB944'}}'>{{$type}}</h4></span>
                             @endforeach
                         </div>
                     </div>
