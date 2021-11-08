@@ -85,7 +85,7 @@
                         @if($discipline->synopsis=='')
                         <div class="p-text">Não há sinopse.</div>
                         @else
-                        <div style = "font-size: 1.7rem; text-align: justify;">{{ $discipline->synopsis}}</div>
+                        <div style = "font-size: 1.5rem; text-align: justify;  line-height: normal;">{{ $discipline->synopsis}}</div>
                         @endif
                     </div>
                 </div>
@@ -112,7 +112,7 @@
                         @if($discipline->difficulties=='')
                         <div class=" p-text">Nenhum obstáculo.</div>
                         @else
-                        <div style = "font-size: 1.7rem; text-align: justify;">{{ $discipline->difficulties }}</div>
+                        <div style = "font-size: 1.5rem; text-align: justify; line-height: normal;">{{ $discipline->difficulties }}</div>
                         @endif
                     </div>
                 </div>
