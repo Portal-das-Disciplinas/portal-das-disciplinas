@@ -66,7 +66,7 @@
 
 
                 
-                <h3 class="mb-3">Trailer & Classificações</h3>
+                <h3 class="mb-3">Trailer</h3>
                 @if($discipline->has_trailer_media && $discipline->trailer->view_url != '')
                     <div class="embed-responsive embed-responsive-16by9">
                         <iframe class="embed-responsive-item light-border-radius" src="{{ $discipline->trailer->view_url}}" allowfullscreen ></iframe>
@@ -129,7 +129,7 @@
         <div class="side col-md-4">
             <!-- classificacoes -->
             <div class='classifications'>
-                <!--<h3 class="">Teste</h3>-->
+                <h3 class="">Classificações</h3>
 
                 @foreach ($discipline->classificationsDisciplines as $classification)
                     <div class='row mb-0'>
@@ -141,13 +141,9 @@
                     
                     </div>
                     <div class="row d-flex align-items-center">
-                        
-                        
                         <div class="d-flex col-md-12">
                             <span class='d-flex justify-content-start' style='width:15%'><b>{{($classification->value)}}%</b></span>
                             <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
-
-
                                 <div id="{{$classification->classification_id}}"
                                      class="progress-bar" role="progressbar"
 
