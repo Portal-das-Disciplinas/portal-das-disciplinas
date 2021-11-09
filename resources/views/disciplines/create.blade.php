@@ -297,7 +297,7 @@
                                    id="media-podcast"
                                    value="{{old('media-podcast')}}"
                                    aria-describedby="basic-addon3"
-                                   placeholder="Link para podcast no driver">
+                                   placeholder="Link para podcast no Google Drive">
                             @error('media-podcast')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
