@@ -11,7 +11,7 @@
         <div class="col-12 text-center my-4 title-subject-container">
             <h1 class="title-subject display-title " style='color: #1F2937'>Portal das Disciplinas - IMD/UFRN</h1>
             <div class="row justify-content-center">
-                <p class='p-text mt-3  text-center col-md-10  larger-p'>Lorem ipsum dolor sit, Qui sequi iusto sed possimus quos accusamus necessitatibus expedita excepturi, eius mollitia, dolorum odit quas nemo libero saepe architecto repudiandae sint nostrum?<p>
+                <p class='p-text mt-3  text-center col-md-10  larger-p'>Cada disciplina aqui conta com entrevistas, informações, materiais, indicação de dificuldades e muito mais sobre esses componentes curriculares do Bacharelado em TI do IMD/UFRN.<p>
             </div>
         </div>
     </div>
@@ -28,9 +28,7 @@
 <div class='remove-margin-bottom' style='background-color:#014C8C' >
     <div class="container mt-0">
         <h1 class='text-center text-white pt-5'>Disciplinas Cadastradas</h1>
-        <p class='text-center p-text' style='color: #80A6C6'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati possimus eos expedita eum veritatis quasi quae architecto exercitationem molestiae tempore! Lorem ipsum dolor sit, amet consectetur adipisicing elit.</p>
-        {{-- Modificar para apenas o user adm ou professor --}}
-    
+        <p class='text-center p-text' style='color: #80A6C6'>Lista de disciplinas disponíveis no portal... sempre crescendo!</p>
         @auth
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 mt-5">
