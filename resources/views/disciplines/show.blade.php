@@ -127,7 +127,15 @@
                     <div class='row mb-0'>
                         <div class="d-flex col-md-12 justify-content-center">
                             <label class="">
-                                <h4 style='margin-bottom: 0; font-size: 25px'>{{$classification->name}}</h4>
+                                <div class="d-flex">
+                                    <h4 style='margin-bottom: 0; font-size: 25px'>
+                                        {{$classification->name ?? ''}} 
+
+                                        @if ($classification->description)
+                                            <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                        @endif
+                                    </h4>
+                                </div>
                             </label>
                         </div>
                     </div>
@@ -286,7 +294,9 @@
 @endsection
 @section('scripts-bottom')
 <script>
-
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 
 @endsection

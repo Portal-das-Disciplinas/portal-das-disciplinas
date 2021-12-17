@@ -32,6 +32,7 @@ class ClassificationController extends Controller
         $classification->name = $request->name;
         $classification->type_a = $request->type_a ?? '';
         $classification->type_b = $request->type_b ?? '';
+        $classification->description = $request->description ?? '';
         $classification->save();
 
         $disciplines = Discipline::all();
@@ -73,6 +74,7 @@ class ClassificationController extends Controller
         $classification->name = $request->name;
         $classification->type_a = $request->type_a ?? '';
         $classification->type_b = $request->type_b ?? '';
+        $classification->description = $request->description ?? '';
         $classification->save();
 
         return redirect()->route('classificacoes.index');

@@ -112,7 +112,11 @@
                             @foreach ( $classifications as $classification)
                                 <div class="row ">
                                     <div class=" d-flex justify-content-center col-md-12">
-                                        <h5>{{ $classification->name }}</h5>
+                                        <h5>{{ $classification->name }}
+                                            @if ($classification->description)
+                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                            @endif
+                                        </h5>
                                     </div>
                                 </div>
 

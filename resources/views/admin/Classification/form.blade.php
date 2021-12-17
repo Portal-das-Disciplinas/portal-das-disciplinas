@@ -63,6 +63,17 @@ Cadastro de Professor
                 @enderror
             </div>
         </div>
+        
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="description" class="text-black">Descrição</label>
+                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}} " id="description" name="description"  rows="5"> {{ $classification->description ?? '' }}</textarea>
+                @error('description')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
         <div class="form-row">
             <div class="form-group col-md-4 mt-2">
                 <input type="submit" value="{{ isset($edit) ? 'Atualizar' : 'Cadastrar'}}" class="btn btn-block btn-primary w-50">
