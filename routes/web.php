@@ -1,13 +1,15 @@
 <?php
 
-use App\Http\Controllers\FaqController;
+use App\Models\Classification;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\DisciplineController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfessorUserController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\DisciplineController;
+use App\Http\Controllers\ProfessorUserController;
 use App\Http\Controllers\Chart\PassRateController;
+use App\Http\Controllers\ClassificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,32 +51,16 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('disciplinas', DisciplineController::class)
         ->except(['index', 'show',]);
-  
+
     Route::resource('professores', ProfessorUserController::class)
-        ->except(['show','update']);
-  
+        ->except(['show', 'update']);
+
     Route::resource('disciplinas.faqs', FaqController::class)
         ->except(['index']);
+
+    Route::resource('classificacoes', ClassificationController::class)
+        ->except(['show']);
 });
 
 Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
     ->name('disciplinas.show');
-
-Route::group([
-    'prefix' => 'charts',
-    'as' => 'charts.',
-], function () {
-    Route::group([
-        'prefix' => 'pass_rate',
-        'as' => 'pass_rate.',
-    ], function () {
-        Route::get('/', [PassRateController::class, 'index'])
-            ->name('index');
-        Route::get('select/professors', [PassRateController::class, 'selectProfessors'])
-            ->name('professors');
-        Route::get('select/disciplines', [PassRateController::class, 'selectDisciplines'])
-            ->name('disciplines');
-        Route::get('tables', [PassRateController::class, 'getTableData'])
-            ->name('tables');
-    });
-});

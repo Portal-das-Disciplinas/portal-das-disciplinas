@@ -183,6 +183,8 @@ return [
         'password_confirmation' => 'confirmação da senha',
         'current_password' => 'senha atual',
         'new_password' => 'nova senha',
+        'type_a' => 'tipo A',
+        'type_b' => 'tipo B',
     ],
 
 ];

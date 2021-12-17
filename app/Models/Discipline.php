@@ -37,7 +37,7 @@ class Discipline extends Model
     {
         return $this->classificationsDisciplines
             ->where('classification_id', $classification_id)
-            ->first()->value;
+            ->first()->value ?? 0;
     }
     /**
      * @return Media|null

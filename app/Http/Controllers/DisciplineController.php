@@ -7,6 +7,7 @@ use App\Enums\MediaType;
 use App\Http\Requests\Discipline\CreateRequest;
 use App\Http\Requests\Discipline\StoreRequest;
 use App\Http\Requests\Discipline\UpdateRequest;
+use App\Models\Classification;
 use App\Models\ClassificationDiscipline;
 use App\Services\Urls\GoogleDriveService;
 use App\Services\Urls\YoutubeService;
@@ -47,10 +48,12 @@ class DisciplineController extends Controller
     public function create(CreateRequest $request)
     {
         $professors = new Professor();
+        $classifications = Classification::all();
         if (Auth::user()->isAdmin) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
-        return view(self::VIEW_PATH . 'create', compact('professors'));
+        return view(self::VIEW_PATH . 'create', compact('professors'))
+            ->with('classifications', $classifications);
     }
 
     /**
@@ -129,12 +132,15 @@ class DisciplineController extends Controller
                 ]);
             }
 
-            $classificationsMap = [
-                ClassificationID::METODOLOGIAS => "classificacao-metodologias",
-                ClassificationID::DISCUSSAO => "classificacao-discussao",
-                ClassificationID::ABORDAGEM => "classificacao-abordagem",
-                ClassificationID::AVALIACAO => "classificacao-avaliacao",
-            ];
+            // Apagar
+            // $classificationsMap = [
+            //     ClassificationID::METODOLOGIAS => "classificacao-metodologias",
+            //     ClassificationID::DISCUSSAO => "classificacao-discussao",
+            //     ClassificationID::ABORDAGEM => "classificacao-abordagem",
+            //     ClassificationID::AVALIACAO => "classificacao-avaliacao",
+            // ];
+
+            $classificationsMap = Classification::all()->pluck('name', 'id')->toArray();
 
             foreach ($classificationsMap as $classificationId => $inputValue) {
                 ClassificationDiscipline::create([
@@ -161,13 +167,6 @@ class DisciplineController extends Controller
      */
     public function show($id)
     {
-        $classificationsTypes = [
-            ClassificationID::METODOLOGIAS => ['Clássicas', 'Ativas'],
-            ClassificationID::DISCUSSAO => ['Social', 'Técnica'],
-            ClassificationID::ABORDAGEM => ['Teórica', 'Prática'],
-            ClassificationID::AVALIACAO => ['Provas', 'Atividades'],
-        ];
-
         $discipline = Discipline::query()
             ->with([
                 'professor',
@@ -178,14 +177,16 @@ class DisciplineController extends Controller
             ->findOrFail($id);
         $user = Auth::user();
 
+        $classifications = Classification::all();
+
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
             return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))
-                ->with('classificationsTypes', $classificationsTypes);
+                ->with('classifications', $classifications);
         }
 
         return view(self::VIEW_PATH . 'show', compact('discipline'))
-            ->with('classificationsTypes', $classificationsTypes);
+            ->with('classifications', $classifications);
     }
 
     /**
@@ -207,7 +208,10 @@ class DisciplineController extends Controller
                 'faqs',
             ])
             ->findOrFail($id);
-        return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'));
+        $classifications = Classification::all();
+
+        return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
+            ->with('classifications', $classifications);
     }
 
     /**
@@ -327,25 +331,19 @@ class DisciplineController extends Controller
                 ]);
             }
 
-            $classificationsMap = [
-                ClassificationID::METODOLOGIAS => "classificacao-metodologias",
-                ClassificationID::DISCUSSAO => "classificacao-discussao",
-                ClassificationID::ABORDAGEM => "classificacao-abordagem",
-                ClassificationID::AVALIACAO => "classificacao-avaliacao",
-            ];
-
+            $classificationsMap = Classification::all()->pluck('name', 'id')->toArray();
             foreach ($classificationsMap as $classificationId => $inputValue) {
-                ClassificationDiscipline::query()->where('discipline_id', $discipline->id)
-                    ->where('classification_id', $classificationId)->update([
-                        'value' => $request->input($inputValue)
-                    ]);
+                ClassificationDiscipline::updateOrCreate(
+                    ['classification_id' => $classificationId, 'discipline_id' => $discipline->id],
+                    ['value' => $request->input($inputValue)]
+                );
             }
 
             DB::commit();
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            // return dd($exception);
+            return dd($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput();
         }
