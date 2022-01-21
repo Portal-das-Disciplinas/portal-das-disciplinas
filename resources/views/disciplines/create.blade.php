@@ -104,15 +104,41 @@
 
                 </div>
 
+
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="d-flex">
                             <label class="">Classificações</label>
                             <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
+                        
                         <div class="form-group font-weight-normal">
                             @foreach ($classifications as $classification)
-                                <div class="row ">
+
+                        <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
+                        <div style="width: 500px" class="classification-input-component" id='1'>
+                            <div>
+                                <h6 style="text-align: center;">{{$classification->name}}</h6>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <div><span id="left-output-value"></span>%</div>
+                                </div>
+                                <div class="slider-container">
+                                    <input id="classification-slider" type="range" min="0" max="100" value="50" step='5' class="classification-slider" oninput="handleInput(this.value, this)">
+                                </div>
+                                <div>
+                                    <div><span id="right-output-value"></span>%</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
+                                <h6>{{ $classification->type_a ?? '' }}</h6>
+                                <h6>{{ $classification->type_b ?? '' }}</h6>
+
+                            </div>
+                        </div>
+                        <!-- FIM DO COMPONENTE DO INPUT DE CLASSIFICAO -->
+                                <!-- <div class="row ">
                                     <div class=" d-flex justify-content-center col-md-12">
                                         <h5>
                                             {{$classification->name}}
@@ -124,13 +150,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="d-flex col-md-2">
-                                        <output id="outAvaliacao" >50</output><span>%<span>
+                                        <output id="outAvaliacao" value="50" for="outAvaliacao"></output><span>%<span>
                                     </div>
                                     <div class="col-md-8">
                                         <input class="form-range w-100" id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">      
                                     </div>
                                     <div class=" col-md-2 d-flex justify-content-end">
-                                        <output id="outAvaliacaoSecondary" >50</output><span>%<span>
+                                        <output id="outAvaliacaoSecondary" value="50"></output><span>%<span>
                                     </div>
                                 </div>
                                 <div class="legend row">
@@ -138,7 +164,7 @@
                                         <p>{{ $classification->type_a ?? '' }}</p>
                                         <p>{{ $classification->type_b ?? '' }}</p>
                                     </div>
-                                </div>
+                                </div> -->
                             @endforeach
 
                             {{-- TODO --}}
@@ -285,9 +311,28 @@
     let classifications = JSON.parse('{!! $classificationsJson !!}');
 
     console.log(classifications);
-    function handleInput(outElem, outElemSecondary, value){
-        outElem.value = value;
-        outElemSecondary.value = 100-value
+   
+
+    function handleInput(value, element) {
+            console.log(value)
+            const sliderContainer = element.parentNode
+            const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
+            const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
+            
+            leftOutput.innerText = value
+            rightOutput.innerText = 100 - value
+        }
+
+    const sliderId = document.querySelector('#classification-slider')
+    const leftOutputs = document.querySelectorAll('#left-output-value')
+    const rightOutputs = document.querySelectorAll('#right-output-value')
+
+    for(leftOutput of leftOutputs) {
+        leftOutput.innerText = sliderId.value
+    }
+
+    for(rightOutput of rightOutputs) {
+        rightOutput.innerText = sliderId.value
     }
 
     $(function () {

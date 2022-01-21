@@ -110,7 +110,30 @@
                             </div>
 
                             @foreach ( $classifications as $classification)
-                                <div class="row ">
+                            <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
+                            <div style="width: 500px" class="classification-input-component" id='1'>
+                                <div>
+                                    <h6 style="text-align: center;">{{$classification->name}}</h6>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <div><span id="left-output-value"></span>%</div>
+                                    </div>
+                                    <div class="slider-container">
+                                        <input id="classification-slider" type="range" min="0" max="100" value="50" step='5' class="classification-slider" oninput="handleInput(this.value, this)">
+                                    </div>
+                                    <div>
+                                        <div><span id="right-output-value"></span>%</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
+                                    <h6>{{ $classification->type_a ?? '' }}</h6>
+                                    <h6>{{ $classification->type_b ?? '' }}</h6>
+
+                                </div>
+                            </div>
+                        <!-- FIM DO COMPONENTE DO INPUT DE CLASSIFICAO -->
+                                <!-- <div class="row ">
                                     <div class=" d-flex justify-content-center col-md-12">
                                         <h5>{{ $classification->name }}
                                             @if ($classification->description)
@@ -139,7 +162,7 @@
                                         <p>{{ $classification->type_a ?? '' }}</p>
                                         <p>{{ $classification->type_b ?? '' }}</p>
                                     </div>
-                                </div>
+                                </div> -->
                             @endforeach
 
         
@@ -252,9 +275,26 @@
 @endsection
 @section('scripts-bottom')
 <script>
-    function handleInput(outElem, outElemSecondary, value){
-        outElem.value = value;
-        outElemSecondary.value = 100-value
+    function handleInput(value, element) {
+            console.log(value)
+            const sliderContainer = element.parentNode
+            const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
+            const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
+            
+            leftOutput.innerText = value
+            rightOutput.innerText = 100 - value
+        }
+
+    const sliderId = document.querySelector('#classification-slider')
+    const leftOutputs = document.querySelectorAll('#left-output-value')
+    const rightOutputs = document.querySelectorAll('#right-output-value')
+
+    for(leftOutput of leftOutputs) {
+        leftOutput.innerText = sliderId.value
+    }
+
+    for(rightOutput of rightOutputs) {
+        rightOutput.innerText = sliderId.value
     }
 
     /* tooltip initialize */
