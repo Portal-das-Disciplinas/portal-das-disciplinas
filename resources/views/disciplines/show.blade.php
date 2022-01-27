@@ -118,64 +118,56 @@
                 </div>
             </div>
             <!-- PROFESSOR -->
-           
-
-
-
         </div>
 
-
-
         <div class="side col-md-4">
-            <!-- classificacoes -->
             <div class='classifications'>
                 <h3 class="">Classificações</h3>
-
-                @foreach ($discipline->classificationsDisciplines as $classification)
+                @foreach ( $classifications as $classification)
                     <div class='row mb-0'>
                         <div class="d-flex col-md-12 justify-content-center">
                             <label class="">
-                                <h4 style='margin-bottom: 0; font-size: 25px'>{{$classification->classification->name}}</h4>
+                                <div class="d-flex">
+                                    <h4 style='margin-bottom: 0; font-size: 25px'>
+                                        {{$classification->name ?? ''}} 
+
+                                        @if ($classification->description)
+                                            <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                        @endif
+                                    </h4>
+                                </div>
                             </label>
                         </div>
-                    
                     </div>
                     <div class="row d-flex align-items-center">
                         <div class="d-flex col-md-12">
-                            <span class='d-flex justify-content-start' style='width:15%'><b>{{($classification->value)}}%</b></span>
+                            <span class='d-flex justify-content-start' style='width:15%'><b>{{ $discipline->getClassificationsValues($classification->id) }}%</b></span>
                             <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
                                 <div id="{{$classification->classification_id}}"
                                      class="progress-bar" role="progressbar"
 
-                                     style="width: {{($classification->value)}}% ; background-color:#1155CC; border-radius: 100px 0 0 100px"
+                                     style="width: {{ $discipline->getClassificationsValues($classification->id) }}% ; background-color:#1155CC; border-radius: 100px 0 0 100px"
                                      aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
                                 </div>
 
                                 <div id="{{$classification->classification_id}}"
                                     class="progress-bar" role="progressbar"
 
-                                    style="width: {{(100-$classification->value)}}% ; background-color:#4CB944; border-radius: 0 100px 100px 0"
+                                    style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; background-color:#4CB944; border-radius: 0 100px 100px 0"
                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
                                </div>
-
-
                             </div>
-                            <span class='d-flex justify-content-end' style='width:15%'><b style='font-size:16px'>{{(100-number_format(($classification->value),1))}}%</b></span>
-
+                            <span class='d-flex justify-content-end' style='width:15%'><b style='font-size:16px'>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
                         </div>
-
                     </div>
                     
                     <div class="row ">
                         <div class="col-md-12 d-flex justify-content-between mt-2">
-                            @foreach ($classificationsTypes[$classification->classification_id] as $index => $type)
-                                <span ><h4 style='margin-bottom: 0; color:{{ $index == 0 ? '#1155CC' : '#4CB944'}}'>{{$type}}</h4></span>
-                            @endforeach
+                            <span ><h4 style='margin-bottom: 0; color: #4CB944'>{{ $classification->type_a ?? '' }}</h4></span>
+                            <span ><h4 style='margin-bottom: 0; color: #1155CC'>{{ $classification->type_b ?? '' }}</h4></span>
                         </div>
                     </div>
                 @endforeach
-
-
             </div>
             <hr>
              <!-- PODCAST -->
@@ -302,7 +294,9 @@
 @endsection
 @section('scripts-bottom')
 <script>
-
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 </script>
 
 @endsection

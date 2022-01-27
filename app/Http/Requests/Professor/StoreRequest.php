@@ -25,7 +25,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'max:100',],
-            'email' => ['required', 'max:50',],
+            'email' => ['required', 'max:50', 'email', 'unique:professors,email'],
             'public_email' => ['max:50'],
             'password' => ['required','confirmed'],
         ];

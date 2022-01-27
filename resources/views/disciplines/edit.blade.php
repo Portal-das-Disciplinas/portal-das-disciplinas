@@ -108,116 +108,63 @@
                                 <label class="font-weight-bold">Classificações</label> 
                                 <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" >Ajuda <i class="far fa-question-circle" ></i></p>
                             </div>
-                            
-                            <!-- #### TODO: 
-                                Componetizar esses sliders #### 
-                            ---> 
 
-                            <!-- #### METODOLOGIA#### ---> 
-                            <div class="row ">
-                                <div class=" d-flex justify-content-center col-md-12">
-                                    <h5>Metodologia</h5>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class=" col-md-2">
-                                    <output id="outMetodologia">{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS)}}</output><span>%<span>
-                                </div>
-                                <div class="col-md-8">
-                                    <input class='w-100' id="classificacao-metodologias" name="classificacao-metodologias" type="range" step="5" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS)}}" min="0" max="100" oninput="handleInput(outMetodologia, outMetodologiaSecondary, this.value)" >      
-                                </div>
-                                <div class=" col-md-2 d-flex justify-content-end ">
+                            @foreach ( $classifications as $classification)
+                            <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
+                            <div style="width: 500px" class="classification-input-component" id='1'>
                                 <div>
-                                    <output id="outMetodologiaSecondary" >{{100-$discipline->getClassificationsValues(\App\Enums\ClassificationID::METODOLOGIAS)}}</output><span>%<span>
+                                    <h4 style="text-align: center;">{{$classification->name}}</h4>
                                 </div>
-                                    
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>
+                                        <div><span id="left-output-value"></span>%</div>
+                                    </div>
+                                    <div class="slider-container">
+                                        <input id="classification-slider" type="range" min="0" max="100" value="50" step='5' class="classification-slider scrollClass" oninput="handleInput(this.value, this)">
+                                    </div>
+                                    <div>
+                                        <div><span id="right-output-value"></span>%</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="legend row">
-                                <div class="d-flex col-md-12 justify-content-between">
-                                    <p>Clássica</p>
-                                    <p>Ativa</p>
-                                </div>
-                            </div>
+                                <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
+                                    <h5>{{ $classification->type_a ?? '' }}</h5>
+                                    <h5>{{ $classification->type_b ?? '' }}</h5>
 
-                            <!-- #### DISCUSSAO #### ---> 
-                            <div class="row ">
-                                <div class=" d-flex justify-content-center col-md-12">
-                                    <h5>Discussão</h5>
                                 </div>
                             </div>
-                            
-                            <div class="row">
-                                <div class="d-flex col-md-2">
-                                    <output id="outDiscussao" >{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO)}}</output><span>%<span>
+                        <!-- FIM DO COMPONENTE DO INPUT DE CLASSIFICAO -->
+                                <!-- <div class="row ">
+                                    <div class=" d-flex justify-content-center col-md-12">
+                                        <h5>{{ $classification->name }}
+                                            @if ($classification->description)
+                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                            @endif
+                                        </h5>
+                                    </div>
                                 </div>
-                                <div class="col-md-8">
-                                    <input class="form-range w-100" id="classificacao-discussao" name="classificacao-discussao" type="range" step="5" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO)}}" min="0" max="100" oninput="handleInput(outDiscussao, outDiscussaoSecondary, this.value)">      
-                                </div>
-                                <div class="col-md-2 d-flex justify-content-end ">
-                                    <output id="outDiscussaoSecondary">{{100-$discipline->getClassificationsValues(\App\Enums\ClassificationID::DISCUSSAO)}}</output><span>%<span>
-                                </div>
-                            </div>
 
-                            <div class="legend row">
-                                <div class="d-flex col-md-12 justify-content-between">
-                                    <p>Social</p>
-                                    <p>Técnica</p>
+                                <div class="row">
+                                    <div class=" col-md-2">
+                                        <output id="outMetodologia">{{$discipline->getClassificationsValues($classification->id)}}</output><span>%<span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input class='w-100' id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="{{$discipline->getClassificationsValues($classification->id)}}" min="0" max="100" oninput="handleInput(outMetodologia, outMetodologiaSecondary, this.value)" >      
+                                    </div>
+                                    <div class=" col-md-2 d-flex justify-content-end ">
+                                    <div>
+                                        <output id="outMetodologiaSecondary" >{{100-$discipline->getClassificationsValues($classification->id)}}</output><span>%<span>
+                                    </div>
+                                        
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="legend row">
+                                    <div class="d-flex col-md-12 justify-content-between">
+                                        <p>{{ $classification->type_a ?? '' }}</p>
+                                        <p>{{ $classification->type_b ?? '' }}</p>
+                                    </div>
+                                </div> -->
+                            @endforeach
 
-                            <!-- #### ABORDAGEM #### ---> 
-                            <div class="row ">
-                                <div class=" d-flex justify-content-center col-md-12">
-                                    <h5>Abordagem</h5>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="d-flex col-md-2">
-                                    <output id="outAbordagem">{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM)}}</output><span>%<span>
-                                </div>
-                                <div class="col-md-8">
-                                    <input class="form-range w-100" id="classificacao-abordagem" name="classificacao-abordagem" type="range" step="5" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM)}}" min="0" max="100" oninput="handleInput(outAbordagem, outAbordagemSecondary, this.value)">      
-                                </div>
-                                <div class="col-md-2  d-flex justify-content-end">
-                                    <output id="outAbordagemSecondary">{{100-$discipline->getClassificationsValues(\App\Enums\ClassificationID::ABORDAGEM)}}</output><span>%<span>
-                                </div>
-                            </div>
-
-                            <div class="legend row">
-                                <div class="d-flex col-md-12 justify-content-between">
-                                    <p>Prática</p>
-                                    <p>Téorica</p>
-                                </div>
-                            </div>
-
-                            <!-- #### AVALIAÇÃO #### ---> 
-                            <div class="row ">
-                                <div class=" d-flex justify-content-center col-md-12">
-                                    <h5>Avaliação</h5>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="d-flex col-md-2">
-                                    <output id="outAvaliacao" >{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO)}}</output><span>%<span>
-                                </div>
-                                <div class="col-md-8">
-                                    <input class="form-range w-100" id="classificacao-avaliacao" name="classificacao-avaliacao" type="range" step="5" value="{{$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO)}}" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">      
-                                </div>
-                                <div class=" col-md-2 d-flex justify-content-end">
-                                    <output id="outAvaliacaoSecondary" >{{100-$discipline->getClassificationsValues(\App\Enums\ClassificationID::AVALIACAO)}}</output><span>%<span>
-                                </div>
-                            </div>
-
-                            <div class="legend row">
-                                <div class="d-flex col-md-12 justify-content-between">
-                                    <p>Provas</p>
-                                    <p>Atividades</p>
-                                </div>
-                            </div>
         
                             {{-- TODO --}}
                             {{-- tentar fazer texto aparecer abaixo do range --}}
@@ -328,9 +275,26 @@
 @endsection
 @section('scripts-bottom')
 <script>
-    function handleInput(outElem, outElemSecondary, value){
-        outElem.value = value;
-        outElemSecondary.value = 100-value
+    function handleInput(value, element) {
+            console.log(value)
+            const sliderContainer = element.parentNode
+            const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
+            const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
+            
+            leftOutput.innerText = value
+            rightOutput.innerText = 100 - value
+        }
+
+    const sliderId = document.querySelector('#classification-slider')
+    const leftOutputs = document.querySelectorAll('#left-output-value')
+    const rightOutputs = document.querySelectorAll('#right-output-value')
+
+    for(leftOutput of leftOutputs) {
+        leftOutput.innerText = sliderId.value
+    }
+
+    for(rightOutput of rightOutputs) {
+        rightOutput.innerText = sliderId.value
     }
 
     /* tooltip initialize */
@@ -340,4 +304,10 @@
 
     
 </script>
+
+<style scoped>
+    .scrollClass{
+        width: 300px !important;
+    }
+</style>
 @endsection

@@ -7,6 +7,7 @@ use App\Http\Requests\Professor\StoreRequest;
 use App\Models\Professor;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+
 class ProfessorUserController extends Controller
 {
     const VIEW_PATH = "admin.";
@@ -16,19 +17,18 @@ class ProfessorUserController extends Controller
         $professors = Professor::query()->with([
             'user',
         ])->get();
-        return view(self::VIEW_PATH.'index', compact('professors'));
+        return view(self::VIEW_PATH . 'professor.' . 'index', compact('professors'));
     }
 
     public function create(CreateRequest $request)
     {
-        return view(self::VIEW_PATH.'create');
+        return view(self::VIEW_PATH . 'professor.' . 'create');
     }
 
     public function store(StoreRequest $request)
     {
         DB::beginTransaction();
-        try
-        {
+        try {
             $user = User::create([
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -45,18 +45,16 @@ class ProfessorUserController extends Controller
 
             DB::commit();
             return redirect()->route('professores.index');
-
-        }catch(\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             DB::rollback();
             return redirect()->back()->withInput();
         }
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $professor = Professor::findOrFail($id);
         $professor->user->delete();
         return redirect()->route('professores.index');
     }
 }
-

@@ -104,132 +104,75 @@
 
                 </div>
 
+
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="d-flex">
                             <label class="">Classificações</label>
                             <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
+                        
                         <div class="form-group font-weight-normal">
-                
-                            
-                            <!-- #### METODOLOGIA#### ---> 
-                            <div class="row ">
-                                <div class=" d-flex justify-content-center col-md-12">
-                                    <h5>Metodologia</h5>
-                                    <p data-toggle="tooltip" data-placement="top" title="Metodologias Ativas: 
-                                        Menor estruturação, como resolução de problemas abertos, gamificação.
+                            @foreach ($classifications as $classification)
 
-                                        Metodologias Clássicas: 
-                                        Maior estruturação, como atividades com chaves de resposta, exposição didática.
-                                        " ><i class="far fa-question-circle ml-1" ></i></p>
-                                </div>
+                        <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
+                        <div style="width: 500px" class="classification-input-component" id='1'>
+                            <div>
+                                <h4 style="text-align: center;">{{$classification->name}}</h4>
                             </div>
-                            
-                            <div class="row">
-                                <div class=" col-md-2">
-                                    <output id="outMetodologia">50</output><span>%<span>
-                                </div>
-                                <div class="col-md-8">
-                                    <input class='w-100' id="classificacao-metodologias" name="classificacao-metodologias" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outMetodologia, outMetodologiaSecondary, this.value)" >      
-                                </div>
-                                <div class=" col-md-2 d-flex justify-content-end ">
+                            <div style="display: flex; justify-content: space-between;">
                                 <div>
-                                    <output id="outMetodologiaSecondary" >50</output><span>%<span>
+                                    <div><span id="left-output-value"></span>%</div>
                                 </div>
-                                    
+                                <div class="slider-container">
+                                    <input  id="classification-slider" type="range" min="0" max="100" value="50" step='5' class="classification-slider scrollClass" oninput="handleInput(this.value, this)">
                                 </div>
-                            </div>
-                            <div class="legend row">
-                                <div class="d-flex col-md-12 justify-content-between">
-                                    <p>Clássica</p>
-                                    <p>Ativa</p>
+                                <div>
+                                    <div><span id="right-output-value"></span>%</div>
                                 </div>
                             </div>
+                            <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
+                                <h5>{{ $classification->type_a ?? '' }}</h5>
+                                <h5>{{ $classification->type_b ?? '' }}</h5>
 
-                            <!-- #### DISCUSSAO #### ---> 
-                            <div class="row ">
-                                <div class=" d-flex justify-content-center col-md-12">
-                                    <h5>Discussão</h5>
-                                </div>
                             </div>
-                            
-                            <div class="row">
-                                <div class="d-flex col-md-2">
-                                    <output id="outDiscussao" >50</output><span>%<span>
-                                </div>
-                                <div class="col-md-8">
-                                    <input class="form-range w-100" id="classificacao-discussao" name="classificacao-discussao" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outDiscussao, outDiscussaoSecondary, this.value)">      
-                                </div>
-                                <div class="col-md-2 d-flex justify-content-end ">
-                                    <output id="outDiscussaoSecondary">50</output><span>%<span>
-                                </div>
-                            </div>
+                        </div>
+                        <!-- FIM DO COMPONENTE DO INPUT DE CLASSIFICAO -->
 
-                            <div class="legend row">
-                                <div class="d-flex col-md-12 justify-content-between">
-                                    <p>Social</p>
-                                    <p>Técnica</p>
+                        <!-- COMEÇO DA ANTIGA BARRA DE AJUSTE DE PORCENTAGEM -->
+                                <!-- <div class="row ">
+                                    <div class=" d-flex justify-content-center col-md-12">
+                                        <h5>
+                                            {{$classification->name}}
+                                            @if ($classification->description)
+                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                            @endif
+                                        </h5>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="row">
+                                    <div class="d-flex col-md-2">
+                                        <output id="outAvaliacao" value="50" for="outAvaliacao"></output><span>%<span>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input class="form-range w-100" id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">      
+                                    </div>
+                                    <div class=" col-md-2 d-flex justify-content-end">
+                                        <output id="outAvaliacaoSecondary" value="50"></output><span>%<span>
+                                    </div>
+                                </div>
+                                <div class="legend row">
+                                    <div class="d-flex col-md-12 justify-content-between">
+                                        <p>{{ $classification->type_a ?? '' }}</p>
+                                        <p>{{ $classification->type_b ?? '' }}</p>
+                                    </div>
+                                </div> -->
+                                <!-- FIM DA ANTIGA BARRA DE AJUSTE DE PORCENTAGEM -->
+                            @endforeach
 
-                            <!-- #### ABORDAGEM #### ---> 
-                            <div class="row ">
-                                <div class=" d-flex justify-content-center col-md-12">
-                                    <h5>Abordagem</h5>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="d-flex col-md-2">
-                                    <output id="outAbordagem">50</output><span>%<span>
-                                </div>
-                                <div class="col-md-8">
-                                    <input class="form-range w-100" id="classificacao-abordagem" name="classificacao-abordagem" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outAbordagem, outAbordagemSecondary, this.value)">      
-                                </div>
-                                <div class="col-md-2  d-flex justify-content-end">
-                                    <output id="outAbordagemSecondary">50</output><span>%<span>
-                                </div>
-                            </div>
-
-                            <div class="legend row">
-                                <div class="d-flex col-md-12 justify-content-between">
-                                    <p>Prática</p>
-                                    <p>Téorica</p>
-                                </div>
-                            </div>
-
-                            <!-- #### AVALIAÇÃO #### ---> 
-                            <div class="row ">
-                                <div class=" d-flex justify-content-center col-md-12">
-                                    <h5>Avaliação</h5>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="d-flex col-md-2">
-                                    <output id="outAvaliacao" >50</output><span>%<span>
-                                </div>
-                                <div class="col-md-8">
-                                    <input class="form-range w-100" id="classificacao-avaliacao" name="classificacao-avaliacao" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">      
-                                </div>
-                                <div class=" col-md-2 d-flex justify-content-end">
-                                    <output id="outAvaliacaoSecondary" >50</output><span>%<span>
-                                </div>
-                            </div>
-
-                            <div class="legend row">
-                                <div class="d-flex col-md-12 justify-content-between">
-                                    <p>Provas</p>
-                                    <p>Atividades</p>
-                                </div>
-                            </div>
-                            
-                         
-        
                             {{-- TODO --}}
                             {{-- tentar fazer texto aparecer abaixo do range --}}
-                            <datalist id="tickmarks" style="--list-length: 9;">
+                            {{-- <datalist id="tickmarks" style="--list-length: 9;">
                                 <option value="0">1</option>
                                 <option value="1">2</option>
                                 <option value="2">A</option>
@@ -237,9 +180,9 @@
                                 <option value="4">C</option>
                                 <option value="5">C</option>
                                 <option value="6">C</option>
-                            </datalist>
+                            </datalist> --}}
                             @error('classificacao')
-                            <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -360,11 +303,39 @@
     </div>
 
 @endsection
+
+@php
+    $classificationsJson = json_encode($classifications);
+@endphp
+
 @section('scripts-bottom')
 <script>
-    function handleInput(outElem, outElemSecondary, value){
-        outElem.value = value;
-        outElemSecondary.value = 100-value
+    
+    let classifications = JSON.parse('{!! $classificationsJson !!}');
+
+    console.log(classifications);
+   
+
+    function handleInput(value, element) {
+            console.log(value)
+            const sliderContainer = element.parentNode
+            const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
+            const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
+            
+            leftOutput.innerText = value
+            rightOutput.innerText = 100 - value
+        }
+
+    const sliderId = document.querySelector('#classification-slider')
+    const leftOutputs = document.querySelectorAll('#left-output-value')
+    const rightOutputs = document.querySelectorAll('#right-output-value')
+
+    for(leftOutput of leftOutputs) {
+        leftOutput.innerText = sliderId.value
+    }
+
+    for(rightOutput of rightOutputs) {
+        rightOutput.innerText = sliderId.value
     }
 
     $(function () {
@@ -372,4 +343,10 @@
     })
 
 </script>
+
+<style scoped>
+    .scrollClass{
+        width: 300px !important;
+    }
+</style>
 @endsection

@@ -15,6 +15,7 @@ class ClassificationDiscipline extends Model
      * @var string
      */
     protected $table = 'classifications_disciplines';
+    protected $primaryKey = 'classification_id';
 
     /**
      * The attributes that are mass assignable.
