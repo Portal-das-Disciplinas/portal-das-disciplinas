@@ -117,13 +117,13 @@
                                 </div>
                                 <div style="display: flex; justify-content: space-between;">
                                     <div>
-                                        <div><span id="left-output-value"></span>%</div>
+                                        <div><span>{{$discipline->getClassificationsValues($classification->id)}}</span>%</div>
                                     </div>
                                     <div class="slider-container">
-                                        <input id="classification-slider" type="range" min="0" max="100" value="50" step='5' class="classification-slider scrollClass" oninput="handleInput(this.value, this)">
+                                        <input id="classification-slider" name="classification-{{ $classification->id }}"  type="range" min="0" max="100" value="{{$discipline->getClassificationsValues($classification->id)}}" step='5' class="classification-slider scrollClass classification-{{$classification->id}}" oninput="handleInput(this.value, this)">
                                     </div>
                                     <div>
-                                        <div><span id="right-output-value"></span>%</div>
+                                        <div><span>{{100-$discipline->getClassificationsValues($classification->id)}}</span>%</div>
                                     </div>
                                 </div>
                                 <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
@@ -272,11 +272,17 @@
     </div>
 </div>
 
+
+@php
+    $classificationsJson = json_encode($classifications);
+@endphp
+
 @endsection
 @section('scripts-bottom')
 <script>
+    let classifications = JSON.parse('{!! $classificationsJson !!}');
+
     function handleInput(value, element) {
-            console.log(value)
             const sliderContainer = element.parentNode
             const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
             const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
