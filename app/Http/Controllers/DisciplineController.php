@@ -140,13 +140,13 @@ class DisciplineController extends Controller
             //     ClassificationID::AVALIACAO => "classificacao-avaliacao",
             // ];
 
-            $classificationsMap = Classification::all()->pluck('name', 'id')->toArray();
+            $classificationsMap = Classification::all()->pluck('id')->toArray();
 
-            foreach ($classificationsMap as $classificationId => $inputValue) {
+            foreach ($classificationsMap as $classificationId) {
                 ClassificationDiscipline::create([
                     'classification_id' => $classificationId,
                     'discipline_id' => $discipline->id,
-                    'value' => $request->input($inputValue) == null ? 0 : $request->input($inputValue)
+                    'value' => $request->input('classification-' . $classificationId) == null ? 0 : $request->input('classification-' . $classificationId)
                 ]);
             }
 
@@ -331,11 +331,11 @@ class DisciplineController extends Controller
                 ]);
             }
 
-            $classificationsMap = Classification::all()->pluck('name', 'id')->toArray();
-            foreach ($classificationsMap as $classificationId => $inputValue) {
+            $classificationsMap = Classification::all()->pluck('id')->toArray();
+            foreach ($classificationsMap as $classificationId) {
                 ClassificationDiscipline::updateOrCreate(
-                    ['classification_id' => $classificationId, 'discipline_id' => $discipline->id],
-                    ['value' => $request->input($inputValue)]
+                    ['discipline_id' => $discipline->id, 'classification_id' => $classificationId],
+                    ['value' => $request->input('classification-' . $classificationId)]
                 );
             }
 

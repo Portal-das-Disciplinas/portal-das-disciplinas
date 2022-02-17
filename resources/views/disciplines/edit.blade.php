@@ -120,7 +120,7 @@
                                         <div><span id="left-output-value"></span>%</div>
                                     </div>
                                     <div class="slider-container">
-                                        <input id="classification-slider"  type="range" min="0" max="100" value="{{$discipline->getClassificationsValues($classification->id)}}" step='5' class="classification-slider scrollClass classificacao-{{$classification->id}}" name="{{ $classification->id }}" oninput="handleInput(this.value, this)">
+                                        <input id="classification-slider" name="classification-{{ $classification->id }}"  type="range" min="0" max="100" value="{{$discipline->getClassificationsValues($classification->id)}}" step='5' class="classification-slider scrollClass classification-{{$classification->id}}" oninput="handleInput(this.value, this)">
                                     </div>
                                     <div>
                                         <div><span id="right-output-value"></span>%</div>
