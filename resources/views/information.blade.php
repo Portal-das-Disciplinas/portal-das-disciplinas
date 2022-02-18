@@ -42,7 +42,8 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('name', 'Eugênio Paccelli')
                     @slot('profession', 'Docente')
                     @slot('occupation', 'disciplina')
-                    @slot('image', 'img/eugenioq.jpeg')
+                    @slot('email', 'eugenio@imd.ufrn.br')
+                    @slot('lattes', 'http://lattes.cnpq.br/6494297323272628')
                 @endcomponent
             </div>
             
@@ -77,6 +78,10 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('lattes', 'http://lattes.cnpq.br/1636913073567133')
                 @endcomponent
 
+<<<<<<< HEAD
+=======
+                
+>>>>>>> development
 
             </div>
         </div>   
