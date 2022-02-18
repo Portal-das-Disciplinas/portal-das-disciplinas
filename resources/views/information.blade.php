@@ -42,6 +42,8 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('name', 'Docente')
                     @slot('profession', 'Docente')
                     @slot('occupation', 'disciplina')
+                    @slot('email', 'eugenio@imd.ufrn.br')
+                    @slot('lattes', 'http://lattes.cnpq.br/6494297323272628')
                 @endcomponent
             </div>
             
