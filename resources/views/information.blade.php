@@ -39,16 +39,18 @@ Sobre nós - Portal das Disciplinas IMD
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
             <div class="row">
                 @component('components.info_contributors')
-                    @slot('name', 'Docente')
+                    @slot('name', 'Eugênio Paccelli')
                     @slot('profession', 'Docente')
                     @slot('occupation', 'disciplina')
+                    @slot('image', 'img/eugenioq.jpeg')
                 @endcomponent
             </div>
             
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @component('components.info_contributors')
-                    @slot('name', 'Henry')
+                    @slot('name', 'Henry Medeiros')
                     @slot('profession', 'Desenvolvedor')
+                    @slot('image', 'img/henryq.jpg')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'front-end')
                     @slot('email', 'henrymedeiros77@gmail.com')
@@ -56,26 +58,25 @@ Sobre nós - Portal das Disciplinas IMD
                 @endcomponent
 
                 @component('components.info_contributors')
-                    @slot('name', 'Pedro')
+                    @slot('name', 'Pedro Gabriel')
                     @slot('profession', 'Desenvolvedor')
+                    @slot('image', 'img/pedro.jpeg')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'back-end')
-                    
+                    @slot('email', 'henrymedeiros77@gmail.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/8217345027440939')
                 @endcomponent
 
                 @component('components.info_contributors')
-                    @slot('name', 'IMD Dev')
+                    @slot('name', 'Cristian Soares')
                     @slot('profession', 'Desenvolvedor')
+                    @slot('image', 'img/cristianq.jpg')
                     @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
+                    @slot('occupation', 'front-end')
+                    @slot('email', 'criricyt@gmail.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/1636913073567133')
                 @endcomponent
 
-                @component('components.info_contributors')
-                    @slot('name', 'IMD Dev')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
-                @endcomponent
 
             </div>
         </div>   
