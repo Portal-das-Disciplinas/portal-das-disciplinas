@@ -39,15 +39,11 @@
             @endguest
           </div>
 
-<<<<<<< HEAD
-         
-=======
         
           
 
 
           
->>>>>>> development
 
           <label class="label-btn d-none">
             <i class="fas fa-bars" id='navbar_btn' onclick="move(true)"></i>

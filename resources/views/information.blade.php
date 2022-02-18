@@ -55,7 +55,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('occupation', 'front-end')
                     @slot('email', 'henrymedeiros77@gmail.com')
                     @slot('lattes', 'http://lattes.cnpq.br/9829493020424534')
-                @endcomponents
+                @endcomponent
 
                 @component('components.info_contributors')
                     @slot('name', 'Pedro Gabriel')
@@ -114,14 +114,6 @@ Sobre nós - Portal das Disciplinas IMD
             <p> 12/12/2021 - 12/12/2021</p>
         </div>
     </div>
-   
-    
-    
-        
-        
-
-
-        
     
 </div>
 @endsection
