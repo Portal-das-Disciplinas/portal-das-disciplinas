@@ -39,7 +39,7 @@ Sobre nós - Portal das Disciplinas IMD
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
             <div class="row">
                 @component('components.info_contributors')
-                    @slot('name', 'Docente')
+                    @slot('name', 'Eugênio Paccelli')
                     @slot('profession', 'Docente')
                     @slot('occupation', 'disciplina')
                     @slot('email', 'eugenio@imd.ufrn.br')
@@ -114,14 +114,6 @@ Sobre nós - Portal das Disciplinas IMD
             <p> 12/12/2021 - 12/12/2021</p>
         </div>
     </div>
-   
-    
-    
-        
-        
-
-
-        
     
 </div>
 @endsection
