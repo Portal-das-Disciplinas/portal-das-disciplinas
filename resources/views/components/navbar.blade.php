@@ -88,8 +88,4 @@
     </nav>
 </header>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> development
 
