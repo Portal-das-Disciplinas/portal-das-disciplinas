@@ -61,7 +61,7 @@ Sobre nós - Portal das Disciplinas IMD
                 @component('components.info_contributors')
                     @slot('name', 'Pedro Gabriel')
                     @slot('profession', 'Desenvolvedor')
-                    @slot('image', 'img/pedro.jpeg')
+                    @slot('image', 'img/pedroq.jpg')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'back-end')
                     @slot('email', 'pedrogab96@gmail.com')
