@@ -39,11 +39,11 @@
             @endguest
           </div>
 
-          <div class="mobile-menu">
-            <div class = "line1"></div>
-            <div class = "line2"></div>
-            <div class = "line3"></div>
-          </div>
+        
+          
+
+
+          
 
           <label class="label-btn d-none">
             <i class="fas fa-bars" id='navbar_btn' onclick="move(true)"></i>

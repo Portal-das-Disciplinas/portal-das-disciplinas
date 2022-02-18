@@ -15,7 +15,7 @@ Sobre nós - Portal das Disciplinas IMD
         <div class="col-md-5 p-text">
                 <div>
                     <h2>Nossa equipe</h2>
-                    <p class="text-justify mb-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias eveniet temporibus dolorum facere ullam repellat doloribus architecto tempore unde quae? Tempore cumque dolor velit enim aliquam laboriosam, dignissimos doloremque odio? Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <p class="text-justify mb-3">Membros responsáveis por este portal.</p>
                 </div>
 
                 <div>
