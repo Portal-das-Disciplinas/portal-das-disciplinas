@@ -55,7 +55,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('occupation', 'front-end')
                     @slot('email', 'henrymedeiros77@gmail.com')
                     @slot('lattes', 'http://lattes.cnpq.br/9829493020424534')
-                @endcomponent
+                @endcomponents
 
                 @component('components.info_contributors')
                     @slot('name', 'Pedro Gabriel')
@@ -63,7 +63,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('image', 'img/pedro.jpeg')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'back-end')
-                    @slot('email', 'henrymedeiros77@gmail.com')
+                    @slot('email', 'pedrogab96@gmail.com')
                     @slot('lattes', 'http://lattes.cnpq.br/8217345027440939')
                 @endcomponent
 

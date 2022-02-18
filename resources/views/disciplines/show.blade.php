@@ -280,7 +280,7 @@
                 <div class="wrapper-teacher-info">
                     <div class="text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
                     <div class="text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
-                    <div class="text-justify px-lg-3"> <a href="{{$discipline->professor->public_link}}" target="_blank"> Link publico</a> </div>
+                    <div class="text-justify px-lg-3"> <a href="{{$discipline->professor->public_link}}" target="_blank"> Página do professor</a> </div>
                 </div>
                 
             </div>
