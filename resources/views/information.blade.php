@@ -47,7 +47,7 @@ Sobre nós - Portal das Disciplinas IMD
             
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @component('components.info_contributors')
-                    @slot('name', 'Henry')
+                    @slot('name', 'Henry Medeiros')
                     @slot('profession', 'Desenvolvedor')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'front-end')
@@ -56,26 +56,24 @@ Sobre nós - Portal das Disciplinas IMD
                 @endcomponent
 
                 @component('components.info_contributors')
-                    @slot('name', 'Pedro')
+                    @slot('name', 'Pedro Gabriel')
                     @slot('profession', 'Desenvolvedor')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'back-end')
-                    
+                    @slot('email', 'pedrogab96@gmail.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/8217345027440939')
                 @endcomponent
 
                 @component('components.info_contributors')
-                    @slot('name', 'IMD Dev')
+                    @slot('name', 'Cristian Soares')
                     @slot('profession', 'Desenvolvedor')
                     @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
+                    @slot('occupation', 'front-end')
+                    @slot('email', 'criricyt@gmail.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/1636913073567133')
                 @endcomponent
 
-                @component('components.info_contributors')
-                    @slot('name', 'IMD Dev')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
-                @endcomponent
+                
 
             </div>
         </div>   
