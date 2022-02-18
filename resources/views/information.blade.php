@@ -41,7 +41,7 @@ Sobre nós - Portal das Disciplinas IMD
                 @component('components.info_contributors')
                     @slot('name', 'Eugênio Paccelli')
                     @slot('profession', 'Docente')
-                    @slot('occupation', 'disciplina')
+                    @slot('occupation', 'Coordenador')
                     @slot('email', 'eugenio@imd.ufrn.br')
                     @slot('lattes', 'http://lattes.cnpq.br/6494297323272628')
                 @endcomponent
