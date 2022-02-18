@@ -78,10 +78,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('lattes', 'http://lattes.cnpq.br/1636913073567133')
                 @endcomponent
 
-<<<<<<< HEAD
-=======
                 
->>>>>>> development
 
             </div>
         </div>   
