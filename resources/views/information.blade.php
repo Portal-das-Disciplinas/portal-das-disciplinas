@@ -44,6 +44,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('occupation', 'disciplina')
                     @slot('email', 'eugenio@imd.ufrn.br')
                     @slot('lattes', 'http://lattes.cnpq.br/6494297323272628')
+                    @slot('image', 'img/eugenioq.jpeg')
                 @endcomponent
             </div>
             
@@ -51,6 +52,7 @@ Sobre nós - Portal das Disciplinas IMD
                 @component('components.info_contributors')
                     @slot('name', 'Henry Medeiros')
                     @slot('profession', 'Desenvolvedor')
+                    @slot('image', 'img/henryq.jpg')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'front-end')
                     @slot('email', 'henrymedeiros77@gmail.com')
@@ -60,6 +62,7 @@ Sobre nós - Portal das Disciplinas IMD
                 @component('components.info_contributors')
                     @slot('name', 'Pedro Gabriel')
                     @slot('profession', 'Desenvolvedor')
+                    @slot('image', 'img/pedro.jpeg')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'back-end')
                     @slot('email', 'pedrogab96@gmail.com')
@@ -69,6 +72,7 @@ Sobre nós - Portal das Disciplinas IMD
                 @component('components.info_contributors')
                     @slot('name', 'Cristian Soares')
                     @slot('profession', 'Desenvolvedor')
+                    @slot('image', 'img/cristianq.jpg')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'front-end')
                     @slot('email', 'criricyt@gmail.com')
