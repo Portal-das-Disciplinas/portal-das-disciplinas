@@ -163,8 +163,8 @@
                     
                     <div class="row ">
                         <div class="col-md-12 d-flex justify-content-between mt-2">
-                            <span ><h4 style='margin-bottom: 0; color: #4CB944'>{{ $classification->type_a ?? '' }}</h4></span>
-                            <span ><h4 style='margin-bottom: 0; color: #1155CC'>{{ $classification->type_b ?? '' }}</h4></span>
+                            <span ><h4 style='margin-bottom: 0; color: #1155CC'>{{ $classification->type_a ?? '' }}</h4></span>
+                            <span ><h4 style='margin-bottom: 0; color: #4CB944'>{{ $classification->type_b ?? '' }}</h4></span>
                         </div>
                     </div>
                 @endforeach
