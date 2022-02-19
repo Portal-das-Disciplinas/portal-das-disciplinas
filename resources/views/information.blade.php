@@ -75,6 +75,24 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('lattes', 'http://lattes.cnpq.br/1636913073567133')
                 @endcomponent
 
+                @component('components.info_contributors')
+                    @slot('name', 'Álvaro Ferreira')
+                    @slot('profession', 'Desenvolvedor')
+                    @slot('alt_image', 'foto-dev')
+                    @slot('occupation', 'back-end')
+                    @slot('email', 'alvarofepipa@gmail.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/2537818674954146')
+                @endcomponent
+
+                @component('components.info_contributors')
+                    @slot('name', 'Victor Brandão')
+                    @slot('profession', 'Desenvolvedor')
+                    @slot('alt_image', 'foto-dev')
+                    @slot('occupation', 'back-end')
+                    @slot('email', 'victor_brandao@outlook.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/5872826755197239')
+                @endcomponent
+
                 
 
             </div>
