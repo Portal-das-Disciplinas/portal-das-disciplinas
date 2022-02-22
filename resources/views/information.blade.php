@@ -93,6 +93,15 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('lattes', 'http://lattes.cnpq.br/5872826755197239')
                 @endcomponent
 
+                @component('components.info_contributors')
+                    @slot('name', 'Arthur Sérvulo')
+                    @slot('profession', 'Desenvolvedor')
+                    @slot('alt_image', 'foto-dev')
+                    @slot('occupation', 'back-end')
+                    @slot('email', 'arthurservulo7@gmail.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/8112883352153781')
+                @endcomponent
+
                 
 
             </div>
