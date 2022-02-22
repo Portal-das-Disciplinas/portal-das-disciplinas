@@ -102,6 +102,7 @@ Sobre nós - Portal das Disciplinas IMD
                 @component('components.info_contributors')
                     @slot('name', 'Arthur Sérvulo')
                     @slot('profession', 'Desenvolvedor')
+                    @slot('image', 'img/arthur.jpeg')
                     @slot('alt_image', 'foto-dev')
                     @slot('occupation', 'back-end')
                     @slot('email', 'arthurservulo7@gmail.com')
