@@ -174,14 +174,28 @@ h3 {
     color: var(--main-md-color);
 }
 
-.mobile-menu {
-    display: none;
-    cursor: pointer;
-}
+@media screen and (max-width: 576px) {
+    h1 {
+        font-size: calc(3.5rem * 0.65);
+    }
+    h2 {
+        margin-top: 0.75rem;
+        font-size: calc(3rem * 0.65);
+    }
+    body {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+    .display-title {
+        font-size: calc(4.3rem * 0.55);
+    }
 
-.mobile-menu div {
-    width: 26px;
-    height: 2px;
-    background: #3490dc;
-    margin: 6px;
+    .p-text {
+        font-size: calc(1.6rem * 0.75);
+        line-height: calc(1.8 * 0.75);
+        margin-bottom: calc(1rem * 0.75);
+    }
+    .container {
+        margin-top: 0;
+    }
 }

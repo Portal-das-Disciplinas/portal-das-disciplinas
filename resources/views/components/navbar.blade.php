@@ -9,7 +9,7 @@
 <header class="w-100 bg-light sticky-top shadow " style='border-top: 8px solid #014C8C'>
     
     <nav class="container mt-0">
-      <div class="row">
+      <div class="row px-3">
 
         <div class=" d-flex align-items-center justify-content-between w-100" id="navbarNav" style="height:80px">
           <a class="navbar-brand mr-0" href="{{route('index')}}">
@@ -89,3 +89,18 @@
 </header>
 
 
+<style scoped>
+
+/* Media Queries */
+
+
+
+@media screen and (max-width:576px){
+   .logo-navbar{
+    width:84px;
+   }
+}
+
+
+
+</style>

@@ -108,9 +108,9 @@ Sobre nós - Portal das Disciplinas IMD
         </div>   
     </div>
 
-    <h4 class='mb-3'>Colaboradores Anteriores</h4>
+    <h4 class='mb-3' hidden>Colaboradores Anteriores</h4>
     <hr>
-    <div class="row ">
+    <div class="row " hidden>
         
         <div class="col-md-3 d-flex flex-column align-items-center">
             
