@@ -1,39 +1,36 @@
 
 <style>
+  header{
+    /*border-top: 2px solid #014C8C;*/
+    
+  }
   .user-icon:hover{
     color:#014C8C;
     cursor:pointer;
   }
+
+  .logo-navbar{
+    height: 40px;
+    outline:none;
+  }
+  
 </style>
 
-<header class="w-100 bg-light sticky-top shadow " style='border-top: 8px solid #014C8C'>
-    
+<header class="w-100 bg-light sticky-top shadow">
     <nav class="container mt-0">
       <div class="row">
-
-        <div class=" d-flex align-items-center justify-content-between w-100" id="navbarNav" style="height:80px">
+        <div class="d-flex align-items-center justify-content-between w-100" id="navbarNav" style="height:80px">
           <a class="navbar-brand mr-0" href="{{route('index')}}">
-            <img src="{{asset('img/imdLogo.png')}}"  class='logo-navbar' alt="Logo do IMD">
+            <img src="{{asset('img/new-imd-logo.svg')}}"  class='logo-navbar' alt="Logo do IMD">
           </a>
-          {{-- <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#">Sobre</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">FAQ</a>
-            </li>
-          </ul> --}}
 
           <div class="ml-auto d-flex align-items-center nav-list">
             
             <a href="{{route("index")}}" class='nav-link grey-link'>Inicio</a>
             <a href="{{route('information')}}" class='nav-link grey-link'>Sobre & Colabore</a>
-            
-            
-
             @guest
                 @if (Route::has('login'))
-                        <a class="btn btn-primary ml-3" href="{{ route('login') }}">{{ __('Entrar') }}</a>
+                        <a class="btn btn-primary ml-3" href="{{ route('login') }}">{{ __('Acesso Portal') }}</a>
                 @endif
             @else   
             @endguest
@@ -80,11 +77,6 @@
         </div>
         
       </div>
-      
-
-
-
-
     </nav>
 </header>
 
