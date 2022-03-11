@@ -1,30 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Open+Sans:wght@400;500&family=Vollkorn:wght@400;700&display=swap');
+
 :root {
     --main-bg-color: #0c3f7c;
     --main-md-color: #acb2b8;
     --main-title-bg-color: white;
     --main-text-color: black;
+
 }
+
+/*html{
+    font-size: 62.5%;
+}*/
 /*
 body {
     background: -webkit-linear-gradient(left, rgba(0,0,0,0) 50%,rgba(0,0,0,0.4) 100%);
     background-color: var(--main-bg-color);
 }*/
 
-.label-btn {
-    margin: 0;
-}
-
-#navbar_btn {
-    font-size: 20px;
-    padding: 20px 16px;
-}
-
-.grey-link {
-    color: #6b7280;
-    font-size: 1rem !important;
-    font-weight: 400;
-}
 
 .container {
     margin-top: 40px;
