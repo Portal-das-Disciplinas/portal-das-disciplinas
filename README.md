@@ -30,7 +30,6 @@ Para rodar o projeto é necessário instalar os requisitos abaixo:
 4. **Rode os comandos abaixo no diretorio do projeto**
 
 
-
     php artisan key:generate
 
 Logo após isso, vamos criar as tabelas do banco. Execute esse comando no prompt
