@@ -152,16 +152,7 @@ nav a:hover::after{
 
 .menu-section.on nav .dropdown .user-icon{
   display: flex;
-  padding: 24px;
-  margin: 0 !important;
-  
 }
-
-.menu-section.on nav .dropdown .user-icon p{
-  text-decoration: underline;
-}
-
-
 
 
 @media only screen and (max-width:768px){
@@ -184,8 +175,14 @@ nav a:hover::after{
     display: none;
   }
   .menu-section.on nav .dropdown .user-icon .dropdown-text{
-    display: block;
+    display: block !important;
     font-size: 1.8rem;
+  }
+
+  .menu-section.on nav .dropdown .user-icon{
+    padding: 24px;
+    margin: 0 !important;
+  
   }
   
 }
