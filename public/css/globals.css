@@ -60,7 +60,7 @@ h3 {
     line-height: 3rem;
 }
 
-.form-control,.btn{
+.form-control,.btn,.tooltip{
     font-size: 1.8rem;
 }
 
@@ -97,6 +97,14 @@ h6 {
     border-bottom: 3px solid var(--primary-color);
     margin: 3.5rem 0;
 }
+
+.tooltip-inner {
+    min-width: 200px;
+    max-width: 100%; 
+}
+
+
+/* RESPONSIVE */
 
 @media only all and (max-width:768px){
     html{

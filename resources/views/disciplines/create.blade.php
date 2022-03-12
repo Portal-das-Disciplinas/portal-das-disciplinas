@@ -107,18 +107,18 @@
                 </div>
 
 
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         <div class="d-flex">
                             <label class="">Classificações</label>
-                            <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         
                         <div class="form-group font-weight-normal">
                             @foreach ($classifications as $classification)
 
                         <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
-                        <div style="width: 500px" class="classification-input-component" id='1'>
+                        <div class="classification-input-component" id='1'>
                             <div>
                                 <h4 style="text-align: center;">{{$classification->name}}</h4>
                             </div>
@@ -192,7 +192,7 @@
                             <label class="" for="media-trailer">
                                 Trailer da disciplina
                             </label>
-                            <p data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você." ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="input-group">
                             <input type="text"
@@ -213,7 +213,7 @@
                             <label class="" for="media-video">
                                 Vídeo
                             </label>
-                            <p data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="input-group">
                             <input type="text"
@@ -233,7 +233,7 @@
                             <label class="" for="media-podcast">
                                 Podcast
                             </label>
-                            <p data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="input-group">
                             <input type="text"
@@ -253,7 +253,7 @@
                             <label class="" for="media-material">
                                 Materiais
                             </label>
-                            <p data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="input-group">
                             <input type="text"
