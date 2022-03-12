@@ -115,7 +115,8 @@
                         </div>
                         
                         <div class="form-group font-weight-normal">
-                            @foreach ($classifications as $classification)
+                        @if (count($classifications) > 0)
+                        @foreach ($classifications as $classification)
 
                         <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
                         <div class="classification-input-component" id='1'>
@@ -171,6 +172,9 @@
                                 </div> -->
                                 <!-- FIM DA ANTIGA BARRA DE AJUSTE DE PORCENTAGEM -->
                             @endforeach
+                        @endif
+                        <p>Não há classificações cadastradas.</p>
+                            
 
                             {{-- TODO --}}
                             {{-- tentar fazer texto aparecer abaixo do range --}}

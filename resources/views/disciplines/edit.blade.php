@@ -120,7 +120,7 @@
                                 <label class="font-weight-bold">Classificações</label> 
                                 <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" >Ajuda <i class="far fa-question-circle" ></i></p>
                             </div>
-
+                        @if (count($classifications) > 0)
                             @foreach ( $classifications as $classification)
                             <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
                             <div class="classification-input-component" id='1'>
@@ -176,6 +176,8 @@
                                     </div>
                                 </div> -->
                             @endforeach
+                        @endif
+                        <p>Não há classificações cadastradas.</p>    
 
         
                             {{-- TODO --}}
