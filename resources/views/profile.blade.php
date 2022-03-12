@@ -1,9 +1,12 @@
 @extends('layouts.app')
+@section('styles-head')
+<link rel="stylesheet" href="{{asset('css/profile.css')}}">
+@endsection
 
 @section('content')  
 
 
-<div class="container">
+<div class="profile-container container remove-margin-bottom">
   <div class="card">
     @if (session('success'))
       <div class="alert alert-success border-left-success" role="alert">
@@ -11,8 +14,9 @@
       </div>
     @endif
     <div class="card-header">
-      <a class="btn btn-primary" href="{{route('home')}}">Inicio</a>
-      <p class="h4 text-center">Perfil</p>
+
+      <!-- <a class="btn btn-primary" href="{{route('home')}}">Inicio</a>-->
+      <p class="text-center">Perfil</p>
         
     </div>
     
@@ -82,16 +86,20 @@
             @enderror
           </div>
 
-          <div class="form-group col-6 pb-2">
+          <div class="form-group col-12 pb-2">
             <label for="current_password">Senha atual</label>
             <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name='current_password'>
             @error('current_password')
               <div class="invalid-feedback">{{$message}}</div>
             @enderror
           </div>
+          
+            <button type="submit" class="btn col-12">Atualizar</button>
+          
         </div>
         
-        <button type="submit" class="btn btn-primary">Atualizar</button>
+        
+        
       </form>
     </div>
     {{-- {{dd($errors->all())}} --}}

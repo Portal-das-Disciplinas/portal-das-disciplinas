@@ -1,0 +1,11 @@
+.profile-container{
+    display:flex;
+    min-height: 65vh;
+    align-items: center;
+    max-width: 600px;
+}
+
+.btn{
+    background-color: var(--primary-color);
+    color: var(--on-primary)
+}

@@ -59,6 +59,12 @@ h3 {
     font-size: 2rem;
     line-height: 3rem;
 }
+
+.form-control,.btn{
+    font-size: 1.8rem;
+}
+
+
 /* END FONT-SIZE */
 
 /* FONT-WEIGHT */

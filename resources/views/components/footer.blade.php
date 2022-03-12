@@ -54,6 +54,8 @@
 .footer{
     height: auto;
     background-color: white;
+    width: 100vw;
+    bottom: 0;
 }
 
 p{

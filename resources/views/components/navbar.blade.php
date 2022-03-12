@@ -1,9 +1,4 @@
 
-<style>
-
-
-</style>
-
   <header class="sticky-top shadow">
       <div class="menu-container container d-flex mt-0 justify-content-between align-items-center">
 
@@ -41,7 +36,7 @@
                               <i class="fas fa-caret-down"></i>
                           </div>
                           <div class="user-dropdown dropdown-menu">
-                              <h6 class="dropdown-header">Olá,
+                              <h4 class="dropdown-header smaller-p">Olá,
                                   <span>{{ Str::words( Auth::user()->name, 2, '' ) }}</span>
                                   <h6>
                                       <div class="dropdown-divider"></div>
