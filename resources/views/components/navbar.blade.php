@@ -31,7 +31,8 @@
                   </label>
                   @auth
                       <div class="dropdown show">
-                          <div class="user-icon d-flex align-items-center ml-3" data-toggle="dropdown">
+                          <div class="user-icon align-items-center ml-3" data-toggle="dropdown">
+                              <p class='dropdown-text mr-3'> Opções de usuário</p>
                               <i class="far fa-user-circle mr-3"></i>
                               <i class="fas fa-caret-down"></i>
                           </div>

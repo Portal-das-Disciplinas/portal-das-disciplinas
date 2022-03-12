@@ -100,7 +100,7 @@ nav a:hover::after{
 }
 
 .user-icon:hover {
-    color: #014C8C;
+    color: var(--secondary-color);
     cursor: pointer;
 }
 
@@ -146,10 +146,21 @@ nav a:hover::after{
   background-color: var(--secondary-color);
 }
 .menu-section.on nav .dropdown{
-  margin: 10px 6px; 
   text-align: center;
   color: white;
 }
+
+.menu-section.on nav .dropdown .user-icon{
+  display: flex;
+  padding: 24px;
+  margin: 0 !important;
+  
+}
+
+.menu-section.on nav .dropdown .user-icon p{
+  text-decoration: underline;
+}
+
 
 
 
@@ -168,4 +179,13 @@ nav a:hover::after{
   .menu-container{
     padding: 0;
   }
+
+  .menu-section.on nav .dropdown .user-icon .fa-user-circle{
+    display: none;
+  }
+  .menu-section.on nav .dropdown .user-icon .dropdown-text{
+    display: block;
+    font-size: 1.8rem;
+  }
+  
 }
