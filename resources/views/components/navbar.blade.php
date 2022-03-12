@@ -26,14 +26,32 @@
       color: rgb(32, 32, 32);
   }
 
+ /* nav a::after{
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: var(--secondary-color);
+    display: block;
+    transition: 0.5s;
+}
+
+
+nav a:hover::after{
+    width: 100%;
+}*/
+
   .login-btn {
       margin-left: 1.5rem;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1.5rem;
       border-radius: 100px;
       outline: none;
-      background-color: var(--main-bg-color);
-      color: #fff;
+      background-color: var(--primary-color);
+      color: var(--on-primary);
       border: none;
+  }
+
+  .login-btn::after{
+    display: none;
   }
 
   .login-btn:hover {
@@ -66,7 +84,7 @@
       display: block;
       height: calc(var(--menu-size) / 10);
       width: var(--menu-size);
-      background-color: #0c3f7c;;
+      background-color: var(--secondary-color);
       border-radius: 5px;
       transition: all .3s linear;
   }

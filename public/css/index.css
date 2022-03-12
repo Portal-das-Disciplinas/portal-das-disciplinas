@@ -5,17 +5,28 @@
     --main-md-color: #acb2b8;
     --main-title-bg-color: white;
     --main-text-color: black;
+    
+    --primary-color: #0553A1;
+    --primary-color-darker: #03396E;
+    --primary-color-lighter: #3069A1;
+
+    --secondary-color: #FFBF00;
+    --secondary-color-darker: #03396E;
+    --secondary-color-lighter: #3069A1;
+
+    --on-secondary: rgb(32, 32, 32);
+    --on-primary: #fff;
+    /* SECONDARYS: #DAFF7D, FFBF00 , FFBF00, #F3CA40, #44FFD2*/
 
 }
 
 html{
     font-size: 62.5%;
 }
-/*
-body {
-    background: -webkit-linear-gradient(left, rgba(0,0,0,0) 50%,rgba(0,0,0,0.4) 100%);
-    background-color: var(--main-bg-color);
-}*/
+
+body{
+    font-weight: 500;
+}
 
 .hero-section {
     height: calc(100vh - 75px);
@@ -25,7 +36,7 @@ body {
 }
 
 .disciplines{
-    background-color: var(--main-bg-color);
+    background-color: var(--primary-color);
     min-height: calc(100vh - 75px);
 }
 
@@ -49,7 +60,10 @@ body {
 
 .card-bottom-container .view-more-btn{
     border-radius:100px;
-    /*background-color: var(--main-bg-color);*/
+    background-color: var(--secondary-color);
+    color: var(--on-secondary);
+    font-weight: 500;
+    border: 0;
 }
 
 .title-subject {
@@ -149,6 +163,15 @@ h3 {
     margin-top: calc(1rem * 7);
 }
 
+
+.info-portal {
+    color: white;
+}
+
+.span-info {
+    color: var(--main-md-color);
+}
+
 .wrapper {
     height: calc(100vh - 160px);
 }
@@ -162,15 +185,6 @@ h3 {
     background-color: #f6f6f8;
     color: #212529;
 }
-
-.info-portal {
-    color: white;
-}
-
-.span-info {
-    color: var(--main-md-color);
-}
-
 
 
 @media only all and (max-width:768px){
