@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('styles-head')
+<link rel="stylesheet" href="{{asset('css/index.css')}}">
+@endsection
 @section('content')
 
 <section class='hero-section'>

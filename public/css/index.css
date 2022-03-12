@@ -133,16 +133,13 @@ h3 {
     text-transform: capitalize;
 }
 
+
+
 .smaller-p{
     font-size: 1.6rem;
     line-height: 2.6rem;
 }
 
-.p-text {
-    font-size: 1.8rem;
-    line-height: 2.8rem;
-    margin-bottom: 1rem;
-}
 
 .larger-p {
     font-size: 2rem;

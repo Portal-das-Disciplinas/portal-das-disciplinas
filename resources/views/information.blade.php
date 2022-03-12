@@ -15,10 +15,10 @@ Sobre nós - Portal das Disciplinas IMD
 <div class='mt-6 container mb-5'  id="top-container" >
     <div class='row'>
         <div class="col-md-5 p-text">
-                <div>
+                <section class='our-team'>
                     <h2>Nossa equipe</h2>
-                    <p class="text-justify mb-3">Membros responsáveis por este portal.</p>
-                </div>
+                    <p class="text-justify mb-3">Veja ao lado os membros responsáveis por este portal.</p>
+                </section>
 
                 <div>
                     <h2>Colabore</h2>
@@ -117,39 +117,41 @@ Sobre nós - Portal das Disciplinas IMD
         </div>   
     </div>
 
-    <h4 class='mb-3'>Colaboradores Anteriores</h4>
-    <hr>
-    <div class="row ">
-        
-        <div class="col-md-3 d-flex flex-column align-items-center">
-            
-            <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
-            <p><strong> Nome do colaborador </strong></p>
-            <p> Descrição </p>
-            <p> 12/12/2021 - 12/12/2021</p>
+    <section>
+        <h3 class='mb-3'>Colaboradores Anteriores</h3>
+        <hr>
+        <div class="row ">
+            <div class="col-md-3 d-flex flex-column align-items-center">
+                
+                <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
+                <p><strong> Nome do colaborador </strong></p>
+                <p> Descrição </p>
+                <p> 12/12/2021 - 12/12/2021</p>
+            </div>
+            <div class="col-md-3 d-flex flex-column align-items-center">
+                
+                <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
+                <p><strong> Nome do colaborador </strong></p>
+                <p> Descrição </p>
+                <p> 12/12/2021 - 12/12/2021</p>
+            </div>
+            <div class="col-md-3 d-flex flex-column align-items-center">
+                
+                <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
+                <p><strong> Nome do colaborador </strong></p>
+                <p> Descrição </p>
+                <p> 12/12/2021 - 12/12/2021</p>
+            </div>
+            <div class="col-md-3 d-flex flex-column align-items-center">
+                
+                <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
+                <p><strong> Nome do colaborador </strong></p>
+                <p> Descrição </p>
+                <p> 12/12/2021 - 12/12/2021</p>
+            </div>
         </div>
-        <div class="col-md-3 d-flex flex-column align-items-center">
-            
-            <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
-            <p><strong> Nome do colaborador </strong></p>
-            <p> Descrição </p>
-            <p> 12/12/2021 - 12/12/2021</p>
-        </div>
-        <div class="col-md-3 d-flex flex-column align-items-center">
-            
-            <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
-            <p><strong> Nome do colaborador </strong></p>
-            <p> Descrição </p>
-            <p> 12/12/2021 - 12/12/2021</p>
-        </div>
-        <div class="col-md-3 d-flex flex-column align-items-center">
-            
-            <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
-            <p><strong> Nome do colaborador </strong></p>
-            <p> Descrição </p>
-            <p> 12/12/2021 - 12/12/2021</p>
-        </div>
-    </div>
+    </section>
+    
     
 </div>
 @endsection
