@@ -11,6 +11,9 @@ Painel de Administração
 @section('content')
 
 <div class="container">
+    <div class="page-title">
+        <h1>Painel de administração</h1>
+    </div>
     <div class="row">
         <div class="col-12 col-sm-6 col-lg-3 mt-2 mb-2">
             <a name="createProfessor" class="btn btn-block btn-primary"

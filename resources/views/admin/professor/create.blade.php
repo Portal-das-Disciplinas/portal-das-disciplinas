@@ -10,7 +10,10 @@ Cadastro de Professor
 @section('content')
 
 <div class="container">
-    <h4 class="text-center m-4">Cadastrar professor</h4>
+    <div class="page-title">
+        <h1>Cadastrar professor</h1>
+    </div>
+    
      <form action="{{route('professores.store')}}" method="post">
         @csrf
         <div class="form-row">

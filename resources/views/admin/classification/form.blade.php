@@ -10,6 +10,9 @@ Cadastro de Professor
 @section('content')
 
 <div class="container">
+    <div class="page-title">
+        <h1>Cadastrar classificação</h1>
+    </div>
     <h4 class="text-center m-4"> {{ isset($edit) ? 'Atualizar' : 'Cadastrar'}} Classificação</h4>
      <form action="{{ isset($edit) ? route('classificacoes.update', $id) :  route('classificacoes.store') }}" method="post">
         @csrf

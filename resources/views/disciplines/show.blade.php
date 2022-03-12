@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-<div class='discipline-banner text-center d-flex align-items-center justify-content-center  text-white'>
+<div class='banner text-center d-flex align-items-center justify-content-center  text-white'>
     <h1>{{ $discipline->name }} - {{ $discipline->code }}</h1>
 </div>
 

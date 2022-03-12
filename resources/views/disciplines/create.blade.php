@@ -9,8 +9,10 @@
 @endsection
 
 @section('content')
-    <div class="container mt-4">
-        <h2 class="mb-4">Cadastro de disciplinas</h2>
+    <div class="container">
+        <div class='page-title'>
+            <h1>Cadastro de disciplinas</h1>
+        </div>
 
         <form action="{{ route("disciplinas.store") }}" method="post">
             @csrf

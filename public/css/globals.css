@@ -92,6 +92,12 @@ h6 {
     min-height: 364px;
 }
 
+.page-title{
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+    margin: 3.5rem 0;
+}
+
 @media only all and (max-width:768px){
     html{
         font-size: 50%;

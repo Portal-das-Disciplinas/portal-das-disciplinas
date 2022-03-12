@@ -1,5 +1,6 @@
 .profile-container{
     display:flex;
+    flex-direction:column;
     min-height: 65vh;
     align-items: center;
     max-width: 600px;
