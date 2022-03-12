@@ -1,4 +1,4 @@
-@import url("public/css/index.css"); /* Using a url */
+
 header {
     /*border-top: 2px solid #014C8C;*/
     width: 100vw;
@@ -18,8 +18,8 @@ nav{
 
 nav a {
     padding: 24px;
+    font-size: 1.8rem;
     text-decoration: none !important;
-    font-size: 16px;
     font-weight: 600;
     color: rgb(32, 32, 32);
 }
@@ -40,7 +40,7 @@ nav a:hover::after{
 
 .login-btn {
     margin-left: 1.5rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1.75rem;
     border-radius: 100px;
     outline: none;
     background-color: var(--primary-color);

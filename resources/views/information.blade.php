@@ -4,15 +4,17 @@
 Sobre nós - Portal das Disciplinas IMD
 @endsection
 
+@section('styles-head')
+<link rel="stylesheet" href="{{asset('css/about.css')}}">
+@endsection
+
 @section('content')
 <!-- Styles -->
-
-
-<div class='discipline-banner text-center d-flex align-items-center justify-content-center '>
+<div class='banner text-center d-flex align-items-center justify-content-center '>
     <h1 class='text-white'>Sobre & Colabore</h1>
 </div>
 
-<div class='mt-6 container mb-5'  id="top-container" >
+<div class='container py-5'  id="top-container" >
     <div class='row'>
         <div class="col-md-5 p-text">
                 <section class='our-team'>
@@ -117,41 +119,42 @@ Sobre nós - Portal das Disciplinas IMD
         </div>   
     </div>
 
+    <!--
     <section>
         <h3 class='mb-3'>Colaboradores Anteriores</h3>
         <hr>
-        <div class="row ">
+        <div class="row mt-5">
             <div class="col-md-3 d-flex flex-column align-items-center">
                 
-                <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
+                <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
                 <p><strong> Nome do colaborador </strong></p>
                 <p> Descrição </p>
                 <p> 12/12/2021 - 12/12/2021</p>
             </div>
             <div class="col-md-3 d-flex flex-column align-items-center">
                 
-                <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
+                <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
                 <p><strong> Nome do colaborador </strong></p>
                 <p> Descrição </p>
                 <p> 12/12/2021 - 12/12/2021</p>
             </div>
             <div class="col-md-3 d-flex flex-column align-items-center">
                 
-                <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
+                <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
                 <p><strong> Nome do colaborador </strong></p>
                 <p> Descrição </p>
                 <p> 12/12/2021 - 12/12/2021</p>
             </div>
             <div class="col-md-3 d-flex flex-column align-items-center">
                 
-                <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
+                <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
                 <p><strong> Nome do colaborador </strong></p>
                 <p> Descrição </p>
                 <p> 12/12/2021 - 12/12/2021</p>
             </div>
         </div>
     </section>
-    
+-->
     
 </div>
 @endsection

@@ -1,3 +1,4 @@
+<!--
 <div id="sidebar">
 
     <div class="d-flex align-items-center">
@@ -46,3 +47,4 @@
         </ul>
     </div>
 </div>
+-->

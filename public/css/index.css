@@ -1,33 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Open+Sans:wght@400;500&family=Vollkorn:wght@400;700&display=swap');
-
-:root {
-    --main-bg-color: #0c3f7c;
-    --main-md-color: #acb2b8;
-    --main-title-bg-color: white;
-    --main-text-color: black;
-    
-    --primary-color: #0553A1;
-    --primary-color-darker: #03396E;
-    --primary-color-lighter: #3069A1;
-
-    --secondary-color: #FFBF00;
-    --secondary-color-darker: #03396E;
-    --secondary-color-lighter: #3069A1;
-
-    --on-secondary: rgb(32, 32, 32);
-    --on-primary: #fff;
-    /* SECONDARYS: #DAFF7D, FFBF00 , FFBF00, #F3CA40, #44FFD2*/
-
-}
-
-html{
-    font-size: 62.5%;
-}
-
-body{
-    font-weight: 500;
-}
-
 .hero-section {
     height: calc(100vh - 75px);
     background-color: #f6f6f8;
@@ -54,10 +24,6 @@ body{
     max-height: 470px;
 }
 
-.card-bottom-container{
-    bottom: 0
-}
-
 .card-bottom-container .view-more-btn{
     border-radius:100px;
     background-color: var(--secondary-color);
@@ -65,16 +31,15 @@ body{
     font-weight: 500;
     border: 0;
     padding: 8px;
+    font-size: 1.8rem;
+}
+
+.remove-margin-bottom {
+    margin-bottom: -3rem;
 }
 
 .title-subject {
     color: var(--main-title-bg-color);
-}
-
-.response-search {
-    margin-top: 5px;
-    color: var(--main-title-bg-color);
-    font-size: 1.6rem;
 }
 
 .light-border-radius {
@@ -96,92 +61,8 @@ body{
     margin-bottom: 50px;
 }
 
-
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-weight: bolder;
-    font-family: "Nunito Sans";
-}
-
-.user-dropdown a:hover {
-    text-decoration: none;
-}
-
-.display-title {
-    font-size: 4.3rem;
-}
-
-h1 {
-    font-size: 3.5rem;
-}
-
-h2 {
-    font-size: 2.8rem;
-}
-
-.remove-margin-bottom {
-    margin-bottom: -3rem;
-}
-
-h3 {
-    font-size: 2.25rem;
-    text-transform: capitalize;
-}
-
-
-
-.smaller-p{
-    font-size: 1.6rem;
-    line-height: 2.6rem;
-}
-
-
-.larger-p {
-    font-size: 2rem;
-    line-height: 3rem;
-}
-
-.text {
-    color: #b1b1b1;
-}
-
-/* custom margins */
-.mt-6 {
-    margin-top: calc(1rem * 4);
-}
-.mt-7 {
-    margin-top: calc(1rem * 5.5);
-}
-.mt-7 {
-    margin-top: calc(1rem * 7);
-}
-
-
-.info-portal {
-    color: white;
-}
-
 .span-info {
     color: var(--main-md-color);
-}
-
-.wrapper {
-    height: calc(100vh - 160px);
-}
-
-.bg-color4 {
-    background-color: #183561;
-    font-size: 20px;
-}
-
-.grey-bg {
-    background-color: #f6f6f8;
-    color: #212529;
 }
 
 
