@@ -169,7 +169,7 @@ hr{
 
 @media screen and (max-width:446px){
     #imd-footer{
-        display: none;
+        display: block;
     }
     #pdd-title{
         width: 100%;
