@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="card-bottom-container">
                                     <a href="{{ route('disciplinas.show', $discipline->id) }}"
-                                        class="view-more-btn btn btn-primary w-100 mt-2 p-text">Ver
+                                        class="view-more-btn btn w-100 p-text">Ver
                                         mais</a>
                                     @auth
                                         <div class='d-flex justify-content-end'>
