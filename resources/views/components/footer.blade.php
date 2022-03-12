@@ -16,7 +16,7 @@
     <!-- Copyright -->
 <!--</footer> -->
 
-<div class="footer">
+<footer class="footer">
     <div class="h-100 d-flex flex-column justify-content-around container">
         <div id="info-div" class=" row justify-content-between align-items-center">
             <div id="section1">
@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-</div>
+</footer>
 
 <style scoped>
 

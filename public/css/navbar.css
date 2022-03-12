@@ -38,7 +38,7 @@ nav a:hover::after{
   width: 100%;
 }*/
 
-.login-btn {
+.access-btn {
     margin-left: 1.5rem;
     padding: 0.5rem 1.75rem;
     border-radius: 100px;
@@ -48,11 +48,11 @@ nav a:hover::after{
     border: none;
 }
 
-.login-btn::after{
+.access-btn::after{
   display: none;
 }
 
-.login-btn:hover {
+.access-btn:hover {
     cursor: pointer;
     color: #fff
 }
@@ -139,7 +139,7 @@ nav a:hover::after{
   color: white;
   
 }
-.menu-section.on nav .login-btn{
+.menu-section.on nav .access-btn{
   margin: 8px 16px; 
   width: 90%;
   text-align: center;
