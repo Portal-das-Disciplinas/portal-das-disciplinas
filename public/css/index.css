@@ -47,6 +47,11 @@ body {
     bottom: 0
 }
 
+.card-bottom-container .view-more-btn{
+    border-radius:100px;
+    /*background-color: var(--main-bg-color);*/
+}
+
 .title-subject {
     color: var(--main-title-bg-color);
 }
@@ -111,6 +116,11 @@ h2 {
 h3 {
     font-size: 2.25rem;
     text-transform: capitalize;
+}
+
+.smaller-p{
+    font-size: 1.6rem;
+    line-height: 2.6rem;
 }
 
 .p-text {

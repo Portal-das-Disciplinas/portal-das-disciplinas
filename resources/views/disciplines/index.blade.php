@@ -72,7 +72,7 @@
                                 </div>
                                 <div class="card-bottom-container">
                                     <a href="{{ route('disciplinas.show', $discipline->id) }}"
-                                        class="btn btn-primary w-100 mt-2 p-text">Ver
+                                        class="view-more-btn btn btn-primary w-100 mt-2 p-text">Ver
                                         mais</a>
                                     @auth
                                         <div class='d-flex justify-content-end'>
@@ -114,7 +114,7 @@
 
 
                             </div>
-                            <div class="card-footer p-text m-0">{{ $discipline->professor->name }}</div>
+                            <div class="card-footer smaller-p m-0">{{ $discipline->professor->name }}</div>
                         </div>
                     </div>
                 @endforeach
