@@ -27,7 +27,10 @@ Para rodar o projeto é necessário instalar os requisitos abaixo:
 
 3. **Logo após esse comando configure o arquivo .env para o seu banco de dados**
 
-4. **Rode os comandos abaixo no diretorio do projeto**
+
+
+
+## Rode os comandos abaixo no diretório do projeto
 
 
     php artisan key:generate
