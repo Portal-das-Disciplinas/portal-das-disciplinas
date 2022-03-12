@@ -4,11 +4,6 @@
 Sobre nós - Portal das Disciplinas IMD
 @endsection
 
-@section('styles-head')
-<link href="{{ asset('css/information.css') }}" rel="stylesheet">
-@endsection
-
-
 @section('content')
 <!-- Styles -->
 

@@ -1,5 +1,5 @@
 <div class='d-flex flex-column justify-content-center align-items-center mx-4 mb-3'>
-    <img class="fluid clip-path" src="{{ $image ?? 'img/user2.png' }}" alt="{{ $alt_image ?? 'foto-dev' }}" style='width:30%;'>
+    <img class="clip-path" src="{{ $image ?? 'img/user2.png' }}" alt="{{ $alt_image ?? 'foto-dev' }}">
     <div class="text-center">
         <h4>{{$name ?? ''}}</h4>
         <p>{{$profession ?? ''}} <code> {{$occupation ?? ''}}</code></p>   

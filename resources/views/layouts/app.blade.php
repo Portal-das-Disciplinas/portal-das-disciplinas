@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     {{-- CSS --}}
     <link rel="stylesheet" href="{{asset('css/index.css')}}">
+    <link rel="stylesheet" href="{{asset('css/about.css')}}">
     <link rel="stylesheet" href="{{asset('css/sidebar.css')}}">
     <link rel="stylesheet" href="{{asset('css/discipline.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">

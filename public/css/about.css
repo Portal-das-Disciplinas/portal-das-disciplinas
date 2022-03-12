@@ -8,9 +8,15 @@
 
 .clip-path{
     clip-path: circle(50% at 50% 50%);
-    width: 8rem;
+    width: 150px;
 }
 
 #devsGrid{
     margin-bottom:2rem;
+}
+
+@media only all and (max-width:1192px){
+    .clip-path{
+        width: 120px;
+    }
 }
