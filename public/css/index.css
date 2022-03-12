@@ -17,9 +17,32 @@ body {
     background-color: var(--main-bg-color);
 }*/
 
+.hero-section {
+    height: calc(100vh - 120px);
+    padding: 3%;
+}
 
-.container {
-    margin-top: 40px;
+.disciplines{
+    background-color: var(--main-bg-color);
+    min-height: calc(100vh - 75px);
+}
+
+.disciplines-container{
+    padding: 5% 0;
+    width: 90vw;
+}
+
+.create-discipline{
+    font-size: 1.8rem;
+}
+
+.discipline-card{
+    min-height: 470px;
+    max-height: 470px;
+}
+
+.card-bottom-container{
+    bottom: 0
 }
 
 .title-subject {
@@ -29,11 +52,11 @@ body {
 .response-search {
     margin-top: 5px;
     color: var(--main-title-bg-color);
-    font-size: 16px;
+    font-size: 1.6rem;
 }
 
 .light-border-radius {
-    border-radius: 5px;
+    border-radius: 6px;
 }
 
 .card {
@@ -49,15 +72,6 @@ body {
 
 .card-auth {
     margin-bottom: 50px;
-}
-
-.card-text {
-    height: 70px;
-}
-
-.clip-path {
-    clip-path: circle(50% at 50% 50%);
-    width: 7rem;
 }
 
 hr {
@@ -90,7 +104,7 @@ h1 {
 }
 
 h2 {
-    font-size: 3rem;
+    font-size: 2.8rem;
 }
 
 .remove-margin-bottom {
@@ -98,19 +112,19 @@ h2 {
 }
 
 h3 {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
     text-transform: capitalize;
 }
 
 .p-text {
-    font-size: 1.6rem;
-    line-height: 1.8;
+    font-size: 1.8rem;
+    line-height: 2.8rem;
     margin-bottom: 1rem;
 }
 
 .larger-p {
-    font-size: 1.2rem;
-    line-height: 1.5rem;
+    font-size: 2rem;
+    line-height: 3rem;
 }
 
 .text {
@@ -131,22 +145,6 @@ h3 {
 .wrapper {
     height: calc(100vh - 160px);
 }
-/* Cores para testes */
-/* .bg-color {
-    background-color: #1A5A7E;
-}
-
-.bg-color1 {
-    background-color: #516D87;
-}
-
-.bg-color2 {
-    background-color: white;
-}
-
-.bg-color3 {
-    background-color: #081B38;
-} */
 
 .bg-color4 {
     background-color: #183561;
@@ -166,15 +164,20 @@ h3 {
     color: var(--main-md-color);
 }
 
-.mobile-menu {
-    display: none;
-    cursor: pointer;
+
+
+@media only all and (max-width:768px){
+    html{
+        font-size: 50%;
+    }
+    .hero-section{
+        height: auto;
+        margin-bottom: 2.4rem;
+    }
 }
 
-.mobile-menu div {
-    width: 26px;
-    height: 2px;
-    background: #3490dc;
-    margin: 6px;
+@media only all and (max-width:399px){
+    .display-title{
+        font-size: 3.2rem;
+    }
 }
-

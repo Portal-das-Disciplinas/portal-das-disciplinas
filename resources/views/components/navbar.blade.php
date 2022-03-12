@@ -41,10 +41,6 @@
       color: #fff
   }
 
-  .user-icon:hover {
-      color: #014C8C;
-      cursor: pointer;
-  }
 
 
   .logo-navbar {
@@ -82,6 +78,16 @@
   .menu-burger::after {
       transform: translateY(calc(var(--menu-size) / 3));
   }
+
+  .user-icon{
+    font-size: 2.4rem;
+  }
+
+  .user-icon:hover {
+      color: #014C8C;
+      cursor: pointer;
+  }
+
 
   .menu-section.on{
     position: fixed;
@@ -180,7 +186,7 @@
                   @auth
                       <div class="dropdown show">
                           <div class="user-icon d-flex align-items-center ml-3" data-toggle="dropdown">
-                              <i class="far fa-user-circle mr-2" style='font-size: 1.5rem'></i>
+                              <i class="far fa-user-circle mr-3"></i>
                               <i class="fas fa-caret-down"></i>
                           </div>
                           <div class="user-dropdown dropdown-menu">
