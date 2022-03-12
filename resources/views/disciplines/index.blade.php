@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
-<div class='container'>
-    <section class='hero-section'>
+
+<section class='hero-section'>
+    <div class="container">
         <div class="row">
             <div class="col-12 text-center my-4 title-subject-container">
                 <h1 class="title-subject display-title " style='color: #1F2937'>Portal das Disciplinas - IMD/UFRN</h1>
@@ -21,8 +22,10 @@
                 </div>
             </div>
         </div>
-    </section>
-</div>
+    </div>
+    
+</section>
+
 <section class='disciplines remove-margin-bottom'>
     <div class="disciplines-container container">
         <h1 class='text-center text-white'>Disciplinas Cadastradas</h1>
