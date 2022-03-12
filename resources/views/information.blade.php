@@ -4,7 +4,14 @@
 Sobre nós - Portal das Disciplinas IMD
 @endsection
 
+@section('styles-head')
+<link href="{{ asset('css/information.css') }}" rel="stylesheet">
+@endsection
+
+
 @section('content')
+<!-- Styles -->
+
 
 <div class='discipline-banner text-center d-flex align-items-center justify-content-center '>
     <h1 class='text-white'>Sobre & Colabore</h1>
