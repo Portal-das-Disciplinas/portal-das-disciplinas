@@ -4,13 +4,17 @@
     {{ $discipline->name }} - Portal das Disciplinas IMD
 @endsection
 
+@section('styles-head')
+<link rel="stylesheet" href="{{asset('css/discipline.css')}}">
+@endsection
+
 @section('description')
     {{ $discipline->name }} - {{ $discipline->code }}, tutorado por {{ $discipline->professor->name }}. Clique para saiber mais.
 @endsection
 
 @section('content')
 <div class='banner text-center d-flex align-items-center justify-content-center  text-white'>
-    <h1>{{ $discipline->name }} - {{ $discipline->code }}</h1>
+    <h1 class='display-title'>{{ $discipline->name }} - {{ $discipline->code }}</h1>
 </div>
 
 <div class="container" >
@@ -47,39 +51,24 @@
     @endauth
 
     <!-- ROW Da PAGE -->
-    <div class="row">
+    <div class="row mt-5">
         <!-- main -->
         <div class="main col-md-8">
-            <div class='section'>
-                
-                <!--
-                <h4 class='text-center'>Avaliação</h4>
-                <div id='classificationBar' class="d-flex" style='background-color:red; height:20px; color:white;'>
-                    <div id='classificationBarLeft' class="left-bar" style='background-color:blue; height: 20px; color:white;'>
-
-                    </div>
-                </div>
-                <div class="labels d-flex justify-content-between">
-                    <p id='left-label'></p><p id='right-label'>
-                </div>
-                -->
-
-
-                
-                <h3 class="mb-3">Trailer</h3>
+            <div class='section'>   
+                <h1 class="mb-3">Trailer</h1>
                 @if($discipline->has_trailer_media && $discipline->trailer->view_url != '')
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item light-border-radius" src="{{ $discipline->trailer->view_url}}" allowfullscreen ></iframe>
+                        <iframe style='border-radius: 6px;' class="embed-responsive-item" src="{{ $discipline->trailer->view_url}}" allowfullscreen ></iframe>
                     </div>
                 @else
-                    <img class="img-fluid light-border-radius" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
+                    <img  style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
                 @endif
             </div>
 
             <!-- SINOPSE -->
             <div class="section mt-3">
 
-                <h3 class="mb-3">Sinopse</h3>
+                <h1 class="mb-3">Sinopse</h1>
                 <div>
                     <div>
                         @if($discipline->synopsis=='')
@@ -94,19 +83,19 @@
 
             <!-- VÍDEO -->
             <div class='section'>
-                <h3 class="mb-3">Vídeo</h3>
+                <h1 class="mb-3">Vídeo</h1>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO) && $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url != '')
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item light-border-radius" allowfullscreen
+                        <iframe style='border-radius: 6px;' class="embed-responsive-item " allowfullscreen
                                 src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url }}"></iframe>
                     </div>
                 @else
-                    <img class="img-fluid light-border-radius" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
+                    <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
                 @endif
             </div>
             <!-- OBSTACULOS -->
             <div class='section'>
-                <h3 class="mb-3">Obstáculos</h3>
+                <h1 class="mb-3">Obstáculos</h1>
                 <div>
                     <div>
                         @if($discipline->difficulties=='')
@@ -122,57 +111,61 @@
 
         <div class="side col-md-4">
             <div class='classifications'>
-                <h3 class="">Classificações</h3>
-                @foreach ( $classifications as $classification)
-                    <div class='row mb-0'>
-                        <div class="d-flex col-md-12 justify-content-center">
-                            <label class="">
-                                <div class="d-flex">
-                                    <h4 style='margin-bottom: 0; font-size: 25px'>
-                                        {{$classification->name ?? ''}} 
+                <h1 class="">Classificações</h1>
+                @if (count($classifications)>0)
+                        @foreach ( $classifications as $classification)
+                        <div class='row mb-0'>
+                            <div class="d-flex col-md-12 justify-content-center">
+                                <label class="">
+                                    <div class="d-flex">
+                                        <h4 style='margin-bottom: 0; font-size: 25px'>
+                                            {{$classification->name ?? ''}} 
 
-                                        @if ($classification->description)
-                                            <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
-                                        @endif
-                                    </h4>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="row d-flex align-items-center">
-                        <div class="d-flex col-md-12">
-                            <span class='d-flex justify-content-start' style='width:15%'><b>{{ $discipline->getClassificationsValues($classification->id) }}%</b></span>
-                            <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
-                                <div id="{{$classification->classification_id}}"
-                                     class="progress-bar" role="progressbar"
-
-                                     style="width: {{ $discipline->getClassificationsValues($classification->id) }}% ; background-color:#1155CC; border-radius: 100px 0 0 100px"
-                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
-                                </div>
-
-                                <div id="{{$classification->classification_id}}"
-                                    class="progress-bar" role="progressbar"
-
-                                    style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; background-color:#4CB944; border-radius: 0 100px 100px 0"
-                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
-                               </div>
+                                            @if ($classification->description)
+                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                            @endif
+                                        </h4>
+                                    </div>
+                                </label>
                             </div>
-                            <span class='d-flex justify-content-end' style='width:15%'><b style='font-size:16px'>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
                         </div>
-                    </div>
-                    
-                    <div class="row ">
-                        <div class="col-md-12 d-flex justify-content-between mt-2">
-                            <span ><h4 style='margin-bottom: 0; color: #1155CC'>{{ $classification->type_a ?? '' }}</h4></span>
-                            <span ><h4 style='margin-bottom: 0; color: #4CB944'>{{ $classification->type_b ?? '' }}</h4></span>
+                        <div class="row d-flex align-items-center">
+                            <div class="d-flex col-md-12">
+                                <span class='d-flex justify-content-start' style='width:15%'><b>{{ $discipline->getClassificationsValues($classification->id) }}%</b></span>
+                                <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
+                                    <div id="{{$classification->classification_id}}"
+                                        class="progress-bar" role="progressbar"
+
+                                        style="width: {{ $discipline->getClassificationsValues($classification->id) }}% ; background-color:#1155CC; border-radius: 100px 0 0 100px"
+                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
+                                    </div>
+
+                                    <div id="{{$classification->classification_id}}"
+                                        class="progress-bar" role="progressbar"
+
+                                        style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; background-color:#4CB944; border-radius: 0 100px 100px 0"
+                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
+                                </div>
+                                </div>
+                                <span class='d-flex justify-content-end' style='width:15%'><b style='font-size:16px'>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                        
+                        <div class="row ">
+                            <div class="col-md-12 d-flex justify-content-between mt-2">
+                                <span ><h4 style='margin-bottom: 0; color: #1155CC'>{{ $classification->type_a ?? '' }}</h4></span>
+                                <span ><h4 style='margin-bottom: 0; color: #4CB944'>{{ $classification->type_b ?? '' }}</h4></span>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+                <strong>Não há classificações cadastradas.</strong>
+                
             </div>
             <hr>
              <!-- PODCAST -->
             <div>
-                <h3 class=" mt-4 mb-2">Podcast</h3>
+                <h1 class=" mt-4 mb-2">Podcast</h1>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) && $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
                     <audio class="w-100" controls="controls">
                         <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
@@ -188,7 +181,7 @@
              <!-- MATERIAIS -->
             
             <div>
-                <h3 class=" mt-4 mb-2">Materiais</h3>
+                <h1 class=" mt-4 mb-2">Materiais</h1>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) && $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
                     <div class="align-center">
                         
@@ -224,7 +217,7 @@
 <div class=" pt-4 pb-5" style=' margin-bottom: -3rem;'>
 @if($discipline->faqs->count())
 <div class="container">
-    <h2 class="container-fluid  text-center mt-5">Perguntas Frequentes</h2>
+    <h1 class="container-fluid  text-center mt-5">Perguntas Frequentes</h1>
     <div class="row mt-3" id="faqs">
         @foreach($discipline->faqs as $faq)
             <div class="w-100 card mb-3 text-dark "style='border:1px solid #014C8C;'>
@@ -272,7 +265,7 @@
 </div>
 <div class="container">
     <div class='section mb-5'>
-        <h3 class="mb-3">Professor</h3>
+        <h1 class="mb-3">Professor</h1>
         <div class="">
             <div class="d-flex align-items-center">
                 

@@ -20,7 +20,7 @@
     <div class="h-100 d-flex flex-column justify-content-around container">
         <div id="info-div" class=" row justify-content-between align-items-center">
             <div id="section1">
-                <div class="d-flex align-items-center">
+                <div class="logo-and-title d-flex align-items-center">
                     <img fluid id="imd-footer" src="{{ asset('img/imd-footer-2.png') }}"/>
                     <p id="pdd-title" class="ml-3 footer-title">Portal das Disciplinas - IMD/UFRN</p>
                 </div>
@@ -167,13 +167,18 @@ hr{
     }
 }
 
-@media screen and (max-width:446px){
+@media screen and (max-width:768px){
+    .logo-and-title{
+        flex-direction: column;
+    }
+    .logo-and-title > *{
+        margin: 1.6rem 0;
+    }
     #imd-footer{
         display: block;
     }
     #pdd-title{
         width: 100%;
-        margin: 0 !important;
         text-align: center !important;
     }
 }
