@@ -121,7 +121,7 @@
                         <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
                         <div class="classification-input-component" id='1'>
                             <div>
-                                <h4 style="text-align: center;">{{$classification->name}}</h4>
+                                <h3 class='smaller-p text-center'>{{$classification->name}}</h3>
                             </div>
                             <div style="display: flex; justify-content: space-between;">
                                 <div>
@@ -135,8 +135,8 @@
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
-                                <h5>{{ $classification->type_a ?? '' }}</h5>
-                                <h5>{{ $classification->type_b ?? '' }}</h5>
+                                <h3 class='smaller-p'>{{ $classification->type_a ?? '' }}</h3>
+                                <h3 class='smaller-p'>{{ $classification->type_b ?? '' }}</h3>
 
                             </div>
                         </div>
@@ -172,8 +172,10 @@
                                 </div> -->
                                 <!-- FIM DA ANTIGA BARRA DE AJUSTE DE PORCENTAGEM -->
                             @endforeach
+                            @else
+                            <p>Não há classificações cadastradas.</p>
                         @endif
-                        <p>Não há classificações cadastradas.</p>
+                        
                             
 
                             {{-- TODO --}}
