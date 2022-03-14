@@ -18,6 +18,22 @@
     margin-bottom:0.5rem;
 }
 
+.classification-color-left{
+    background-color: var(--primary-color);
+   
+}
+.classification-text-left{
+    color: var(--primary-color);
+}
+
+
+.classification-color-right{
+    background-color: var(--secondary-color);
+    
+}
+
+.classification-text-right{ color:var(--secondary-color)}
+
 
 
 

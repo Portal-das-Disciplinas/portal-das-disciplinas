@@ -33,7 +33,7 @@
         </div>
         @endif
         @if (Auth::user()->canDiscipline($discipline->id))
-            <h4>Menu do professor</h4>
+            <h3>Menu do professor</h3>
             <form action=" {{route('disciplinas.edit', $discipline->id)}}" class="d-inline"
                 method="get">
             @csrf
@@ -74,7 +74,7 @@
                         @if($discipline->synopsis=='')
                         <div class="p-text">Não há sinopse.</div>
                         @else
-                        <div style = "font-size: 1.5rem; text-align: justify;  line-height: normal;">{{ $discipline->synopsis}}</div>
+                        <div style = "text-align: justify;  line-height: normal;">{{ $discipline->synopsis}}</div>
                         @endif
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                         @if($discipline->difficulties=='')
                         <div class=" p-text">Nenhum obstáculo.</div>
                         @else
-                        <div style = "font-size: 1.5rem; text-align: justify; line-height: normal;">{{ $discipline->difficulties }}</div>
+                        <div style = "text-align: justify; line-height: normal;">{{ $discipline->difficulties }}</div>
                         @endif
                     </div>
                 </div>
@@ -118,13 +118,13 @@
                             <div class="d-flex col-md-12 justify-content-center">
                                 <label class="">
                                     <div class="d-flex">
-                                        <h4 style='margin-bottom: 0; font-size: 25px'>
+                                        <h3 style='margin-bottom: 0;' class='smaller-p'>
                                             {{$classification->name ?? ''}} 
 
                                             @if ($classification->description)
-                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                                <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
                                             @endif
-                                        </h4>
+                                        </h3>
                                     </div>
                                 </label>
                             </div>
@@ -132,34 +132,38 @@
                         <div class="row d-flex align-items-center">
                             <div class="d-flex col-md-12">
                                 <span class='d-flex justify-content-start' style='width:15%'><b>{{ $discipline->getClassificationsValues($classification->id) }}%</b></span>
-                                <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid #1155CC; padding: 2px; width:70%">
+                                <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
                                     <div id="{{$classification->classification_id}}"
-                                        class="progress-bar" role="progressbar"
+                                        class="classification-color-left progress-bar" role="progressbar"
 
-                                        style="width: {{ $discipline->getClassificationsValues($classification->id) }}% ; background-color:#1155CC; border-radius: 100px 0 0 100px"
+                                        style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px"
                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
                                     </div>
 
                                     <div id="{{$classification->classification_id}}"
-                                        class="progress-bar" role="progressbar"
+                                        class="classification-color-right progress-bar" role="progressbar"
 
-                                        style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; background-color:#4CB944; border-radius: 0 100px 100px 0"
+                                        style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; border-radius: 0 100px 100px 0"
                                         aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
                                 </div>
                                 </div>
-                                <span class='d-flex justify-content-end' style='width:15%'><b style='font-size:16px'>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
+                                <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
                             </div>
                         </div>
                         
                         <div class="row ">
                             <div class="col-md-12 d-flex justify-content-between mt-2">
-                                <span ><h4 style='margin-bottom: 0; color: #1155CC'>{{ $classification->type_a ?? '' }}</h4></span>
-                                <span ><h4 style='margin-bottom: 0; color: #4CB944'>{{ $classification->type_b ?? '' }}</h4></span>
+                                <span ><h3 style='margin-bottom: 0;'class='classification-text-left smaller-p'>{{ $classification->type_a ?? '' }}</h3></span>
+                                <span ><h3 style='margin-bottom: 0; ' class='classification-text-right smaller-p'>{{ $classification->type_b ?? '' }}</h3></span>
                             </div>
                         </div>
                     @endforeach
+
+                    @else
+                    <strong>Não há classificações cadastradas.</strong>
                 @endif
-                <strong>Não há classificações cadastradas.</strong>
+
+                
                 
             </div>
             <hr>
@@ -181,14 +185,14 @@
              <!-- MATERIAIS -->
             
             <div>
-                <h1 class=" mt-4 mb-2">Materiais</h1>
+                <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) && $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
                     <div class="align-center">
                         
                         <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}"
                            class="text">
                             <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
-                            <button class="btn btn-primary mt-3" style='width:50%'> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
+                            <button class="btn large-secondary-button my-3 w-100"> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
                         </a>
                         <br/>
                     </div>

@@ -103,6 +103,16 @@ h6 {
     max-width: 100%; 
 }
 
+.large-secondary-button {
+    border-radius: 100px;
+    background-color: var(--secondary-color);
+    color: var(--on-secondary);
+    font-weight: 500;
+    border: 0;
+    padding: 8px;
+    font-size: 1.8rem;
+}
+
 
 /* RESPONSIVE */
 
