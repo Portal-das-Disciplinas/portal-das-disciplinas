@@ -11,8 +11,8 @@
     --primary-color-lighter: #3069A1;
 
     --secondary-color: #FFBF00;
-    --secondary-color-darker: #03396E;
-    --secondary-color-lighter: #3069A1;
+    --secondary-color-darker: #E5AC00;
+    --secondary-color-lighter: #FFCC33;
 
     --on-secondary: rgb(32, 32, 32);
     --on-primary: #fff;
@@ -120,6 +120,13 @@ h6 {
     html{
         font-size: 50%;
     }
+
+    body{
+        font-size: 2rem;
+        line-height: 3rem;
+        font-weight: 500;
+    }
+    
     .banner{
         min-height: calc(364px/2)
     }

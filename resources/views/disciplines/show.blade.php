@@ -72,9 +72,9 @@
                 <div>
                     <div>
                         @if($discipline->synopsis=='')
-                        <div class="p-text">Não há sinopse.</div>
+                        <div><p>Não há sinopse cadastrada.</p></div>
                         @else
-                        <div style = "text-align: justify;  line-height: normal;">{{ $discipline->synopsis}}</div>
+                        <div><p style='text-align: justify; '>{{ $discipline->synopsis}}</p></div>
                         @endif
                     </div>
                 </div>
