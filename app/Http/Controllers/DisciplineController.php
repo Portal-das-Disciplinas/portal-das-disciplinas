@@ -28,14 +28,23 @@ class DisciplineController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $disciplines = Discipline::query()
+
+        if(is_null($request->search)){
+            $disciplines = Discipline::query()
             ->with([
                 'professor',
                 'medias',
             ])->orderBy('name', 'ASC')->get();
-
+        }else{
+            $nome_disciplina = $request->search;
+            $disciplines = Discipline::query()
+            ->with([
+                'professor',
+                'medias',
+            ])->orderBy('name', 'ASC')->where("name", "like", $nome_disciplina."%")->get();
+        }
         return view(self::VIEW_PATH . 'index', compact('disciplines'));
     }
 
@@ -80,7 +89,7 @@ class DisciplineController extends Controller
             ]);
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
-                
+
                 $url = $request->input('media-trailer');
                 $mediaId = YoutubeService::getIdFromUrl($url);
                 Media::create([

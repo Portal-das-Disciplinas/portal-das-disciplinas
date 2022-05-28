@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px">
@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    
+
 </section>
 
 <section class='disciplines remove-margin-bottom'>
@@ -45,6 +45,20 @@
             </div>
         @endauth
 
+          <div class="row justify-content-md-center mt-5">
+            <div class="col">
+            <form action="{{route('index')}}" method="GET">
+                @csrf
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Pesquisar..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='search' value="{{ $search ?? '' }}">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="button-addon2">Pesquisar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
     @isset($disciplines)
         @if($disciplines->count() == 0)
             <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
@@ -56,7 +70,7 @@
                             @if(!is_null($discipline->trailer))
                                 <div class="teacher-video-container">
                                     <div class="embed-responsive embed-responsive-16by9">
-                                        <iframe class="embed-responsive-item light-border-radius" 
+                                        <iframe class="embed-responsive-item light-border-radius"
                                             src="{{ $discipline->trailer->view_url }}" allowfullscreen></iframe>
                                     </div>
                                 </div>
@@ -71,7 +85,7 @@
                                     <p class='card-text p-text'>
                                         {{ Str::limit($discipline->synopsis, 70,' (...)') }}
                                     </p>
-    
+
                                 </div>
                                 <div class="card-bottom-container">
                                     <a href="{{ route('disciplinas.show', $discipline->id) }}"
@@ -87,7 +101,7 @@
                                                         <i class="fas fa-caret-down"></i>
                                                     </div>
                                                     <div class="user-dropdown dropdown-menu">
-    
+
                                                         <form
                                                             action=" {{ route('disciplinas.destroy', $discipline->id) }}"
                                                             class="dropdown-item" method="post">
@@ -104,15 +118,15 @@
                                                             <button type="submit" class="btn btn-warning w-100 p-text m-0"
                                                                 value="Editar">Editar</button>
                                                         </form>
-    
+
                                                     </div>
                                                 </div>
                                             @endif
                                         </div>
-    
+
                                     @endauth
                                 </div>
-                               
+
 
 
 
