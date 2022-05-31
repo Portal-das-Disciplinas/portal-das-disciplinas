@@ -32,16 +32,9 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-
-                <div class="form-group col-md-10">
-                    <label class="" for="emphasis">
-                        Ênfase da disciplina
-                    </label>
-                    <input type="text"
-                           id="emphasis"
-                           name="emphasis"
-                           placeholder="ênfase">
-                </div>
+                
+                
+            
 
                 <div class="form-group col-md-2">
                     <label class="" for="code">
@@ -58,6 +51,26 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+            </div>
+
+
+            <div class="col-md-12 px-0">
+                
+                    <label class="" for="emphasis">
+                        Ênfase da disciplina
+                    </label>
+                    <select name="emphasis" id="emphasis" class='form-control' >
+                        <option selected disabled > Selecione uma ênfase</option>
+                        <option value="Computação">Computação</option>
+                        <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
+                        <option value="Informática Educacional">Informática Educacional</option>
+                        <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
+                        <option value="Bioinformática">Bioinformática</option>
+                        <option value="Internet das Coisas">Internet das Coisas</option>
+                        <option value="Jogos Digitais">Jogos Digitais</option>
+                    </select>
+                    
+               
             </div>
             <div class="col-md-12 px-0">
                 @if (Auth::user()->isAdmin)
