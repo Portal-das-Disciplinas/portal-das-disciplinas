@@ -19,7 +19,7 @@
 
 <div class="container" >
     <!-- Botão de cadastro FAQ -->
-   
+
     @auth
         @if(isset($can) && $can)
         <div >
@@ -46,15 +46,14 @@
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger w-25 mt-2" value="Apagar">Apagar</button>
             </form>
-            
+
         @endif
     @endauth
-
     <!-- ROW Da PAGE -->
     <div class="row mt-5">
         <!-- main -->
         <div class="main col-md-8">
-            <div class='section'>   
+            <div class='section'>
                 <h1 class="mb-3">Trailer</h1>
                 @if($discipline->has_trailer_media && $discipline->trailer->view_url != '')
                     <div class="embed-responsive embed-responsive-16by9">
@@ -75,6 +74,22 @@
                         <div><p>Não há sinopse cadastrada.</p></div>
                         @else
                         <div><p style='text-align: justify; '>{{ $discipline->synopsis}}</p></div>
+                        @endif
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Emphasis -->
+            <div class="section mt-3">
+
+                <h1 class="mb-3">Ênfase</h1>
+                <div>
+                    <div>
+                        @if($discipline->emphasis=='')
+                        <div><p>Não há sinopse cadastrada.</p></div>
+                        @else
+                        <div><p style='text-align: justify; '>{{ $discipline->emphasis}}</p></div>
                         @endif
                     </div>
                 </div>
@@ -119,10 +134,10 @@
                                 <label class="">
                                     <div class="d-flex">
                                         <h3 style='margin-bottom: 0;' class='smaller-p'>
-                                            {{$classification->name ?? ''}} 
+                                            {{$classification->name ?? ''}}
 
                                             @if ($classification->description)
-                                                <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                                <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>
                                             @endif
                                         </h3>
                                     </div>
@@ -137,20 +152,20 @@
                                         class="classification-color-left progress-bar" role="progressbar"
 
                                         style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px"
-                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
+                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
                                     </div>
 
                                     <div id="{{$classification->classification_id}}"
                                         class="classification-color-right progress-bar" role="progressbar"
 
                                         style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; border-radius: 0 100px 100px 0"
-                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="20"> 
+                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
                                 </div>
                                 </div>
                                 <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
                             </div>
                         </div>
-                        
+
                         <div class="row ">
                             <div class="col-md-12 d-flex justify-content-between mt-2">
                                 <span ><h3 style='margin-bottom: 0;'class='classification-text-left smaller-p'>{{ $classification->type_a ?? '' }}</h3></span>
@@ -163,8 +178,8 @@
                     <strong>Não há classificações cadastradas.</strong>
                 @endif
 
-                
-                
+
+
             </div>
             <hr>
              <!-- PODCAST -->
@@ -183,12 +198,12 @@
 
 
              <!-- MATERIAIS -->
-            
+
             <div>
                 <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) && $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
                     <div class="align-center">
-                        
+
                         <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}"
                            class="text">
                             <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
@@ -211,7 +226,7 @@
 
         </div>
     </div>
-    
+
 
 
 </div>
@@ -232,7 +247,7 @@
                                 aria-expanded="true" aria-controls="faq-header-{{$faq->id}}"  >
                             {!! $faq->title !!}
                         </button>
-    
+
                         @if(isset($can) && $can)
                             <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}"
                                 class="d-inline float-right" method="POST">
@@ -241,7 +256,7 @@
                                 <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
                             </form>
                         @endif
-    
+
                         <button class="btn btn-link collapsed ml-2" data-toggle="collapse"
                                 data-target="#faq-content-{{$faq->id}}"
                                 aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
@@ -249,7 +264,7 @@
                         </button>
                     </h5>
                 </div>
-    
+
                 <div id="faq-content-{{$faq->id}}" class="collapse" aria-labelledby="faq-header-{{$faq->id}}"
                     data-parent="#faqs">
                     <div class="card-body">
@@ -260,7 +275,7 @@
         @endforeach
     </div>
     @endif
-    
+
     @if(isset($can) && $can)
         @include('faqs.create_modal', ['discipline' => $discipline])
     @endif
@@ -272,18 +287,18 @@
         <h1 class="mb-3">Professor</h1>
         <div class="">
             <div class="d-flex align-items-center">
-                
+
                 <i class="fas fa-user fa-8x mr-4" ></i>
                 <div class="wrapper-teacher-info">
                     <div class="text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
                     <div class="text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
                     <div class="text-justify px-lg-3"> <a href="{{$discipline->professor->public_link}}" target="_blank"> Página do professor</a> </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
-    
+
 </div>
 
 
