@@ -80,10 +80,12 @@ class DisciplineController extends Controller
             if ($user->isAdmin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
+
             $discipline = Discipline::create([
                 'name' => $request->input('name'),
                 'code' => $request->input('code'),
                 'synopsis' => $request->input('synopsis'),
+                'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);

@@ -33,6 +33,16 @@
                     @enderror
                 </div>
 
+                <div class="form-group col-md-10">
+                    <label class="" for="emphasis">
+                        Ênfase da disciplina
+                    </label>
+                    <input type="text"
+                           id="emphasis"
+                           name="emphasis"
+                           placeholder="ênfase">
+                </div>
+
                 <div class="form-group col-md-2">
                     <label class="" for="code">
                         Código
@@ -113,7 +123,7 @@
                             <label class="">Classificações</label>
                             <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
-                        
+
                         <div class="form-group font-weight-normal">
                         @if (count($classifications) > 0)
                         @foreach ($classifications as $classification)
@@ -148,7 +158,7 @@
                                         <h5>
                                             {{$classification->name}}
                                             @if ($classification->description)
-                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>
                                             @endif
                                         </h5>
                                     </div>
@@ -158,7 +168,7 @@
                                         <output id="outAvaliacao" value="50" for="outAvaliacao"></output><span>%<span>
                                     </div>
                                     <div class="col-md-8">
-                                        <input class="form-range w-100" id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">      
+                                        <input class="form-range w-100" id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">
                                     </div>
                                     <div class=" col-md-2 d-flex justify-content-end">
                                         <output id="outAvaliacaoSecondary" value="50"></output><span>%<span>
@@ -175,8 +185,8 @@
                             @else
                             <p>Não há classificações cadastradas.</p>
                         @endif
-                        
-                            
+
+
 
                             {{-- TODO --}}
                             {{-- tentar fazer texto aparecer abaixo do range --}}
@@ -318,18 +328,18 @@
 
 @section('scripts-bottom')
 <script>
-    
+
     let classifications = JSON.parse('{!! $classificationsJson !!}');
 
     console.log(classifications);
-   
+
 
     function handleInput(value, element) {
             console.log(value)
             const sliderContainer = element.parentNode
             const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
             const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
-            
+
             leftOutput.innerText = value
             rightOutput.innerText = 100 - value
         }

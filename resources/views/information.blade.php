@@ -36,10 +36,10 @@ Sobre nós - Portal das Disciplinas IMD
                     </ul>
                 </div>
         </div>
-    
 
 
-        
+
+
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
             <div class="row">
                 @component('components.info_contributors')
@@ -51,7 +51,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('image', 'img/eugenioq.jpeg')
                 @endcomponent
             </div>
-            
+
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @component('components.info_contributors')
                     @slot('name', 'Henry Medeiros')
@@ -61,6 +61,16 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('occupation', 'front-end')
                     @slot('email', 'henrymedeiros77@gmail.com')
                     @slot('lattes', 'http://lattes.cnpq.br/9829493020424534')
+                @endcomponent
+
+                @component('components.info_contributors')
+                    @slot('name', 'Jefferson Felipe')
+                    @slot('profession', 'Desenvolvedor')
+                    @slot('image', 'https://avatars.githubusercontent.com/u/57409786?s=400&u=e9077490f96f76794bd1bf16a65c0e66858a4344&v=4')
+                    @slot('alt_image', 'foto-dev')
+                    @slot('occupation', 'back-end')
+                    @slot('email', 'jeff.felip@outlook.com')
+                    @slot('lattes', 'http://lattes.cnpq.br/????')
                 @endcomponent
 
                 @component('components.info_contributors')
@@ -113,10 +123,10 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('lattes', 'http://lattes.cnpq.br/8112883352153781')
                 @endcomponent
 
-                
+
 
             </div>
-        </div>   
+        </div>
     </div>
 
     <!--
@@ -125,28 +135,28 @@ Sobre nós - Portal das Disciplinas IMD
         <hr>
         <div class="row mt-5">
             <div class="col-md-3 d-flex flex-column align-items-center">
-                
+
                 <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
                 <p><strong> Nome do colaborador </strong></p>
                 <p> Descrição </p>
                 <p> 12/12/2021 - 12/12/2021</p>
             </div>
             <div class="col-md-3 d-flex flex-column align-items-center">
-                
+
                 <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
                 <p><strong> Nome do colaborador </strong></p>
                 <p> Descrição </p>
                 <p> 12/12/2021 - 12/12/2021</p>
             </div>
             <div class="col-md-3 d-flex flex-column align-items-center">
-                
+
                 <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
                 <p><strong> Nome do colaborador </strong></p>
                 <p> Descrição </p>
                 <p> 12/12/2021 - 12/12/2021</p>
             </div>
             <div class="col-md-3 d-flex flex-column align-items-center">
-                
+
                 <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
                 <p><strong> Nome do colaborador </strong></p>
                 <p> Descrição </p>
@@ -155,6 +165,6 @@ Sobre nós - Portal das Disciplinas IMD
         </div>
     </section>
 -->
-    
+
 </div>
 @endsection

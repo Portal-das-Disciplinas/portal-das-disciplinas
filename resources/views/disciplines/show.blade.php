@@ -87,7 +87,7 @@
                 <div>
                     <div>
                         @if($discipline->emphasis=='')
-                        <div><p>Não há sinopse cadastrada.</p></div>
+                        <div><p>Não há ênfase cadastrada.</p></div>
                         @else
                         <div><p style='text-align: justify; '>{{ $discipline->emphasis}}</p></div>
                         @endif
