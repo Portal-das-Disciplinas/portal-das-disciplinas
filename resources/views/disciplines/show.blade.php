@@ -13,8 +13,9 @@
 @endsection
 
 @section('content')
-<div class='banner text-center d-flex align-items-center justify-content-center  text-white'>
+<div class='banner text-center d-flex flex-column align-items-center justify-content-center  text-white'>
     <h1 class='display-title'>{{ $discipline->name }} - {{ $discipline->code }}</h1>
+    <h3>{{ $discipline->emphasis}}</h3>
 </div>
 
 <div class="container" >
@@ -80,21 +81,7 @@
 
             </div>
 
-            <!-- Emphasis -->
-            <div class="section mt-3">
-
-                <h1 class="mb-3">Ênfase</h1>
-                <div>
-                    <div>
-                        @if($discipline->emphasis=='')
-                        <div><p>Não há ênfase cadastrada.</p></div>
-                        @else
-                        <div><p style='text-align: justify; '>{{ $discipline->emphasis}}</p></div>
-                        @endif
-                    </div>
-                </div>
-
-            </div>
+           
 
             <!-- VÍDEO -->
             <div class='section'>
