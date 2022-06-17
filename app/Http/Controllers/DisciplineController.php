@@ -236,6 +236,7 @@ class DisciplineController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
+        //dd($request);
         DB::beginTransaction();
         try {
             $user = Auth::user();
@@ -250,6 +251,7 @@ class DisciplineController extends Controller
                 'name' => $request->input('name'),
                 'code' => $request->input('code'),
                 'synopsis' => $request->input('synopsis'),
+                'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
