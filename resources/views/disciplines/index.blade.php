@@ -50,7 +50,19 @@
             <form action="{{route('index')}}" method="GET">
                 @csrf
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Pesquisar..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='search' value="{{ $search ?? '' }}">
+                        <input type="text" class="form-control" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='search' value="{{ $search ?? '' }}">
+
+                            <select name="emphasis" id="emphasis" class='form-control' >
+                                <option selected disabled > Selecione uma ênfase</option>
+                                <option value="Computação">Computação</option>
+                                <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
+                                <option value="Informática Educacional">Informática Educacional</option>
+                                <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
+                                <option value="Bioinformática">Bioinformática</option>
+                                <option value="Internet das Coisas">Internet das Coisas</option>
+                                <option value="Jogos Digitais">Jogos Digitais</option>
+                            </select>
+
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" id="button-addon2">Pesquisar</button>
                         </div>
