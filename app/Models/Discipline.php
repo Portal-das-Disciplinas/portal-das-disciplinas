@@ -28,6 +28,7 @@ class Discipline extends Model
         'synopsis',
         'difficulties',
         'professor_id',
+        'acquirements',
     ];
 
     /**

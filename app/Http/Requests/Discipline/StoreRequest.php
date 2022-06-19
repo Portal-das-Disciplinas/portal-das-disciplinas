@@ -30,6 +30,7 @@ class StoreRequest extends FormRequest
             'code' => ['required', 'max:10',],
             'synopsis' => ['nullable', 'max:5000',],
             'difficulties' => ['nullable', 'max:5000',],
+            'acquirements' => ['nullable', 'max:5000',],
             'media-trailer' => ['nullable', 'max:250',],
             'media-video' => ['nullable', 'max:250',],
             'media-podcast' => ['nullable', 'max:250',],

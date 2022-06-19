@@ -266,8 +266,30 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="d-flex">
+                            <label class="" for="acquirements">
+                                Conhecimentos/Competências Desejados
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Conhecimentos e habilidades necessários ou interessantes para que o aluno possa fazer matricula na disciplina
+                            " ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
+                        <textarea
+                            class="form-control {{ $errors->has('acquirements') ? 'is-invalid' : ''}}"
+                            id="acquirements"
+                            name="acquirements"
+                            rows="12"
+                            max-rows="12"
+                            placeholder="Coloque aqui acquirements desejaveis para o aluno cursar a disciplina.">{{old('acquirements')}}</textarea>
+                        @error('acquirements')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div> 
                 </div>
             </div>
+
+
+            
 
             {{-- <div class="form-row mt-3">
                 <div class="col-md-12">
@@ -286,6 +308,30 @@
                                       rows="4"
                                       placeholder="Coloque aqui problemas que alunos costumam relatar ao cursar esse componente.">{{old('difficulties')}}</textarea>
                             @error('difficulties')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+
+            {{-- <div class="form-row mt-3">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="d-flex">
+                            <label class="" for="acquirements">
+                                Obstáculos
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
+                        <div class="input-group">
+                            <textarea style="resize:none"
+                                      class="form-control {{ $errors->has('acquirements') ? 'is-invalid' : ''}}"
+                                      id="acquirements"
+                                      name="acquirements"
+                                      rows="4"
+                                      placeholder="Coloque aqui problemas que alunos costumam relatar ao cursar esse componente.">{{old('acquirements')}}</textarea>
+                            @error('acquirements')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
