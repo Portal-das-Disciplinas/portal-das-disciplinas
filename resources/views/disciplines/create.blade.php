@@ -9,8 +9,10 @@
 @endsection
 
 @section('content')
-    <div class="container mt-4">
-        <h2 class="mb-4">Cadastro de disciplinas</h2>
+    <div class="container">
+        <div class='page-title'>
+            <h1>Cadastro de disciplinas</h1>
+        </div>
 
         <form action="{{ route("disciplinas.store") }}" method="post">
             @csrf
@@ -30,6 +32,9 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                
+                
+            
 
                 <div class="form-group col-md-2">
                     <label class="" for="code">
@@ -46,6 +51,26 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+            </div>
+
+
+            <div class="col-md-12 px-0">
+                
+                    <label class="" for="emphasis">
+                        Ênfase da disciplina
+                    </label>
+                    <select name="emphasis" id="emphasis" class='form-control' >
+                        <option selected disabled > Selecione uma ênfase</option>
+                        <option value="Computação">Computação</option>
+                        <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
+                        <option value="Informática Educacional">Informática Educacional</option>
+                        <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
+                        <option value="Bioinformática">Bioinformática</option>
+                        <option value="Internet das Coisas">Internet das Coisas</option>
+                        <option value="Jogos Digitais">Jogos Digitais</option>
+                    </select>
+                    
+               
             </div>
             <div class="col-md-12 px-0">
                 @if (Auth::user()->isAdmin)
@@ -105,20 +130,21 @@
                 </div>
 
 
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="form-group">
                         <div class="d-flex">
                             <label class="">Classificações</label>
-                            <p data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Deslize os sliders e quantifique em porcentagem o quanto a sua disciplina se encaixa na referida classificação" ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
-                        
+
                         <div class="form-group font-weight-normal">
-                            @foreach ($classifications as $classification)
+                        @if (count($classifications) > 0)
+                        @foreach ($classifications as $classification)
 
                         <!-- COMPONENTE DO INPUT DE CLASSIFICAO -->
-                        <div style="width: 500px" class="classification-input-component" id='1'>
+                        <div class="classification-input-component" id='1'>
                             <div>
-                                <h4 style="text-align: center;">{{$classification->name}}</h4>
+                                <h3 class='smaller-p text-center'>{{$classification->name}}</h3>
                             </div>
                             <div style="display: flex; justify-content: space-between;">
                                 <div>
@@ -132,8 +158,8 @@
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
-                                <h5>{{ $classification->type_a ?? '' }}</h5>
-                                <h5>{{ $classification->type_b ?? '' }}</h5>
+                                <h3 class='smaller-p'>{{ $classification->type_a ?? '' }}</h3>
+                                <h3 class='smaller-p'>{{ $classification->type_b ?? '' }}</h3>
 
                             </div>
                         </div>
@@ -145,7 +171,7 @@
                                         <h5>
                                             {{$classification->name}}
                                             @if ($classification->description)
-                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>
                                             @endif
                                         </h5>
                                     </div>
@@ -155,7 +181,7 @@
                                         <output id="outAvaliacao" value="50" for="outAvaliacao"></output><span>%<span>
                                     </div>
                                     <div class="col-md-8">
-                                        <input class="form-range w-100" id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">      
+                                        <input class="form-range w-100" id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="50" min="0" max="100" oninput="handleInput(outAvaliacao, outAvaliacaoSecondary, this.value)">
                                     </div>
                                     <div class=" col-md-2 d-flex justify-content-end">
                                         <output id="outAvaliacaoSecondary" value="50"></output><span>%<span>
@@ -169,6 +195,11 @@
                                 </div> -->
                                 <!-- FIM DA ANTIGA BARRA DE AJUSTE DE PORCENTAGEM -->
                             @endforeach
+                            @else
+                            <p>Não há classificações cadastradas.</p>
+                        @endif
+
+
 
                             {{-- TODO --}}
                             {{-- tentar fazer texto aparecer abaixo do range --}}
@@ -190,7 +221,7 @@
                             <label class="" for="media-trailer">
                                 Trailer da disciplina
                             </label>
-                            <p data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você." ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="input-group">
                             <input type="text"
@@ -211,7 +242,7 @@
                             <label class="" for="media-video">
                                 Vídeo
                             </label>
-                            <p data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="input-group">
                             <input type="text"
@@ -231,7 +262,7 @@
                             <label class="" for="media-podcast">
                                 Podcast
                             </label>
-                            <p data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="input-group">
                             <input type="text"
@@ -251,7 +282,7 @@
                             <label class="" for="media-material">
                                 Materiais
                             </label>
-                            <p data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
+                            <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Amostra de apostilas, avaliações e outros materiais da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         <div class="input-group">
                             <input type="text"
@@ -356,18 +387,18 @@
 
 @section('scripts-bottom')
 <script>
-    
+
     let classifications = JSON.parse('{!! $classificationsJson !!}');
 
     console.log(classifications);
-   
+
 
     function handleInput(value, element) {
             console.log(value)
             const sliderContainer = element.parentNode
             const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
             const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
-            
+
             leftOutput.innerText = value
             rightOutput.innerText = 100 - value
         }

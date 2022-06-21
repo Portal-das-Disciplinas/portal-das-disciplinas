@@ -10,82 +10,91 @@ noindex, follow
 
 @section('content')
 
-<div class='discipline-banner' style='margin-bottom:-3rem' >
+<div class='banner' style='margin-bottom:-3rem'>
     <div class="vertical-center">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="card card-auth">
-                        <div class="card-header">
-                            <a type="cancel" class="btn btn-primary" href="{{ route('index') }}">
-                                Inicio
-                            </a>
+            <div class="login-card">
+                <div class="custom-card-header">
+                    <!--
+                        <a type="cancel" class="btn btn-primary" href="{{ route('index') }}">
+                            Inicio
+                        </a>-->
+                    <div class='login-img-container'>
+                        <img src="{{ asset('img/imd-footer-2.png') }}" alt="Login Icon">
+                    </div>
+                    <h2 class='login-title'>Login</h2>
+                    <p class='text-center'>Utilize suas credenciais para acessar o portal.</p>
+                </div>
+                    <form method="POST" class="w-100 py-4" action="{{ route('login') }}">
+                        @csrf
 
-                            <div class="text-center">
-                                <h2>Realizar login</h2>
+                        <div class="form-group">
+                            <label for="email"
+                                class=""><strong>{{ __('E-Mail Address') }}</strong></label>
+                            
+                            <div class="login-input">
+                                <input id="email" type="email" class=" smaller-p form-control @error('email') is-invalid @enderror"
+                                name="email" value="{{ old('email') }}" required autocomplete="email"
+                                autofocus placeholder="Usuário">
+                            <i class="fas fa-user"></i>
+                            @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            
+                            <label for="password"
+                                class=""><strong>{{ __('Password') }}</strong></label>
+                            
+                            <div class="login-input">
+                                <input id="password" type="password"
+                                class=" smaller-p form-control @error('password') is-invalid @enderror " name="password" required
+                                autocomplete="current-password" placeholder='Senha'>
+                            <i class="fas fa-key"></i>
+                            @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                             </div>
                             
+
+                          
                         </div>
 
-                        <div class="card-body">
-                            <form method="POST" class="py-4" action="{{ route('login') }}">
-                                @csrf
-                                
-                                <div class="row justify-content-center mb-3">
-                                    <div class="col-md-6">
-                                        <label for="email" class=""><strong>{{ __('E-Mail Address') }}</strong></label>
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
-                                            @error('email')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                    </div>
-                                </div>
 
-                                <div class="row justify-content-center mb-3">
-                                    <div class="col-md-6">
-                                        <label for="password" class=""><strong>{{ __('Password') }}</strong></label>
-                                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror " name="password" required autocomplete="current-password">
+                        <div class="">
+                            <button type="submit" class="login-btn btn w-100">
+                                {{ __('Login') }}
+                            </button>
 
-                                            @error('password')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                    </div>
-                                </div>
-                                
-                                <div class="row mb-0 justify-content-center">
-                                    <div class="col-md-6 ">
-                                        <button type="submit" class="btn btn-primary w-100">
-                                            {{ __('Login') }}
-                                        </button>
+                            @if(Route::has('register'))
+                                <a class="btn btn-primary" href="{{ route('register') }}">
+                                    {{ __('Register') }}
+                                </a>
+                            @endif
 
-                                        @if (Route::has('register'))
-                                            <a class="btn btn-primary" href="{{ route('register') }}">
-                                                {{ __('Register') }}
-                                            </a>
-                                        @endif
-                                        
 
-                                        @if (Route::has('password.request'))
-                                            <a class="btn btn-link" href="{{ route('password.request') }}">
-                                                {{ __('Forgot Your Password?') }}
-                                            </a>
-                                        @endif
-                                    </div>
-                                </div>
-                            </form>
+                            @if(Route::has('password.request'))
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    {{ __('Forgot Your Password?') }}
+                                </a>
+                            @endif
+
                         </div>
-                    </div>
+                    </form>
+                    
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-
 
 
 @endsection

@@ -30,7 +30,6 @@ Auth::routes([
 ]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-
 Route::get('/', [DisciplineController::class, 'index'])
     ->name('index');
 Route::post('/search', [DisciplineController::class, 'search'])->name('search');
