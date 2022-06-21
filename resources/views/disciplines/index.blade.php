@@ -4,6 +4,13 @@
 @endsection
 @section('content')
 
+
+    <div class="row">
+        <div class="col-12 text-center my-4 title-subject-container">
+            <h1 class="title-subject display-title " style='color: #1F2937'>Portal das Disciplinas - IMD/UFRN</h1>
+            <div class="row justify-content-center">
+                <p class='p-text mt-3  text-center col-md-10 '>Cada disciplina aqui conta com entrevistas, informações, materiais, indicação de dificuldades e muito mais sobre esses componentes curriculares do Bacharelado em TI do IMD/UFRN.<p>
+
 <section class='hero-section'>
     <div class="container">
         <div class="row">
@@ -14,6 +21,7 @@
                         informações, materiais, indicação de dificuldades e muito mais sobre esses componentes
                         curriculares do Bacharelado em TI do IMD/UFRN.<p>
                 </div>
+
             </div>
         </div>
 
@@ -69,6 +77,23 @@
                     </div>
                 </form>
             </div>
+
+        </div> --}}
+    
+        @isset($disciplines)
+            @if ($disciplines->count() == 0)
+                <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
+            @else
+                <div class="row pb-5" >
+                    @foreach ($disciplines as $discipline)
+                        <div class="col-12 col-sm-6 col-lg-3 mt-5">
+                            <div class="card shadow light-border-radius card-discipline" style="min-height: 400px; max-height: 500px; max-width: 100%" >
+                                @if (!is_null($discipline->trailer))
+                                    <div class="teacher-video-container">
+                                        <div class="embed-responsive embed-responsive-16by9">
+                                            <iframe class="embed-responsive-item" src="{{ $discipline->trailer->view_url }}" allowfullscreen></iframe>
+                                        </div>
+
         </div>
 
     @isset($disciplines)
@@ -84,6 +109,7 @@
                                     <div class="embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item light-border-radius"
                                             src="{{ $discipline->trailer->view_url }}" allowfullscreen></iframe>
+
                                     </div>
                                 </div>
                             @else
@@ -157,4 +183,34 @@
 </div>
 </div>
 
+<style scoped>
+
+/* Media Queries */
+
+/* @media screen and (max-width:770px){
+    .display-title{
+        font-size:3.5rem;
+    }
+
+    
+} */
+
+@media screen and (max-width:576px){
+    .container{
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width:446px){
+    #imd-footer{
+        display: none;
+    }
+    #pdd-title{
+        width: 100%;
+        margin: 0 !important;
+        text-align: center !important;
+    }
+}
+
+</style>
 @endsection

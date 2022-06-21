@@ -89,6 +89,7 @@ class DisciplineController extends Controller
                 'synopsis' => $request->input('synopsis'),
                 'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
+                'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
 
@@ -143,7 +144,8 @@ class DisciplineController extends Controller
                     'url' => $url,
                     'discipline_id' => $discipline->id
                 ]);
-            }
+            }    
+
 
             // Apagar
             // $classificationsMap = [
@@ -253,6 +255,7 @@ class DisciplineController extends Controller
                 'synopsis' => $request->input('synopsis'),
                 'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
+                'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
 
@@ -358,7 +361,6 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return dd($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput();
         }
