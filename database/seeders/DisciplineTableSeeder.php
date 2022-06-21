@@ -21,6 +21,7 @@ class DisciplineTableSeeder extends Seeder
             'name' => 'Estrutura de dados básicas I',
             'description'=>'Nessa disciplina estudaremos como estruturar dados.',
             'difficulties' => 'As dificuldades que os alunos encontram são programar com c++',
+            'acquirements' => 'Progamação Orientada a objeto',
             'professor_id' => 1
         ]);
 
@@ -29,6 +30,7 @@ class DisciplineTableSeeder extends Seeder
             'name' => 'Estrutura de dados básicas II',
             'description'=>'Nessa disciplina iremos continuar o estudo sobre estrutura de dados.',
             'difficulties' => 'As dificuldades que os alunos encontram são programar com c++',
+            'acquirements' => 'Progamação Orientada a objeto',
             'professor_id' => 1
         ]);
 
@@ -37,6 +39,7 @@ class DisciplineTableSeeder extends Seeder
             'name' => 'Estrutura de dados básicas I',
             'description'=>'Iremos aprender como funciona a estrutura de dados.',
             'difficulties' => 'As dificuldades que os alunos encontram são programar com c++',
+            'acquirements' => 'Progamação Orientada a objeto',
             'professor_id' => 1
         ]);
 
@@ -45,6 +48,7 @@ class DisciplineTableSeeder extends Seeder
             'name' => 'Vetores e Geometria Analítica',
             'description'=>'Iremos aprender funções vetoriais e geometria',
             'difficulties' => 'As dificuldades que os alunos encontram são ter um conhecimento básico em vetores e geometria.',
+            'acquirements' => 'Progamação Orientada a objeto',
             'professor_id' => 1
         ]);
 
