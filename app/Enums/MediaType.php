@@ -8,5 +8,4 @@ class MediaType extends Enum
     const PODCAST = 'podcast';
     const MATERIAIS = 'materiais';
     const CLASSIFICACAO = 'classificacao';
-    
 }

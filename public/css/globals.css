@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Open+Sans:wght@400;500&family=Vollkorn:wght@400;700&display=swap');
+
+:root {
+    --main-bg-color: #0c3f7c;
+    --main-md-color: #acb2b8;
+    --main-title-bg-color: white;
+    --main-text-color: black;
+    
+    --primary-color: #0553A1;
+    --primary-color-darker: #03396E;
+    --primary-color-lighter: #3069A1;
+
+    --secondary-color: #FFBF00;
+    --secondary-color-darker: #E5AC00;
+    --secondary-color-lighter: #FFCC33;
+
+    --on-secondary: rgb(32, 32, 32);
+    --on-primary: #fff;
+    /* SECONDARYS: #DAFF7D, FFBF00 , FFBF00, #F3CA40, #44FFD2*/
+
+}
+
+
+/* FONT SIZE SETTINGS */
+html{
+    font-size: 62.5%;
+}
+
+body{
+    font-size: 1.8rem;
+    line-height: 2.8rem;
+    font-weight: 500;
+}
+
+.display-title {
+    font-size: 4.3rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+}
+
+h2 {
+    font-size: 2.8rem;
+}
+
+h3 {
+    font-size: 2.25rem;
+    text-transform: capitalize;
+}
+
+.smaller-p{
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+}
+
+
+.larger-p {
+    font-size: 2rem;
+    line-height: 3rem;
+}
+
+.form-control,.btn,.tooltip{
+    font-size: 1.8rem;
+}
+
+
+/* END FONT-SIZE */
+
+/* FONT-WEIGHT */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bolder;
+    font-family: "Nunito Sans";
+}
+/*END FONT WEIGHT */
+
+/* UTILITIES */
+.info-portal {
+    color: white;
+}
+
+.banner {
+    background: linear-gradient(30deg, rgba(1, 75, 140, 0.8), rgba(2, 76, 141, 0.9)), url('https://hongkong.imd.ufrn.br/filemanagerportal/source/2020/CURSOS%20TECNICOS%20IMD%20POLOS%20INTERIOR.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 364px;
+}
+
+.page-title{
+    color: var(--primary-color);
+    border-bottom: 3px solid var(--primary-color);
+    margin: 3.5rem 0;
+}
+
+.tooltip-inner {
+    min-width: 200px;
+    max-width: 100%; 
+}
+
+.large-secondary-button {
+    border-radius: 100px;
+    background-color: var(--secondary-color);
+    color: var(--on-secondary);
+    font-weight: 500;
+    border: 0;
+    padding: 8px;
+    font-size: 1.8rem;
+}
+
+
+/* RESPONSIVE */
+
+@media only all and (max-width:768px){
+    html{
+        font-size: 50%;
+    }
+
+    body{
+        font-size: 2rem;
+        line-height: 3rem;
+        font-weight: 500;
+    }
+    
+    .banner{
+        min-height: calc(364px/2)
+    }
+}

@@ -15,9 +15,9 @@
     {{-- bootstrap CSS --}}
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     {{-- CSS --}}
-    <link rel="stylesheet" href="{{asset('css/index.css')}}">
-    <link rel="stylesheet" href="{{asset('css/sidebar.css')}}">
-    <link rel="stylesheet" href="{{asset('css/discipline.css')}}">
+    <link rel="stylesheet" href="{{asset('css/globals.css')}}">
+    <link rel="stylesheet" href="{{asset('css/navbar.css')}}">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700;900&display=swap" rel="stylesheet">

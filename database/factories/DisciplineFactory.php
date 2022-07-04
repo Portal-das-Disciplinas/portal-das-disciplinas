@@ -31,7 +31,6 @@ class DisciplineFactory extends Factory
             'name' => $this->faker->text(25),
             'synopsis' => $this->faker->text(),
             'difficulties' => $this->faker->text(50),
-            'acquirements' => $this->faker->text(50),
             'professor_id' => Professor::factory(),
         ];
     }

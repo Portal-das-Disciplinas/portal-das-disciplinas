@@ -16,15 +16,15 @@
     <!-- Copyright -->
 <!--</footer> -->
 
-<div class="footer">
+<footer class="footer">
     <div class="h-100 d-flex flex-column justify-content-around container">
         <div id="info-div" class=" row justify-content-between align-items-center">
             <div id="section1">
-                <div class="d-flex align-items-center">
+                <div class="logo-and-title d-flex align-items-center">
                     <img fluid id="imd-footer" src="{{ asset('img/imd-footer-2.png') }}"/>
                     <p id="pdd-title" class="ml-3 footer-title">Portal das Disciplinas - IMD/UFRN</p>
                 </div>
-                <p id="pdd-sub" class="mt-3 footer-sub">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus culpa est recusandae.</p>
+                <!-- <p id="pdd-sub" class="mt-3 footer-sub">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus culpa est recusandae.</p> -->
             </div>
             <div>
                 <img id="ufrn-logo" class='blackImg' fluid src="{{ asset('img/ufrnlogo-alt.png') }}"/>
@@ -38,7 +38,7 @@
             </div>
         </div>
     </div>
-</div>
+</footer>
 
 <style scoped>
 
@@ -54,6 +54,8 @@
 .footer{
     height: auto;
     background-color: white;
+    width: 100vw;
+    bottom: 0;
 }
 
 p{
@@ -165,13 +167,18 @@ hr{
     }
 }
 
-@media screen and (max-width:446px){
+@media screen and (max-width:768px){
+    .logo-and-title{
+        flex-direction: column;
+    }
+    .logo-and-title > *{
+        margin: 1.6rem 0;
+    }
     #imd-footer{
-        display: none;
+        display: block;
     }
     #pdd-title{
         width: 100%;
-        margin: 0 !important;
         text-align: center !important;
     }
 }

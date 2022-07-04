@@ -28,14 +28,25 @@ class DisciplineController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $disciplines = Discipline::query()
+        if(is_null($request->search)&&is_null($request->emphasis)){
+            $disciplines = Discipline::query()
             ->with([
                 'professor',
                 'medias',
             ])->orderBy('name', 'ASC')->get();
-
+        }else{
+            //dd($request);
+            $nome_disciplina = $request->search;
+            $enfase = $request->emphasis;
+            $disciplines = Discipline::query()
+            ->with([
+                'professor',
+                'medias',
+            ])->orderBy('name', 'ASC')->where("name", "like", $nome_disciplina."%")
+            ->where("emphasis", "like", "%".$enfase."%")->get();
+        }
         return view(self::VIEW_PATH . 'index', compact('disciplines'));
     }
 
@@ -71,17 +82,18 @@ class DisciplineController extends Controller
             if ($user->isAdmin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
+
             $discipline = Discipline::create([
                 'name' => $request->input('name'),
                 'code' => $request->input('code'),
                 'synopsis' => $request->input('synopsis'),
+                'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
-                'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
-                
+
                 $url = $request->input('media-trailer');
                 $mediaId = YoutubeService::getIdFromUrl($url);
                 Media::create([
@@ -131,8 +143,7 @@ class DisciplineController extends Controller
                     'url' => $url,
                     'discipline_id' => $discipline->id
                 ]);
-            }    
-
+            }
 
             // Apagar
             // $classificationsMap = [
@@ -225,6 +236,7 @@ class DisciplineController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
+        //dd($request);
         DB::beginTransaction();
         try {
             $user = Auth::user();
@@ -239,8 +251,8 @@ class DisciplineController extends Controller
                 'name' => $request->input('name'),
                 'code' => $request->input('code'),
                 'synopsis' => $request->input('synopsis'),
+                'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
-                'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
 
@@ -346,6 +358,7 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
+            return dd($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput();
         }

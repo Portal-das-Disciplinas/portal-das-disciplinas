@@ -26,9 +26,9 @@ class Discipline extends Model
         'code',
         'name',
         'synopsis',
+        'emphasis',
         'difficulties',
         'professor_id',
-        'acquirements',
     ];
 
     /**

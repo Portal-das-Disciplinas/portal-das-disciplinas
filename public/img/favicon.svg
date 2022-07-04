@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Camada_1"
+   data-name="Camada 1"
+   viewBox="0 0 730.62002 572.91998"
+   version="1.1"
+   width="730.62"
+   height="572.91998"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs20">
+    <style
+       id="style2">.cls-1{fill:url(#linear-gradient);}.cls-2{fill:url(#linear-gradient-2);}.cls-3{fill:#034ea2;}</style>
+    <linearGradient
+       id="linear-gradient"
+       x1="572.59998"
+       y1="896.08002"
+       x2="572.59998"
+       y2="207.66"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#00a1e4"
+         id="stop4" />
+      <stop
+         offset="0.07"
+         stop-color="#018cd4"
+         id="stop6" />
+      <stop
+         offset="0.16"
+         stop-color="#0276c1"
+         id="stop8" />
+      <stop
+         offset="0.27"
+         stop-color="#0264b3"
+         id="stop10" />
+      <stop
+         offset="0.41"
+         stop-color="#0357a9"
+         id="stop12" />
+      <stop
+         offset="0.58"
+         stop-color="#0350a4"
+         id="stop14" />
+      <stop
+         offset="1"
+         stop-color="#034ea2"
+         id="stop16" />
+    </linearGradient>
+    <linearGradient
+       id="linear-gradient-2"
+       x1="253.64999"
+       y1="884.20001"
+       x2="253.64999"
+       y2="313.23999"
+       xlink:href="#linear-gradient" />
+    <linearGradient
+       xlink:href="#linear-gradient"
+       id="linearGradient846"
+       gradientUnits="userSpaceOnUse"
+       x1="572.59998"
+       y1="896.08002"
+       x2="572.59998"
+       y2="207.66"
+       gradientTransform="translate(-186.11,-253.53999)" />
+  </defs>
+  <path
+     class="cls-1"
+     d="m 714.78,210.74001 c -11.32,-36 -35,-65.53 -70.37,-87.71 v 0 c -34,-21.86 -79.63,-33.000003 -135.58,-33.000003 H 135.1 v -45 H 45.03 v 45 0 45.000003 h 90.07 v 90.13 h 157.44 v 347.76 h 134.42 v -336.85 h 27.35 c 63.3,0 89,6.71 99.32,12.34 28.64,15.25 42.57,47.45 42.57,98.43 v 226.08 h 134.42 v -242.13 c 0,-46.15 -5.33,-86.54 -15.84,-120.05 z"
+     id="path22"
+     style="fill:url(#linearGradient846)" />
+  <polygon
+     class="cls-2"
+     points="321.2,478.7 231.14,478.7 231.14,388.63 186.11,388.63 186.11,826.46 320.53,826.46 "
+     id="polygon24"
+     style="fill:url(#linear-gradient-2)"
+     transform="translate(-186.11,-253.53999)" />
+  <rect
+     class="cls-3"
+     x="6.1035155e-07"
+     y="0"
+     width="45.029999"
+     height="45.029999"
+     id="rect26" />
+</svg>
