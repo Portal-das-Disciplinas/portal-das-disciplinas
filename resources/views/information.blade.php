@@ -129,39 +129,6 @@ Sobre nós - Portal das Disciplinas IMD
         </div>
     </div>
 
-
-    <h4 class='mb-3' hidden>Colaboradores Anteriores</h4>
-    <hr>
-    <div class="row " hidden>
-        
-        <div class="col-md-3 d-flex flex-column align-items-center">
-            
-            <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
-            <p><strong> Nome do colaborador </strong></p>
-            <p> Descrição </p>
-            <p> 12/12/2021 - 12/12/2021</p>
-        </div>
-        <div class="col-md-3 d-flex flex-column align-items-center">
-            
-            <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
-            <p><strong> Nome do colaborador </strong></p>
-            <p> Descrição </p>
-            <p> 12/12/2021 - 12/12/2021</p>
-        </div>
-        <div class="col-md-3 d-flex flex-column align-items-center">
-            
-            <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
-            <p><strong> Nome do colaborador </strong></p>
-            <p> Descrição </p>
-            <p> 12/12/2021 - 12/12/2021</p>
-        </div>
-        <div class="col-md-3 d-flex flex-column align-items-center">
-            
-            <img class="fluid clip-path" style="width:4rem" src="img/user2.png" alt="foto-dev">
-            <p><strong> Nome do colaborador </strong></p>
-            <p> Descrição </p>
-            <p> 12/12/2021 - 12/12/2021</p>
-
     <!--
     <section>
         <h3 class='mb-3'>Colaboradores Anteriores</h3>
@@ -195,7 +162,6 @@ Sobre nós - Portal das Disciplinas IMD
                 <p> Descrição </p>
                 <p> 12/12/2021 - 12/12/2021</p>
             </div>
-
         </div>
     </section>
 -->

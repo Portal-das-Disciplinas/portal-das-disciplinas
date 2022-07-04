@@ -168,7 +168,6 @@
 
 
             </div>
-
             <hr>
              <!-- PODCAST -->
             <div>
@@ -209,20 +208,7 @@
             </div>
             <hr>
 
-             <!-- Conhecimentos -->
-            <div class='section'>
-                <h3 class="mb-3">Conhecimentos/Competências Desejados</h3>
-                <div>
-                    <div>
-                        @if($discipline->acquirements=='')
-                        <div class=" p-text">Nenhum conhecimento.</div>
-                        @else
-                        <div style = "text-align: justify; line-height: normal;">{{ $discipline->acquirements }}</div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <hr> 
+
 
 
         </div>

@@ -4,13 +4,6 @@
 @endsection
 @section('content')
 
-
-    <div class="row">
-        <div class="col-12 text-center my-4 title-subject-container">
-            <h1 class="title-subject display-title " style='color: #1F2937'>Portal das Disciplinas - IMD/UFRN</h1>
-            <div class="row justify-content-center">
-                <p class='p-text mt-3  text-center col-md-10 '>Cada disciplina aqui conta com entrevistas, informações, materiais, indicação de dificuldades e muito mais sobre esses componentes curriculares do Bacharelado em TI do IMD/UFRN.<p>
-
 <section class='hero-section'>
     <div class="container">
         <div class="row">
@@ -21,7 +14,6 @@
                         informações, materiais, indicação de dificuldades e muito mais sobre esses componentes
                         curriculares do Bacharelado em TI do IMD/UFRN.<p>
                 </div>
-
             </div>
         </div>
 
@@ -57,43 +49,26 @@
             <div class="col">
             <form action="{{route('index')}}" method="GET">
                 @csrf
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='search' value="{{ $search ?? '' }}">
+                    <div class="input-group search-bar">
+                        <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='search' value="{{ $search ?? '' }}">
 
-                            <select name="emphasis" id="emphasis" class='form-control' >
-                                <option selected disabled > Selecione uma ênfase</option>
-                                <option value="Computação">Computação</option>
-                                <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
-                                <option value="Informática Educacional">Informática Educacional</option>
-                                <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
-                                <option value="Bioinformática">Bioinformática</option>
-                                <option value="Internet das Coisas">Internet das Coisas</option>
-                                <option value="Jogos Digitais">Jogos Digitais</option>
-                            </select>
+                        <select name="emphasis" id="emphasis" class='form-control col-3' >
+                            <option selected disabled > Todas as ênfases </option>
+                            <option value="Computação">Computação</option>
+                            <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
+                            <option value="Informática Educacional">Informática Educacional</option>
+                            <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
+                            <option value="Bioinformática">Bioinformática</option>
+                            <option value="Internet das Coisas">Internet das Coisas</option>
+                            <option value="Jogos Digitais">Jogos Digitais</option>
+                        </select>
 
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit" id="button-addon2">Pesquisar</button>
+                            <button class="btn btn-primary search-button" type="submit" id="button-addon2"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
                     </div>
                 </form>
             </div>
-
-        </div> --}}
-    
-        @isset($disciplines)
-            @if ($disciplines->count() == 0)
-                <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
-            @else
-                <div class="row pb-5" >
-                    @foreach ($disciplines as $discipline)
-                        <div class="col-12 col-sm-6 col-lg-3 mt-5">
-                            <div class="card shadow light-border-radius card-discipline" style="min-height: 400px; max-height: 500px; max-width: 100%" >
-                                @if (!is_null($discipline->trailer))
-                                    <div class="teacher-video-container">
-                                        <div class="embed-responsive embed-responsive-16by9">
-                                            <iframe class="embed-responsive-item" src="{{ $discipline->trailer->view_url }}" allowfullscreen></iframe>
-                                        </div>
-
         </div>
 
     @isset($disciplines)
@@ -109,7 +84,6 @@
                                     <div class="embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item light-border-radius"
                                             src="{{ $discipline->trailer->view_url }}" allowfullscreen></iframe>
-
                                     </div>
                                 </div>
                             @else
@@ -183,34 +157,4 @@
 </div>
 </div>
 
-<style scoped>
-
-/* Media Queries */
-
-/* @media screen and (max-width:770px){
-    .display-title{
-        font-size:3.5rem;
-    }
-
-    
-} */
-
-@media screen and (max-width:576px){
-    .container{
-        justify-content: center;
-    }
-}
-
-@media screen and (max-width:446px){
-    #imd-footer{
-        display: none;
-    }
-    #pdd-title{
-        width: 100%;
-        margin: 0 !important;
-        text-align: center !important;
-    }
-}
-
-</style>
 @endsection

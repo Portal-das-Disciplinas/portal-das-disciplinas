@@ -1,26 +1,9 @@
 
-<style>
-  .user-icon:hover{
-    color:#014C8C;
-    cursor:pointer;
-  }
-</style>
-
-<header class="w-100 bg-light sticky-top shadow " style='border-top: 8px solid #014C8C'>
-    
-    <nav class="container mt-0">
-      <div class="row px-3">
-
-        <div class=" d-flex align-items-center justify-content-between w-100" id="navbarNav" style="height:80px">
-          <a class="navbar-brand mr-0" href="{{route('index')}}">
-            <img src="{{asset('img/imdLogo.png')}}"  class='logo-navbar' alt="Logo do IMD">
-
   <header class="sticky-top shadow">
       <div class="menu-container container d-flex mt-0 justify-content-between align-items-center">
 
           <a class="navbar-brand" href="{{ route('index') }}">
               <img src="{{ asset('img/new-imd-logo.svg') }}" class='logo-navbar' alt="Logo do IMD">
-
           </a>
           <div class="menu-section">
               <div class="container-menu-burger">
@@ -109,26 +92,8 @@
   const menuSection = document.querySelector('.menu-section');
   const burgerContainer = document.querySelector('.container-menu-burger')
 
-
-<style scoped>
-
-/* Media Queries */
-
-
-
-@media screen and (max-width:576px){
-   .logo-navbar{
-    width:84px;
-   }
-}
-
-
-
-</style>
-
   burgerContainer.addEventListener('click', () => {
     menuSection.classList.toggle('on');
     show = !show
   })
 </script>
-
