@@ -305,6 +305,26 @@
                             @enderror
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="d-flex">
+                            <label class="" for="acquirements">
+                                Conhecimentos/Competência Desejados
+                            </label>
+                            <p data-toggle="tooltip" data-placement="top" title="Conhecimentos e habilidades necessários ou interessantes para que o aluno possa fazer matricula na disciplina.
+                            " ><i class="far fa-question-circle ml-1" ></i></p>
+                        </div>
+                        <div class="input-group">
+                            <textarea
+                                      class="form-control {{ $errors->has('acquirements') ? 'is-invalid' : ''}}"
+                                      id="acquirements"
+                                      name="acquirements"
+                                      rows="8"
+                                      placeholder="Coloque aqui conhecimentos desejaveis para o aluno cursar a disciplina.">{{$discipline->acquirements}}</textarea>
+                            @error('acquirements')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div> 
                 </div>
             </div>
     

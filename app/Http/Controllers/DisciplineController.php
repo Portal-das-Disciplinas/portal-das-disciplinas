@@ -89,6 +89,7 @@ class DisciplineController extends Controller
                 'synopsis' => $request->input('synopsis'),
                 'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
+                'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
 
@@ -166,6 +167,7 @@ class DisciplineController extends Controller
             DB::commit();
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
+            dd($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.create")
                 ->withInput();
@@ -253,6 +255,7 @@ class DisciplineController extends Controller
                 'synopsis' => $request->input('synopsis'),
                 'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
+                'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
 
