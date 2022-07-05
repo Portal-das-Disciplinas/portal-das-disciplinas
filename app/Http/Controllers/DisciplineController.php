@@ -30,24 +30,25 @@ class DisciplineController extends Controller
      */
     public function index(Request $request)
     {
-        if(is_null($request->search)&&is_null($request->emphasis)){
-            $disciplines = Discipline::query()
+        $name_discipline = $request->name_discipline ?? null;
+        $emphasis = $request->emphasis ?? null;
+        $disciplines = Discipline::query()
             ->with([
                 'professor',
                 'medias',
-            ])->orderBy('name', 'ASC')->get();
-        }else{
-            //dd($request);
-            $nome_disciplina = $request->search;
-            $enfase = $request->emphasis;
-            $disciplines = Discipline::query()
-            ->with([
-                'professor',
-                'medias',
-            ])->orderBy('name', 'ASC')->where("name", "like", $nome_disciplina."%")
-            ->where("emphasis", "like", "%".$enfase."%")->get();
-        }
-        return view(self::VIEW_PATH . 'index', compact('disciplines'));
+            ])
+            ->orderBy('name', 'ASC') 
+            ->when(isset($name_discipline), function($query) use($name_discipline) {
+                $query->where("name", "like", $name_discipline."%");
+            })
+            ->when(isset($emphasis), function($query) use($emphasis) {
+                $query->where("name", "like", $emphasis."%");
+            })
+            ->get();
+
+        return view('disciplines.index')
+            ->with('name_discipline', $name_discipline)
+            ->with('disciplines', $disciplines); 
     }
 
     /**

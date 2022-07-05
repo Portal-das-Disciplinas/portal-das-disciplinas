@@ -50,7 +50,7 @@
             <form action="{{route('index')}}" method="GET">
                 @csrf
                     <div class="input-group search-bar">
-                        <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='search' value="{{ $search ?? '' }}">
+                        <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}">
 
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
                             <option selected disabled > Todas as ênfases </option>
