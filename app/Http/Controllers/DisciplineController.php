@@ -168,7 +168,6 @@ class DisciplineController extends Controller
             DB::commit();
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
-            dd($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.create")
                 ->withInput();
@@ -239,7 +238,6 @@ class DisciplineController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-        //dd($request);
         DB::beginTransaction();
         try {
             $user = Auth::user();
@@ -362,7 +360,6 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return dd($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput();
         }

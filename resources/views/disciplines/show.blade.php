@@ -171,7 +171,7 @@
             <hr>
              <!-- PODCAST -->
             <div>
-                <h1 class=" mt-4 mb-2">Podcast</h1>
+                <h2 class=" mt-4 mb-2">Podcast</h1>
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) && $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
                     <audio class="w-100" controls="controls">
                         <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
@@ -201,7 +201,7 @@
                 @else
                 <div class="d-flex align-items-center">
                     <i class="fas fa-sad-tear fa-7x mr-3" ></i>
-                    <strong>Sem materiais disponiveis...</strong>
+                    <strong style="font-size:30px">Sem materiais disponiveis...</strong>
                 </div>
 
                 @endif
@@ -210,7 +210,7 @@
 
             <!-- Conhecimentos -->
             <div class='section'>
-                <h3 class="mb-3">Conhecimentos/Competências Desejados</h3>
+                <h1 class="mb-3">Conhecimentos/Competências Desejados</h1>
                 <div>
                     <div>
                         @if($discipline->acquirements=='')
