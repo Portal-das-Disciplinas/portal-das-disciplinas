@@ -49,6 +49,13 @@ h3 {
     text-transform: capitalize;
 }
 
+.blue-btn{
+    background-color: var(--primary-color);
+    color: var(--on-primary);
+    padding: 0.8rem 0;
+    font-size: 1.8rem;
+}
+
 .smaller-p{
     font-size: 1.6rem;
     line-height: 2.6rem;
