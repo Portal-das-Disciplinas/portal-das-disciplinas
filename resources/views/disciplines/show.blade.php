@@ -292,7 +292,27 @@
                 <div class="wrapper-teacher-info">
                     <div class="text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
                     <div class="text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
-                    <div class="text-justify px-lg-3"> <a href="{{$discipline->professor->public_link}}" target="_blank"> Página do professor</a> </div>
+                    @if($discipline->professor->rede_social1=='')
+                    <div class=" p-text"></div>
+                    @else
+                    <a href="{{ $discipline->professor->link_rsocial1 }}" class="text-justify px-lg-3"> <strong> {{ $discipline->professor->rede_social1 }} </strong></a>
+                    @endif
+                    @if($discipline->professor->rede_social2=='')
+                    <div class=" p-text"></div>
+                    @else
+                    <a href="{{ $discipline->professor->link_rsocial2 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social2 }}</strong></a>
+                    @endif
+                    @if($discipline->professor->rede_social3=='')
+                    <div class=" p-text"></div>
+                    @else
+                    <a href="{{ $discipline->professor->link_rsocial3 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social3 }}</strong></a>
+                    @endif
+                    @if($discipline->professor->rede_social4=='')
+                    <div class=" p-text"></div>
+                    @else
+                    <a href="{{ $discipline->professor->link_rsocial4 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social4 }}</strong></a>
+                    @endif
+                    
                 </div>
 
             </div>

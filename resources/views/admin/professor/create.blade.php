@@ -58,7 +58,111 @@ Cadastro de Professor
                         @enderror
                 </div>
             </div>
-    
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="rede_social1" class="text-black">Rede Social 1</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('rede_social1') ? 'is-invalid' : ''}}"
+                            name="rede_social1"
+                            id="rede_social1"
+                            placeholder="Nome da Rede Social 1"
+                            autocomplete="off">
+                    @error('rede_social1')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="link_rsocial1" class="text-black">Link da Rede Social 1</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('link_rsocial1') ? 'is-invalid' : ''}}"
+                            name="link_rsocial1"
+                            id="link_rsocial1"
+                            placeholder="Link da Rede social 1"
+                            autocomplete="off">
+                    @error('link_rsocial1')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-row">
+            <div class="form-group col-md-6">
+                    <label for="rede_social2" class="text-black">Rede Social 2</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('rede_social2') ? 'is-invalid' : ''}}"
+                            name="rede_social2"
+                            id="rede_social2"
+                            placeholder="Nome da Rede Social 2"
+                            autocomplete="off">
+                    @error('rede_social2')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="link_rsocial2" class="text-black">Link da Rede Social 2</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('link_rsocial2') ? 'is-invalid' : ''}}"
+                            name="link_rsocial2"
+                            id="link_rsocial2"
+                            placeholder="Link da Rede social 2"
+                            autocomplete="off">
+                    @error('link_rsocial2')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-row">
+            <div class="form-group col-md-6">
+                    <label for="rede_social3" class="text-black">Rede Social 3</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('rede_social3') ? 'is-invalid' : ''}}"
+                            name="rede_social3"
+                            id="rede_social3"
+                            placeholder="Nome da Rede Social 3"
+                            autocomplete="off">
+                    @error('rede_social3')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="link_rsocial3" class="text-black">Link da Rede Social 3</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('link_rsocial3') ? 'is-invalid' : ''}}"
+                            name="link_rsocial3"
+                            id="link_rsocial3"
+                            placeholder="Link da Rede social 3"
+                            autocomplete="off">
+                    @error('link_rsocial3')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-row">
+            <div class="form-group col-md-6">
+                    <label for="rede_social4" class="text-black">Rede Social 4</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('rede_social4') ? 'is-invalid' : ''}}"
+                            name="rede_social4"
+                            id="rede_social4"
+                            placeholder="Nome da Rede Social 4"
+                            autocomplete="off">
+                    @error('rede_social4')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="link_rsocial4" class="text-black">Link da Rede Social 4</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('link_rsocial4') ? 'is-invalid' : ''}}"
+                            name="link_rsocial4"
+                            id="link_rsocial4"
+                            placeholder="Link da Rede social 4"
+                            autocomplete="off">
+                    @error('link_rsocial4')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
     
             <div class="form-row">
                 <div class="form-group col-md-6">

@@ -40,6 +40,14 @@ class ProfessorUserController extends Controller
                 'name' => $user->name,
                 'profile_pic_link' => null,
                 'public_email' => $request->get('public_email', $user->email),
+                'rede_social1' => $request->get('rede_social1', $user->rede_social1),
+                'link_rsocial1' => $request->get('link_rsocial1', $user->link_rsocial1),
+                'rede_social2' => $request->get('rede_social2', $user->rede_social2),
+                'link_rsocial2' => $request->get('link_rsocial2', $user->link_rsocial2),
+                'rede_social3' => $request->get('rede_social3', $user->rede_social3),
+                'link_rsocial3' => $request->get('link_rsocial3', $user->link_rsocial3),
+                'rede_social4' => $request->get('rede_social4', $user->rede_social4),
+                'link_rsocial4' => $request->get('link_rsocial4', $user->link_rsocial4),
                 'user_id' => $user->id
             ]);
 
