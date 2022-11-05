@@ -51,8 +51,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('disciplinas', DisciplineController::class)
         ->except(['index', 'show',]);
 
-    Route::resource('professores', ProfessorUserController::class)
-        ->except(['show', 'update']);
+    Route::resource('professores', ProfessorUserController::class);
 
     Route::resource('disciplinas.faqs', FaqController::class)
         ->except(['index']);

@@ -60,6 +60,7 @@
                 </label>
                 <select name="emphasis" id="emphasis" class='form-control' value="{{$discipline->emphasis}}">
                     <option> Selecione uma ênfase</option>
+                    <option value="Núcleo Comum">Núcleo Comum</option>
                     <option value="Computação">Computação</option>
                     <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
                     <option value="Informática Educacional">Informática Educacional</option>

@@ -25,6 +25,14 @@ class Professor extends Model
         'name',
         'profile_pic_link',
         'public_email',
+        'rede_social1',
+        'link_rsocial1',
+        'rede_social2',
+        'link_rsocial2',
+        'rede_social3',
+        'link_rsocial3',
+        'rede_social4',
+        'link_rsocial4',
         'user_id',
     ];
 
