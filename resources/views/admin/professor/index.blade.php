@@ -10,15 +10,15 @@ Painel de Administração
 
 @section('content')
 
-<div class="container" '>
+<div class="container">
     <div class="page-title">
         <h1>Painel de administração</h1>
     </div>
     <div class="register-teacher-container" style='min-height: 60vh'>
         <div class="row">
             <div class="col-12 col-sm-6 col-lg-3 mt-2 mb-2">
-                <a name="createProfessor" class="btn btn-block btn-primary"
-                   href="{{ route("professores.create") }}" role="button">Cadastrar professor</a>
+                 <a name="createProfessor" class="btn btn-block btn-primary"
+                   href="{{ route('professores.create') }}" role="button">Cadastrar professor</a>
             </div>
         </div>
 
@@ -49,11 +49,16 @@ Painel de Administração
                                             <input type="submit" value="Deletar" class="btn btn-danger btn-block">
                                         </form>
                                     </div>
-                                    {{-- <div class="form-group">
+                                    <form action="{{route('professores.edit', $professor->id)}}" method="GET">
+                                            @csrf
+                                            @method('GET')
+                                            <input type="submit" value="Atualizar" class="btn btn-block">
+                                    </form>
+                                    <!-- {{-- <div class="form-group">
                                         <form action="" method="POST">
                                             <input type="submit" value="Redefinir Senha" class="btn btn-primary btn-block">
                                         </form>
-                                    </div> --}}
+                                    </div> --}} -->
                                 </td>
                             </tr>
                         @endforeach
@@ -62,9 +67,9 @@ Painel de Administração
             </div>
         </div>
     </div>
-    
-    
-    
+
+
+
 </div>
 
 

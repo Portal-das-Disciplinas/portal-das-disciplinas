@@ -54,6 +54,7 @@
 
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
                             <option selected disabled > Todas as ênfases </option>
+                            <option value="Núcleo Comum">Núcleo Comum</option>
                             <option value="Computação">Computação</option>
                             <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
                             <option value="Informática Educacional">Informática Educacional</option>
