@@ -17,9 +17,11 @@ class ProfessorUserController extends Controller
 
     public function index()
     {
+
         $professors = Professor::query()->with([
             'user',
         ])->get();
+        //dd($professors);
         return view(self::VIEW_PATH . 'professor.' . 'index', compact('professors'));
     }
 
@@ -97,9 +99,10 @@ class ProfessorUserController extends Controller
             ->first();
 
 
+
         $professor->name = $request->name;
         $professor->public_email = $request->public_email;
-        $professor->user->email = $request->email;
+       //$professor->user->email = $request->email;
         $professor->link_rsocial1 = $request->link_rsocial1;
         $professor->link_rsocial2 = $request->link_rsocial2;
         $professor->link_rsocial3 = $request->link_rsocial3;
@@ -111,10 +114,11 @@ class ProfessorUserController extends Controller
         $professor->save();
 
 
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request->password);
-        $user->save();
+        $professor->user->name = $request->name;
+        $professor->user->email = $request->email;
+        $professor->user->password = bcrypt($request->password);
+        $professor->user->save();
+
 
 
 
