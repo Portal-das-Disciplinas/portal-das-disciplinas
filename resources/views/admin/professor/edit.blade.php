@@ -38,6 +38,8 @@
                 @enderror
               </div>
 
+
+
               <div class="form-group col-12 pb-3">
                 <label for="email">Email </label>
                 <input type="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : ''}}"
