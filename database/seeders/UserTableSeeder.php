@@ -67,16 +67,23 @@ class UserTableSeeder extends Seeder
         //     'role_id' => $roleAdmin->id,
         // ]);
 
-            User::create([
-                'name' => 'admin',
-                'email' => 'admin@gmail.com',
-                'password' => bcrypt('adminportal@123'),
-                'role_id' => $roleAdmin->id,
-            ]);
+            // User::create([
+            //     'name' => 'admin',
+            //     'email' => 'admin@gmail.com',
+            //     'password' => bcrypt('adminportal@123'),
+            //     'role_id' => $roleAdmin->id,
+            // ]);
+
+            // User::create([
+            //     'name' => 'Henry',
+            //     'email' => 'henrymedeiros77@gmail.com',
+            //     'password' => bcrypt('adminportal@123'),
+            //     'role_id' => $roleAdmin->id,
+            // ]);
 
             User::create([
-                'name' => 'Henry',
-                'email' => 'henrymedeiros77@gmail.com',
+                'name' => 'Eugenio',
+                'email' => 'eugenio@admin',
                 'password' => bcrypt('adminportal@123'),
                 'role_id' => $roleAdmin->id,
             ]);
