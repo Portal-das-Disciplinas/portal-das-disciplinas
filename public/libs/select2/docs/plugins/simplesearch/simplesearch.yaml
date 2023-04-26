@@ -6,9 +6,9 @@ route: /search
 search_content: rendered
 template: simplesearch_results
 filters:
-    category: blog
+  category: blog
 filter_combinator: and
 ignore_accented_characters: false
 order:
-    by: date
-    dir: desc
+  by: date
+  dir: desc

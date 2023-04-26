@@ -4,7 +4,7 @@
 
 /* Atelier-Dune Comment */
 .hljs-comment {
-  color: #999580;
+    color: #999580;
 }
 
 /* Atelier-Dune Red */
@@ -21,7 +21,7 @@
 .css .hljs-id,
 .css .hljs-class,
 .css .hljs-pseudo {
-  color: #d73737;
+    color: #d73737;
 }
 
 /* Atelier-Dune Orange */
@@ -31,13 +31,13 @@
 .hljs-literal,
 .hljs-params,
 .hljs-constant {
-  color: #b65611;
+    color: #b65611;
 }
 
 /* Atelier-Dune Yellow */
 .ruby .hljs-class .hljs-title,
 .css .hljs-rule .hljs-attribute {
-  color: #ae9513;
+    color: #ae9513;
 }
 
 /* Atelier-Dune Green */
@@ -47,13 +47,13 @@
 .hljs-header,
 .ruby .hljs-symbol,
 .xml .hljs-cdata {
-  color: #60ac39;
+    color: #60ac39;
 }
 
 /* Atelier-Dune Aqua */
 .hljs-title,
 .css .hljs-hexcolor {
-  color: #1fad83;
+    color: #1fad83;
 }
 
 /* Atelier-Dune Blue */
@@ -65,22 +65,22 @@
 .perl .hljs-sub,
 .javascript .hljs-title,
 .coffeescript .hljs-title {
-  color: #6684e1;
+    color: #6684e1;
 }
 
 /* Atelier-Dune Purple */
 .hljs-keyword,
 .javascript .hljs-function {
-  color: #b854d4;
+    color: #b854d4;
 }
 
 .hljs {
-  display: block;
-  overflow-x: auto;
-  background: #20201d;
-  color: #a6a28c;
-  padding: 0.5em;
-  -webkit-text-size-adjust: none;
+    display: block;
+    overflow-x: auto;
+    background: #20201d;
+    color: #a6a28c;
+    padding: 0.5em;
+    -webkit-text-size-adjust: none;
 }
 
 .coffeescript .javascript,
@@ -90,5 +90,5 @@
 .xml .vbscript,
 .xml .css,
 .xml .hljs-cdata {
-  opacity: 0.5;
+    opacity: 0.5;
 }

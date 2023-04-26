@@ -4,10 +4,10 @@ define(function () {
     inputTooLong: function (args) {
       var overChars = args.input.length - args.maximum;
 
-      var message = 'Моля въведете с ' + overChars + ' по-малко символ';
+      var message = "Моля въведете с " + overChars + " по-малко символ";
 
       if (overChars > 1) {
-        message += 'a';
+        message += "a";
       }
 
       return message;
@@ -15,36 +15,36 @@ define(function () {
     inputTooShort: function (args) {
       var remainingChars = args.minimum - args.input.length;
 
-      var message = 'Моля въведете още ' + remainingChars + ' символ';
+      var message = "Моля въведете още " + remainingChars + " символ";
 
       if (remainingChars > 1) {
-        message += 'a';
+        message += "a";
       }
 
       return message;
     },
     loadingMore: function () {
-      return 'Зареждат се още…';
+      return "Зареждат се още…";
     },
     maximumSelected: function (args) {
-      var message = 'Можете да направите до ' + args.maximum + ' ';
+      var message = "Можете да направите до " + args.maximum + " ";
 
       if (args.maximum > 1) {
-        message += 'избора';
+        message += "избора";
       } else {
-        message += 'избор';
+        message += "избор";
       }
 
       return message;
     },
     noResults: function () {
-      return 'Няма намерени съвпадения';
+      return "Няма намерени съвпадения";
     },
     searching: function () {
-      return 'Търсене…';
+      return "Търсене…";
     },
     removeAllItems: function () {
-      return 'Премахнете всички елементи';
-    }
+      return "Премахнете всички елементи";
+    },
   };
 });

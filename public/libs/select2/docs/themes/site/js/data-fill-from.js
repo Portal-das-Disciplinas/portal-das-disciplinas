@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   $("[data-fill-from]").each(function () {
     var $this = $(this);
 

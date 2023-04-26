@@ -2,18 +2,18 @@ define(function () {
   // Greek (el)
   return {
     errorLoading: function () {
-      return 'Τα αποτελέσματα δεν μπόρεσαν να φορτώσουν.';
+      return "Τα αποτελέσματα δεν μπόρεσαν να φορτώσουν.";
     },
     inputTooLong: function (args) {
       var overChars = args.input.length - args.maximum;
 
-      var message = 'Παρακαλώ διαγράψτε ' + overChars + ' χαρακτήρ';
+      var message = "Παρακαλώ διαγράψτε " + overChars + " χαρακτήρ";
 
       if (overChars == 1) {
-        message += 'α';
+        message += "α";
       }
       if (overChars != 1) {
-        message += 'ες';
+        message += "ες";
       }
 
       return message;
@@ -21,35 +21,37 @@ define(function () {
     inputTooShort: function (args) {
       var remainingChars = args.minimum - args.input.length;
 
-      var message = 'Παρακαλώ συμπληρώστε ' + remainingChars +
-        ' ή περισσότερους χαρακτήρες';
+      var message =
+        "Παρακαλώ συμπληρώστε " +
+        remainingChars +
+        " ή περισσότερους χαρακτήρες";
 
       return message;
     },
     loadingMore: function () {
-      return 'Φόρτωση περισσότερων αποτελεσμάτων…';
+      return "Φόρτωση περισσότερων αποτελεσμάτων…";
     },
     maximumSelected: function (args) {
-      var message = 'Μπορείτε να επιλέξετε μόνο ' + args.maximum + ' επιλογ';
+      var message = "Μπορείτε να επιλέξετε μόνο " + args.maximum + " επιλογ";
 
       if (args.maximum == 1) {
-        message += 'ή';
+        message += "ή";
       }
 
       if (args.maximum != 1) {
-        message += 'ές';
+        message += "ές";
       }
 
       return message;
     },
     noResults: function () {
-      return 'Δεν βρέθηκαν αποτελέσματα';
+      return "Δεν βρέθηκαν αποτελέσματα";
     },
     searching: function () {
-      return 'Αναζήτηση…';
+      return "Αναζήτηση…";
     },
     removeAllItems: function () {
-      return 'Καταργήστε όλα τα στοιχεία';
-    }
+      return "Καταργήστε όλα τα στοιχεία";
+    },
   };
 });

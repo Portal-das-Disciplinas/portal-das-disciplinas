@@ -1,12 +1,12 @@
-.profile-container{
-    display:flex;
-    flex-direction:column;
+.profile-container {
+    display: flex;
+    flex-direction: column;
     min-height: 65vh;
     align-items: center;
     max-width: 600px;
 }
 
-.btn{
+.btn {
     background-color: var(--primary-color);
-    color: var(--on-primary)
+    color: var(--on-primary);
 }

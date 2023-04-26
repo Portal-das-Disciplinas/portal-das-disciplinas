@@ -4,7 +4,7 @@
 
 /* Atelier-Cave Comment */
 .hljs-comment {
-  color: #7e7887;
+    color: #7e7887;
 }
 
 /* Atelier-Cave Red */
@@ -21,7 +21,7 @@
 .css .hljs-id,
 .css .hljs-class,
 .css .hljs-pseudo {
-  color: #be4678;
+    color: #be4678;
 }
 
 /* Atelier-Cave Orange */
@@ -31,13 +31,13 @@
 .hljs-literal,
 .hljs-params,
 .hljs-constant {
-  color: #aa573c;
+    color: #aa573c;
 }
 
 /* Atelier-Cave Yellow */
 .ruby .hljs-class .hljs-title,
 .css .hljs-rule .hljs-attribute {
-  color: #a06e3b;
+    color: #a06e3b;
 }
 
 /* Atelier-Cave Green */
@@ -47,13 +47,13 @@
 .hljs-header,
 .ruby .hljs-symbol,
 .xml .hljs-cdata {
-  color: #2a9292;
+    color: #2a9292;
 }
 
 /* Atelier-Cave Aqua */
 .hljs-title,
 .css .hljs-hexcolor {
-  color: #398bc6;
+    color: #398bc6;
 }
 
 /* Atelier-Cave Blue */
@@ -65,41 +65,41 @@
 .perl .hljs-sub,
 .javascript .hljs-title,
 .coffeescript .hljs-title {
-  color: #576ddb;
+    color: #576ddb;
 }
 
 /* Atelier-Cave Purple */
 .hljs-keyword,
 .javascript .hljs-function {
-  color: #955ae7;
+    color: #955ae7;
 }
 
 .diff .hljs-deletion,
 .diff .hljs-addition {
-  color: #19171c;
-  display: inline-block;
-  width: 100%;
+    color: #19171c;
+    display: inline-block;
+    width: 100%;
 }
 
 .diff .hljs-deletion {
-  background-color: #be4678;
+    background-color: #be4678;
 }
 
 .diff .hljs-addition {
-  background-color: #2a9292;
+    background-color: #2a9292;
 }
 
 .diff .hljs-change {
-  color: #576ddb;
+    color: #576ddb;
 }
 
 .hljs {
-  display: block;
-  overflow-x: auto;
-  background: #19171c;
-  color: #8b8792;
-  padding: 0.5em;
-  -webkit-text-size-adjust: none;
+    display: block;
+    overflow-x: auto;
+    background: #19171c;
+    color: #8b8792;
+    padding: 0.5em;
+    -webkit-text-size-adjust: none;
 }
 
 .coffeescript .javascript,
@@ -109,5 +109,5 @@
 .xml .vbscript,
 .xml .css,
 .xml .hljs-cdata {
-  opacity: 0.5;
+    opacity: 0.5;
 }

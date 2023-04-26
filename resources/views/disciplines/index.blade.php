@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 mt-5">
                     <a name="createDisciplina" class="create-discipline btn btn-outline-light btn-block"
-                        href="{{ route("disciplinas.create") }}" role="button">Cadastrar
+                        href="{{ route('disciplinas.create') }}" role="button">Cadastrar
                         disciplina</a>
                 </div>
             </div>
@@ -47,11 +47,10 @@
 
           <div class="row justify-content-md-center mt-5">
             <div class="col">
-            <form action="{{route('index')}}" method="GET">
-                @csrf
+                <form action="{{route('index')}}" method="GET">
+                    @csrf
                     <div class="input-group search-bar">
                         <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}">
-
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
                             <option selected disabled > Todas as ênfases </option>
                             <option value="Núcleo Comum">Núcleo Comum</option>
@@ -63,7 +62,6 @@
                             <option value="Internet das Coisas">Internet das Coisas</option>
                             <option value="Jogos Digitais">Jogos Digitais</option>
                         </select>
-
                         <div class="input-group-append">
                             <button class="btn btn-primary search-button" type="submit" id="button-addon2"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
@@ -89,7 +87,7 @@
                                 </div>
                             @else
                                 <img src="{{ asset('img/IMD_logo.svg') }}" class="card-img-top light-border-radius"
-                                    alt=".."'>
+                                    alt="..">
                             @endif
 
                             <div class="card-body d-flex justify-content-between flex-column">

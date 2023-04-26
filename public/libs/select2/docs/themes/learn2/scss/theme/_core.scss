@@ -1,28 +1,29 @@
 body {
-	background: $page-bg;
-	color: $core-text;
+    background: $page-bg;
+    color: $core-text;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-	color: $core-accent;
-	&:hover {
-		color: darken($core-accent, 15%);
-	}
+    color: $core-accent;
+    &:hover {
+        color: darken($core-accent, 15%);
+    }
 }
 
 pre {
-	position: relative;
+    position: relative;
 }
 
 .bg {
-	background: #fff;
-	border: 1px solid $body-border;
+    background: #fff;
+    border: 1px solid $body-border;
 }
 
-b, strong {
-    font-weight: $font-weight-bold
+b,
+strong {
+    font-weight: $font-weight-bold;
 }
 
 .default-animation {

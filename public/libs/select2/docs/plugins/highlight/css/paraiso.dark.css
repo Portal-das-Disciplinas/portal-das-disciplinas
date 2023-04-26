@@ -7,7 +7,7 @@
 /* Paraíso Comment */
 .hljs-comment,
 .hljs-title {
-  color: #8d8687;
+    color: #8d8687;
 }
 
 /* Paraíso Red */
@@ -24,7 +24,7 @@
 .css .hljs-id,
 .css .hljs-class,
 .css .hljs-pseudo {
-  color: #ef6155;
+    color: #ef6155;
 }
 
 /* Paraíso Orange */
@@ -34,13 +34,13 @@
 .hljs-literal,
 .hljs-params,
 .hljs-constant {
-  color: #f99b15;
+    color: #f99b15;
 }
 
 /* Paraíso Yellow */
 .ruby .hljs-class .hljs-title,
 .css .hljs-rule .hljs-attribute {
-  color: #fec418;
+    color: #fec418;
 }
 
 /* Paraíso Green */
@@ -50,12 +50,12 @@
 .hljs-header,
 .ruby .hljs-symbol,
 .xml .hljs-cdata {
-  color: #48b685;
+    color: #48b685;
 }
 
 /* Paraíso Aqua */
 .css .hljs-hexcolor {
-  color: #5bc4bf;
+    color: #5bc4bf;
 }
 
 /* Paraíso Blue */
@@ -67,22 +67,22 @@
 .perl .hljs-sub,
 .javascript .hljs-title,
 .coffeescript .hljs-title {
-  color: #06b6ef;
+    color: #06b6ef;
 }
 
 /* Paraíso Purple */
 .hljs-keyword,
 .javascript .hljs-function {
-  color: #815ba4;
+    color: #815ba4;
 }
 
 .hljs {
-  display: block;
-  overflow-x: auto;
-  background: #2f1e2e;
-  color: #a39e9b;
-  padding: 0.5em;
-  -webkit-text-size-adjust: none;
+    display: block;
+    overflow-x: auto;
+    background: #2f1e2e;
+    color: #a39e9b;
+    padding: 0.5em;
+    -webkit-text-size-adjust: none;
 }
 
 .coffeescript .javascript,
@@ -92,5 +92,5 @@
 .xml .vbscript,
 .xml .css,
 .xml .hljs-cdata {
-  opacity: 0.5;
+    opacity: 0.5;
 }

@@ -6,11 +6,11 @@
 
 # Installation
 
-Installing the Highlight plugin can be done in one of two ways. Our GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file. 
+Installing the Highlight plugin can be done in one of two ways. Our GPM (Grav Package Manager) installation method enables you to quickly and easily install the plugin with a simple terminal command, while the manual method enables you to do so via a zip file.
 
 ## GPM Installation (Preferred)
 
-The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm) through your system's Terminal (also called the command line).  From the root of your Grav install type:
+The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm) through your system's Terminal (also called the command line). From the root of your Grav install type:
 
     bin/gpm install highlight
 
@@ -24,7 +24,7 @@ You should now have all the plugin files under
 
     /your/site/grav/user/plugins/highlight
 
->> NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav), the [Error](https://github.com/getgrav/grav-plugin-error) and [Problems](https://github.com/getgrav/grav-plugin-problems) plugins, and a theme to be installed in order to operate.
+> > NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav), the [Error](https://github.com/getgrav/grav-plugin-error) and [Problems](https://github.com/getgrav/grav-plugin-problems) plugins, and a theme to be installed in order to operate.
 
 # Usage
 
@@ -57,7 +57,6 @@ eg:
       }
     }
     ```
-
 
 You can also disable highlighting for a particular page if causes issues:
 
@@ -94,10 +93,10 @@ Further, you can also enable line numbers on a specific page, or globally (in hi
         lines: true
     ---
 
-Valid theme options include: 
+Valid theme options include:
 
 |                        |                          |                           |
-| :--------------------- | :--------------------    | -----------------------   |
+| :--------------------- | :----------------------- | ------------------------- |
 | arta                   | ascetic                  | atelier-dune.dark         |
 | atelier-dune.light     | atelier-forest.dark      | atelier-forest.light      |
 | atelier-heath.dark     | atelier-heath.light      | atelier-lakeside.dark     |
@@ -142,9 +141,9 @@ This command will check your Grav install to see if your Highlight plugin is due
 
 Manually updating Highlight is pretty simple. Here is what you will need to do to get this done:
 
-* Delete the `your/site/user/plugins/highlight` directory.
-* Downalod the new version of the Highlight plugin from either [GitHub](https://github.com/getgrav/grav-plugin-highlight) or [GetGrav.org](http://getgrav.org/downloads/plugins#extras).
-* Unzip the zip file in `your/site/user/plugins` and rename the resulting folder to `highlight`.
-* Clear the Grav cache. The simplest way to do this is by going to the root Grav directory in terminal and typing `bin/grav clear-cache`.
+-   Delete the `your/site/user/plugins/highlight` directory.
+-   Downalod the new version of the Highlight plugin from either [GitHub](https://github.com/getgrav/grav-plugin-highlight) or [GetGrav.org](http://getgrav.org/downloads/plugins#extras).
+-   Unzip the zip file in `your/site/user/plugins` and rename the resulting folder to `highlight`.
+-   Clear the Grav cache. The simplest way to do this is by going to the root Grav directory in terminal and typing `bin/grav clear-cache`.
 
 > Note: Any changes you have made to any of the files listed under this directory will also be removed and replaced by the new set. Any files located elsewhere (for example a YAML settings file placed in `user/config/plugins`) will remain intact.

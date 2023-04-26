@@ -1,8 +1,8 @@
 This pull request includes a
 
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Translation
+-   [ ] Bug fix
+-   [ ] New feature
+-   [ ] Translation
 
 The following changes were made
 

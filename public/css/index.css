@@ -5,44 +5,42 @@
     padding: 3%;
 }
 
-.disciplines{
+.disciplines {
     background-color: var(--primary-color);
     min-height: calc(100vh - 75px);
 }
 
-.disciplines-container{
+.disciplines-container {
     padding: 5% 0;
     width: 90vw;
 }
 
-.search-bar > *:not(:last-child){
-   margin-right: 1.8rem;
-   display: block;
+.search-bar > *:not(:last-child) {
+    margin-right: 1.8rem;
+    display: block;
 }
 
-.search-bar .search-icon{
+.search-bar .search-icon {
     padding: 0 8px;
-    
 }
 
-.search-button{
+.search-button {
     background-color: var(--secondary-color);
     color: var(--on-secondary);
     border-radius: 4px;
 }
 
-
-.create-discipline{
+.create-discipline {
     font-size: 1.8rem;
 }
 
-.discipline-card{
+.discipline-card {
     min-height: 470px;
     max-height: 470px;
 }
 
-.card-bottom-container .view-more-btn{
-    border-radius:100px;
+.card-bottom-container .view-more-btn {
+    border-radius: 100px;
     background-color: var(--secondary-color);
     color: var(--on-secondary);
     font-weight: 500;
@@ -82,19 +80,18 @@
     color: var(--main-md-color);
 }
 
-
-@media only all and (max-width:768px){
-    html{
+@media only all and (max-width: 768px) {
+    html {
         font-size: 50%;
     }
-    .hero-section{
+    .hero-section {
         height: auto;
         margin-bottom: 2.4rem;
     }
 }
 
-@media only all and (max-width:399px){
-    .display-title{
+@media only all and (max-width: 399px) {
+    .display-title {
         font-size: 3.2rem;
     }
 }

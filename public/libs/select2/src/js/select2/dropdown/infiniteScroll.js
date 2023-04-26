@@ -1,7 +1,5 @@
-define([
-  'jquery'
-], function ($) {
-  function InfiniteScroll (decorated, $element, options, dataAdapter) {
+define(["jquery"], function ($) {
+  function InfiniteScroll(decorated, $element, options, dataAdapter) {
     this.lastParams = {};
 
     decorated.call(this, $element, options, dataAdapter);
@@ -27,17 +25,17 @@ define([
 
     decorated.call(this, container, $container);
 
-    container.on('query', function (params) {
+    container.on("query", function (params) {
       self.lastParams = params;
       self.loading = true;
     });
 
-    container.on('query:append', function (params) {
+    container.on("query:append", function (params) {
       self.lastParams = params;
       self.loading = true;
     });
 
-    this.$results.on('scroll', this.loadMoreIfNeeded.bind(this));
+    this.$results.on("scroll", this.loadMoreIfNeeded.bind(this));
   };
 
   InfiniteScroll.prototype.loadMoreIfNeeded = function () {
@@ -50,10 +48,10 @@ define([
       return;
     }
 
-    var currentOffset = this.$results.offset().top +
-      this.$results.outerHeight(false);
-    var loadingMoreOffset = this.$loadingMore.offset().top +
-      this.$loadingMore.outerHeight(false);
+    var currentOffset =
+      this.$results.offset().top + this.$results.outerHeight(false);
+    var loadingMoreOffset =
+      this.$loadingMore.offset().top + this.$loadingMore.outerHeight(false);
 
     if (currentOffset + 50 >= loadingMoreOffset) {
       this.loadMore();
@@ -63,11 +61,11 @@ define([
   InfiniteScroll.prototype.loadMore = function () {
     this.loading = true;
 
-    var params = $.extend({}, {page: 1}, this.lastParams);
+    var params = $.extend({}, { page: 1 }, this.lastParams);
 
     params.page++;
 
-    this.trigger('query:append', params);
+    this.trigger("query:append", params);
   };
 
   InfiniteScroll.prototype.showLoadingMore = function (_, data) {
@@ -76,12 +74,12 @@ define([
 
   InfiniteScroll.prototype.createLoadingMore = function () {
     var $option = $(
-      '<li ' +
-      'class="select2-results__option select2-results__option--load-more"' +
-      'role="option" aria-disabled="true"></li>'
+      "<li " +
+        'class="select2-results__option select2-results__option--load-more"' +
+        'role="option" aria-disabled="true"></li>'
     );
 
-    var message = this.options.get('translations').get('loadingMore');
+    var message = this.options.get("translations").get("loadingMore");
 
     $option.html(message(this.lastParams));
 

@@ -4,7 +4,7 @@
 
 /* Atelier-Forest Comment */
 .hljs-comment {
-  color: #766e6b;
+    color: #766e6b;
 }
 
 /* Atelier-Forest Red */
@@ -21,7 +21,7 @@
 .css .hljs-id,
 .css .hljs-class,
 .css .hljs-pseudo {
-  color: #f22c40;
+    color: #f22c40;
 }
 
 /* Atelier-Forest Orange */
@@ -31,13 +31,13 @@
 .hljs-literal,
 .hljs-params,
 .hljs-constant {
-  color: #df5320;
+    color: #df5320;
 }
 
 /* Atelier-Forest Yellow */
 .ruby .hljs-class .hljs-title,
 .css .hljs-rule .hljs-attribute {
-  color: #c38418;
+    color: #c38418;
 }
 
 /* Atelier-Forest Green */
@@ -47,13 +47,13 @@
 .hljs-header,
 .ruby .hljs-symbol,
 .xml .hljs-cdata {
-  color: #7b9726;
+    color: #7b9726;
 }
 
 /* Atelier-Forest Aqua */
 .hljs-title,
 .css .hljs-hexcolor {
-  color: #3d97b8;
+    color: #3d97b8;
 }
 
 /* Atelier-Forest Blue */
@@ -65,22 +65,22 @@
 .perl .hljs-sub,
 .javascript .hljs-title,
 .coffeescript .hljs-title {
-  color: #407ee7;
+    color: #407ee7;
 }
 
 /* Atelier-Forest Purple */
 .hljs-keyword,
 .javascript .hljs-function {
-  color: #6666ea;
+    color: #6666ea;
 }
 
 .hljs {
-  display: block;
-  overflow-x: auto;
-  background: #f1efee;
-  color: #68615e;
-  padding: 0.5em;
-  -webkit-text-size-adjust: none;
+    display: block;
+    overflow-x: auto;
+    background: #f1efee;
+    color: #68615e;
+    padding: 0.5em;
+    -webkit-text-size-adjust: none;
 }
 
 .coffeescript .javascript,
@@ -90,5 +90,5 @@
 .xml .vbscript,
 .xml .css,
 .xml .hljs-cdata {
-  opacity: 0.5;
+    opacity: 0.5;
 }

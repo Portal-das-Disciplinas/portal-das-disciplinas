@@ -5,12 +5,13 @@
     padding-top: 10px;
     vertical-align: middle;
     font-weight: 700;
-    font-family: "Montserrat", "Helvetica Neue", "Helvetica" , "Arial" ,sans-serif;
+    font-family: "Montserrat", "Helvetica Neue", "Helvetica", "Arial",
+        sans-serif;
     border-bottom: 2px solid #000000;
 }
 
 .logo-image {
-    vertical-align:middle;
+    vertical-align: middle;
 }
 
 .s2-docs-featurette {
@@ -18,12 +19,12 @@
     text-align: center;
 }
 
-.s2-docs-featurette [class*='size-'] h4 {
+.s2-docs-featurette [class*="size-"] h4 {
     font-size: 1.5rem;
 }
 
 /* Padding for paragraphs in featurette grid */
-.s2-docs-featurette [class*='size-'] p {
+.s2-docs-featurette [class*="size-"] p {
     padding: 0 30px;
     font-size: 1rem !important;
 }

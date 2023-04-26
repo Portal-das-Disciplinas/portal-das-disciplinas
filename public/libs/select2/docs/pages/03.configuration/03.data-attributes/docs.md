@@ -4,7 +4,7 @@ taxonomy:
     category: docs
 ---
 
-It is recommended that you declare your configuration options by [passing in an object](/configuration) when initializing Select2.  However, you may also define your configuration options by using the HTML5 `data-*` attributes, which will override any options set when initializing Select2 and any [defaults](/configuration/defaults).
+It is recommended that you declare your configuration options by [passing in an object](/configuration) when initializing Select2. However, you may also define your configuration options by using the HTML5 `data-*` attributes, which will override any options set when initializing Select2 and any [defaults](/configuration/defaults).
 
 ```
 <select data-placeholder="Select a state">
@@ -14,11 +14,11 @@ It is recommended that you declare your configuration options by [passing in an 
 </select>
 ```
 
->>> Some options are not supported as `data-*`, for example `disabled` as it's not a Javascript option, but it's an HTML [attribute](/configuration/options-api).
+> > > Some options are not supported as `data-*`, for example `disabled` as it's not a Javascript option, but it's an HTML [attribute](/configuration/options-api).
 
 ## Nested (subkey) options
 
-Sometimes, you have options that are nested under a top-level option.  For example, the options under the `ajax` option:
+Sometimes, you have options that are nested under a top-level option. For example, the options under the `ajax` option:
 
 ```
 $(".js-example-data-ajax").select2({
@@ -39,7 +39,7 @@ To write these options as `data-*` attributes, each level of nesting should be s
 
 The value of the option is subject to jQuery's [parsing rules](https://api.jquery.com/data/#data-html5) for HTML5 data attributes.
 
->>> Due to [a jQuery bug](https://github.com/jquery/jquery/issues/2070), nested options using `data-*` attributes [do not work in jQuery 1.x](https://github.com/select2/select2/issues/2969).
+> > > Due to [a jQuery bug](https://github.com/jquery/jquery/issues/2070), nested options using `data-*` attributes [do not work in jQuery 1.x](https://github.com/select2/select2/issues/2969).
 
 ## `camelCase` options
 

@@ -1,21 +1,33 @@
-*, *::before, *::after {
-	@include box-sizing(border-box);
+*,
+*::before,
+*::after {
+    @include box-sizing(border-box);
 }
 
-@-webkit-viewport{width:device-width}
-@-moz-viewport{width:device-width}
-@-ms-viewport{width:device-width}
-@-o-viewport{width:device-width}
-@viewport{width:device-width}
+@-webkit-viewport {
+    width: device-width;
+}
+@-moz-viewport {
+    width: device-width;
+}
+@-ms-viewport {
+    width: device-width;
+}
+@-o-viewport {
+    width: device-width;
+}
+@viewport {
+    width: device-width;
+}
 
 html {
-	font-size: 100%;
-	-ms-text-size-adjust: 100%;
-	-webkit-text-size-adjust: 100%;
+    font-size: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
-	margin: 0;
+    margin: 0;
 }
 
 article,
@@ -30,97 +42,97 @@ main,
 nav,
 section,
 summary {
-	display: block;
+    display: block;
 }
 
 audio,
 canvas,
 progress,
 video {
-	display: inline-block;
-	vertical-align: baseline;
+    display: inline-block;
+    vertical-align: baseline;
 }
 
 audio:not([controls]) {
-	display: none;
-	height: 0;
+    display: none;
+    height: 0;
 }
 
 [hidden],
 template {
-	display: none;
+    display: none;
 }
 
 a {
-	background: transparent;
-	text-decoration: none;
+    background: transparent;
+    text-decoration: none;
 }
 
 a:active,
 a:hover {
-	outline: 0;
+    outline: 0;
 }
 
 abbr[title] {
-	border-bottom: 1px dotted;
+    border-bottom: 1px dotted;
 }
 
 b,
 strong {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 dfn {
-	font-style: italic;
+    font-style: italic;
 }
 
 mark {
-	background: #FFFF27;
-	color: #333;
+    background: #ffff27;
+    color: #333;
 }
 
 sub,
 sup {
-	font-size: $core-font-size - 0.250;
-	line-height: 0;
-	position: relative;
-	vertical-align: baseline;
+    font-size: $core-font-size - 0.25;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
 }
 
 sup {
-	top: -0.5em;
+    top: -0.5em;
 }
 
 sub {
-	bottom: -0.25em;
+    bottom: -0.25em;
 }
 
 img {
-	border: 0;
-	max-width: 100%;
+    border: 0;
+    max-width: 100%;
 }
 
 svg:not(:root) {
-	overflow: hidden;
+    overflow: hidden;
 }
 
 figure {
-	margin: 1em 40px;
+    margin: 1em 40px;
 }
 
 hr {
-	height: 0;
+    height: 0;
 }
 
 pre {
-	overflow: auto;
+    overflow: auto;
 }
 
 code,
 kbd,
 pre,
 samp {
-	// font-size: $core-font-size;
+    // font-size: $core-font-size;
 }
 
 button,
@@ -128,90 +140,93 @@ input,
 optgroup,
 select,
 textarea {
-	color: inherit;
-	font: inherit;
-	margin: 0;
+    color: inherit;
+    font: inherit;
+    margin: 0;
 }
 
 button {
-	overflow: visible;
+    overflow: visible;
 }
 
 button,
 select {
-	text-transform: none;
+    text-transform: none;
 }
 
 button,
 html input[type="button"],
 input[type="reset"],
 input[type="submit"] {
-	-webkit-appearance: button;
-	cursor: pointer;
+    -webkit-appearance: button;
+    cursor: pointer;
 }
 
 button[disabled],
 html input[disabled] {
-	cursor: default;
+    cursor: default;
 }
 
 button::-moz-focus-inner,
 input::-moz-focus-inner {
-	border: 0;
-	padding: 0;
+    border: 0;
+    padding: 0;
 }
 
 input {
-	line-height: normal;
+    line-height: normal;
 }
 
 input[type="checkbox"],
 input[type="radio"] {
-	padding: 0;
+    padding: 0;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-	height: auto;
+    height: auto;
 }
 
 input[type="search"] {
-	-webkit-appearance: textfield;
+    -webkit-appearance: textfield;
 }
 
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
-	-webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
 legend {
-	border: 0;
-	padding: 0;
+    border: 0;
+    padding: 0;
 }
 
 textarea {
-	overflow: auto;
+    overflow: auto;
 }
 
 optgroup {
-	font-weight: bold;
+    font-weight: bold;
 }
 
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
-	table-layout: fixed;
-	width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    width: 100%;
 }
 
-tr, td, th {
-	vertical-align: middle;
+tr,
+td,
+th {
+    vertical-align: middle;
 }
 
-th, td {
-	padding: ($leading-margin / 4) 0;
+th,
+td {
+    padding: ($leading-margin / 4) 0;
 }
 
 th {
-	text-align: left;
+    text-align: left;
 }
