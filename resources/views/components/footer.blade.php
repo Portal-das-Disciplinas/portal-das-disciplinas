@@ -33,7 +33,7 @@
         <div class="row">
             <hr>
             <div id="eqp-div" class="d-flex justify-content-between w-100 mt-2 pb-3 info-imd">
-                <div class="mt-1">&copy; Instituto Metrópole Digital. Natal, 2021. Todos os direitos reservados.</div>
+                <div class="mt-1">&copy; Instituto Metrópole Digital. Natal, <?php echo date('Y') ?>. Todos os direitos reservados.</div>
                 <div id="eqp-link">Desenvolvido por: <a href="{{route('information')}}" class="eqp-link">Equipe do Portal das Disciplinas</a></div>
             </div>
         </div>
