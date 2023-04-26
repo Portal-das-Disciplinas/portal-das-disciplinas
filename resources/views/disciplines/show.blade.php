@@ -321,7 +321,7 @@ mais.
                 </div>
 
                 <div class="form-group">
-                    <label for="studentQuestionDetails">Example textarea</label>
+                    <label for="studentQuestionDetails">Descrição da pergunta</label>
                     <textarea class="form-control" name='Detalhes' rows="3" placeholder="Forneça mais detalhes da sua pergunta..."></textarea>
                 </div>
                 <input type="hidden" name="_next" value='http://127.0.0.1:8000/disciplinas/{{$discipline->id}}'>

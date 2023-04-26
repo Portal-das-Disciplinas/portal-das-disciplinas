@@ -26,10 +26,10 @@ class ProfessorFactory extends Factory
             'name' => $this->faker->name(),
             'profile_pic_link' => $this->faker->imageUrl(),
             'public_email' => $this->faker->email,
-            'sigaa' => $this->faker->sigaa,
-            'instagram' => $this->faker->instagram,
-            'youtube' => $this->faker->youtube,
-            'facebook' => $this->faker->facebook,
+            //'sigaa' => $this->faker->name,
+            //'instagram' => $this->faker->instagram,
+            //'youtube' => $this->faker->youtube,
+            //'facebook' => $this->faker->facebook,
             'user_id' => User::factory(),
         ];
     }
