@@ -327,6 +327,13 @@
                         </div>
                     </div> 
                 </div>
+                <div class="w-25 my-5">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-white btn-block text-white" data-toggle="modal"
+                data-target="#faqs-create" style='background-color:#1155CC'>
+                Registrar FAQ
+            </button>
+        </div>
             </div>
     
             <div class="row d-flex p-2 mt-3 justify-content-center">
@@ -343,6 +350,7 @@
 @php
     $classificationsJson = json_encode($classifications);
 @endphp
+@include('faqs.create_modal', ['discipline' => $discipline])
 
 @endsection
 @section('scripts-bottom')
