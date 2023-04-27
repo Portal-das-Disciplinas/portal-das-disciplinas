@@ -11,17 +11,8 @@
                 <h1 class="title-subject display-title " style='color: #1F2937'>Portal das Disciplinas - IMD/UFRN</h1>
                 <div class="row justify-content-center">
                     <p class='p-text mt-3  text-center col-md-10  larger-p'>Cada disciplina aqui conta com entrevistas,
-                        informações, materiais, indicação de dificuldades e muito mais sobre esses componentes
+                        informações, materiais, indicação de dificuldades e muito mais sobre componentes
                         curriculares do Bacharelado em TI do IMD/UFRN.<p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qG4ATq0qJlE"
-                        allowfullscreen></iframe>
                 </div>
             </div>
         </div>
