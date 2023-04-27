@@ -17,6 +17,16 @@ Sobre nós - Portal das Disciplinas IMD
 <div class='container py-5'  id="top-container" >
     <div class='row'>
         <div class="col-md-5 p-text">
+            
+        <h2>O Que é o Portal das Disciplinas</h2>
+        <div class="row justify-content">
+            <div class="col-md-8">
+                <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px; margin-bottom: 8%">
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qG4ATq0qJlE"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
                 <section class='our-team'>
                     <h2>Nossa equipe</h2>
                     <p class="text-justify mb-3">Veja ao lado os membros responsáveis por este portal.</p>
