@@ -44,23 +44,19 @@
                 </div>
             </div>
         @endauth
-
-          <div class="row justify-content-md-center mt-5">
+        
+        <div class="row justify-content-md-center mt-5">
             <div class="col">
-                <form action="{{route('index')}}" method="GET">
+                <form action="/discipline/filter" method="GET">
                     @csrf
                     <div class="input-group search-bar">
-                        <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}">
+                        <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" 
+                        aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
                             <option selected disabled > Todas as ênfases </option>
-                            <option value="Núcleo Comum">Núcleo Comum</option>
-                            <option value="Computação">Computação</option>
-                            <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
-                            <option value="Informática Educacional">Informática Educacional</option>
-                            <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
-                            <option value="Bioinformática">Bioinformática</option>
-                            <option value="Internet das Coisas">Internet das Coisas</option>
-                            <option value="Jogos Digitais">Jogos Digitais</option>
+                            @foreach($emphasis ?? '' as $emphase)
+                                <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
+                            @endforeach
                         </select>
                         <div class="input-group-append">
                             <button class="btn btn-primary search-button" type="submit" id="button-addon2"><i class='fas fa-search search-icon'></i>Pesquisar</button>
@@ -69,7 +65,7 @@
                 </form>
             </div>
         </div>
-
+        
     @isset($disciplines)
         @if($disciplines->count() == 0)
             <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>

@@ -14,6 +14,7 @@ use App\Services\Urls\YoutubeService;
 use Illuminate\Http\Request;
 use \App\Models\Discipline;
 use \App\Models\Media;
+use \App\Models\Emphasis;
 use App\Models\Professor;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -31,24 +32,60 @@ class DisciplineController extends Controller
     public function index(Request $request)
     {
         $name_discipline = $request->name_discipline ?? null;
-        $emphasis = $request->emphasis ?? null;
-        $disciplines = Discipline::query()
-            ->with([
-                'professor',
-                'medias',
-            ])
-            ->orderBy('name', 'ASC') 
-            ->when(isset($name_discipline), function($query) use($name_discipline) {
-                $query->where("name", "like", $name_discipline."%");
-            })
-            ->when(isset($emphasis), function($query) use($emphasis) {
-                $query->where("name", "like", $emphasis."%");
-            })
-            ->get();
+        // $emphasis = $request->emphasis ?? null;
 
+        $emphasis = Emphasis::all();
+        // $disciplines = Discipline::query()
+        //     ->with([
+        //         'professor',
+        //         'medias',
+        //     ])
+        //     ->orderBy('name', 'ASC') 
+        //     ->when(isset($name_discipline), function($query) use($name_discipline) {
+        //         $query->where("name", "like", $name_discipline."%");
+        //     })
+        //     ->when(isset($emphasis), function($query) use($emphasis) {
+        //         $query->where("name", "like", $emphasis."%");
+        //     })
+        //     ->get();
+            // dd($emphasis);
+
+        $disciplines = Discipline::all();
+        // dd($disciplines);
         return view('disciplines.index')
             ->with('name_discipline', $name_discipline)
-            ->with('disciplines', $disciplines); 
+            ->with('disciplines', $disciplines)
+            ->with('emphasis', $emphasis); 
+    }
+
+    public function disciplineFilter(Request $request)
+    {
+        $discipline_name = $request->name_discipline;
+        $emphasis_id = $request->emphasis;
+        $input;
+        $output;
+
+        if ($discipline_name != null && $emphasis_id != null) {
+            $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
+            // $output = $input->where($emphasis_id, $input->get("emphasis_id"));
+            foreach($input as $i) {
+                // echo $i->emphasis_id;
+                if($i->emphasis_id == $emphasis_id) {
+                    // echo 'oi';
+                    // return $i;
+                    return $i;
+                }
+            }
+            // echo ($input);
+        } else if ($emphasis_id != null) {
+            $input = Discipline::find($emphasis_id);
+
+            return $input;
+        } else if ($discipline_name != null) {
+            $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
+
+            return $input;
+        }
     }
 
     /**
