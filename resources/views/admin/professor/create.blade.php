@@ -24,6 +24,7 @@ Cadastro de Professor
                             name="name"
                             id="name"
                             placeholder="Nome do Professor"
+                            value = "{{old('name')}}"
                             autocomplete="off">
                     @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -38,6 +39,7 @@ Cadastro de Professor
                             name="email"
                             id="email"
                             placeholder="Email do Professor (Utilizado no Login)"
+                            value="{{old('email')}}"
                             autocomplete="off">
                     @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -48,10 +50,11 @@ Cadastro de Professor
                 <div class="form-group col-12">
                     <label for="public_email" class="text-black">Email Público</label>
                     <input  type="text"
-                            class="form-control {{ $errors->has('public-email') ? 'is-invalid' : ''}}"
+                            class="form-control {{ $errors->has('public_email') ? 'is-invalid' : ''}}"
                             name="public_email"
                             id="public_email"
                             placeholder="Email público do professor (será informação pública no portal)"
+                            value="{{old('public_email')}}"
                             autocomplete="off">
                         @error('public_email')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -67,6 +70,7 @@ Cadastro de Professor
                             name="rede_social1"
                             id="rede_social1"
                             placeholder="Nome da Rede Social 1"
+                            value="{{old('rede_social1')}}"
                             autocomplete="off">
                     @error('rede_social1')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -79,6 +83,7 @@ Cadastro de Professor
                             name="link_rsocial1"
                             id="link_rsocial1"
                             placeholder="Link da Rede social 1"
+                            value="{{old('link_rsocial1')}}"
                             autocomplete="off">
                     @error('link_rsocial1')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -93,6 +98,7 @@ Cadastro de Professor
                             name="rede_social2"
                             id="rede_social2"
                             placeholder="Nome da Rede Social 2"
+                            value="{{old('rede_social2')}}"
                             autocomplete="off">
                     @error('rede_social2')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -105,6 +111,7 @@ Cadastro de Professor
                             name="link_rsocial2"
                             id="link_rsocial2"
                             placeholder="Link da Rede social 2"
+                            value="{{old('link_rsocial2')}}"
                             autocomplete="off">
                     @error('link_rsocial2')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -119,6 +126,7 @@ Cadastro de Professor
                             name="rede_social3"
                             id="rede_social3"
                             placeholder="Nome da Rede Social 3"
+                            value="{{old('rede_social3')}}"
                             autocomplete="off">
                     @error('rede_social3')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -131,6 +139,7 @@ Cadastro de Professor
                             name="link_rsocial3"
                             id="link_rsocial3"
                             placeholder="Link da Rede social 3"
+                            value="{{old('link_rsocial3')}}"
                             autocomplete="off">
                     @error('link_rsocial3')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -145,6 +154,7 @@ Cadastro de Professor
                             name="rede_social4"
                             id="rede_social4"
                             placeholder="Nome da Rede Social 4"
+                            value="{{old('rede_social4')}}"
                             autocomplete="off">
                     @error('rede_social4')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -157,6 +167,7 @@ Cadastro de Professor
                             name="link_rsocial4"
                             id="link_rsocial4"
                             placeholder="Link da Rede social 4"
+                            value="{{old('link_rsocial4')}}"
                             autocomplete="off">
                     @error('link_rsocial4')
                         <div class="invalid-feedback">{{ $message }}</div>
