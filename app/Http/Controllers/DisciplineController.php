@@ -48,43 +48,40 @@ class DisciplineController extends Controller
         //         $query->where("name", "like", $emphasis."%");
         //     })
         //     ->get();
-            // dd($emphasis);
 
         $disciplines = Discipline::all();
-        // dd($disciplines);
         return view('disciplines.index')
-            ->with('name_discipline', $name_discipline)
+            // ->with('name_discipline', $name_discipline)
             ->with('disciplines', $disciplines)
             ->with('emphasis', $emphasis); 
     }
 
     public function disciplineFilter(Request $request)
     {
-        $discipline_name = $request->name_discipline;
+        $emphasis_all = Emphasis::all();
+        $disciplines_all = Discipline::all();
         $emphasis_id = $request->emphasis;
+        $discipline_name = $request->name_discipline;
         $input;
-        $output;
 
         if ($discipline_name != null && $emphasis_id != null) {
             $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
-            // $output = $input->where($emphasis_id, $input->get("emphasis_id"));
+
             foreach($input as $i) {
-                // echo $i->emphasis_id;
                 if($i->emphasis_id == $emphasis_id) {
-                    // echo 'oi';
-                    // return $i;
-                    return $i;
+                    return view('disciplines.index')->with('disciplines', $i)->with('emphasis',$emphasis_all);
                 }
             }
-            // echo ($input);
         } else if ($emphasis_id != null) {
-            $input = Discipline::find($emphasis_id);
-
-            return $input;
+            $input = Discipline::where('emphasis_id', $emphasis_id)->get();
+            
+            return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
         } else if ($discipline_name != null) {
             $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
 
-            return $input;
+            return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
+        } else {
+            return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all); 
         }
     }
 

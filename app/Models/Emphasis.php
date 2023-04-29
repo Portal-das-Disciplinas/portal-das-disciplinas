@@ -14,4 +14,9 @@ class Emphasis extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function disciplines()
+    {
+        return $this->hasMany(Discipline::class);
+    }
 }

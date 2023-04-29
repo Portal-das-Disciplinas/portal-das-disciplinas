@@ -25,7 +25,8 @@ class Discipline extends Model
     protected $fillable = [
         'code',
         'name',
-        'synopsis',
+        'description',
+        'trailer',
         'emphasis_id',
         'difficulties',
         'professor_id',
@@ -153,5 +154,10 @@ class Discipline extends Model
         return $this->hasManyThrough(Tag::class, TagDiscipline::class,
             'discipline_id', 'id',
             'id', 'tag_id');
+    }
+
+    public function emphase()
+    {
+        return $this->belongsTo(Emphasis::class);
     }
 }

@@ -90,7 +90,7 @@
                                 <div class="card-top-container">
                                     <h3 class="card-title">{{ $discipline->name }}</h3>
                                     <p class='card-text p-text'>
-                                        {{ Str::limit($discipline->synopsis, 70,' (...)') }}
+                                        {{ Str::limit($discipline->description, 70,' (...)') }}
                                     </p>
 
                                 </div>
