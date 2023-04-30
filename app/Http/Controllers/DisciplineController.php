@@ -63,15 +63,18 @@ class DisciplineController extends Controller
         $emphasis_id = $request->emphasis;
         $discipline_name = $request->name_discipline;
         $input;
+        $collection = collect([]);
 
         if ($discipline_name != null && $emphasis_id != null) {
             $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
 
             foreach($input as $i) {
                 if($i->emphasis_id == $emphasis_id) {
-                    return view('disciplines.index')->with('disciplines', $i)->with('emphasis',$emphasis_all);
+                    $collection->push($i);
                 }
             }
+
+            return view('disciplines.index')->with('disciplines', $collection)->with('emphasis',$emphasis_all);
         } else if ($emphasis_id != null) {
             $input = Discipline::where('emphasis_id', $emphasis_id)->get();
             
