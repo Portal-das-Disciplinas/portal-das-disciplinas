@@ -1,5 +1,5 @@
 home:
-  alias: '/getting-started'
+  alias: "/getting-started"
 
 pages:
   theme: site
@@ -13,7 +13,7 @@ cache:
   check:
     method: file
   driver: auto
-  prefix: 'g'
+  prefix: "g"
 
 twig:
   cache: true

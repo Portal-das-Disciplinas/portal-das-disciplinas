@@ -1,18 +1,16 @@
-define([
-
-], function () {
-  function CloseOnSelect () { }
+define([], function () {
+  function CloseOnSelect() {}
 
   CloseOnSelect.prototype.bind = function (decorated, container, $container) {
     var self = this;
 
     decorated.call(this, container, $container);
 
-    container.on('select', function (evt) {
+    container.on("select", function (evt) {
       self._selectTriggered(evt);
     });
 
-    container.on('unselect', function (evt) {
+    container.on("unselect", function (evt) {
       self._selectTriggered(evt);
     });
   };
@@ -25,9 +23,9 @@ define([
       return;
     }
 
-    this.trigger('close', {
+    this.trigger("close", {
       originalEvent: originalEvent,
-      originalSelect2Event: evt
+      originalSelect2Event: evt,
     });
   };
 

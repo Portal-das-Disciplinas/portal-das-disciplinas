@@ -1,15 +1,15 @@
 @import "blend-modes";
 
 // Defaults
-$cs-primary           : #f00 !default;
-$cs-scheme            : mono !default;   // mono, complement, triad, tetrad, analogic, accented-analogic
-$cs-hue-offset        : 30 !default;
-$cs-brightness-offset : false !default;
-$cs-color-model       : rgb !default;    // rgb, ryb
-$cs-colorblind        : normal !default;
-$cs-harmonize-mode    : null !default;
-$cs-harmonize-color   : $cs-primary !default;
-$cs-harmonize-amount  : 10% !default;
+$cs-primary: #f00 !default;
+$cs-scheme: mono !default; // mono, complement, triad, tetrad, analogic, accented-analogic
+$cs-hue-offset: 30 !default;
+$cs-brightness-offset: false !default;
+$cs-color-model: rgb !default; // rgb, ryb
+$cs-colorblind: normal !default;
+$cs-harmonize-mode: null !default;
+$cs-harmonize-color: $cs-primary !default;
+$cs-harmonize-amount: 10% !default;
 
 // Partials
 @import "color-schemer/interpolation";
@@ -28,4 +28,4 @@ $cs-harmonize-amount  : 10% !default;
 @import "color-schemer/mixins";
 
 // Tell other files that this is loaded.
-$color-schemer-loaded : true;
+$color-schemer-loaded: true;

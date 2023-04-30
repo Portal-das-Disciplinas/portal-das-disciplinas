@@ -1,24 +1,27 @@
-
-.our-team{
+.our-team {
     margin-bottom: 10%;
 }
 
-.regular-image{width: 140px;}
-.smaller-image{width: 80px;}
+.regular-image {
+    width: 140px;
+}
+.smaller-image {
+    width: 80px;
+}
 
-.clip-path{
+.clip-path {
     clip-path: circle(50% at 50% 50%);
-    
 }
 
-#devsGrid{
-    margin-bottom:2rem;
-   
+#devsGrid {
+    margin-bottom: 2rem;
 }
 
-@media only all and (max-width:1192px){
-    .regular-image{
+@media only all and (max-width: 1192px) {
+    .regular-image {
         width: 120px;
     }
-    .smaller-image{width: 64px;}
+    .smaller-image {
+        width: 64px;
+    }
 }

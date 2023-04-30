@@ -4,7 +4,7 @@
 
 /* Atelier-Heath Comment */
 .hljs-comment {
-  color: #9e8f9e;
+    color: #9e8f9e;
 }
 
 /* Atelier-Heath Red */
@@ -21,7 +21,7 @@
 .css .hljs-id,
 .css .hljs-class,
 .css .hljs-pseudo {
-  color: #ca402b;
+    color: #ca402b;
 }
 
 /* Atelier-Heath Orange */
@@ -31,13 +31,13 @@
 .hljs-literal,
 .hljs-params,
 .hljs-constant {
-  color: #a65926;
+    color: #a65926;
 }
 
 /* Atelier-Heath Yellow */
 .ruby .hljs-class .hljs-title,
 .css .hljs-rule .hljs-attribute {
-  color: #bb8a35;
+    color: #bb8a35;
 }
 
 /* Atelier-Heath Green */
@@ -47,13 +47,13 @@
 .hljs-header,
 .ruby .hljs-symbol,
 .xml .hljs-cdata {
-  color: #918b3b;
+    color: #918b3b;
 }
 
 /* Atelier-Heath Aqua */
 .hljs-title,
 .css .hljs-hexcolor {
-  color: #159393;
+    color: #159393;
 }
 
 /* Atelier-Heath Blue */
@@ -65,22 +65,22 @@
 .perl .hljs-sub,
 .javascript .hljs-title,
 .coffeescript .hljs-title {
-  color: #516aec;
+    color: #516aec;
 }
 
 /* Atelier-Heath Purple */
 .hljs-keyword,
 .javascript .hljs-function {
-  color: #7b59c0;
+    color: #7b59c0;
 }
 
 .hljs {
-  display: block;
-  overflow-x: auto;
-  background: #1b181b;
-  color: #ab9bab;
-  padding: 0.5em;
-  -webkit-text-size-adjust: none;
+    display: block;
+    overflow-x: auto;
+    background: #1b181b;
+    color: #ab9bab;
+    padding: 0.5em;
+    -webkit-text-size-adjust: none;
 }
 
 .coffeescript .javascript,
@@ -90,5 +90,5 @@
 .xml .vbscript,
 .xml .css,
 .xml .hljs-cdata {
-  opacity: 0.5;
+    opacity: 0.5;
 }

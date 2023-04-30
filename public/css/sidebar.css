@@ -1,10 +1,10 @@
-#sidebar_btn{
+#sidebar_btn {
     color: #0c3f7c;
     font-size: 20px;
     /* padding: 10px 10px; */
 }
 
-#sidebar_btn-active{
+#sidebar_btn-active {
     /* color: #fff; */
     color: red;
     padding: 20px 16px;
@@ -13,7 +13,7 @@
     font-size: 20px;
 }
 
-.right{
+.right {
     -webkit-transition: 1s;
     -moz-transition: 1s;
     -ms-transition: 1s;
@@ -22,7 +22,7 @@
     margin-left: 0 !important;
 }
 
-.left{
+.left {
     -webkit-transition: 1s;
     -moz-transition: 1s;
     -ms-transition: 1s;
@@ -31,8 +31,7 @@
     margin-left: -250px !important;
 }
 
-
-#sidebar{
+#sidebar {
     background: #f8f9fa;
     height: 100%;
     position: fixed;
@@ -41,16 +40,16 @@
     margin-left: -250px;
     top: 0;
     /* opacity: 0.3; */
-    z-index:999;
+    z-index: 999;
 }
 
-.sidebar-image_profile{
+.sidebar-image_profile {
     width: 100px;
     border-radius: 50%;
     margin-top: 30px;
 }
 
-#sidebar .name_user{
+#sidebar .name_user {
     margin: 10px 0 10px 0;
     font-size: 16px;
     font-weight: 600;
@@ -62,23 +61,23 @@
     margin-top: 15px;
 }
 
-.list-links{
+.list-links {
     display: block;
     font-weight: 500;
     line-height: 60px;
     transition: 0.3s;
     transition-property: all;
-    color:#000;
+    color: #000;
 }
 
-#sidebar .list-links:hover{
-    background: #0d5ab9;;
+#sidebar .list-links:hover {
+    background: #0d5ab9;
     text-decoration: none;
     color: #fff;
 }
 
 .link-active {
-    background: #0d5ab9;;
+    background: #0d5ab9;
     text-decoration: none;
     color: #fff;
 }

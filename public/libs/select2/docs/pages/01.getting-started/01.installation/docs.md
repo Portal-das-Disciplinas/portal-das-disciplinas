@@ -17,11 +17,11 @@ Select2 is hosted on both the [jsDelivr](https://www.jsdelivr.com/package/npm/se
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 ```
 
->>> <i class="fa fa-info-circle"></i> Immediately following a new release, it takes some time for CDNs to catch up and get the new versions live on the CDN.
+> > > <i class="fa fa-info-circle"></i> Immediately following a new release, it takes some time for CDNs to catch up and get the new versions live on the CDN.
 
 ## Installing with Bower
 
-Select2 is available on Bower.  Add the following to your `bower.json` file and then run `bower install`:
+Select2 is available on Bower. Add the following to your `bower.json` file and then run `bower install`:
 
 ```
 "dependencies": {

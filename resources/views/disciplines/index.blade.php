@@ -30,31 +30,25 @@
             <div class="row">
                 <div class="col-12 col-sm-6 col-lg-3 mt-5">
                     <a name="createDisciplina" class="create-discipline btn btn-outline-light btn-block"
-                        href="{{ route("disciplinas.create") }}" role="button">Cadastrar
+                        href="{{ route('disciplinas.create') }}" role="button">Cadastrar
                         disciplina</a>
                 </div>
             </div>
         @endauth
-
-          <div class="row justify-content-md-center mt-5">
+        
+        <div class="row justify-content-md-center mt-5">
             <div class="col">
-            <form action="{{route('index')}}" method="GET">
-                @csrf
+                <form action="/discipline/filter" method="GET">
+                    @csrf
                     <div class="input-group search-bar">
-                        <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}">
-
+                        <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" 
+                        aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
                             <option selected disabled > Todas as ênfases </option>
-                            <option value="Núcleo Comum">Núcleo Comum</option>
-                            <option value="Computação">Computação</option>
-                            <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
-                            <option value="Informática Educacional">Informática Educacional</option>
-                            <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
-                            <option value="Bioinformática">Bioinformática</option>
-                            <option value="Internet das Coisas">Internet das Coisas</option>
-                            <option value="Jogos Digitais">Jogos Digitais</option>
+                            @foreach($emphasis ?? '' as $emphase)
+                                <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
+                            @endforeach
                         </select>
-
                         <div class="input-group-append">
                             <button class="btn btn-primary search-button" type="submit" id="button-addon2"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
@@ -62,7 +56,7 @@
                 </form>
             </div>
         </div>
-
+        
     @isset($disciplines)
         @if($disciplines->count() == 0)
             <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
@@ -80,14 +74,14 @@
                                 </div>
                             @else
                                 <img src="{{ asset('img/IMD_logo.svg') }}" class="card-img-top light-border-radius"
-                                    alt=".."'>
+                                    alt="..">
                             @endif
 
                             <div class="card-body d-flex justify-content-between flex-column">
                                 <div class="card-top-container">
                                     <h3 class="card-title">{{ $discipline->name }}</h3>
                                     <p class='card-text p-text'>
-                                        {{ Str::limit($discipline->synopsis, 70,' (...)') }}
+                                        {{ Str::limit($discipline->description, 70,' (...)') }}
                                     </p>
 
                                 </div>

@@ -1,16 +1,15 @@
-footer{
+footer {
     display: none;
 }
 
-
-.vertical-center{
-    min-height: calc(100vh - 76px); 
+.vertical-center {
+    min-height: calc(100vh - 76px);
     overflow: hidden;
     display: flex;
     align-items: center;
 }
 
-.login-card{
+.login-card {
     background-color: white;
     width: 50vw;
     margin: 0 auto;
@@ -23,67 +22,61 @@ footer{
     min-height: 40vh;
 }
 
-.custom-card-header{
+.custom-card-header {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-
-.login-img-container{
+.login-img-container {
     width: 64px;
     height: 64px;
     margin-bottom: 16px;
 }
 
-.login-img-container img{
+.login-img-container img {
     width: 100%;
 }
 
-.login-title{
-    color: var(--primary-color)
+.login-title {
+    color: var(--primary-color);
 }
 
-.form-control{
+.form-control {
     padding: 2rem 0;
 }
 
-.login-input{
+.login-input {
     position: relative;
 }
 
-.login-input input[type=email],
-.login-input input[type=password]{
+.login-input input[type="email"],
+.login-input input[type="password"] {
     padding: 2rem 16px 2rem 32px;
-    
-    
 }
 
-.login-input i{
+.login-input i {
     position: absolute;
     left: 0;
     top: 0;
-    padding: 11px 9px
+    padding: 11px 9px;
 }
 
-
-
-
-.login-btn{
+.login-btn {
     background-color: var(--primary-color);
     color: var(--on-primary);
     padding: 0.8rem 0;
     font-size: 1.8rem;
 }
 
-.login-btn:hover{
+.login-btn:hover {
     background-color: var(--primary-color-darker);
-    color: var(--on-primary)
+    color: var(--on-primary);
 }
 
-@media only screen and (max-width:768px){
-    .login-card{
+@media only screen and (max-width: 768px) {
+    .login-card {
         width: 90vw;
     }
 }

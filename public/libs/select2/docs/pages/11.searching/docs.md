@@ -32,26 +32,26 @@ function matchCustom(params, data) {
     if (data.text.indexOf(params.term) > -1) {
       var modifiedData = $.extend({}, data, true);
       modifiedData.text += ' (matched)';
-   
+
       // You can return modified objects from here
       // This includes matching the `children` how you want in nested data sets
       return modifiedData;
     }
-   
+
     // Return `null` if the term should not be displayed
     return null;
 }
-    
+
 $(".js-example-matcher").select2({
   matcher: matchCustom
 });
 ```
 
->>>> `matcher` only works with **locally supplied data** (e.g., via an [array](/data-sources/arrays)!  When a remote data set is used, Select2 expects that the returned results have already been filtered on the server side.
+> > > > `matcher` only works with **locally supplied data** (e.g., via an [array](/data-sources/arrays)! When a remote data set is used, Select2 expects that the returned results have already been filtered on the server side.
 
 ### Matching grouped options
 
-Only first-level objects will be passed in to the `matcher` callback.  If you are working with nested data, you must iterate through the `children` array and match them individually.  This allows for more advanced matching when working with nested objects, allowing you to handle them however you want.
+Only first-level objects will be passed in to the `matcher` callback. If you are working with nested data, you must iterate through the `children` array and match them individually. This allows for more advanced matching when working with nested objects, allowing you to handle them however you want.
 
 This example matches results only if the term appears in the beginning of the string:
 
@@ -103,13 +103,13 @@ $(".js-example-matcher-start").select2({
 
 </script>
 
->>> A [compatibility module](/upgrading/migrating-from-35#wrapper-for-old-style-matcher-callbacks) exists for using v3-style matcher callbacks.
+> > > A [compatibility module](/upgrading/migrating-from-35#wrapper-for-old-style-matcher-callbacks) exists for using v3-style matcher callbacks.
 
 ## Minimum search term length
 
 Sometimes when working with large data sets, it is more efficient to start filtering the results only when the search term is a certain length. This is very common when working with remote data sets, as it allows for only significant search terms to be used.
 
-You may set a minimum search term length  by using the `minimumInputLength` option:
+You may set a minimum search term length by using the `minimumInputLength` option:
 
 ```
 $('select').select2({

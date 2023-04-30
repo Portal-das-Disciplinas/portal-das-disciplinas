@@ -5,7 +5,7 @@ en:
 de:
   PLUGIN_ERROR:
     ERROR: "Fehler"
-    ERROR_MESSAGE: "Uuups. Sieht aus als ob diese Seite nicht existiert."    
+    ERROR_MESSAGE: "Uuups. Sieht aus als ob diese Seite nicht existiert."
 hr:
   PLUGIN_ERROR:
     ERROR: "Greška"
@@ -13,7 +13,7 @@ hr:
 ro:
   PLUGIN_ERROR:
     ERROR: "Eroare"
-    ERROR_MESSAGE: "Ooops. Se pare că pagina nu există."    
+    ERROR_MESSAGE: "Ooops. Se pare că pagina nu există."
 fr:
   PLUGIN_ERROR:
     ERROR: "Erreur"

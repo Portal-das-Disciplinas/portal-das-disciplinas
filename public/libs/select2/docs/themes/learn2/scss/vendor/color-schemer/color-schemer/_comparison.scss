@@ -7,9 +7,15 @@
 //////////////////////////////
 
 @function cs-is-dark($color) {
-  @if (lightness($color) < 60% and (hue($color) >= 210 or hue($color) <= 27)) or (lightness($color) <= 32%)  {
-    @return true;
-  } @else {
-    @return false;
-  }
+    @if (
+            lightness($color) <
+                60% and
+                (hue($color) >= 210 or hue($color) <= 27)
+        ) or
+        (lightness($color) <= 32%)
+    {
+        @return true;
+    } @else {
+        @return false;
+    }
 }

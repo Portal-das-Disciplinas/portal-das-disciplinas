@@ -1,42 +1,42 @@
-module('Decorators');
+module("Decorators");
 
-var Utils = require('select2/utils');
+var Utils = require("select2/utils");
 
-test('overridden - method', function (assert) {
-  function BaseClass () {}
+test("overridden - method", function (assert) {
+  function BaseClass() {}
 
   BaseClass.prototype.hello = function () {
-    return 'A';
+    return "A";
   };
 
-  function DecoratorClass () {}
+  function DecoratorClass() {}
 
   DecoratorClass.prototype.hello = function () {
-    return 'B';
+    return "B";
   };
 
   var DecoratedClass = Utils.Decorate(BaseClass, DecoratorClass);
 
   var inst = new DecoratedClass();
 
-  assert.strictEqual(inst.hello(), 'B');
+  assert.strictEqual(inst.hello(), "B");
 });
 
-test('overridden - constructor', function (assert) {
-  function BaseClass () {
+test("overridden - constructor", function (assert) {
+  function BaseClass() {
     this.inherited = true;
   }
 
   BaseClass.prototype.hello = function () {
-    return 'A';
+    return "A";
   };
 
-  function DecoratorClass (decorated) {
+  function DecoratorClass(decorated) {
     this.called = true;
   }
 
   DecoratorClass.prototype.other = function () {
-    return 'B';
+    return "B";
   };
 
   var DecoratedClass = Utils.Decorate(BaseClass, DecoratorClass);
@@ -47,39 +47,39 @@ test('overridden - constructor', function (assert) {
   assert.ok(!inst.inherited);
 });
 
-test('not overridden - method', function (assert) {
-  function BaseClass () {}
+test("not overridden - method", function (assert) {
+  function BaseClass() {}
 
   BaseClass.prototype.hello = function () {
-    return 'A';
+    return "A";
   };
 
-  function DecoratorClass () {}
+  function DecoratorClass() {}
 
   DecoratorClass.prototype.other = function () {
-    return 'B';
+    return "B";
   };
 
   var DecoratedClass = Utils.Decorate(BaseClass, DecoratorClass);
 
   var inst = new DecoratedClass();
 
-  assert.strictEqual(inst.hello(), 'A');
+  assert.strictEqual(inst.hello(), "A");
 });
 
-test('not overridden - constructor', function (assert) {
-  function BaseClass () {
+test("not overridden - constructor", function (assert) {
+  function BaseClass() {
     this.called = true;
   }
 
   BaseClass.prototype.hello = function () {
-    return 'A';
+    return "A";
   };
 
-  function DecoratorClass () {}
+  function DecoratorClass() {}
 
   DecoratorClass.prototype.other = function () {
-    return 'B';
+    return "B";
   };
 
   var DecoratedClass = Utils.Decorate(BaseClass, DecoratorClass);
@@ -89,43 +89,43 @@ test('not overridden - constructor', function (assert) {
   assert.ok(inst.called);
 });
 
-test('inherited - method', function (assert) {
-  function BaseClass () {}
+test("inherited - method", function (assert) {
+  function BaseClass() {}
 
   BaseClass.prototype.hello = function () {
-    return 'A';
+    return "A";
   };
 
-  function DecoratorClass (decorated) {}
+  function DecoratorClass(decorated) {}
 
   DecoratorClass.prototype.hello = function (decorated) {
-    return 'B' + decorated.call(this) + 'C';
+    return "B" + decorated.call(this) + "C";
   };
 
   var DecoratedClass = Utils.Decorate(BaseClass, DecoratorClass);
 
   var inst = new DecoratedClass();
 
-  assert.strictEqual(inst.hello(), 'BAC');
+  assert.strictEqual(inst.hello(), "BAC");
 });
 
-test('inherited - constructor', function (assert) {
-  function BaseClass () {
+test("inherited - constructor", function (assert) {
+  function BaseClass() {
     this.inherited = true;
   }
 
   BaseClass.prototype.hello = function () {
-    return 'A';
+    return "A";
   };
 
-  function DecoratorClass (decorated) {
+  function DecoratorClass(decorated) {
     this.called = true;
 
     decorated.call(this);
   }
 
   DecoratorClass.prototype.other = function () {
-    return 'B';
+    return "B";
   };
 
   var DecoratedClass = Utils.Decorate(BaseClass, DecoratorClass);
@@ -136,17 +136,17 @@ test('inherited - constructor', function (assert) {
   assert.ok(inst.inherited);
 });
 
-test('inherited - three levels', function (assert) {
-  function BaseClass (testArgument) {
+test("inherited - three levels", function (assert) {
+  function BaseClass(testArgument) {
     this.baseCalled = true;
     this.baseTestArgument = testArgument;
   }
 
   BaseClass.prototype.test = function (a) {
-    return a + 'c';
+    return a + "c";
   };
 
-  function MiddleClass (decorated, testArgument) {
+  function MiddleClass(decorated, testArgument) {
     this.middleCalled = true;
     this.middleTestArgument = testArgument;
 
@@ -154,10 +154,10 @@ test('inherited - three levels', function (assert) {
   }
 
   MiddleClass.prototype.test = function (decorated, a) {
-    return decorated.call(this, a + 'b');
+    return decorated.call(this, a + "b");
   };
 
-  function DecoratorClass (decorated, testArgument) {
+  function DecoratorClass(decorated, testArgument) {
     this.decoratorCalled = true;
     this.decoratorTestArgument = testArgument;
 
@@ -165,7 +165,7 @@ test('inherited - three levels', function (assert) {
   }
 
   DecoratorClass.prototype.test = function (decorated, a) {
-    return decorated.call(this, a + 'a');
+    return decorated.call(this, a + "a");
   };
 
   var DecoratedClass = Utils.Decorate(
@@ -173,17 +173,17 @@ test('inherited - three levels', function (assert) {
     DecoratorClass
   );
 
-  var inst = new DecoratedClass('test');
+  var inst = new DecoratedClass("test");
 
-  assert.ok(inst.baseCalled, 'The base class contructor was called');
-  assert.ok(inst.middleCalled, 'The middle class constructor was called');
-  assert.ok(inst.decoratorCalled, 'The decorator constructor was called');
+  assert.ok(inst.baseCalled, "The base class contructor was called");
+  assert.ok(inst.middleCalled, "The middle class constructor was called");
+  assert.ok(inst.decoratorCalled, "The decorator constructor was called");
 
-  assert.strictEqual(inst.baseTestArgument, 'test');
-  assert.strictEqual(inst.middleTestArgument, 'test');
-  assert.strictEqual(inst.decoratorTestArgument, 'test');
+  assert.strictEqual(inst.baseTestArgument, "test");
+  assert.strictEqual(inst.middleTestArgument, "test");
+  assert.strictEqual(inst.decoratorTestArgument, "test");
 
-  var out = inst.test('test');
+  var out = inst.test("test");
 
-  assert.strictEqual(out, 'testabc');
+  assert.strictEqual(out, "testabc");
 });

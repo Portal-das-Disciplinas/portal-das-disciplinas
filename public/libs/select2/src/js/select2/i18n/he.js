@@ -2,17 +2,17 @@ define(function () {
   // Hebrew
   return {
     errorLoading: function () {
-      return 'שגיאה בטעינת התוצאות';
+      return "שגיאה בטעינת התוצאות";
     },
     inputTooLong: function (args) {
       var overChars = args.input.length - args.maximum;
 
-      var message = 'נא למחוק ';
+      var message = "נא למחוק ";
 
       if (overChars === 1) {
-        message += 'תו אחד';
+        message += "תו אחד";
       } else {
-        message += overChars + ' תווים';
+        message += overChars + " תווים";
       }
 
       return message;
@@ -20,40 +20,40 @@ define(function () {
     inputTooShort: function (args) {
       var remainingChars = args.minimum - args.input.length;
 
-      var message = 'נא להכניס ';
+      var message = "נא להכניס ";
 
       if (remainingChars === 1) {
-        message += 'תו אחד';
+        message += "תו אחד";
       } else {
-        message += remainingChars + ' תווים';
+        message += remainingChars + " תווים";
       }
 
-      message += ' או יותר';
+      message += " או יותר";
 
       return message;
     },
     loadingMore: function () {
-      return 'טוען תוצאות נוספות…';
+      return "טוען תוצאות נוספות…";
     },
     maximumSelected: function (args) {
-      var message = 'באפשרותך לבחור עד ';
+      var message = "באפשרותך לבחור עד ";
 
       if (args.maximum === 1) {
-        message += 'פריט אחד';
+        message += "פריט אחד";
       } else {
-        message += args.maximum + ' פריטים';
+        message += args.maximum + " פריטים";
       }
 
       return message;
     },
     noResults: function () {
-      return 'לא נמצאו תוצאות';
+      return "לא נמצאו תוצאות";
     },
     searching: function () {
-      return 'מחפש…';
+      return "מחפש…";
     },
     removeAllItems: function () {
-      return 'הסר את כל הפריטים';
-    }
+      return "הסר את כל הפריטים";
+    },
   };
 });

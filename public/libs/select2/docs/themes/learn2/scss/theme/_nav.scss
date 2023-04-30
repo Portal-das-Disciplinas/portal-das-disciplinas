@@ -2,9 +2,8 @@
     display: none;
 
     @include breakpoint(mobile-only) {
-         display: inline-block;
-     }
-
+        display: inline-block;
+    }
 }
 
 #sidebar {
@@ -74,8 +73,6 @@
                 color: $core-text !important;
             }
         }
-
-
     }
 
     h5 + ul.topics {
@@ -83,12 +80,12 @@
         margin-top: 0;
     }
 
-    h5.parent, h5.active {
+    h5.parent,
+    h5.active {
         + ul.topics {
             display: block;
         }
     }
-
 
     ul {
         @extend .default-animation;
@@ -129,7 +126,8 @@
                 }
             }
 
-            li.parent ul, > li.active ul {
+            li.parent ul,
+            > li.active ul {
                 display: block;
             }
 
@@ -148,7 +146,8 @@
                     }
                 }
 
-                &.parent, &.active {
+                &.parent,
+                &.active {
                     background: darken($sidebar-bg, 5%);
                     margin-left: -1rem;
                     margin-right: -1rem;
@@ -207,6 +206,5 @@
                 text-indent: 0.2rem;
             }
         }
-
     }
 }

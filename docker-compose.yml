@@ -1,11 +1,11 @@
-version: '3.7'
+version: "3.7"
 
 networks:
   portal_disciplina-network:
     driver: bridge
 
 services:
-# Database
+  # Database
   mysql-database:
     image: mysql:8.0.22
     container_name: portal_disciplina_mysql
@@ -20,13 +20,13 @@ services:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: portal_disciplina_passw0rd
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 7s
       timeout: 5s
     volumes:
       - ./data/mysql:/docker-entrypoint-initdb.d
 
-# Web / API
+  # Web / API
   portal_disciplina-web:
     image: ambientum/php:7.4-nginx
     container_name: portal_disciplina_laravel

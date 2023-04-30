@@ -12,7 +12,7 @@ Installing the Error plugin can be done in one of two ways. Our GPM (Grav Packag
 
 ## GPM Installation (Preferred)
 
-The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm) through your system's Terminal (also called the command line).  From the root of your Grav install type:
+The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm) through your system's Terminal (also called the command line). From the root of your Grav install type:
 
     bin/gpm install error
 
@@ -26,7 +26,7 @@ You should now have all the plugin files under
 
     /your/site/grav/user/plugins/error
 
->> NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav), the [Problems](https://github.com/getgrav/grav-plugin-problems) plugin, and a theme to be installed in order to operate.
+> > NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav), the [Problems](https://github.com/getgrav/grav-plugin-problems) plugin, and a theme to be installed in order to operate.
 
 # Usage
 
@@ -59,15 +59,15 @@ You can now edit the override and tweak it however you prefer.
 The configuration allows to specify pages different than `/error` for specific error codes. By default, the `404` error leads to the `/error` page. If you change that, make sure the page you point to has a `error` template (which means, its markdown file is `error.md` or in the page frontmatter you specify `template: error`.
 
 # CLI Usage
+
 The `error` plugin comes with a CLI command that outputs the `grav.log` in a beautified way, with possibility of limiting the amount of errors displayed, as well as include the trace in the output.
 
 ### Commands
 
 | `bin/plugin error log` |                                                                 |
-|------------------------|-----------------------------------------------------------------|
+| ---------------------- | --------------------------------------------------------------- |
 | [ --limit N \| -l N ]  | The amount of errors to display. Default is 5                   |
 | [ --trace \| -t ]      | When used, it will add the backtrace in the output of the error |
-
 
 # Updating
 
@@ -85,9 +85,9 @@ This command will check your Grav install to see if your Error plugin is due for
 
 Manually updating Error is pretty simple. Here is what you will need to do to get this done:
 
-* Delete the `your/site/user/plugins/error` directory.
-* Downalod the new version of the Error plugin from either [GitHub](https://github.com/getgrav/grav-plugin-error) or [GetGrav.org](http://getgrav.org/downloads/plugins#extras).
-* Unzip the zip file in `your/site/user/plugins` and rename the resulting folder to `error`.
-* Clear the Grav cache. The simplest way to do this is by going to the root Grav directory in terminal and typing `bin/grav clear-cache`.
+-   Delete the `your/site/user/plugins/error` directory.
+-   Downalod the new version of the Error plugin from either [GitHub](https://github.com/getgrav/grav-plugin-error) or [GetGrav.org](http://getgrav.org/downloads/plugins#extras).
+-   Unzip the zip file in `your/site/user/plugins` and rename the resulting folder to `error`.
+-   Clear the Grav cache. The simplest way to do this is by going to the root Grav directory in terminal and typing `bin/grav clear-cache`.
 
 > Note: Any changes you have made to any of the files listed under this directory will also be removed and replaced by the new set. Any files located elsewhere (for example a YAML settings file placed in `user/config/plugins`) will remain intact.
