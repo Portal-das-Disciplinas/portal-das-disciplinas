@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 
-<section class='hero-section'>
+<section class='hero-section mb-4'>
     <div class="container">
         <div class="row">
             <div class="col-12 text-center my-4 title-subject-container">
