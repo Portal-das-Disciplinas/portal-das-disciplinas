@@ -44,7 +44,7 @@
                         <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" 
                         aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
-                            <option selected disabled > Todas as ênfases </option>
+                            <option selected > Todas as ênfases </option>
                             @foreach($emphasis ?? '' as $emphase)
                                 <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
                             @endforeach

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call(RoleSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(EmphasisSeeder::class);
 
         if (app()->isLocal()) {
             // $this->call(DisciplineTableSeeder::class);
