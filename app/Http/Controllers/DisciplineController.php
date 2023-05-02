@@ -98,11 +98,14 @@ class DisciplineController extends Controller
     {
         $professors = new Professor();
         $classifications = Classification::all();
+        $emphasis = Emphasis::all();
+
         if (Auth::user()->isAdmin) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
         return view(self::VIEW_PATH . 'create', compact('professors'))
-            ->with('classifications', $classifications);
+            ->with('classifications', $classifications)
+            ->with('emphasis', $emphasis);
     }
 
     /**
@@ -124,13 +127,13 @@ class DisciplineController extends Controller
             $discipline = Discipline::create([
                 'name' => $request->input('name'),
                 'code' => $request->input('code'),
-                'synopsis' => $request->input('synopsis'),
-                'emphasis' => $request->input('emphasis'),
+                'description' => $request->input('synopsis'),
+                'emphasis_id' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
-
+            echo 'foi';
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
 
                 $url = $request->input('media-trailer');

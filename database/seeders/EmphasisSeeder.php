@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\Emphasis;
+
 class EmphasisSeeder extends Seeder
 {
     /**
@@ -15,23 +17,35 @@ class EmphasisSeeder extends Seeder
     public function run()
     {
         DB::table('emphasis')->insert([
-            'name' => 'Teste1'
+            'name' => 'Núcleo Comum'
         ]);
 
         DB::table('emphasis')->insert([
-            'name' => 'Teste2'
+            'name' => 'Computação'
         ]);
 
         DB::table('emphasis')->insert([
-            'name' => 'Teste3'
+            'name' => 'Desenvolvimento de Software'
         ]);
 
         DB::table('emphasis')->insert([
-            'name' => 'Teste4'
+            'name' => 'Informática Educacional'
         ]);
         
         DB::table('emphasis')->insert([
-            'name' => 'Teste5'
+            'name' => 'Sistemas de Informação de Gestão'
+        ]);
+
+        DB::table('emphasis')->insert([
+            'name' => 'Bioinformática'
+        ]);
+
+        DB::table('emphasis')->insert([
+            'name' => 'Internet das Coisas'
+        ]);
+
+        DB::table('emphasis')->insert([
+            'name' => 'Jogos Digitais'
         ]);
     }
 }
