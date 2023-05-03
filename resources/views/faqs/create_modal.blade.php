@@ -29,16 +29,6 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="title" class="col-form-label">
-                            Email do Aluno <span class="text-danger">*</span>
-                        </label>
-                        <input type="text" class="form-control"
-                               id="title" name="title" value="{{old('title')}}">
-                        @error('title')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

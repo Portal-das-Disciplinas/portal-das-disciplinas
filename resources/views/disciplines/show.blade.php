@@ -23,19 +23,15 @@ mais.
     <!-- Botão de cadastro FAQ -->
 
     @auth
+
+    @if (Auth::user()->canDiscipline($discipline->id))
+    <h3 class="mt-3">Menu do professor</h3>
     @if(isset($can) && $can)
-    <div>
-        <div class="w-25 my-5">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-outline-white btn-block text-white" data-toggle="modal"
+    <button type="button" class="btn btn-outline-white text-white w-25 mt-2" data-toggle="modal"
                 data-target="#faqs-create" style='background-color:#1155CC'>
                 Registrar FAQ
-            </button>
-        </div>
-    </div>
+    </button>
     @endif
-    @if (Auth::user()->canDiscipline($discipline->id))
-    <h3>Menu do professor</h3>
     <form action=" {{route('disciplinas.edit', $discipline->id)}}" class="d-inline" method="get">
         @csrf
         @method('UPDATE')
@@ -46,8 +42,8 @@ mais.
         @method('DELETE')
         <button type="submit" class="btn btn-danger w-25 mt-2" value="Apagar">Apagar</button>
     </form>
-
     @endif
+
     @endauth
     <!-- ROW Da PAGE -->
     <div class="row mt-5">
