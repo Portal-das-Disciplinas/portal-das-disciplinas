@@ -291,7 +291,7 @@ class DisciplineController extends Controller
             $discipline->update([
                 'name' => $request->input('name'),
                 'code' => $request->input('code'),
-                'synopsis' => $request->input('synopsis'),
+                'description' => $request->input('description'),
                 'emphasis' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),

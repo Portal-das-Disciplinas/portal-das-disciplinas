@@ -92,19 +92,19 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="d-flex">
-                            <label for="synopsis">
+                            <label for="description">
                                 Sinopse
                             </label>
                             <p data-toggle="tooltip" data-placement="top" title="Principais pontos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         
                         <textarea
-                            class="form-control {{ $errors->has('synopsis') ? 'is-invalid' : ''}}"
-                            id="synopsis"
-                            name="synopsis"
+                            class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}}"
+                            id="description"
+                            name="description"
                             rows="8"
-                            placeholder="Explique aqui como funciona a disciplina">{{$discipline->synopsis}}</textarea>
-                        @error('synopsis')
+                            placeholder="Explique aqui como funciona a disciplina">{{$discipline->description}}</textarea>
+                        @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>

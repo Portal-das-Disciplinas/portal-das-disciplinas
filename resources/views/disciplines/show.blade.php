@@ -68,13 +68,13 @@ mais.
                 <h1 class="mb-3">Sinopse</h1>
                 <div>
                     <div>
-                        @if($discipline->synopsis=='')
+                        @if($discipline->description=='')
                         <div>
                             <p>Não há sinopse cadastrada.</p>
                         </div>
                         @else
                         <div>
-                            <p style='text-align: justify; '>{{ $discipline->synopsis}}</p>
+                            <p style='text-align: justify; '>{{ $discipline->description}}</p>
                         </div>
                         @endif
                     </div>
