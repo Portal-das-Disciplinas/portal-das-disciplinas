@@ -41,10 +41,10 @@
                 <form action="/discipline/filter" method="GET">
                     @csrf
                     <div class="input-group search-bar">
-                        <input type="text" class="form-control col-9" placeholder="Nome da Disciplina..." aria-label="Caixa de pesquisa" 
+                        <input type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" 
                         aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
-                            <option selected > Todas as ênfases </option>
+                            <option selected value=""> Todas as ênfases </option>
                             @foreach($emphasis ?? '' as $emphase)
                                 <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
                             @endforeach

@@ -302,11 +302,12 @@ mais.
     <div class="container col-md-5">
         <div class="section">
             <h1 class="container-fluid  text-center mt-5">Faça uma pergunta!</h1>
+            <!-- É necessário autenticaro  email do professor anteriormente -->
 
             <form action="https://formsubmit.co/{{ $discipline->professor->public_email
             }}" method="POST">
                 <!-- COLOQUE NO INPUT ABAIXO O EMAIL PARA ENVIAR UMA CÓPIA (EMAIL DE EUGÊNIO) -->
-                <input type="hidden" name="_cc" value="henrymedeiros77@gmail.com" />
+                <input type="hidden" name="_cc" value="eugenio@imd.ufrn.br" />
                 <div class="form-group">
                     <label for="studentEmail">Email</label>
                     <input type="email" id='studentEmail' name='Email do estudante' class="form-control" placeholder="Digite aqui o seu email..." required>
