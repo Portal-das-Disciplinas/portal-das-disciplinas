@@ -4,7 +4,7 @@ taxonomy:
     category: docs
 ---
 
-Select2 can render programmatically supplied data from an array or remote data source (AJAX) as dropdown options.  In order to accomplish this, Select2 expects a very specific data format.  This format consists of a JSON object containing an array of objects keyed by the `results` key.
+Select2 can render programmatically supplied data from an array or remote data source (AJAX) as dropdown options. In order to accomplish this, Select2 expects a very specific data format. This format consists of a JSON object containing an array of objects keyed by the `results` key.
 
 ```
 {
@@ -24,13 +24,13 @@ Select2 can render programmatically supplied data from an array or remote data s
 }
 ```
 
-Select2 requires that each object contain an `id` and a `text` property.  Additional parameters passed in with data objects will be included on the data objects that Select2 exposes.
+Select2 requires that each object contain an `id` and a `text` property. Additional parameters passed in with data objects will be included on the data objects that Select2 exposes.
 
-The response object may also contain pagination data, if you would like to use the "infinite scroll" feature.  This should be specified under the `pagination` key.
+The response object may also contain pagination data, if you would like to use the "infinite scroll" feature. This should be specified under the `pagination` key.
 
 ## Selected and disabled options
 
-You can also supply the `selected` and `disabled` properties for the options in this data structure.  For example:
+You can also supply the `selected` and `disabled` properties for the options in this data structure. For example:
 
 ```
 {
@@ -93,13 +93,13 @@ Blank `id`s or an `id` with a value of `0` are not permitted.
 
 ## Grouped data
 
-When options are to be generated in `<optgroup>` sections, options should be nested under the `children` key of each group object.  The label for the group should be specified as the `text` property on the group's corresponding data object.
+When options are to be generated in `<optgroup>` sections, options should be nested under the `children` key of each group object. The label for the group should be specified as the `text` property on the group's corresponding data object.
 
 ```
 {
   "results": [
-    { 
-      "text": "Group 1", 
+    {
+      "text": "Group 1",
       "children" : [
         {
             "id": 1,
@@ -111,8 +111,8 @@ When options are to be generated in `<optgroup>` sections, options should be nes
         }
       ]
     },
-    { 
-      "text": "Group 2", 
+    {
+      "text": "Group 2",
       "children" : [
         {
             "id": 3,
@@ -131,4 +131,4 @@ When options are to be generated in `<optgroup>` sections, options should be nes
 }
 ```
 
->>>> Because Select2 generates an `<optgroup>` when creating nested options, only [a single level of nesting is supported](/options#dropdown-option-groups). Any additional levels of nesting is not guaranteed to be displayed properly across all browsers and devices.
+> > > > Because Select2 generates an `<optgroup>` when creating nested options, only [a single level of nesting is supported](/options#dropdown-option-groups). Any additional levels of nesting is not guaranteed to be displayed properly across all browsers and devices.

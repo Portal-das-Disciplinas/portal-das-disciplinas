@@ -14,7 +14,7 @@
             <h1>Cadastro de disciplinas</h1>
         </div>
 
-        <form action="{{ route("disciplinas.store") }}" method="post">
+        <form action="{{ route('disciplinas.store') }}" method="post">
             @csrf
             <div class="form-row">
                 <div class="form-group col-md-10">
@@ -61,14 +61,9 @@
                     </label>
                     <select name="emphasis" id="emphasis" class='form-control' >
                         <option selected disabled > Selecione uma ênfase</option>
-                        <option value="Núcleo Comum">Núcleo Comum</option>
-                        <option value="Computação">Computação</option>
-                        <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
-                        <option value="Informática Educacional">Informática Educacional</option>
-                        <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
-                        <option value="Bioinformática">Bioinformática</option>
-                        <option value="Internet das Coisas">Internet das Coisas</option>
-                        <option value="Jogos Digitais">Jogos Digitais</option>
+                        @foreach($emphasis as $emphase)
+                            <option value="{{ $emphase->id }}" >{{ $emphase->name }}</option>
+                        @endforeach
                     </select>
                     
                

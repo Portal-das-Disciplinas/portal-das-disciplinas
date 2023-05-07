@@ -12,7 +12,7 @@ Installing the Problems plugin can be done in one of two ways. Our GPM (Grav Pac
 
 ## GPM Installation (Preferred)
 
-The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm) through your system's Terminal (also called the command line).  From the root of your Grav install type:
+The simplest way to install this plugin is via the [Grav Package Manager (GPM)](http://learn.getgrav.org/advanced/grav-gpm) through your system's Terminal (also called the command line). From the root of your Grav install type:
 
     bin/gpm install problems
 
@@ -26,7 +26,7 @@ You should now have all the plugin files under
 
     /your/site/grav/user/plugins/problems
 
->> NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav), the [Error](https://github.com/getgrav/grav-plugin-error) and [Problems](https://github.com/getgrav/grav-plugin-problems) plugins, and a theme to be installed in order to operate.
+> > NOTE: This plugin is a modular component for Grav which requires [Grav](http://github.com/getgrav/grav), the [Error](https://github.com/getgrav/grav-plugin-error) and [Problems](https://github.com/getgrav/grav-plugin-problems) plugins, and a theme to be installed in order to operate.
 
 # Usage
 
@@ -35,7 +35,7 @@ You should now have all the plugin files under
 `Problems` checks for the following common issues:
 
 | Check                                   | Description                                                                                               |
-| :----------------------------------     | :-------------------------------------------------------------------------------------------------------- |
+| :-------------------------------------- | :-------------------------------------------------------------------------------------------------------- |
 | Apache `mod_rewrite`                    | Checks to ensure `mod_rewrite` is enabled if you are running an Apache server.                            |
 | PHP Version                             | Checks to make sure the PHP version being run by the server meets or exceeds Grav's minimum requirements. |
 | PHP GD (Image Manipulation Library)     | Checks to make sure that PHP GD is installed.                                                             |
@@ -81,9 +81,9 @@ This command will check your Grav install to see if your Problems plugin is due 
 
 Manually updating Problems is pretty simple. Here is what you will need to do to get this done:
 
-* Delete the `your/site/user/plugins/problems` directory.
-* Download the new version of the Problems plugin from either [GitHub](https://github.com/getgrav/grav-plugin-problems) or [GetGrav.org](http://getgrav.org/downloads/plugins#extras).
-* Unzip the zip file in `your/site/user/plugins` and rename the resulting folder to `problems`.
-* Clear the Grav cache. The simplest way to do this is by going to the root Grav directory in terminal and typing `bin/grav clear-cache`.
+-   Delete the `your/site/user/plugins/problems` directory.
+-   Download the new version of the Problems plugin from either [GitHub](https://github.com/getgrav/grav-plugin-problems) or [GetGrav.org](http://getgrav.org/downloads/plugins#extras).
+-   Unzip the zip file in `your/site/user/plugins` and rename the resulting folder to `problems`.
+-   Clear the Grav cache. The simplest way to do this is by going to the root Grav directory in terminal and typing `bin/grav clear-cache`.
 
 > Note: Any changes you have made to any of the files listed under this directory will also be removed and replaced by the new set. Any files located elsewhere (for example a YAML settings file placed in `user/config/plugins`) will remain intact.

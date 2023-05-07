@@ -30,9 +30,10 @@ Auth::routes([
 ]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/', [DisciplineController::class, 'index'])
-    ->name('index');
+Route::get('/', [DisciplineController::class, 'index'])->name('index');
 Route::post('/search', [DisciplineController::class, 'search'])->name('search');
+
+Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter']);
 
 //--Desativada por enquanto
 // route::get('/minhasdisciplinas', [DisciplineController::class, 'mydisciplines'])->name('mydisciplines');

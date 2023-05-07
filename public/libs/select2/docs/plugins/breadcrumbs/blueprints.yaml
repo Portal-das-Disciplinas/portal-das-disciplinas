@@ -63,13 +63,13 @@ form:
       type: text
       size: medium
       label: Icon Home
-      default: ''
+      default: ""
 
     icon_divider_classes:
       type: text
       size: medium
       label: Icon Divider Classes
-      default: 'fa fa-angle-right'
+      default: "fa fa-angle-right"
 
     link_trailing:
       type: toggle

@@ -81,12 +81,12 @@ class UserTableSeeder extends Seeder
             //     'role_id' => $roleAdmin->id,
             // ]);
 
-            User::create([
-                'name' => 'Eugenio',
-                'email' => 'eugenio@admin',
-                'password' => bcrypt('adminportal@123'),
-                'role_id' => $roleAdmin->id,
-            ]);
+             User::create([
+                 'name' => 'Eugenio',
+                 'email' => 'eugenio@admin',
+                 'password' => bcrypt('adminportal@123'),
+                 'role_id' => $roleAdmin->id,
+             ]);
 
 
         // if (app()->isLocal()) {

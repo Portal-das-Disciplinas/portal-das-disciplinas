@@ -4,7 +4,7 @@
 
 /* Atelier-Seaside Comment */
 .hljs-comment {
-  color: #809980;
+    color: #809980;
 }
 
 /* Atelier-Seaside Red */
@@ -21,7 +21,7 @@
 .css .hljs-id,
 .css .hljs-class,
 .css .hljs-pseudo {
-  color: #e6193c;
+    color: #e6193c;
 }
 
 /* Atelier-Seaside Orange */
@@ -31,13 +31,13 @@
 .hljs-literal,
 .hljs-params,
 .hljs-constant {
-  color: #87711d;
+    color: #87711d;
 }
 
 /* Atelier-Seaside Yellow */
 .ruby .hljs-class .hljs-title,
 .css .hljs-rule .hljs-attribute {
-  color: #98981b;
+    color: #98981b;
 }
 
 /* Atelier-Seaside Green */
@@ -47,13 +47,13 @@
 .hljs-header,
 .ruby .hljs-symbol,
 .xml .hljs-cdata {
-  color: #29a329;
+    color: #29a329;
 }
 
 /* Atelier-Seaside Aqua */
 .hljs-title,
 .css .hljs-hexcolor {
-  color: #1999b3;
+    color: #1999b3;
 }
 
 /* Atelier-Seaside Blue */
@@ -65,22 +65,22 @@
 .perl .hljs-sub,
 .javascript .hljs-title,
 .coffeescript .hljs-title {
-  color: #3d62f5;
+    color: #3d62f5;
 }
 
 /* Atelier-Seaside Purple */
 .hljs-keyword,
 .javascript .hljs-function {
-  color: #ad2bee;
+    color: #ad2bee;
 }
 
 .hljs {
-  display: block;
-  overflow-x: auto;
-  background: #131513;
-  color: #8ca68c;
-  padding: 0.5em;
-  -webkit-text-size-adjust: none;
+    display: block;
+    overflow-x: auto;
+    background: #131513;
+    color: #8ca68c;
+    padding: 0.5em;
+    -webkit-text-size-adjust: none;
 }
 
 .coffeescript .javascript,
@@ -90,5 +90,5 @@
 .xml .vbscript,
 .xml .css,
 .xml .hljs-cdata {
-  opacity: 0.5;
+    opacity: 0.5;
 }

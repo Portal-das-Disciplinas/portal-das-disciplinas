@@ -18,6 +18,7 @@ class CreateProfessorsTable extends Migration
             $table->string("name");
             $table->string("profile_pic_link")->nullable();
             $table->string("public_email");
+            $table->string("sigaa");
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')
                 ->on('users')

@@ -4,7 +4,7 @@
 
 /* Atelier-Plateau Comment */
 .hljs-comment {
-  color: #655d5d;
+    color: #655d5d;
 }
 
 /* Atelier-Plateau Red */
@@ -21,7 +21,7 @@
 .css .hljs-id,
 .css .hljs-class,
 .css .hljs-pseudo {
-  color: #ca4949;
+    color: #ca4949;
 }
 
 /* Atelier-Plateau Orange */
@@ -31,13 +31,13 @@
 .hljs-literal,
 .hljs-params,
 .hljs-constant {
-  color: #b45a3c;
+    color: #b45a3c;
 }
 
 /* Atelier-Plateau Yellow */
 .ruby .hljs-class .hljs-title,
 .css .hljs-rule .hljs-attribute {
-  color: #a06e3b;
+    color: #a06e3b;
 }
 
 /* Atelier-Plateau Green */
@@ -47,13 +47,13 @@
 .hljs-header,
 .ruby .hljs-symbol,
 .xml .hljs-cdata {
-  color: #4b8b8b;
+    color: #4b8b8b;
 }
 
 /* Atelier-Plateau Aqua */
 .hljs-title,
 .css .hljs-hexcolor {
-  color: #5485b6;
+    color: #5485b6;
 }
 
 /* Atelier-Plateau Blue */
@@ -65,41 +65,41 @@
 .perl .hljs-sub,
 .javascript .hljs-title,
 .coffeescript .hljs-title {
-  color: #7272ca;
+    color: #7272ca;
 }
 
 /* Atelier-Plateau Purple */
 .hljs-keyword,
 .javascript .hljs-function {
-  color: #8464c4;
+    color: #8464c4;
 }
 
 .diff .hljs-deletion,
 .diff .hljs-addition {
-  color: #1b1818;
-  display: inline-block;
-  width: 100%;
+    color: #1b1818;
+    display: inline-block;
+    width: 100%;
 }
 
 .diff .hljs-deletion {
-  background-color: #ca4949;
+    background-color: #ca4949;
 }
 
 .diff .hljs-addition {
-  background-color: #4b8b8b;
+    background-color: #4b8b8b;
 }
 
 .diff .hljs-change {
-  color: #7272ca;
+    color: #7272ca;
 }
 
 .hljs {
-  display: block;
-  overflow-x: auto;
-  background: #f4ecec;
-  color: #585050;
-  padding: 0.5em;
-  -webkit-text-size-adjust: none;
+    display: block;
+    overflow-x: auto;
+    background: #f4ecec;
+    color: #585050;
+    padding: 0.5em;
+    -webkit-text-size-adjust: none;
 }
 
 .coffeescript .javascript,
@@ -109,5 +109,5 @@
 .xml .vbscript,
 .xml .css,
 .xml .hljs-cdata {
-  opacity: 0.5;
+    opacity: 0.5;
 }

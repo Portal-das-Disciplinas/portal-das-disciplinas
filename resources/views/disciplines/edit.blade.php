@@ -55,23 +55,18 @@
             </div>
             <div class="col-md-12 px-0">
                 
-                <label class="" for="emphasis">
-                    Ênfase da disciplina
-                </label>
-                <select name="emphasis" id="emphasis" class='form-control' value="{{$discipline->emphasis}}">
-                    <option> Selecione uma ênfase</option>
-                    <option value="Núcleo Comum">Núcleo Comum</option>
-                    <option value="Computação">Computação</option>
-                    <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
-                    <option value="Informática Educacional">Informática Educacional</option>
-                    <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
-                    <option value="Bioinformática">Bioinformática</option>
-                    <option value="Internet das Coisas">Internet das Coisas</option>
-                    <option value="Jogos Digitais">Jogos Digitais</option>
-                </select>
-                
-           
-        </div>
+                    <label class="" for="emphasis">
+                        Ênfase da disciplina
+                    </label>
+                    <select name="emphasis" id="emphasis" class='form-control' >
+                        <option selected disabled > Selecione uma ênfase</option>
+                        @foreach($emphasis as $emphase)
+                            <option value="{{ $emphase->id }}" >{{ $emphase->name }}</option>
+                        @endforeach
+                    </select>
+                    
+               
+            </div>
             <div class="col-md-12 px-0 pr-0">
                 <label for="professor">Professor</label>
                 @if (Auth::user()->is_admin)
@@ -92,19 +87,19 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="d-flex">
-                            <label for="synopsis">
+                            <label for="description">
                                 Sinopse
                             </label>
                             <p data-toggle="tooltip" data-placement="top" title="Principais pontos da disciplina." ><i class="far fa-question-circle ml-1" ></i></p>
                         </div>
                         
                         <textarea
-                            class="form-control {{ $errors->has('synopsis') ? 'is-invalid' : ''}}"
-                            id="synopsis"
-                            name="synopsis"
+                            class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}}"
+                            id="description"
+                            name="description"
                             rows="8"
-                            placeholder="Explique aqui como funciona a disciplina">{{$discipline->synopsis}}</textarea>
-                        @error('synopsis')
+                            placeholder="Explique aqui como funciona a disciplina">{{$discipline->description}}</textarea>
+                        @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -327,6 +322,14 @@
                         </div>
                     </div> 
                 </div>
+                <div class="w-25 my-5">
+            <!-- Button trigger modal -->
+
+        </div>
+        <button type="button" class="btn btn-outline-white btn-block text-white" data-toggle="modal"
+                data-target="#faqs-create" style='background-color:#1155CC'>
+                Registrar FAQ
+            </button>
             </div>
     
             <div class="row d-flex p-2 mt-3 justify-content-center">
@@ -343,6 +346,7 @@
 @php
     $classificationsJson = json_encode($classifications);
 @endphp
+@include('faqs.create_modal', ['discipline' => $discipline])
 
 @endsection
 @section('scripts-bottom')

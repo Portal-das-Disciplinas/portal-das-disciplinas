@@ -3,22 +3,14 @@
 // input types that have a text-based input, excluding textarea.
 // http://diveintohtml5.org/forms.html
 //************************************************************************//
-$inputs-list: 'input[type="email"]',
-              'input[type="number"]',
-              'input[type="password"]',
-              'input[type="search"]',
-              'input[type="tel"]',
-              'input[type="text"]',
-              'input[type="url"]',
-
-              // Webkit & Gecko may change the display of these in the future
-              'input[type="color"]',
-              'input[type="date"]',
-              'input[type="datetime"]',
-              'input[type="datetime-local"]',
-              'input[type="month"]',
-              'input[type="time"]',
-              'input[type="week"]';
+$inputs-list: 'input[type="email"]', 'input[type="number"]',
+    'input[type="password"]', 'input[type="search"]', 'input[type="tel"]',
+    'input[type="text"]', 'input[type="url"]',
+    // Webkit & Gecko may change the display of these in the future
+    'input[type="color"]',
+    'input[type="date"]', 'input[type="datetime"]',
+    'input[type="datetime-local"]', 'input[type="month"]', 'input[type="time"]',
+    'input[type="week"]';
 
 // Bare inputs
 //************************************************************************//
@@ -32,8 +24,6 @@ $all-text-inputs-hover: assign-inputs($inputs-list, hover);
 //************************************************************************//
 $all-text-inputs-focus: assign-inputs($inputs-list, focus);
 
-
-
 // You must use interpolation on the variable:
 // #{$all-text-inputs}
 // #{$all-text-inputs-hover}
@@ -45,15 +35,12 @@ $all-text-inputs-focus: assign-inputs($inputs-list, focus);
 //     border: 1px solid red;
 //   }
 
-
-
 //************************************************************************//
 // Generate a variable ($all-button-inputs) with a list of all html5
 // input types that have a button-based input, excluding button.
 //************************************************************************//
-$inputs-button-list: 'input[type="button"]',
-                     'input[type="reset"]',
-                     'input[type="submit"]';
+$inputs-button-list: 'input[type="button"]', 'input[type="reset"]',
+    'input[type="submit"]';
 
 // Bare inputs
 //************************************************************************//
@@ -70,8 +57,6 @@ $all-button-inputs-focus: assign-inputs($inputs-button-list, focus);
 // Active Pseudo-class
 //************************************************************************//
 $all-button-inputs-active: assign-inputs($inputs-button-list, active);
-
-
 
 // You must use interpolation on the variable:
 // #{$all-button-inputs}

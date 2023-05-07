@@ -1,28 +1,25 @@
-define([
-  'jquery',
-  './utils'
-], function ($, CompatUtils) {
+define(["jquery", "./utils"], function ($, CompatUtils) {
   // No-op CSS adapter that discards all classes by default
-  function _containerAdapter (clazz) {
+  function _containerAdapter(clazz) {
     return null;
   }
 
-  function ContainerCSS () { }
+  function ContainerCSS() {}
 
   ContainerCSS.prototype.render = function (decorated) {
     var $container = decorated.call(this);
 
-    var containerCssClass = this.options.get('containerCssClass') || '';
+    var containerCssClass = this.options.get("containerCssClass") || "";
 
     if ($.isFunction(containerCssClass)) {
       containerCssClass = containerCssClass(this.$element);
     }
 
-    var containerCssAdapter = this.options.get('adaptContainerCssClass');
+    var containerCssAdapter = this.options.get("adaptContainerCssClass");
     containerCssAdapter = containerCssAdapter || _containerAdapter;
 
-    if (containerCssClass.indexOf(':all:') !== -1) {
-      containerCssClass = containerCssClass.replace(':all:', '');
+    if (containerCssClass.indexOf(":all:") !== -1) {
+      containerCssClass = containerCssClass.replace(":all:", "");
 
       var _cssAdapter = containerCssAdapter;
 
@@ -31,14 +28,14 @@ define([
 
         if (adapted != null) {
           // Append the old one along with the adapted one
-          return adapted + ' ' + clazz;
+          return adapted + " " + clazz;
         }
 
         return clazz;
       };
     }
 
-    var containerCss = this.options.get('containerCss') || {};
+    var containerCss = this.options.get("containerCss") || {};
 
     if ($.isFunction(containerCss)) {
       containerCss = containerCss(this.$element);

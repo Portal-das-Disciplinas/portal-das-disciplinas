@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddEmpashisToDisciplines extends Migration
+class CreateEmphasisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddEmpashisToDisciplines extends Migration
      */
     public function up()
     {
-        Schema::table('disciplines', function (Blueprint $table) {
-            $table->string('emphasis')->nullable();
+        Schema::create('emphasis', function (Blueprint $table) {
+            $table->id();
+            $table->string("name");
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class AddEmpashisToDisciplines extends Migration
      */
     public function down()
     {
-        Schema::table('disciplines', function (Blueprint $table) {
-            $table->dropColumn('emphasis');
-        });
+        Schema::dropIfExists('emphasis');
     }
 }

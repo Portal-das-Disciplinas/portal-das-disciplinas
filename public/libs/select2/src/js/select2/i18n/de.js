@@ -2,40 +2,40 @@ define(function () {
   // German
   return {
     errorLoading: function () {
-      return 'Die Ergebnisse konnten nicht geladen werden.';
+      return "Die Ergebnisse konnten nicht geladen werden.";
     },
     inputTooLong: function (args) {
       var overChars = args.input.length - args.maximum;
 
-      return 'Bitte ' + overChars + ' Zeichen weniger eingeben';
+      return "Bitte " + overChars + " Zeichen weniger eingeben";
     },
     inputTooShort: function (args) {
       var remainingChars = args.minimum - args.input.length;
 
-      return 'Bitte ' + remainingChars + ' Zeichen mehr eingeben';
+      return "Bitte " + remainingChars + " Zeichen mehr eingeben";
     },
     loadingMore: function () {
-      return 'Lade mehr Ergebnisse…';
+      return "Lade mehr Ergebnisse…";
     },
     maximumSelected: function (args) {
-      var message = 'Sie können nur ' + args.maximum + ' Element';
+      var message = "Sie können nur " + args.maximum + " Element";
 
       if (args.maximum != 1) {
-        message += 'e';
+        message += "e";
       }
 
-      message += ' auswählen';
+      message += " auswählen";
 
       return message;
     },
     noResults: function () {
-      return 'Keine Übereinstimmungen gefunden';
+      return "Keine Übereinstimmungen gefunden";
     },
     searching: function () {
-      return 'Suche…';
+      return "Suche…";
     },
     removeAllItems: function () {
-      return 'Entferne alle Elemente';
-    }
+      return "Entferne alle Elemente";
+    },
   };
 });

@@ -42,7 +42,7 @@ form:
       type: text
       label: Selectors
       size: large
-      default: 'h1,h2,h3,h4'
+      default: "h1,h2,h3,h4"
       placeholder: "Anchor Selectors"
       help: Comma separated list of header selectors to activate on
 
@@ -51,33 +51,33 @@ form:
       label: Placement
       classes: fancy
       help: "Either `left` or `right`"
-      default: 'right'
+      default: "right"
       options:
-        'left': 'left'
-        'right': 'right'
+        "left": "left"
+        "right": "right"
 
     visible:
       type: select
       label: Visible
       classes: fancy
       help: "Hover activates on `hover` else will always display"
-      default: 'hover'
+      default: "hover"
       options:
-        'hover': 'hover'
-        'always': 'always'
+        "hover": "hover"
+        "always": "always"
 
     icon:
       type: text
       label: Icon
       size: medium
-      default: ''
+      default: ""
       help: "Replace the default link icon with the character(s) provided, e.g. #, ¶, ❡ or §"
 
     class:
       type: text
       label: Class
       size: medium
-      default: ''
+      default: ""
       help: "Adds the provided class to the anchor html"
 
     truncate:

@@ -1,9 +1,5 @@
-define([
-  'jquery',
-  '../utils',
-  '../keys'
-], function ($, Utils, KEYS) {
-  function Search (decorated, $element, options) {
+define(["jquery", "../utils", "../keys"], function ($, Utils, KEYS) {
+  function Search(decorated, $element, options) {
     decorated.call(this, $element, options);
   }
 
@@ -13,11 +9,11 @@ define([
         '<input class="select2-search__field" type="search" tabindex="-1"' +
         ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
-      '</li>'
+        "</li>"
     );
 
     this.$searchContainer = $search;
-    this.$search = $search.find('input');
+    this.$search = $search.find("input");
 
     var $rendered = decorated.call(this);
 
@@ -29,67 +25,68 @@ define([
   Search.prototype.bind = function (decorated, container, $container) {
     var self = this;
 
-    var resultsId = container.id + '-results';
+    var resultsId = container.id + "-results";
 
     decorated.call(this, container, $container);
 
-    container.on('open', function () {
-      self.$search.attr('aria-controls', resultsId);
-      self.$search.trigger('focus');
+    container.on("open", function () {
+      self.$search.attr("aria-controls", resultsId);
+      self.$search.trigger("focus");
     });
 
-    container.on('close', function () {
-      self.$search.val('');
-      self.$search.removeAttr('aria-controls');
-      self.$search.removeAttr('aria-activedescendant');
-      self.$search.trigger('focus');
+    container.on("close", function () {
+      self.$search.val("");
+      self.$search.removeAttr("aria-controls");
+      self.$search.removeAttr("aria-activedescendant");
+      self.$search.trigger("focus");
     });
 
-    container.on('enable', function () {
-      self.$search.prop('disabled', false);
+    container.on("enable", function () {
+      self.$search.prop("disabled", false);
 
       self._transferTabIndex();
     });
 
-    container.on('disable', function () {
-      self.$search.prop('disabled', true);
+    container.on("disable", function () {
+      self.$search.prop("disabled", true);
     });
 
-    container.on('focus', function (evt) {
-      self.$search.trigger('focus');
+    container.on("focus", function (evt) {
+      self.$search.trigger("focus");
     });
 
-    container.on('results:focus', function (params) {
+    container.on("results:focus", function (params) {
       if (params.data._resultId) {
-        self.$search.attr('aria-activedescendant', params.data._resultId);
+        self.$search.attr("aria-activedescendant", params.data._resultId);
       } else {
-        self.$search.removeAttr('aria-activedescendant');
+        self.$search.removeAttr("aria-activedescendant");
       }
     });
 
-    this.$selection.on('focusin', '.select2-search--inline', function (evt) {
-      self.trigger('focus', evt);
+    this.$selection.on("focusin", ".select2-search--inline", function (evt) {
+      self.trigger("focus", evt);
     });
 
-    this.$selection.on('focusout', '.select2-search--inline', function (evt) {
+    this.$selection.on("focusout", ".select2-search--inline", function (evt) {
       self._handleBlur(evt);
     });
 
-    this.$selection.on('keydown', '.select2-search--inline', function (evt) {
+    this.$selection.on("keydown", ".select2-search--inline", function (evt) {
       evt.stopPropagation();
 
-      self.trigger('keypress', evt);
+      self.trigger("keypress", evt);
 
       self._keyUpPrevented = evt.isDefaultPrevented();
 
       var key = evt.which;
 
-      if (key === KEYS.BACKSPACE && self.$search.val() === '') {
-        var $previousChoice = self.$searchContainer
-          .prev('.select2-selection__choice');
+      if (key === KEYS.BACKSPACE && self.$search.val() === "") {
+        var $previousChoice = self.$searchContainer.prev(
+          ".select2-selection__choice"
+        );
 
         if ($previousChoice.length > 0) {
-          var item = Utils.GetData($previousChoice[0], 'data');
+          var item = Utils.GetData($previousChoice[0], "data");
 
           self.searchRemoveChoice(item);
 
@@ -98,7 +95,7 @@ define([
       }
     });
 
-    this.$selection.on('click', '.select2-search--inline', function (evt) {
+    this.$selection.on("click", ".select2-search--inline", function (evt) {
       if (self.$search.val()) {
         evt.stopPropagation();
       }
@@ -116,31 +113,31 @@ define([
     // This will prevent double-triggering of events for browsers which support
     // both the `keyup` and `input` events.
     this.$selection.on(
-      'input.searchcheck',
-      '.select2-search--inline',
+      "input.searchcheck",
+      ".select2-search--inline",
       function (evt) {
         // IE will trigger the `input` event when a placeholder is used on a
         // search box. To get around this issue, we are forced to ignore all
         // `input` events in IE and keep using `keyup`.
         if (disableInputEvents) {
-          self.$selection.off('input.search input.searchcheck');
+          self.$selection.off("input.search input.searchcheck");
           return;
         }
 
         // Unbind the duplicated `keyup` event
-        self.$selection.off('keyup.search');
+        self.$selection.off("keyup.search");
       }
     );
 
     this.$selection.on(
-      'keyup.search input.search',
-      '.select2-search--inline',
+      "keyup.search input.search",
+      ".select2-search--inline",
       function (evt) {
         // IE will trigger the `input` event when a placeholder is used on a
         // search box. To get around this issue, we are forced to ignore all
         // `input` events in IE and keep using `keyup`.
-        if (disableInputEvents && evt.type === 'input') {
-          self.$selection.off('input.search input.searchcheck');
+        if (disableInputEvents && evt.type === "input") {
+          self.$selection.off("input.search input.searchcheck");
           return;
         }
 
@@ -169,27 +166,28 @@ define([
    * @private
    */
   Search.prototype._transferTabIndex = function (decorated) {
-    this.$search.attr('tabindex', this.$selection.attr('tabindex'));
-    this.$selection.attr('tabindex', '-1');
+    this.$search.attr("tabindex", this.$selection.attr("tabindex"));
+    this.$selection.attr("tabindex", "-1");
   };
 
   Search.prototype.createPlaceholder = function (decorated, placeholder) {
-    this.$search.attr('placeholder', placeholder.text);
+    this.$search.attr("placeholder", placeholder.text);
   };
 
   Search.prototype.update = function (decorated, data) {
     var searchHadFocus = this.$search[0] == document.activeElement;
 
-    this.$search.attr('placeholder', '');
+    this.$search.attr("placeholder", "");
 
     decorated.call(this, data);
 
-    this.$selection.find('.select2-selection__rendered')
-                   .append(this.$searchContainer);
+    this.$selection
+      .find(".select2-selection__rendered")
+      .append(this.$searchContainer);
 
     this.resizeSearch();
     if (searchHadFocus) {
-      this.$search.trigger('focus');
+      this.$search.trigger("focus");
     }
   };
 
@@ -199,8 +197,8 @@ define([
     if (!this._keyUpPrevented) {
       var input = this.$search.val();
 
-      this.trigger('query', {
-        term: input
+      this.trigger("query", {
+        term: input,
       });
     }
 
@@ -208,8 +206,8 @@ define([
   };
 
   Search.prototype.searchRemoveChoice = function (decorated, item) {
-    this.trigger('unselect', {
-      data: item
+    this.trigger("unselect", {
+      data: item,
     });
 
     this.$search.val(item.text);
@@ -217,19 +215,19 @@ define([
   };
 
   Search.prototype.resizeSearch = function () {
-    this.$search.css('width', '25px');
+    this.$search.css("width", "25px");
 
-    var width = '';
+    var width = "";
 
-    if (this.$search.attr('placeholder') !== '') {
-      width = this.$selection.find('.select2-selection__rendered').width();
+    if (this.$search.attr("placeholder") !== "") {
+      width = this.$selection.find(".select2-selection__rendered").width();
     } else {
       var minimumWidth = this.$search.val().length + 1;
 
-      width = (minimumWidth * 0.75) + 'em';
+      width = minimumWidth * 0.75 + "em";
     }
 
-    this.$search.css('width', width);
+    this.$search.css("width", width);
   };
 
   return Search;

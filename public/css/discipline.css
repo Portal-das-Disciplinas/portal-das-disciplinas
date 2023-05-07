@@ -1,39 +1,33 @@
-
 .materiais-on {
-    color:#B0C4DE;
+    color: #b0c4de;
 }
 
 .materiais-on:hover {
-    color:#E6E6FA;
+    color: #e6e6fa;
 }
 
 .materiais-off {
-    color:#C0C0C0;
+    color: #c0c0c0;
 }
 .section {
-    margin-bottom:2.4rem;
+    margin-bottom: 2.4rem;
 }
 
 .section h3 {
-    margin-bottom:0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-.classification-color-left{
+.classification-color-left {
     background-color: var(--primary-color);
-   
 }
-.classification-text-left{
+.classification-text-left {
     color: var(--primary-color);
 }
 
-
-.classification-color-right{
+.classification-color-right {
     background-color: var(--secondary-color);
-    
 }
 
-.classification-text-right{ color:var(--secondary-color-darker)}
-
-
-
-
+.classification-text-right {
+    color: var(--secondary-color-darker);
+}
