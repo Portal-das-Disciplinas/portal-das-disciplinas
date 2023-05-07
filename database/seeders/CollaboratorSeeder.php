@@ -63,7 +63,6 @@ class CollaboratorSeeder extends Seeder
             'role' => 'Desenvolvedor',
             'email' => 'pedrogab96@gmail.com',
             'lattes' =>'http://lattes.cnpq.br/8217345027440939',
-            'github' => 'https://github.com/pedrogab96',
             'urlPhoto' =>'img/profile/pedro.jpeg',
             'isManager' => false,
             'active' => true

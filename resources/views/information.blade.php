@@ -76,6 +76,7 @@ Sobre nós - Portal das Disciplinas IMD
             @endforeach
 
             </div>
+            
             @if(sizeof($formerCollaborators)>0)
             <h1 class="info-collaborators">Antigos colaboradores </h1>  
             <div class="d-flex flex-wrap justify-content-around mt-4">
