@@ -48,7 +48,7 @@ class DisciplineController extends Controller
         //         $query->where("name", "like", $emphasis."%");
         //     })
         //     ->get();
-
+        $emphasis = Emphasis::all();
         $disciplines = Discipline::all();
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
@@ -83,7 +83,12 @@ class DisciplineController extends Controller
             $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
 
             return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
-        } else {
+        }  else if($emphasis_id == null) {
+            $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
+            
+            return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
+        }
+        else {
             return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all); 
         }
     }
@@ -252,6 +257,7 @@ class DisciplineController extends Controller
      */
     public function edit($id)
     {
+        $emphasis = Emphasis::all();
         $professors = new Professor();
         if (Auth::user()->isAdmin) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
@@ -266,7 +272,8 @@ class DisciplineController extends Controller
         $classifications = Classification::all();
 
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
-            ->with('classifications', $classifications);
+            ->with('classifications', $classifications)
+            ->with('emphasis', $emphasis); 
     }
 
     /**
@@ -292,7 +299,7 @@ class DisciplineController extends Controller
                 'name' => $request->input('name'),
                 'code' => $request->input('code'),
                 'description' => $request->input('description'),
-                'emphasis' => $request->input('emphasis'),
+                'emphasis_id' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id

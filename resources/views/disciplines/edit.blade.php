@@ -55,23 +55,18 @@
             </div>
             <div class="col-md-12 px-0">
                 
-                <label class="" for="emphasis">
-                    Ênfase da disciplina
-                </label>
-                <select name="emphasis" id="emphasis" class='form-control' value="{{$discipline->emphasis}}">
-                    <option> Selecione uma ênfase</option>
-                    <option value="Núcleo Comum">Núcleo Comum</option>
-                    <option value="Computação">Computação</option>
-                    <option value="Desenvolvimento de Software">Desenvolvimento de Software</option>
-                    <option value="Informática Educacional">Informática Educacional</option>
-                    <option value="Sistemas de Informação de Gestão">Sistemas de Informação de Gestão</option>
-                    <option value="Bioinformática">Bioinformática</option>
-                    <option value="Internet das Coisas">Internet das Coisas</option>
-                    <option value="Jogos Digitais">Jogos Digitais</option>
-                </select>
-                
-           
-        </div>
+                    <label class="" for="emphasis">
+                        Ênfase da disciplina
+                    </label>
+                    <select name="emphasis" id="emphasis" class='form-control' >
+                        <option selected disabled > Selecione uma ênfase</option>
+                        @foreach($emphasis as $emphase)
+                            <option value="{{ $emphase->id }}" >{{ $emphase->name }}</option>
+                        @endforeach
+                    </select>
+                    
+               
+            </div>
             <div class="col-md-12 px-0 pr-0">
                 <label for="professor">Professor</label>
                 @if (Auth::user()->is_admin)
