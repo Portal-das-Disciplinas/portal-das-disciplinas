@@ -47,96 +47,56 @@ Sobre nós - Portal das Disciplinas IMD
                 </div>
         </div>
 
-
-
-
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
+        <h1 class="info-collaborators">Colaboradores atuais</h1>
             <div class="row">
                 @component('components.info_contributors')
-                    @slot('name', 'Eugênio Paccelli')
-                    @slot('profession', 'Docente')
-                    @slot('occupation', 'Coordenador')
-                    @slot('email', 'eugenio@imd.ufrn.br')
-                    @slot('lattes', 'http://lattes.cnpq.br/6494297323272628')
-                    @slot('image', 'img/eugenioq.jpeg')
+                    @slot('name') {{$manager->name}} @endslot
+                    @slot('profession') {{$manager->bond}} @endslot
+                    @slot('occupation') {{$manager->role}} @endslot
+                    @slot('email') {{$manager->email}} @endslot
+                    @slot('lattes') {{$manager->lattes}} @endslot
+                    @slot('image') {{$manager->urlPhoto}} @endslot
+                    @slot('github') {{$manager->github}} @endslot
                 @endcomponent
             </div>
-
+                        
             <div class="d-flex flex-wrap justify-content-around mt-4">
+            @foreach($collaborators as $collaborator)
                 @component('components.info_contributors')
-                    @slot('name', 'Henry Medeiros')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('image', 'img/henryq.jpg')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'front-end')
-                    @slot('email', 'henrymedeiros77@gmail.com')
-                    @slot('lattes', 'http://lattes.cnpq.br/9829493020424534')
+                    @slot('name') {{$collaborator->name}} @endslot
+                    @slot('profession') {{$collaborator->role}} @endslot
+                    @slot('occupation') {{$collaborator->bond}} @endslot
+                    @slot('image') {{$collaborator->urlPhoto}} @endslot
+                    @slot('alt_image') $collaborator->name  @endslot
+                    @slot('email'){{$collaborator->email}} @endslot
+                    @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('github') {{$collaborator->github}} @endslot
                 @endcomponent
+            @endforeach
 
+            </div>
+            <h1 class="info-collaborators">Antigos colaboradores </h1>
+            <div class="d-flex flex-wrap justify-content-around mt-4">
+            @foreach($formerCollaborators as $collaborator)
                 @component('components.info_contributors')
-                    @slot('name', 'Jefferson Felipe')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('image', 'https://avatars.githubusercontent.com/u/57409786?s=400&u=e9077490f96f76794bd1bf16a65c0e66858a4344&v=4')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
-                    @slot('email', 'jeff.felip@outlook.com')
-                    @slot('lattes', 'http://lattes.cnpq.br/????')
+                    @slot('name') {{$collaborator->name}} @endslot
+                    @slot('profession') {{$collaborator->role}} @endslot
+                    @slot('occupation') {{$collaborator->bond}} @endslot
+                    @slot('image') {{$collaborator->urlPhoto}} @endslot
+                    @slot('alt_image') $collaborator->name  @endslot
+                    @slot('email'){{$collaborator->email}} @endslot
+                    @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('github') {{$collaborator->github}} @endslot
                 @endcomponent
-
-                @component('components.info_contributors')
-                    @slot('name', 'Pedro Gabriel')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('image', 'img/pedro.jpeg')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
-                    @slot('email', 'pedrogab96@gmail.com')
-                    @slot('lattes', 'http://lattes.cnpq.br/8217345027440939')
-                @endcomponent
-
-                @component('components.info_contributors')
-                    @slot('name', 'Cristian Soares')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('image', 'img/cristianq.jpg')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'front-end')
-                    @slot('email', 'criricyt@gmail.com')
-                    @slot('lattes', 'http://lattes.cnpq.br/1636913073567133')
-                @endcomponent
-
-                @component('components.info_contributors')
-                    @slot('name', 'Álvaro Ferreira')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('image', 'img/alvaro.jpeg')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
-                    @slot('email', 'alvarofepipa@gmail.com')
-                    @slot('lattes', 'http://lattes.cnpq.br/2537818674954146')
-                @endcomponent
-
-                @component('components.info_contributors')
-                    @slot('name', 'Victor Brandão')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('image', 'img/victor.jpeg')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
-                    @slot('email', 'victor_brandao@outlook.com')
-                    @slot('lattes', 'http://lattes.cnpq.br/5872826755197239')
-                @endcomponent
-
-                @component('components.info_contributors')
-                    @slot('name', 'Arthur Sérvulo')
-                    @slot('profession', 'Desenvolvedor')
-                    @slot('image', 'img/arthur.jpeg')
-                    @slot('alt_image', 'foto-dev')
-                    @slot('occupation', 'back-end')
-                    @slot('email', 'arthurservulo7@gmail.com')
-                    @slot('lattes', 'http://lattes.cnpq.br/8112883352153781')
-                @endcomponent
-
-
-
+            @endforeach
             </div>
         </div>
+        <!--<div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
+
+
+
+        </div> -->
     </div>
 
     <!--
