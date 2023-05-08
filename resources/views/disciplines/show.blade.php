@@ -19,7 +19,7 @@ mais.
     <h3>{{ $discipline->emphasis}}</h3>
 </div>
 
-<div class="container">
+<div class="container mt-4">
     <!-- Botão de cadastro FAQ -->
 
     @auth
