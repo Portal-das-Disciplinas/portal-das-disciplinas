@@ -12,9 +12,15 @@ class CollaboratorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
+    }
+
+
+    public function __construct(){
         
+        $this->middleware('auth')->only('store');
     }
 
     /**
@@ -35,7 +41,26 @@ class CollaboratorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+
+
+            $nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
+            $request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
+        }
+
+        $col = new Collaborator();
+        $col->name = $request->nome;
+        $col->email = $request->email;
+        $col->bond = $request->vinculo;
+        $col->role = $request->funcao;
+        $col->lattes = $request->lattes;
+        $col->github = $request->github;
+        if(isset($nomeArquivo)){
+            $col->urlPhoto = "img/profiles_img/" . $nomeArquivo;
+        }
+        $col->save();
+        return redirect()->route('information');
     }
 
     /**

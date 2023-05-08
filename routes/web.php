@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
         ->except(['show']);
 });
 
-Route::post('/collaborators/store',[CollaboratorController::class]);
+Route::resource('collaborators',CollaboratorController::class);
 
 Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
     ->name('disciplinas.show');
