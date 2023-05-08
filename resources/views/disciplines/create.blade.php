@@ -11,7 +11,7 @@
 @section('content')
     <div class="container">
         <div class='page-title'>
-            <h1>Cadastro de disciplinas</h1>
+            <h1>Cadastro de disciplina</h1>
         </div>
 
         <form action="{{ route('disciplinas.store') }}" method="post">
@@ -314,6 +314,12 @@
                     </div> 
                 </div>
             </div>
+            <div class='page-title'>
+                <h3>Cadastro de FAQ</h3>
+            </div>
+            <div id="faqs">
+  
+            </div>
 
             {{-- <div class="form-row mt-3">
                 <div class="col-md-12">
@@ -340,6 +346,9 @@
             </div> --}}
 
             <div class="row d-flex p-2 mt-3 justify-content-center">
+                <a id="add-faq" class="btn btn-success btn-sm mr-5">
+                    Adicionar FAQ
+                </a>
                 <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
                     Cancelar
                 </a>
@@ -358,8 +367,6 @@
 <script>
 
     let classifications = JSON.parse('{!! $classificationsJson !!}');
-
-    console.log(classifications);
 
 
     function handleInput(value, element) {
@@ -388,6 +395,35 @@
         $('[data-toggle="tooltip"]').tooltip()
     })
 
+    var addButton = document.getElementById('add-faq');
+    let counter = 0;
+
+    addButton.addEventListener('click', function(event) {
+        event.preventDefault();
+        counter++;
+        faqs.innerHTML += `
+        <div class="modal-body">
+            @csrf
+            <div class="form-group">
+            <label for="title${counter}" class="col-form-label">
+                Pergunta</span>
+            </label>
+            <input type="text" class="form-control" id="title${counter}" name="title[${counter}]" value="{{old('title')}}">
+            @error('title')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            </div>
+            <div class="form-group">
+            <label for="content${counter}" class="col-form-label">
+                Resposta</span>
+            </label>
+            <textarea class="form-control" id="content${counter}" name="content[${counter}]">{{old('content')}}</textarea>
+            @error('content')
+            <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            </div>
+        </div>`;
+        });
 </script>
 
 <style scoped>

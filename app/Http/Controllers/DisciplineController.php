@@ -16,6 +16,7 @@ use \App\Models\Discipline;
 use \App\Models\Media;
 use \App\Models\Emphasis;
 use App\Models\Professor;
+use App\Models\Faq;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -111,7 +112,7 @@ class DisciplineController extends Controller
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis);
-    }
+            }
 
     /**
      * Store a newly created resource in storage.
@@ -138,7 +139,7 @@ class DisciplineController extends Controller
                 'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
-            echo 'foi';
+
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
 
                 $url = $request->input('media-trailer');
@@ -207,6 +208,17 @@ class DisciplineController extends Controller
                     'classification_id' => $classificationId,
                     'discipline_id' => $discipline->id,
                     'value' => $request->input('classification-' . $classificationId) == null ? 0 : $request->input('classification-' . $classificationId)
+                ]);
+            }
+
+            $titles = $request->input('title');
+            $contents = $request->input('content');
+
+            foreach($titles as $key => $title) {
+                Faq::create([
+                    'discipline_id' => $discipline->id,
+                    'title' => $title,
+                    'content' => $contents[$key],
                 ]);
             }
 
