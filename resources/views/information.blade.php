@@ -103,7 +103,7 @@ Sobre nós - Portal das Disciplinas IMD
         </div>
 
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
-            <h1 class="info-collaborators">Colaboradores atuais</h1>
+            <h1 class="info-collaborators">{{$sectionNameCurrentCollaborators ?? "Colaboradores Atuais"}}</h1>
             <div class="row">
                 @component('components.info_contributors')
                 @slot('name') {{$manager->name}} @endslot
@@ -137,7 +137,7 @@ Sobre nós - Portal das Disciplinas IMD
             </div>
 
             @if(sizeof($formerCollaborators)>0)
-            <h1 class="info-collaborators">Antigos colaboradores </h1>
+            <h1 class="info-collaborators">{{$sectionNameFormerCollaborators ?? "Antigos Colaboradores"}} </h1>
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($formerCollaborators as $collaborator)
                 @component('components.info_contributors')
