@@ -16,22 +16,22 @@ Sobre nós - Portal das Disciplinas IMD
 <div id="modal-information" class="modal-information modal-information-invisible">
     <div class="content">
         <h3>Cadastro de Colaborador</h3>
-        <form action="{{route('collaborators.store')}}" enctype="multipart/form-data" method='post'>
+        <form id="collaborators-form" action="{{route('collaborators.store')}}" enctype="multipart/form-data" method='post'>
             @csrf
             <label for="fotoColaborador" name="foto">Foto</label>
             <input id="fotoColaborador" name="foto" type='file'>
             <label for="nomeColaborador">Nome</label>
-            <input id="nomeColaborador" name="nome" type=text placeholder="Nome e Sobrenome">
+            <input id="nomeColaborador" name="nome" type=text class="form-control" placeholder="Nome e Sobrenome" required>
             <label for="emailColaborador">e-mail</label>
-            <input id="emailColaborador" name="email" type="email" placeholder="E-mail">
+            <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail" required>
             <label for="vinculoColaborador">Vínculo</label>
-            <input id="vinculoColaborador" name="vinculo" type="text" placeholder="bolsista, voluntário...">
+            <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" placeholder="bolsista, voluntário..." required>
             <label for="funcaoColaborador">Função</label>
-            <input id="funcaoColaborador" name="funcao" type=text placeholder="Desenvolvedor, Designer, ...">
+            <input id="funcaoColaborador" name="funcao" type=text class="form-control" placeholder="Desenvolvedor, Designer, ...">
             <label for="lattesColaborador">Lattes</label>
-            <input id="lattesColaborador" name="lattes" type="text" placeholder="Endereço do currículo latttes">
+            <input id="lattesColaborador" name="lattes" type="text" class="form-control" placeholder="Endereço do currículo latttes">
             <label for="githubColaborador">Github</label>
-            <input id="githubColaborador" name="github" type="text" placeholder="Github">
+            <input id="githubColaborador" name="github" type="text" class="form-control" placeholder="Github">
             <div>
                 <label for="colaboradorAtivo">Ativo</label>
                 <input id="colaboradorAtivo" name="ativo" type="checkbox" checked>
@@ -42,7 +42,7 @@ Sobre nós - Portal das Disciplinas IMD
             </div>
             <div class="buttons">
                 <button id="btn-fechar" onclick="closeModal(event,'modal-information')" class="btn btn-info">Fechar</button>
-                <button id="btn-cadastrar" onclick="submitEvent('modal-information')" class="btn btn-success" type="submit">Cadastrar</button>
+                <button id="btn-cadastrar" onclick="submitEvent(event, 'modal-information','collaborators-form')" class="btn btn-success" type="submit">Cadastrar</button>
             </div>
         </form>
     </div>
@@ -51,17 +51,17 @@ Sobre nós - Portal das Disciplinas IMD
 
 <div id="modal-texto-colaboradores" class="modal-information modal-information-invisible">
     <div class="content">
-        <h3>Texto para colaboradores atuais</h3>
-        <form action="{{route('information.update')}}" method="post">
+        <h3>Texto para colaboradores</h3>
+        <form id="form-texto-colaboradores"action="{{route('information.update')}}" method="post">
             @method('PUT')
             @csrf
-            <input name="text-current" type="text" class="form-control" value="{{$sectionNameCurrentCollaborators}}">
-            <input name="text-former" type="text" class="form-control" value="{{$sectionNameFormerCollaborators}}">
+            <input name="text-current" type="text" class="form-control" value="{{$sectionNameCurrentCollaborators}}" required>
+            <input name="text-former" type="text" class="form-control" value="{{$sectionNameFormerCollaborators}}" required>
             <input type="hidden" name="id-current" value="{{$idcurrent}}">
             <input type="hidden" name="id-former" value="{{$idformer}}">
             <div class="buttons">
                 <button onclick="closeModal(event,'modal-texto-colaboradores')" class=" btn btn-info">Fechar</button>
-                <button onclick="submitEvent(event,'modal-texto-colaboradores')" class="btn btn-success" type="submit">Cadastrar</button>
+                <button onclick="submitEvent(event,'modal-texto-colaboradores','form-texto-colaboradores')" class="btn btn-success" type="submit">Cadastrar</button>
             </div>
         </form>
 
@@ -77,14 +77,21 @@ Sobre nós - Portal das Disciplinas IMD
     }
 
     function closeModal(event, idModal) {
+
         var modal = document.getElementById(idModal);
         event.preventDefault();
         modal.classList.add("modal-information-invisible");
     }
 
-    function submitEvent(idModal) {
-        var modal = document.getElementById(idModal);
-        modal.classList.add("modal-information-invisible");
+    function submitEvent(event, idModal,idForm) {
+        //event.preventDefault();
+        if (document.getElementById('idForm').checkValidity()) {
+            var modal = document.getElementById(idModal);
+            modal.classList.add("modal-information-invisible");
+        }
+       
+        
+
     }
 
     /*document.getElementById("btn-fechar").addEventListener('click', function(event) {
@@ -161,22 +168,33 @@ Sobre nós - Portal das Disciplinas IMD
                 @endcomponent
             </div>
             @if(Auth::user() && Auth::user()->isAdmin)
-            <button id="showb" class="btn btn-success" onclick="showModal('modal-information')">Adicionar Colaborador</button>
+            <button id="showb" class="btn btn-outline-success btn-sm" onclick="showModal('modal-information')">Adicionar Colaborador</button>
             @endif
 
 
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($collaborators as $collaborator)
-                @component('components.info_contributors')
-                @slot('name') {{$collaborator->name}} @endslot
-                @slot('profession') {{$collaborator->role}} @endslot
-                @slot('occupation') {{$collaborator->bond}} @endslot
-                @slot('image') {{$collaborator->urlPhoto}} @endslot
-                @slot('alt_image') $collaborator->name @endslot
-                @slot('email'){{$collaborator->email}} @endslot
-                @slot('lattes') {{$collaborator->lattes}} @endslot
-                @slot('github') {{$collaborator->github}} @endslot
-                @endcomponent
+                <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
+                    @component('components.info_contributors')
+                    @slot('name') {{$collaborator->name}} @endslot
+                    @slot('profession') {{$collaborator->role}} @endslot
+                    @slot('occupation') {{$collaborator->bond}} @endslot
+                    @slot('image') {{$collaborator->urlPhoto}} @endslot
+                    @slot('alt_image') $collaborator->name @endslot
+                    @slot('email'){{$collaborator->email}} @endslot
+                    @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('github') {{$collaborator->github}} @endslot
+                    @slot('idCollaborator') {{$collaborator->id}} @endslot
+                    @endcomponent
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                    <form action="collaborators/{{$collaborator->id}}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" class="btn btn-outline-danger btn-sm align-text-bottom" value="remover">
+                    </form>
+                    @endif
+                </div>
+
                 @endforeach
 
             </div>
@@ -190,16 +208,25 @@ Sobre nós - Portal das Disciplinas IMD
             </div>
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($formerCollaborators as $collaborator)
-                @component('components.info_contributors')
-                @slot('name') {{$collaborator->name}} @endslot
-                @slot('profession') {{$collaborator->role}} @endslot
-                @slot('occupation') {{$collaborator->bond}} @endslot
-                @slot('image') {{$collaborator->urlPhoto}} @endslot
-                @slot('alt_image') $collaborator->name @endslot
-                @slot('email'){{$collaborator->email}} @endslot
-                @slot('lattes') {{$collaborator->lattes}} @endslot
-                @slot('github') {{$collaborator->github}} @endslot
-                @endcomponent
+                <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
+                    @component('components.info_contributors')
+                    @slot('name') {{$collaborator->name}} @endslot
+                    @slot('profession') {{$collaborator->role}} @endslot
+                    @slot('occupation') {{$collaborator->bond}} @endslot
+                    @slot('image') {{$collaborator->urlPhoto}} @endslot
+                    @slot('alt_image') $collaborator->name @endslot
+                    @slot('email'){{$collaborator->email}} @endslot
+                    @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('github') {{$collaborator->github}} @endslot
+                    @endcomponent
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                    <form action="collaborators/{{$collaborator->id}}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <input type="submit" class="btn btn-outline-danger btn-sm align-text-bottom" value="remover">
+                    </form>
+                    @endif
+                </div>
                 @endforeach
             </div>
             @endif

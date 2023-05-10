@@ -1,5 +1,5 @@
 <div class='d-flex flex-column  align-items-center mx-4 mb-3'>
-    <img class="clip-path regular-image" src="{{$image=='' ? 'img/profiles_img/user2.png' : $image}}" alt="{{ $alt_image ?? 'foto-dev' }}">
+    <img class="clip-path regular-image" src="{{($image=='' || null) ? 'img/profiles_img/user2.png' : $image}}" alt="{{ $alt_image ?? 'foto-dev' }}">
     <div class="text-center">
         <h3>{{$name ?? ''}}</h3>
         <p class='p-text'>{{$profession ?? ''}} <code> {{$occupation ?? ''}}</code></p>   
