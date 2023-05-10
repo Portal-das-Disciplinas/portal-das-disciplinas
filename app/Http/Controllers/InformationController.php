@@ -12,22 +12,36 @@ class InformationController extends Controller
         $manager = Collaborator::query()->where('isManager',true)->first();
         $actualCollabs = Collaborator::query()->where('isManager',false)->where('active',true)->get();
         $formerCollabs = Collaborator::query()->where('active',false)->get();
-        $currentCollaboratorSection = null;
-        $formerCollaboratorSection = null;
-        $query = Information::query()->where('name',"sectionNameCurrentCollaborator");
+        $currentCollaboratorsSection = null;
+        $formerCollaboratorsSection = null;
+        $query = Information::query()->where('name',"sectionNameCurrentCollaborators");
         if($query->exists()){
-            $currentCollaboratorSection = $query->first()->value;
+            $currentCollaboratorsSection = $query->first();
         }
-        $query = Information::query()->where('name',"sectionNameFormerCollaborator");
+        $query = Information::query()->where('name',"sectionNameFormerCollaborators");
         if($query->exists()){
-            $formerCollaboratorSection = $query->first()->value;
+            $formerCollaboratorsSection = $query->first();
         }
         return view('information', ['manager' => $manager,
                                     'formerCollaborators' => $formerCollabs,
                                     'collaborators' => $actualCollabs,
-                                    'sectionNameCurrentCollaborators' => $currentCollaboratorSection,
-                                    'sectionNameFormerCollaborators' =>  $formerCollaboratorSection]);
+                                    'sectionNameCurrentCollaborators' => $currentCollaboratorsSection->value,
+                                    'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection->value,
+                                    'idcurrent' => $currentCollaboratorsSection->id,
+                                    'idformer' => $formerCollaboratorsSection->id
+                                ]);
 
+    }
+
+
+    public function update(Request $request){
+        
+        $idCurrentCollabsText = $request['id-current'];
+        $idFormerCollabsText = $request['id-former'];
+        Information::where('id',$idCurrentCollabsText)->update(['value'=>$request['text-current']]);
+        Information::where('id',$idFormerCollabsText)->update(['value'=>$request['text-former']]);
+        return redirect()->back();
+        
     }
 
     

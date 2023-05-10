@@ -15,13 +15,13 @@ class InformationSeeder extends Seeder
     public function run()
     {
         Information::create([
-            'name' => 'sectionNameCurrentCollaborator',
-            'value' => 'Colaboradores AtuaisX'
+            'name' => 'sectionNameCurrentCollaborators',
+            'value' => 'Colaboradores Atuais'
         ]);
 
         Information::create([
-            'name' => 'sectionNameFormerCollaborator',
-            'value' => 'Antigos ColaboradoresX'
+            'name' => 'sectionNameFormerCollaborators',
+            'value' => 'Antigos Colaboradores'
         ]);
     }
 }

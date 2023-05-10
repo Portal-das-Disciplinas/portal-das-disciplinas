@@ -2,10 +2,23 @@
     margin-bottom: 10%;
 }
 
+.info-collaborators-container{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
 .info-collaborators{
     margin-top:50px;
     margin-bottom:50px;
+    display: inline;
 
+}
+
+.info-collaborators-container span{
+    color: rgb(113, 210, 255);
+    margin-left:10px;
+    cursor: pointer;
 }
 
 .regular-image {
