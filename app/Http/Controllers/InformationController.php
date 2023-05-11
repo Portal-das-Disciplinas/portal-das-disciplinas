@@ -22,15 +22,30 @@ class InformationController extends Controller
         if($query->exists()){
             $formerCollaboratorsSection = $query->first();
         }
-        return view('information', ['manager' => $manager,
+
+        return view('information', ['manager' => $manager ? $manager : null,
                                     'formerCollaborators' => $formerCollabs,
                                     'collaborators' => $actualCollabs,
-                                    'sectionNameCurrentCollaborators' => $currentCollaboratorsSection->value,
-                                    'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection->value,
-                                    'idcurrent' => $currentCollaboratorsSection->id,
-                                    'idformer' => $formerCollaboratorsSection->id
+                                    'sectionNameCurrentCollaborators' => $currentCollaboratorsSection ? $currentCollaboratorsSection->value : null,
+                                    'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection ? $formerCollaboratorsSection->value : null,
+                                    'idcurrent' =>  $currentCollaboratorsSection ? $currentCollaboratorsSection->id : null,
+                                    'idformer' =>   $formerCollaboratorsSection ? $formerCollaboratorsSection->id :null
                                 ]);
 
+    }
+
+    public function store(Request $request){
+        if($request['id-information']){
+            Information::where('id',$request['id-information'])->update(['value' => $request['information-value']]);
+            return redirect()->back();
+        }
+        else{
+            Information::create([
+                'name' => $request['information-name'],
+                'value' => $request['information-value']
+            ]);
+            return redirect()->back();
+        }
     }
 
 
@@ -39,10 +54,11 @@ class InformationController extends Controller
         $idCurrentCollabsText = $request['id-current'];
         $idFormerCollabsText = $request['id-former'];
         Information::where('id',$idCurrentCollabsText)->update(['value'=>$request['text-current']]);
-        Information::where('id',$idFormerCollabsText)->update(['value'=>$request['text-former']]);
         return redirect()->back();
         
     }
+
+  
 
     
 }

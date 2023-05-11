@@ -45,8 +45,8 @@ Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter
 
     return view('information'); 
 })->name('information'); */
-
 Route::get('sobre', [InformationController::class, 'index'])->name('information');
+Route::post('store', [InformationController::class, 'store'])->name('information.store');
 Route::put('update',[InformationController::class,'update'])->name('information.update');
 
 Route::get('colaborar', function () {
