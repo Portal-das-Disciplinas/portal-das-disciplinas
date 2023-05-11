@@ -2,6 +2,25 @@
     margin-bottom: 10%;
 }
 
+.info-collaborators-container{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.info-collaborators{
+    margin-top:50px;
+    margin-bottom:50px;
+    display: inline;
+
+}
+
+.info-collaborators-container span{
+    color: rgb(113, 210, 255);
+    margin-left:10px;
+    cursor: pointer;
+}
+
 .regular-image {
     width: 140px;
 }
@@ -24,4 +43,55 @@
     .smaller-image {
         width: 64px;
     }
+}
+
+.modal-information{
+    position:absolute;
+    background-color: rgba(0,0,0,0.8);
+    width: 100%;
+    height: 100%;
+    z-index: 9999999;
+}
+
+.modal-information-invisible{
+    display: none;
+}
+
+.modal-information .content{
+    margin: 0 auto;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    color:rgb(0, 0, 0);
+    background-color: white;
+    max-width: 500px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.modal-information h3{
+    color: blue;
+}
+
+.modal-information form{
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-information input{
+    margin-bottom:10px;
+}
+
+.modal-information .buttons{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.modal-information .checkboxes{
+    color: black;
+}
+
+.buttons button{
+    margin-left: 10px;
 }
