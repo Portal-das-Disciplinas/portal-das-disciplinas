@@ -51,12 +51,12 @@ Sobre nós - Portal das Disciplinas IMD
 
 <div id="modal-texto-colaboradores" class="modal-information modal-information-invisible">
     <div class="content">
-        <h3>Texto para colaboradores</h3>
+        <h3>Título para as seções colaboradores</h3>
         <form id="form-texto-colaboradores"action="{{route('information.update')}}" method="post">
             @method('PUT')
             @csrf
-            <input name="text-current" type="text" class="form-control" value="{{$sectionNameCurrentCollaborators}}" required>
-            <input name="text-former" type="text" class="form-control" value="{{$sectionNameFormerCollaborators}}" required>
+            <input name="text-current" type="text" class="form-control" placeholder="Seção colaboradores atuais (Título)" required>
+            <input name="text-former" type="text" class="form-control" placeholder="Seção colaboradores antigos (Título)" required>
             <input type="hidden" name="id-current" value="{{$idcurrent}}">
             <input type="hidden" name="id-former" value="{{$idformer}}">
             <div class="buttons">
@@ -77,10 +77,13 @@ Sobre nós - Portal das Disciplinas IMD
     }
 
     function closeModal(event, idModal) {
-
         var modal = document.getElementById(idModal);
         event.preventDefault();
         modal.classList.add("modal-information-invisible");
+        var elements = document.querySelector('#'+idModal).querySelector('form').querySelectorAll('input[type=text] ,input[type=email]');
+        elements.forEach((input)=>{
+            input.value = "";
+        });
     }
 
     function submitEvent(event, idModal,idForm) {
@@ -93,23 +96,6 @@ Sobre nós - Portal das Disciplinas IMD
         
 
     }
-
-    /*document.getElementById("btn-fechar").addEventListener('click', function(event) {
-        var modal = document.getElementById("modal-information");
-        event.preventDefault();
-        modal.classList.add("modal-information-invisible");
-    });
-    //Fecha o modal de edição do texto de colaborador
-    document.getElementById("btn-fechar2").addEventListener('click', function(event) {
-        var modal = document.getElementById("modal-texto-colaborador");
-        event.preventDefault();
-        modal.classList.add("modal-information-invisible");
-    }); 
-
-    document.getElementById("btn-cadastrar").addEventListener('click', function(event) {
-        var modal = document.getElementById("modal-information");
-        modal.classList.add("modal-information-invisible"); 
-    });*/
 </script>
 <!-- Styles -->
 <div class='banner text-center d-flex align-items-center justify-content-center '>
