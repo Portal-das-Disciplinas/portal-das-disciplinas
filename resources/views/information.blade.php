@@ -1,9 +1,4 @@
 @extends('layouts.app')
-
-
-
-
-
 @section('title')
 Sobre nós - Portal das Disciplinas IMD
 @endsection
@@ -49,19 +44,36 @@ Sobre nós - Portal das Disciplinas IMD
 
 </div>
 
-<div id="modal-texto-colaboradores" class="modal-information modal-information-invisible">
+<div id="modal-texto-colaboradores1" class="modal-information modal-information-invisible">
     <div class="content">
-        <h3>Título para as seções colaboradores</h3>
-        <form id="form-texto-colaboradores"action="{{route('information.update')}}" method="post">
-            @method('PUT')
+        <h3>Título para as seções colaboradores atuais</h3>
+        <form id="form-texto-colaboradores1"action="{{route('information.store')}}" method="post">
+            @method('POST')
             @csrf
-            <input name="text-current" type="text" class="form-control" placeholder="Seção colaboradores atuais (Título)" required>
-            <input name="text-former" type="text" class="form-control" placeholder="Seção colaboradores antigos (Título)" required>
-            <input type="hidden" name="id-current" value="{{$idcurrent}}">
-            <input type="hidden" name="id-former" value="{{$idformer}}">
+            <input name="information-value" type="text" class="form-control" placeholder="Seção colaboradores atuais (Título)" required>
+            <input type="hidden" name="id-information" value="{{$idcurrent}}">
+            <input type ="hidden" name="information-name" value="sectionNameCurrentCollaborators">
             <div class="buttons">
-                <button onclick="closeModal(event,'modal-texto-colaboradores')" class=" btn btn-info">Fechar</button>
-                <button onclick="submitEvent(event,'modal-texto-colaboradores','form-texto-colaboradores')" class="btn btn-success" type="submit">Cadastrar</button>
+                <button onclick="closeModal(event,'modal-texto-colaboradores1')" class=" btn btn-info">Fechar</button>
+                <button onclick="submitEvent(event,'modal-texto-colaboradores1','form-texto-colaboradores1')" class="btn btn-success" type="submit">Cadastrar</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div id="modal-texto-colaboradores2" class="modal-information modal-information-invisible">
+    <div class="content">
+        <h3>Título para as seções colaboradores antigos</h3>
+        <form id="form-texto-colaboradores2"action="{{route('information.store')}}" method="post">
+            @method('POST')
+            @csrf
+            <input name="information-value" type="text" class="form-control" placeholder="Seção colaboradores antigos (Título)" required>
+            <input type="hidden" name="id-information" value="{{$idformer}}">
+            <input type ="hidden" name="information-name" value="sectionNameFormerCollaborators">
+            <div class="buttons">
+                <button onclick="closeModal(event,'modal-texto-colaboradores2')" class=" btn btn-info">Fechar</button>
+                <button onclick="submitEvent(event,'modal-texto-colaboradores2','form-texto-colaboradores2')" class="btn btn-success" type="submit">Cadastrar</button>
             </div>
         </form>
 
@@ -101,7 +113,9 @@ Sobre nós - Portal das Disciplinas IMD
 <div class='banner text-center d-flex align-items-center justify-content-center '>
     <h1 class='text-white'>Sobre & Colabore</h1>
 </div>
-
+@if($errors->any())
+<div class="d-flex alert alert-danger justify-content-center"><p class="">{{$errors->first()}}</p></div>
+@endif
 <div class='container py-5' id="top-container">
 
     <div class='row'>
@@ -137,12 +151,19 @@ Sobre nós - Portal das Disciplinas IMD
 
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
             <div class="info-collaborators-container">
-                <h1 class="info-collaborators">{{$sectionNameCurrentCollaborators ?? "Colaboradores Atuais"}}</h1>
+                <h1 class="info-collaborators">
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                        {{$sectionNameCurrentCollaborators ?? "[editar - Colaboradores Atuais]"}}
+                    @elseif(isset($manager))
+                        {{$sectionNameCurrentCollaborators ?? ""}}
+                    @endif    
+                </h1>
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <span onclick="showModal('modal-texto-colaboradores')">editar</span>
+                <span onclick="showModal('modal-texto-colaboradores1')">editar</span>
                 @endif
             </div>
             <div class="row">
+                @if(isset($manager))
                 @component('components.info_contributors')
                 @slot('name') {{$manager->name}} @endslot
                 @slot('profession') {{$manager->bond}} @endslot
@@ -152,6 +173,7 @@ Sobre nós - Portal das Disciplinas IMD
                 @slot('image') {{$manager->urlPhoto}} @endslot
                 @slot('github') {{$manager->github}} @endslot
                 @endcomponent
+                @endif
             </div>
             @if(Auth::user() && Auth::user()->isAdmin)
             <button id="showb" class="btn btn-outline-success btn-sm" onclick="showModal('modal-information')">Adicionar Colaborador</button>
@@ -185,13 +207,19 @@ Sobre nós - Portal das Disciplinas IMD
 
             </div>
 
-            @if(sizeof($formerCollaborators)>0)
             <div class="info-collaborators-container">
-                <h1 class="info-collaborators">{{$sectionNameFormerCollaborators ?? "Antigos Colaboradores"}} </h1>
+                <h1 class="info-collaborators">
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                        {{$sectionNameFormerCollaborators ?? "[editar - Antigos Colaboradores]"}}
+                    @elseif(sizeof($formerCollaborators)>0)
+                        {{$sectionNameFormerCollaborators ?? ""}}
+                    @endif
+                 </h1>
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <span onclick="showModal('modal-texto-colaboradores')">editar</span>
+                <span onclick="showModal('modal-texto-colaboradores2')">editar</span>
                 @endif
             </div>
+            @if(sizeof($formerCollaborators)>0)
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($formerCollaborators as $collaborator)
                 <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
