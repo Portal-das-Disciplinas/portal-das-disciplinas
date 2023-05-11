@@ -16,7 +16,7 @@ class Informations extends Migration
         Schema::create('informations',function(Blueprint $table){
             $table->id();
             $table->string('name')->unique();
-            $table->string('value');
+            $table->string('value')->nullable();
             $table->timestamps();
         });
     }

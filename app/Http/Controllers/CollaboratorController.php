@@ -44,8 +44,8 @@ class CollaboratorController extends Controller
     public function store(Request $request)
     {
         if($request->coordenador =='on'){
-            if(Collaborator::query()->where('isManager',true)->first()->exists){
-               throw new Exception();
+            if(Collaborator::query()->where('isManager',true)->exists()){
+               return redirect()->back()->withErrors(['coordenador' => 'Já existe um coordenador']);
             }
 
         }
