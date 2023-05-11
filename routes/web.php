@@ -10,6 +10,9 @@ use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\ProfessorUserController;
 use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
+use App\Http\Controllers\CollaboratorController;
+use App\Http\Controllers\InformationController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +41,14 @@ Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter
 //--Desativada por enquanto
 // route::get('/minhasdisciplinas', [DisciplineController::class, 'mydisciplines'])->name('mydisciplines');
 
-Route::get('sobre', function () {
-    return view('information');
-})->name('information');
+/*Route::get('sobre', function () {
+
+    return view('information'); 
+})->name('information'); */
+
+Route::get('sobre', [InformationController::class, 'index'])->name('information');
+Route::put('update',[InformationController::class,'update'])->name('information.update');
+
 Route::get('colaborar', function () {
     return view('collaborate');
 })->name('collaborate');
@@ -60,6 +68,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('classificacoes', ClassificationController::class)
         ->except(['show']);
 });
+
+Route::resource('collaborators',CollaboratorController::class);
 
 Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
     ->name('disciplinas.show');
