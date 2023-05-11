@@ -54,6 +54,15 @@ class CollaboratorController extends Controller
             $nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
             $request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
         }
+        $active = false;
+        $manager = true;
+        if($request->ativo =='on'){
+            $active=true;
+        }
+        if($request->coordenador !='on'){
+            $manager = false;
+        }
+        
         $col = new Collaborator();
         $col->name = $request->nome;
         $col->email = $request->email;
@@ -61,6 +70,8 @@ class CollaboratorController extends Controller
         $col->role = $request->funcao;
         $col->lattes = $request->lattes;
         $col->github = $request->github;
+        $col->active = $active;
+        $col->isManager = $manager;
         if(isset($nomeArquivo)){
             $col->urlPhoto = "img/profiles_img/" . $nomeArquivo;
         }
