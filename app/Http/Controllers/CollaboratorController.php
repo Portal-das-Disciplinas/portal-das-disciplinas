@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Collaborator;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class CollaboratorController extends Controller
@@ -14,14 +15,15 @@ class CollaboratorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function index()
     {
     }
 
 
-    public function __construct(){
-        
+    public function __construct()
+    {
+
         $this->middleware('auth')->only('store');
     }
 
@@ -43,40 +45,44 @@ class CollaboratorController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->coordenador =='on'){
-            if(Collaborator::query()->where('isManager',true)->exists()){
-               return redirect()->back()->withErrors(['coordenador' => 'Já existe um coordenador']);
+        if (Auth::user() && Auth::user()->isAdmin) {
+
+            if ($request->coordenador == 'on') {
+                if (Collaborator::query()->where('isManager', true)->exists()) {
+                    return redirect()->back()->withErrors(['coordenador' => 'Já existe um coordenador']);
+                }
             }
 
-        }
+            if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+                $nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
+                $request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
+            }
+            $active = false;
+            $manager = true;
+            if ($request->ativo == 'on') {
+                $active = true;
+            }
+            if ($request->coordenador != 'on') {
+                $manager = false;
+            }
 
-        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            $nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
-            $request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
+            $col = new Collaborator();
+            $col->name = $request->nome;
+            $col->email = $request->email;
+            $col->bond = $request->vinculo;
+            $col->role = $request->funcao;
+            $col->lattes = $request->lattes;
+            $col->github = $request->github;
+            $col->active = $active;
+            $col->isManager = $manager;
+            if (isset($nomeArquivo)) {
+                $col->urlPhoto = "img/profiles_img/" . $nomeArquivo;
+            }
+            $col->save();
+            return redirect()->route('information');
+        } else {
+            return redirect()->route('login');
         }
-        $active = false;
-        $manager = true;
-        if($request->ativo =='on'){
-            $active=true;
-        }
-        if($request->coordenador !='on'){
-            $manager = false;
-        }
-        
-        $col = new Collaborator();
-        $col->name = $request->nome;
-        $col->email = $request->email;
-        $col->bond = $request->vinculo;
-        $col->role = $request->funcao;
-        $col->lattes = $request->lattes;
-        $col->github = $request->github;
-        $col->active = $active;
-        $col->isManager = $manager;
-        if(isset($nomeArquivo)){
-            $col->urlPhoto = "img/profiles_img/" . $nomeArquivo;
-        }
-        $col->save();
-        return redirect()->route('information');
     }
 
     /**
@@ -121,13 +127,18 @@ class CollaboratorController extends Controller
      */
     public function destroy($id)
     {
-       
-        $collaborator = Collaborator::find($id);
-        if(File::exists(public_path($collaborator->urlFoto))){
-            File::delete(public_path($collaborator->urlPhoto));
+        if (Auth::user() && Auth::user()->isAdmin) {
+
+            $collaborator = Collaborator::find($id);
+            if (File::exists(public_path($collaborator->urlFoto))) {
+                File::delete(public_path($collaborator->urlPhoto));
+            }
+
+            $collaborator->delete();
+            return redirect()->back();
         }
-        
-        $collaborator->delete();
-        return redirect()->back();
+        else{
+            return redirect()->route('login');
+        }
     }
 }

@@ -151,13 +151,13 @@ Sobre nós - Portal das Disciplinas IMD
 
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
             <div class="info-collaborators-container">
-                <h1 class="info-collaborators">
+                <h2 class="info-collaborators">
                     @if(Auth::user() && Auth::user()->isAdmin)
                         {{$sectionNameCurrentCollaborators ?? "[editar - Colaboradores Atuais]"}}
                     @elseif(isset($manager))
                         {{$sectionNameCurrentCollaborators ?? ""}}
                     @endif    
-                </h1>
+                </h2>
                 @if(Auth::user() && Auth::user()->isAdmin)
                 <span onclick="showModal('modal-texto-colaboradores1')">editar</span>
                 @endif
@@ -208,13 +208,13 @@ Sobre nós - Portal das Disciplinas IMD
             </div>
 
             <div class="info-collaborators-container">
-                <h1 class="info-collaborators">
+                <h2 class="info-collaborators">
                     @if(Auth::user() && Auth::user()->isAdmin)
                         {{$sectionNameFormerCollaborators ?? "[editar - Antigos Colaboradores]"}}
                     @elseif(sizeof($formerCollaborators)>0)
                         {{$sectionNameFormerCollaborators ?? ""}}
                     @endif
-                 </h1>
+                 </h2>
                 @if(Auth::user() && Auth::user()->isAdmin)
                 <span onclick="showModal('modal-texto-colaboradores2')">editar</span>
                 @endif
