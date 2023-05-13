@@ -1,9 +1,4 @@
 @extends('layouts.app')
-
-
-
-
-
 @section('title')
 Sobre nós - Portal das Disciplinas IMD
 @endsection

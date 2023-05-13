@@ -51,6 +51,7 @@ class InformationController extends Controller
     }
 
 
+
     public function update(Request $request)
     {
 

@@ -47,7 +47,6 @@ Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter
 
     return view('information'); 
 })->name('information'); */
-
 Route::get('sobre', [InformationController::class, 'index'])->name('information');
 Route::put('information/{information}',[InformationController::class,'update'])->name('information.update');
 Route::post('information/supdate',[InformationController::class,'storeOrUpdate'])->name('information.supdate');
