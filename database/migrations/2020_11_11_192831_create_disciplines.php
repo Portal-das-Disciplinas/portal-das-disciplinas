@@ -15,11 +15,11 @@ class CreateDisciplines extends Migration
     {
         Schema::create('disciplines', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('emphasis_id')->nullable();
+            // $table->unsignedBigInteger('emphasis_id')->nullable();
             $table->unsignedBigInteger('professor_id');
             $table->string('code');
             $table->string('name');
-            $table->longText('description')->nullable();
+            // $table->longText('description')->nullable();
             $table->string('trailer')->nullable();
             $table->longText('synopsis')->nullable();
             $table->longText('difficulties')->nullable();
