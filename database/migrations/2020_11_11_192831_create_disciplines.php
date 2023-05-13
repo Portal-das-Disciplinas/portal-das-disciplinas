@@ -19,9 +19,9 @@ class CreateDisciplines extends Migration
             $table->unsignedBigInteger('professor_id');
             $table->string('code');
             $table->string('name');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->string('trailer')->nullable();
-            // $table->longText('synopsis')->nullable();
+            $table->longText('synopsis')->nullable();
             $table->longText('difficulties')->nullable();
             $table->foreign('professor_id')->references('id')
                 ->on('professors')
