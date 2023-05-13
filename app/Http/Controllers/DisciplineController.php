@@ -214,12 +214,15 @@ class DisciplineController extends Controller
             $titles = $request->input('title');
             $contents = $request->input('content');
 
-            foreach($titles as $key => $title) {
-                Faq::create([
-                    'discipline_id' => $discipline->id,
-                    'title' => $title,
-                    'content' => $contents[$key],
-                ]);
+            if($titles != null)
+            {
+                foreach($titles as $key => $title) {
+                    Faq::create([
+                        'discipline_id' => $discipline->id,
+                        'title' => $title,
+                        'content' => $contents[$key],
+                    ]);
+                }
             }
 
             DB::commit();
