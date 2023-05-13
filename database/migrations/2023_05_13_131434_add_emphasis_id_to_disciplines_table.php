@@ -15,6 +15,7 @@ class AddEmphasisIdToDisciplinesTable extends Migration
     {
         Schema::table('disciplines', function (Blueprint $table) {
             $table->unsignedBigInteger('emphasis_id')->nullable();
+            $table->foreign('emphasis_id')->references('id')->on('emphasis')->nullable();
         });
     }
 

@@ -26,7 +26,7 @@ class CreateDisciplines extends Migration
             $table->foreign('professor_id')->references('id')
                 ->on('professors')
                 ->onDelete('cascade');
-            $table->foreign('emphasis_id')->references('id')->on('emphasis');
+            // $table->foreign('emphasis_id')->references('id')->on('emphasis');
             $table->timestamps();
         });
     }
