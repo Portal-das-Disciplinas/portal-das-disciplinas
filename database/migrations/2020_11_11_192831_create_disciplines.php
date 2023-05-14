@@ -15,18 +15,18 @@ class CreateDisciplines extends Migration
     {
         Schema::create('disciplines', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('emphasis_id')->nullable();
+            // $table->unsignedBigInteger('emphasis_id')->nullable();
             $table->unsignedBigInteger('professor_id');
             $table->string('code');
             $table->string('name');
-            $table->longText('description');
+            // $table->longText('description')->nullable();
             $table->string('trailer')->nullable();
-            // $table->longText('synopsis')->nullable();
+            $table->longText('synopsis')->nullable();
             $table->longText('difficulties')->nullable();
             $table->foreign('professor_id')->references('id')
                 ->on('professors')
                 ->onDelete('cascade');
-            $table->foreign('emphasis_id')->references('id')->on('emphasis');
+            // $table->foreign('emphasis_id')->references('id')->on('emphasis');
             $table->timestamps();
         });
     }

@@ -88,7 +88,7 @@
                                 <div class="card-bottom-container">
                                     <a href="{{ route('disciplinas.show', $discipline->id) }}"
                                         class="view-more-btn btn w-100 p-text">Ver
-                                        mais</a>
+                                        disciplina</a>
                                     @auth
                                         <div class='d-flex justify-content-end'>
                                             @if(Auth::user()->canDiscipline($discipline->id))
