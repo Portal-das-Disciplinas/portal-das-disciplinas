@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Collaborator;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class CollaboratorController extends Controller
 {
@@ -18,13 +17,12 @@ class CollaboratorController extends Controller
 
     public function index()
     {
-       
     }
 
 
     public function __construct()
     {
-        $this->middleware('admin')->except(['index','show']);
+        $this->middleware('admin')->except(['index', 'show']);
     }
 
     /**
@@ -60,8 +58,9 @@ class CollaboratorController extends Controller
         }
 
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            $nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
-            $request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
+            //$nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
+            //$request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
+            $nomeArquivo = $request->file('foto')->store('img_profiles', 'public');
         }
         $col = new Collaborator();
         $col->name = $request->nome;
@@ -73,7 +72,8 @@ class CollaboratorController extends Controller
         $col->isManager = $isManager;
         $col->active = $active;
         if (isset($nomeArquivo)) {
-            $col->urlPhoto = "img/profiles_img/" . $nomeArquivo;
+            // dd($nomeArquivo);
+            $col->urlPhoto =  $nomeArquivo;
         }
         $col->save();
         return redirect()->route('information');
@@ -146,13 +146,11 @@ class CollaboratorController extends Controller
 
         $collaborator = Collaborator::find($id);
         if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            $extension = $request->file('photo')->extension();
-            $fileName = md5($request->file('photo')->getClientOriginalName() . strtotime("now")) . "." . $extension;
-            if (File::exists(public_path($collaborator->url))) {
-                File::delete(public_path($collaborator->urlPhoto));
+            if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
+                Storage::disk('public')->delete($collaborator->urlPhoto);
             }
-            $request->photo->move(public_path('img/profiles_img'), $fileName);
-            $collaborator->urlPhoto = 'img/profiles_img/' . $fileName;
+            $nomeArquivo = $request->file('photo')->store('img_profiles', 'public');
+            $collaborator->urlPhoto = $nomeArquivo;
             $collaborator->save();
             return redirect()->back()->withInput();
         }
@@ -162,8 +160,8 @@ class CollaboratorController extends Controller
     {
 
         $collaborator = Collaborator::find($id);
-        if (File::exists(public_path($collaborator->urlPhoto))) {
-            File::delete(public_path($collaborator->urlPhoto));
+        if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
+            Storage::disk('public')->delete($collaborator->urlPhoto);
             $collaborator->urlPhoto = null;
             $collaborator->save();
         }
@@ -181,12 +179,10 @@ class CollaboratorController extends Controller
      */
     public function destroy($id)
     {
-
         $collaborator = Collaborator::find($id);
-        if (File::exists(public_path($collaborator->urlFoto))) {
-            File::delete(public_path($collaborator->urlPhoto));
+        if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
+            Storage::disk('public')->delete($collaborator->urlPhoto);
         }
-
         $collaborator->delete();
         return redirect()->back();
     }
