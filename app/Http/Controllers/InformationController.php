@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class InformationController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('admin')->except('index');
+    }
+
     public function index(Request $request)
     {
         $manager = Collaborator::query()->where('isManager', true)->first();
@@ -63,16 +69,14 @@ class InformationController extends Controller
 
     public function StoreOrUpdate(Request $request)
     {
-        if (Auth::user() && Auth::user()->isAdmin) {
-            if (Information::where('name', $request->name)->exists()) {
-                Information::where('name',$request->name)->first()->update(['value'=> $request->value]);
-            } else {
-                Information::create([
-                    'name' => $request->name,
-                    'value' => $request->value
-                ]);
-            }
-            return redirect()->route('information');
+        if (Information::where('name', $request->name)->exists()) {
+            Information::where('name', $request->name)->first()->update(['value' => $request->value]);
+        } else {
+            Information::create([
+                'name' => $request->name,
+                'value' => $request->value
+            ]);
         }
+        return redirect()->route('information');
     }
 }

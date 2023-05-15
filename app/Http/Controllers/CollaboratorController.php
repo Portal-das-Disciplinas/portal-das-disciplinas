@@ -18,14 +18,13 @@ class CollaboratorController extends Controller
 
     public function index()
     {
+       
     }
 
 
     public function __construct()
     {
-
-        $this->middleware('auth')->only('store');
-        $this->middleware('auth')->only('update');
+        $this->middleware('admin')->except(['index','show']);
     }
 
     /**
@@ -46,40 +45,38 @@ class CollaboratorController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::user() && Auth::user()->isAdmin) {
-            $isManager = false;
-            $active = true;
+        $isManager = false;
+        $active = true;
 
-            if ($request->coordenador == 'on') {
-                if (Collaborator::query()->where('isManager', true)->exists()) {
-                    return redirect()->back()->withErrors(['coordenador' => 'Coordenador já existente']);
-                } else {
-                    $isManager = true;
-                }
+        if ($request->coordenador == 'on') {
+            if (Collaborator::query()->where('isManager', true)->exists()) {
+                return redirect()->back()->withErrors(['coordenador' => 'Coordenador já existente']);
+            } else {
+                $isManager = true;
             }
-            if($request->ativo != 'on'){
-                $active = false;
-            }
-
-            if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-                $nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
-                $request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
-            }
-            $col = new Collaborator();
-            $col->name = $request->nome;
-            $col->email = $request->email;
-            $col->bond = $request->vinculo;
-            $col->role = $request->funcao;
-            $col->lattes = $request->lattes;
-            $col->github = $request->github;
-            $col->isManager = $isManager;
-            $col->active = $active;
-            if (isset($nomeArquivo)) {
-                $col->urlPhoto = "img/profiles_img/" . $nomeArquivo;
-            }
-            $col->save();
-            return redirect()->route('information');
         }
+        if ($request->ativo != 'on') {
+            $active = false;
+        }
+
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
+            $request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
+        }
+        $col = new Collaborator();
+        $col->name = $request->nome;
+        $col->email = $request->email;
+        $col->bond = $request->vinculo;
+        $col->role = $request->funcao;
+        $col->lattes = $request->lattes;
+        $col->github = $request->github;
+        $col->isManager = $isManager;
+        $col->active = $active;
+        if (isset($nomeArquivo)) {
+            $col->urlPhoto = "img/profiles_img/" . $nomeArquivo;
+        }
+        $col->save();
+        return redirect()->route('information');
     }
 
     /**
@@ -101,10 +98,8 @@ class CollaboratorController extends Controller
      */
     public function edit($id)
     {
-        if (Auth::user() && Auth::user()->isAdmin) {
-            $collaborator = Collaborator::find($id);
-            return view('collaborators.edit', ['collaborator' => $collaborator]);
-        }
+        $collaborator = Collaborator::find($id);
+        return view('collaborators.edit', ['collaborator' => $collaborator]);
     }
 
     /**
@@ -116,55 +111,50 @@ class CollaboratorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (Auth::user() && Auth::user()->isAdmin) {
-            $active = false;
-            $isManager = false;
+        $active = false;
+        $isManager = false;
 
-            if ($request->active == 'on') {
-                $active = true;
-            }
-
-            if ($request->isManager == 'on') {
-                $isManager = true;
-            }
-            $collaborator = Collaborator::find($id);
-            
-            if($isManager && (Collaborator::where('isManager',true)->exists()) && ($collaborator->isManager ==false)){
-                return redirect()->back()->withErrors(['coordenador' => 'Coordenador já existente']);
-
-            }
-
-            
-            
-            $collaborator->name = $request->name;
-            $collaborator->email = $request->email;
-            $collaborator->bond = $request->bond;
-            $collaborator->role = $request->role;
-            $collaborator->lattes = $request->lattes;
-            $collaborator->github = $request->github;
-            $collaborator->active = $active;
-            $collaborator->isManager = $isManager;
-            $collaborator->save();
-            return redirect()->route('information');
+        if ($request->active == 'on') {
+            $active = true;
         }
+
+        if ($request->isManager == 'on') {
+            $isManager = true;
+        }
+        $collaborator = Collaborator::find($id);
+
+        if ($isManager && (Collaborator::where('isManager', true)->exists()) && ($collaborator->isManager == false)) {
+            return redirect()->back()->withErrors(['coordenador' => 'Coordenador já existente']);
+        }
+
+
+
+        $collaborator->name = $request->name;
+        $collaborator->email = $request->email;
+        $collaborator->bond = $request->bond;
+        $collaborator->role = $request->role;
+        $collaborator->lattes = $request->lattes;
+        $collaborator->github = $request->github;
+        $collaborator->active = $active;
+        $collaborator->isManager = $isManager;
+        $collaborator->save();
+        return redirect()->route('information');
     }
 
     public function updatePhoto(Request $request, $id)
     {
 
-        if (Auth::user() && Auth::user()->isAdmin) {
-            $collaborator = Collaborator::find($id);
-            if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-                $extension = $request->file('photo')->extension();
-                $fileName = md5($request->file('photo')->getClientOriginalName() . strtotime("now")) . "." . $extension;
-                if (File::exists(public_path($collaborator->url))) {
-                    File::delete(public_path($collaborator->urlPhoto));
-                }
-                $request->photo->move(public_path('img/profiles_img'), $fileName);
-                $collaborator->urlPhoto = 'img/profiles_img/' . $fileName;
-                $collaborator->save();
-                return redirect()->back()->withInput();
+        $collaborator = Collaborator::find($id);
+        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+            $extension = $request->file('photo')->extension();
+            $fileName = md5($request->file('photo')->getClientOriginalName() . strtotime("now")) . "." . $extension;
+            if (File::exists(public_path($collaborator->url))) {
+                File::delete(public_path($collaborator->urlPhoto));
             }
+            $request->photo->move(public_path('img/profiles_img'), $fileName);
+            $collaborator->urlPhoto = 'img/profiles_img/' . $fileName;
+            $collaborator->save();
+            return redirect()->back()->withInput();
         }
     }
 
@@ -172,13 +162,12 @@ class CollaboratorController extends Controller
     {
 
         $collaborator = Collaborator::find($id);
-        if (Auth::user() && Auth::user()->isAdmin) {
-            if (File::exists(public_path($collaborator->urlPhoto))) {
-                File::delete(public_path($collaborator->urlPhoto));
-                $collaborator->urlPhoto = null;
-                $collaborator->save();
-            }
+        if (File::exists(public_path($collaborator->urlPhoto))) {
+            File::delete(public_path($collaborator->urlPhoto));
+            $collaborator->urlPhoto = null;
+            $collaborator->save();
         }
+
         return redirect()->back()->with('mensagem', 'Foto removida');
     }
 
