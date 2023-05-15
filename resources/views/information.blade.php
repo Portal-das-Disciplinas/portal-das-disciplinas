@@ -13,8 +13,9 @@ Sobre nós - Portal das Disciplinas IMD
         <h3>Cadastro de Colaborador</h3>
         <form id="collaborators-form" action="{{route('collaborators.store')}}" enctype="multipart/form-data" method='post'>
             @csrf
-            <label for="fotoColaborador" name="foto">Foto</label>
-            <input id="fotoColaborador" name="foto" type='file'>
+            <label class="btn btn-outline-info"for="fotoColaborador" name="foto">Adicionar Foto</label>
+            <input class="d-none" id="fotoColaborador" name="foto" type='file' onchange="changeFileName()">
+            <small id="fileName">Nenhum arquivo selecionado</small>
             <label for="nomeColaborador">Nome</label>
             <input id="nomeColaborador" name="nome" type=text class="form-control" placeholder="Nome e Sobrenome" required>
             <label for="emailColaborador">e-mail</label>
@@ -83,6 +84,11 @@ Sobre nós - Portal das Disciplinas IMD
 
 
 <script>
+
+    function changeFileName(){
+       document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
+    }
+
     function showModal(idModal) {
         var modal = document.getElementById(idModal);
         scrollTo(0, 0);

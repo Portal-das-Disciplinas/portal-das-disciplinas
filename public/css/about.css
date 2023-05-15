@@ -70,7 +70,8 @@
 }
 
 .modal-information h3{
-    color: blue;
+    color: rgb(64, 195, 255);
+    align-self: center;
 }
 
 .modal-information form{
