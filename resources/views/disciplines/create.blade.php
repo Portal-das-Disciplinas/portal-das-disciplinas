@@ -346,13 +346,13 @@
             </div> --}}
 
             <div class="row d-flex p-2 mt-3 justify-content-center">
-                <a id="add-faq" class="btn btn-success btn-sm mr-5">
+                <a id="add-faq" class="btn btn-primary btn-sm mr-5">
                     Adicionar FAQ
                 </a>
                 <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
                     Cancelar
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm ml-5">Registrar</button>
+                <button type="submit" class="btn btn-success btn-sm ml-5">Registrar</button>
             </div>
         </form>
     </div>
@@ -408,7 +408,7 @@
             <label for="title${counter}" class="col-form-label">
                 Pergunta</span>
             </label>
-            <input type="text" class="form-control" id="title${counter}" name="title[${counter}]" value="{{old('title')}}">
+            <input type="text" class="form-control" id="title${counter}" name="title[${counter}]" value=" {{old('title')}}">
             @error('title')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -417,7 +417,7 @@
             <label for="content${counter}" class="col-form-label">
                 Resposta</span>
             </label>
-            <textarea class="form-control" id="content${counter}" name="content[${counter}]">{{old('content')}}</textarea>
+            <textarea class="form-control" id="content${counter}" name="content[${counter}]"> </textarea>
             @error('content')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror
