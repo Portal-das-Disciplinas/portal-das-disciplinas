@@ -401,28 +401,53 @@
     addButton.addEventListener('click', function(event) {
         event.preventDefault();
         counter++;
-        faqs.innerHTML += `
-        <div class="modal-body">
-            @csrf
-            <div class="form-group">
-            <label for="title${counter}" class="col-form-label">
-                Pergunta</span>
-            </label>
-            <input type="text" class="form-control" id="title${counter}" name="title[${counter}]" value=" {{old('title')}}">
-            @error('title')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-            </div>
-            <div class="form-group">
-            <label for="content${counter}" class="col-form-label">
-                Resposta</span>
-            </label>
-            <textarea class="form-control" id="content${counter}" name="content[${counter}]"> </textarea>
-            @error('content')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-            </div>
-        </div>`;
+            // Create new elements
+    let newDiv = document.createElement('div');
+    newDiv.classList.add('modal-body');
+    
+    // Create form group for title
+    let formGroupTitle = document.createElement('div');
+    formGroupTitle.classList.add('form-group');
+
+    let titleLabel = document.createElement('label');
+    titleLabel.setAttribute('for', `title${counter}`);
+    titleLabel.classList.add('col-form-label');
+    titleLabel.textContent = "Pergunta";
+
+    let titleInput = document.createElement('input');
+    titleInput.type = "text";
+    titleInput.classList.add('form-control');
+    titleInput.id = `title${counter}`;
+    titleInput.name = `title[${counter}]`;
+    
+    // Append title elements
+    formGroupTitle.appendChild(titleLabel);
+    formGroupTitle.appendChild(titleInput);
+    
+    // Create form group for content
+    let formGroupContent = document.createElement('div');
+    formGroupContent.classList.add('form-group');
+
+    let contentLabel = document.createElement('label');
+    contentLabel.setAttribute('for', `content${counter}`);
+    contentLabel.classList.add('col-form-label');
+    contentLabel.textContent = "Resposta";
+
+    let contentTextarea = document.createElement('textarea');
+    contentTextarea.classList.add('form-control');
+    contentTextarea.id = `content${counter}`;
+    contentTextarea.name = `content[${counter}]`;
+
+    // Append content elements
+    formGroupContent.appendChild(contentLabel);
+    formGroupContent.appendChild(contentTextarea);
+
+    // Append form groups to newDiv
+    newDiv.appendChild(formGroupTitle);
+    newDiv.appendChild(formGroupContent);
+
+    // Append to faqs
+    faqs.appendChild(newDiv);
         });
 </script>
 
