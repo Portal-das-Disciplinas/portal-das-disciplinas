@@ -16,7 +16,7 @@ Edição de Colaborador
         <div class=" d-flex flex-row flex-wrap justify-content-center align-items-start p-4 w-100">
 
             <div class="d-flex flex-column justify-content-center align-items-center mr-4">
-                <img class="img-thumbnail" src="{{ $collaborator->urlPhoto ? asset($collaborator->urlPhoto): asset('img/profiles_img/user2.png')}}" width="200px">
+                <img class="img-thumbnail" src="{{ $collaborator->urlPhoto ? '/storage/'.$collaborator->urlPhoto: asset('img/profiles_img/user2.png')}}" width="200px">
                 <form id="form-collaborator-photo" class="mt-2" action="{{route('collaborators.update.photo',$collaborator->id)}}" method="post" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
