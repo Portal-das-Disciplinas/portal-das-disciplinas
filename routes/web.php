@@ -12,7 +12,9 @@ use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\InformationController;
+use App\Models\Collaborator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,8 +48,8 @@ Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter
     return view('information'); 
 })->name('information'); */
 Route::get('sobre', [InformationController::class, 'index'])->name('information');
-Route::post('store', [InformationController::class, 'store'])->name('information.store')->middleware('auth');
-Route::put('update',[InformationController::class,'update'])->name('information.update')->middleware('auth');
+Route::put('information/{information}',[InformationController::class,'update'])->name('information.update');
+Route::post('information/supdate',[InformationController::class,'storeOrUpdate'])->name('information.supdate');
 
 Route::get('colaborar', function () {
     return view('collaborate');
@@ -70,6 +72,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::resource('collaborators',CollaboratorController::class);
+Route::put('collaborators/update/photo/{photo}',[CollaboratorController::class,'updatePhoto'])->name('collaborators.update.photo');
+Route::delete('collaborators/delete/photo/{photo}',[CollaboratorController::class,'deletePhoto'])->name('collaborators.delete.photo');
+
 
 Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
     ->name('disciplinas.show');
