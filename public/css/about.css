@@ -9,8 +9,8 @@
 }
 
 .info-collaborators{
-    margin-top:50px;
-    margin-bottom:50px;
+    margin-top:10px;
+    margin-bottom:10px;
     display: inline;
 
 }
@@ -70,7 +70,8 @@
 }
 
 .modal-information h3{
-    color: blue;
+    color: rgb(64, 195, 255);
+    align-self: center;
 }
 
 .modal-information form{
