@@ -47,19 +47,14 @@ class CollaboratorController extends Controller
         $active = true;
 
         if ($request->coordenador == 'on') {
-            if (Collaborator::query()->where('isManager', true)->exists()) {
-                return redirect()->back()->withErrors(['coordenador' => 'Coordenador já existente']);
-            } else {
-                $isManager = true;
-            }
+            $isManager = true;
         }
         if ($request->ativo != 'on') {
             $active = false;
         }
 
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            //$nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
-            //$request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
+
             $nomeArquivo = $request->file('foto')->store('img_profiles', 'public');
         }
         $col = new Collaborator();
@@ -72,7 +67,6 @@ class CollaboratorController extends Controller
         $col->isManager = $isManager;
         $col->active = $active;
         if (isset($nomeArquivo)) {
-            // dd($nomeArquivo);
             $col->urlPhoto =  $nomeArquivo;
         }
         $col->save();
@@ -122,13 +116,6 @@ class CollaboratorController extends Controller
             $isManager = true;
         }
         $collaborator = Collaborator::find($id);
-
-        if ($isManager && (Collaborator::where('isManager', true)->exists()) && ($collaborator->isManager == false)) {
-            return redirect()->back()->withErrors(['coordenador' => 'Coordenador já existente']);
-        }
-
-
-
         $collaborator->name = $request->name;
         $collaborator->email = $request->email;
         $collaborator->bond = $request->bond;
