@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class DisciplineParticipantController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     public function store(Request $request)
     {
         $linkNames = $request['link-name'];

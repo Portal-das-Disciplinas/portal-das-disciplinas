@@ -372,7 +372,7 @@ mais.
             @endif
             <small class="d-block">
                 <span href="#" class="">{{$participant->role}}</span>
-                <a href="{{$participant->email}}" class="ml-3">e-mail</a>
+                <a href="mailto:{{$participant->email}}" class="ml-3">e-mail</a>
                 @foreach($participant->links as $link)
                 <a href="{{$link->url}}" class="ml-2">{{$link->name}}</a>
                 @endforeach
@@ -396,15 +396,15 @@ mais.
                         @csrf
                         <div class="form-group">
                             <label for="name">Nome</label>
-                            <input class="form-control" id="name" name="name" type="text" placeholder="Nome do participante">
+                            <input class="form-control" id="name" name="name" type="text" placeholder="Nome do participante" required>
                         </div>
                         <div class="form-group">
                             <label for="role">Função</label>
-                            <input class="form-control" id="role" name="role" type="text" placeholder="">
+                            <input class="form-control" id="role" name="role" type="text" placeholder="Função do participante nesta disciplina" required>
                         </div>
                         <div class="form-group">
                             <label for="role">E-mail</label>
-                            <input class="form-control" id="email" name="email" type="email" placeholder="email">
+                            <input class="form-control" id="email" name="email" type="email" placeholder="E-mail" required>
                         </div>
                         <label>Links</label>
                         <div class="mb-1" id="links"><!--links -->
@@ -438,15 +438,15 @@ mais.
                         @method('PUT')
                         <div class="form-group">
                             <label for="name">Nome</label>
-                            <input class="form-control" id="nameEdit" name="name" type="text" placeholder="Nome do participante">
+                            <input class="form-control" id="nameEdit" name="name" type="text" placeholder="Nome do participante" required>
                         </div>
                         <div class="form-group">
                             <label for="role">Função</label>
-                            <input class="form-control" id="role" name="role" type="text" placeholder="">
+                            <input class="form-control" id="role" name="role" type="text" placeholder="Função do participante desta disciplina" required>
                         </div>
                         <div class="form-group">
                             <label for="role">E-mail</label>
-                            <input class="form-control" id="email" name="email" type="email" placeholder="email">
+                            <input class="form-control" id="email" name="email" type="email" placeholder="E-mail" required>
                         </div>
                         <label>Links</label>
                         <div class="mb-1" id="links"><!--links -->
@@ -472,6 +472,7 @@ mais.
 
 <script>
     let links = [];
+
     function renderLinks(idModal){
         var html = "";
         for(var i=0;i<links.length;i++){
@@ -480,6 +481,7 @@ mais.
                                 " value='"+links[i].linkName+"'>"+
                                 "<input class='form-control' name='link-url[]' type='text' placeholder='URL' "+
                                 " value='"+links[i].linkUrl+"'>"+
+                                /* label id=i servirá para armazenar o índice do elemento no array links */
                                 "<label id='"+ i  +"' class='btn btn-link mb-4 mt-0 p-0' "+"onclick='deleteFieldLink(event,\""+idModal+"\")'" +"> remover </label>"
                             "</div>";  
         }
@@ -502,18 +504,6 @@ mais.
         }
         
         document.querySelector("#"+modalId+" #links").innerHTML = renderLinks(modalId);
-    }
-
-    
-
-    function deleteFieldLink(event){
-        var index = event.target.id;
-        links = links.filter(item => index != item.linkId);
-        for(var i=0;i<links.length;i++){
-            links[i].linkId = i;
-        }
-        
-        document.querySelector("#links").innerHTML = renderLinks();
     }
 
     function deleteFieldLink(event, idModal){
@@ -541,7 +531,7 @@ mais.
             links.push(element);
         });
 
-        document.querySelector("#modal-edit #links").innerHTML = renderLinks();
+        document.querySelector("#modal-edit #links").innerHTML = renderLinks('modal-edit');
 
         
 
