@@ -18,7 +18,14 @@ mais.
     <h1 class='display-title'>{{ $discipline->name }} - {{ $discipline->code }}</h1>
     <h3>{{ $discipline->emphasis}}</h3>
 </div>
-
+@if(session('cadastroOK'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+   <strong>Cadastro realizado com sucesso</strong>
+   <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+        <span aria-hidden="true"><strong>&times;</strong></span>
+   </button>
+</div>
+@endif
 <div class="container mt-4">
     <!-- Botão de cadastro FAQ -->
 
@@ -27,9 +34,8 @@ mais.
     @if (Auth::user()->canDiscipline($discipline->id))
     <h3 class="mt-3">Menu do professor</h3>
     @if(isset($can) && $can)
-    <button type="button" class="btn btn-outline-white text-white w-25 mt-2" data-toggle="modal"
-                data-target="#faqs-create" style='background-color:#1155CC'>
-                Registrar FAQ
+    <button type="button" class="btn btn-outline-white text-white w-25 mt-2" data-toggle="modal" data-target="#faqs-create" style='background-color:#1155CC'>
+        Registrar FAQ
     </button>
     @endif
     <form action=" {{route('disciplinas.edit', $discipline->id)}}" class="d-inline" method="get">
@@ -53,12 +59,10 @@ mais.
                 <h1 class="mb-3">Trailer</h1>
                 @if($discipline->has_trailer_media && $discipline->trailer->view_url != '')
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe style='border-radius: 6px;' class="embed-responsive-item"
-                        src="{{ $discipline->trailer->view_url}}" allowfullscreen></iframe>
+                    <iframe style='border-radius: 6px;' class="embed-responsive-item" src="{{ $discipline->trailer->view_url}}" allowfullscreen></iframe>
                 </div>
                 @else
-                <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo1.png') }}"
-                    alt="Sem trailer">
+                <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
                 @endif
             </div>
 
@@ -90,12 +94,10 @@ mais.
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO) &&
                 $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url != '')
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe style='border-radius: 6px;' class="embed-responsive-item " allowfullscreen
-                        src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url }}"></iframe>
+                    <iframe style='border-radius: 6px;' class="embed-responsive-item " allowfullscreen src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url }}"></iframe>
                 </div>
                 @else
-                <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo2.png') }}"
-                    alt="Sem vídeo">
+                <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
                 @endif
             </div>
             <!-- OBSTACULOS -->
@@ -127,9 +129,7 @@ mais.
                                     {{$classification->name ?? ''}}
 
                                     @if ($classification->description)
-                                    <span data-toggle="tooltip" data-placement="top"
-                                        title=" {{ $classification->description}}"><i
-                                            class="far fa-question-circle"></i></span>
+                                    <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle"></i></span>
                                     @endif
                                 </h3>
                             </div>
@@ -140,22 +140,14 @@ mais.
                     <div class="d-flex col-md-12">
                         <span class='d-flex justify-content-start' style='width:15%'><b>{{
                                 $discipline->getClassificationsValues($classification->id) }}%</b></span>
-                        <div class="progress " class='col-md-8'
-                            style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
-                            <div id="{{$classification->classification_id}}"
-                                class="classification-color-left progress-bar" role="progressbar"
-                                style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px"
-                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                        <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
+                            <div id="{{$classification->classification_id}}" class="classification-color-left progress-bar" role="progressbar" style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
                             </div>
 
-                            <div id="{{$classification->classification_id}}"
-                                class="classification-color-right progress-bar" role="progressbar"
-                                style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; border-radius: 0 100px 100px 0"
-                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                            <div id="{{$classification->classification_id}}" class="classification-color-right progress-bar" role="progressbar" style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; border-radius: 0 100px 100px 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
                             </div>
                         </div>
-                        <span class='d-flex justify-content-end'
-                            style='width:15%'><b>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
+                        <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
                     </div>
                 </div>
 
@@ -187,8 +179,7 @@ mais.
                 @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) &&
                 $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
                 <audio class="w-100" controls="controls">
-                    <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}"
-                        type="audio/mp3" />
+                    <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
                     seu navegador não suporta HTML5
                 </audio>
                 @else
@@ -206,11 +197,9 @@ mais.
                 $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
                 <div class="align-center">
 
-                    <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}"
-                        class="text">
+                    <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}" class="text">
                         <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
-                        <button class="btn large-secondary-button my-3 w-100"> <i
-                                class="fas fa-file-download fa-lg mr-1"></i> Download</button>
+                        <button class="btn large-secondary-button my-3 w-100"> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
                     </a>
                     <br />
                 </div>
@@ -256,34 +245,27 @@ mais.
     <div class="row mt-3" id="faqs">
         @foreach($discipline->faqs as $faq)
         <div class="w-100 card mb-3 text-dark " style='border:1px solid #014C8C;'>
-            <div class="card-header" id="faq-header-{{$faq->id}}" data-toggle="collapse"
-                data-target="#faq-content-{{$faq->id}}">
+            <div class="card-header" id="faq-header-{{$faq->id}}" data-toggle="collapse" data-target="#faq-content-{{$faq->id}}">
                 <h5 class="mb-0 d-flex justify-content-between">
-                    <button class="btn btn-link collapsed mr-auto" data-toggle="collapse"
-                        data-target="#faq-content-{{$faq->id}}" aria-expanded="true"
-                        aria-controls="faq-header-{{$faq->id}}">
+                    <button class="btn btn-link collapsed mr-auto" data-toggle="collapse" data-target="#faq-content-{{$faq->id}}" aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
                         {!! $faq->title !!}
                     </button>
 
                     @if(isset($can) && $can)
-                    <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}"
-                        class="d-inline float-right" method="POST">
+                    <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}" class="d-inline float-right" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger mt-2" value="Apagar">Apagar</button>
                     </form>
                     @endif
 
-                    <button class="btn btn-link collapsed ml-2" data-toggle="collapse"
-                        data-target="#faq-content-{{$faq->id}}" aria-expanded="true"
-                        aria-controls="faq-header-{{$faq->id}}">
+                    <button class="btn btn-link collapsed ml-2" data-toggle="collapse" data-target="#faq-content-{{$faq->id}}" aria-expanded="true" aria-controls="faq-header-{{$faq->id}}">
                         <i class="fas fa-caret-down"></i>
                     </button>
                 </h5>
             </div>
 
-            <div id="faq-content-{{$faq->id}}" class="collapse" aria-labelledby="faq-header-{{$faq->id}}"
-                data-parent="#faqs">
+            <div id="faq-content-{{$faq->id}}" class="collapse" aria-labelledby="faq-header-{{$faq->id}}" data-parent="#faqs">
                 <div class="card-body">
                     {!! $faq->content !!}
                 </div>
@@ -328,56 +310,256 @@ mais.
     </div>
 
 </div>
-<div class="container">
-    <div class='section mb-5'>
-        <h1 class="mb-3">Professor</h1>
-        <div class="">
-            <div class="d-flex align-items-center">
+<div class="d-flex flex-row flex-wrap justify-content-center">
+    <div class="conainer">
+        <div class='section mb-5'>
+            <h1 class="mb-3">Professor</h1>
+            <div class="">
+                <div class="d-flex align-items-center">
 
-                <i class="fas fa-user fa-8x mr-4"></i>
-                <div class="wrapper-teacher-info">
-                    <div class="text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
-                    <div class="text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
-                    @if($discipline->professor->rede_social1=='')
-                    <div class=" p-text"></div>
-                    @else
-                    <a href="{{ $discipline->professor->link_rsocial1 }}" class="text-justify px-lg-3"> <strong> {{ $discipline->professor->rede_social1 }} </strong></a>
-                    @endif
-                    @if($discipline->professor->rede_social2=='')
-                    <div class=" p-text"></div>
-                    @else
-                    <a href="{{ $discipline->professor->link_rsocial2 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social2 }}</strong></a>
-                    @endif
-                    @if($discipline->professor->rede_social3=='')
-                    <div class=" p-text"></div>
-                    @else
-                    <a href="{{ $discipline->professor->link_rsocial3 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social3 }}</strong></a>
-                    @endif
-                    @if($discipline->professor->rede_social4=='')
-                    <div class=" p-text"></div>
-                    @else
-                    <a href="{{ $discipline->professor->link_rsocial4 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social4 }}</strong></a>
-                    @endif
-                    
+                    <i class="fas fa-user fa-8x mr-4"></i>
+                    <div class="wrapper-teacher-info">
+                        <div class="text-justify px-lg-3"> <strong>{{ $discipline->professor->name }}</strong> </div>
+                        <div class="text-justify px-lg-3"> <strong>Email: </strong>{{ $discipline->professor->public_email }} </div>
+                        @if($discipline->professor->rede_social1=='')
+                        <div class=" p-text"></div>
+                        @else
+                        <a href="{{ $discipline->professor->link_rsocial1 }}" class="text-justify px-lg-3"> <strong> {{ $discipline->professor->rede_social1 }} </strong></a>
+                        @endif
+                        @if($discipline->professor->rede_social2=='')
+                        <div class=" p-text"></div>
+                        @else
+                        <a href="{{ $discipline->professor->link_rsocial2 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social2 }}</strong></a>
+                        @endif
+                        @if($discipline->professor->rede_social3=='')
+                        <div class=" p-text"></div>
+                        @else
+                        <a href="{{ $discipline->professor->link_rsocial3 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social3 }}</strong></a>
+                        @endif
+                        @if($discipline->professor->rede_social4=='')
+                        <div class=" p-text"></div>
+                        @else
+                        <a href="{{ $discipline->professor->link_rsocial4 }}" class="text-justify px-lg-3"> <strong>{{ $discipline->professor->rede_social4 }}</strong></a>
+                        @endif
+
+                    </div>
+
                 </div>
-
             </div>
         </div>
+
     </div>
+
+    <!-- Seção créditos -->
+    <div class="d-flex flex-column ml-5">
+        <div class="d-flex flex-row justify-content-center align-items-baseline">
+            <h2>Créditos</h2>
+            @if(Auth::user() && Auth::user()->isAdmin)
+            <button class="btn btn-success btn-sm ml-3 mb-4" data-toggle="modal" data-target="#modal-add"> &nbsp;+&nbsp; </button>
+            @endif
+        </div>
+        @foreach($discipline->disciplineParticipants as $participant)
+        <div class="mb-4" style="line-height:1.2">
+            <strong class="">{{$participant->name}}</strong>
+            @if(Auth::user() && Auth::user()->isAdmin)
+            <button class="ml-1  btn btn-link" id="{{$loop->index}}" onclick="openModalEdit(event)" data-toggle="modal" data-target="#modal-edit">editar</button>
+            <form class="d-inline" action="{{route('participants_discipline.destroy',$participant->id)}}" method="post">
+                @csrf
+                @method('DELETE')
+                <button class=" mr-0 p-0 text-danger btn btn-link" type="submit">remover</button>
+            </form>
+            
+            @endif
+            <small class="d-block">
+                <span href="#" class="">{{$participant->role}}</span>
+                <a href="{{$participant->email}}" class="ml-3">e-mail</a>
+                @foreach($participant->links as $link)
+                <a href="{{$link->url}}" class="ml-2">{{$link->name}}</a>
+                @endforeach
+
+            </small>
+        </div>
+        @endforeach
+
+
+
+    </div><!--Seção créditos -->
+    
+    <div class="modal" id="modal-add" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Cadastro de participante</h2>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action = "{{route('participants_discipline.store')}}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input class="form-control" id="name" name="name" type="text" placeholder="Nome do participante">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Função</label>
+                            <input class="form-control" id="role" name="role" type="text" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">E-mail</label>
+                            <input class="form-control" id="email" name="email" type="email" placeholder="email">
+                        </div>
+                        <label>Links</label>
+                        <div class="mb-1" id="links"><!--links -->
+                            <!-- Conteudo dinâmico gerado por javascript-->
+                            <!-- renderLinks() -->
+                            
+                        </div><!--links -->
+                        <input id="submit-form"type="submit" hidden>
+                        <input name="idDiscipline" type=text value="{{$discipline->id}}" hidden> 
+                    </form>
+                    <button id="add-link-field" class="btn btn-outline-primary btn-sm" onclick = "addLinkField('modal-add')">Adicionar Link</button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <label for="submit-form" class="btn btn-primary">Cadastrar</label>
+                </div>
+            </div>
+        </div>
+    </div><!--modal-add -->
+
+
+    <div class="modal" id="modal-edit" role="dialog"><!--modal edit -->
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Edição de participante</h2>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action = "{{route('participants_discipline.update')}}">
+                        @csrf
+                        @method('PUT')
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input class="form-control" id="nameEdit" name="name" type="text" placeholder="Nome do participante">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Função</label>
+                            <input class="form-control" id="role" name="role" type="text" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">E-mail</label>
+                            <input class="form-control" id="email" name="email" type="email" placeholder="email">
+                        </div>
+                        <label>Links</label>
+                        <div class="mb-1" id="links"><!--links -->
+                            <!-- Conteudo dinâmico gerado por javascript-->
+                            <!-- renderLinks() -->
+                            
+                        </div><!--links -->
+                        <input id="submit-form-update"type="submit" hidden>
+                        <input name="idDiscipline" type='text' value="{{$discipline->id}}" hidden>
+                        <input name = "idParticipant" type="text" hidden>
+                    </form>
+                    <button id="add-link-field" onclick="addLinkField('modal-edit')" class="btn btn-outline-primary btn-sm">Adicionar Link</button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <label for="submit-form-update" class="btn btn-primary">Atualizar</label>
+                </div>
+            </div>
+        </div>
+    </div><!--modal-edit -->
 
 </div>
 
+<script>
+    let links = [];
+    function renderLinks(idModal){
+        var html = "";
+        for(var i=0;i<links.length;i++){
+            html +=  "<div class=form-group>"+
+                                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter ...'"+
+                                " value='"+links[i].linkName+"'>"+
+                                "<input class='form-control' name='link-url[]' type='text' placeholder='URL' "+
+                                " value='"+links[i].linkUrl+"'>"+
+                                "<label id='"+ i  +"' class='btn btn-link mb-4 mt-0 p-0' "+"onclick='deleteFieldLink(event,\""+idModal+"\")'" +"> remover </label>"
+                            "</div>";  
+        }
+        html += "<div class=form-group>"+
+                                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter ...'>"+
+                                "<input class='form-control' name='link-url[]' type='text' placeholder='URL' >"+
+                            "</div>"; 
+        return html;
+    }
+    
+    function addLinkField(modalId){
+
+        var linkNames = document.querySelectorAll("#"+ modalId+" input[name='link-name[]']");
+        var linkUrls = document.querySelectorAll("#"+ modalId+" input[name='link-url[]']");
+        var selectedParcipant = null;
+        links = [];
+        for(var i=0;i<linkNames.length;i++){
+            var element = {linkId: i, linkName:linkNames[i].value, linkUrl:linkUrls[i].value};
+            links.push(element);
+        }
+        
+        document.querySelector("#"+modalId+" #links").innerHTML = renderLinks(modalId);
+    }
+
+    
+
+    function deleteFieldLink(event){
+        var index = event.target.id;
+        links = links.filter(item => index != item.linkId);
+        for(var i=0;i<links.length;i++){
+            links[i].linkId = i;
+        }
+        
+        document.querySelector("#links").innerHTML = renderLinks();
+    }
+
+    function deleteFieldLink(event, idModal){
+        var index = event.target.id;
+        links = links.filter(item => index != item.linkId);
+        for(var i=0;i<links.length;i++){
+            links[i].linkId = i;
+        }
+        
+        document.querySelector("#"+idModal+" #links").innerHTML = renderLinks(idModal);
+    }
+
+    function openModalEdit(event){
+        links = [];
+        var discipline = @json($discipline);
+        var selectedParticipant =discipline.discipline_participants[event.target.id];
+        document.querySelector("#modal-edit input[name='idParticipant']").value = selectedParticipant.id;
+        document.querySelector("#modal-edit input[name='name'").value = selectedParticipant.name;
+        document.querySelector("#modal-edit input[name='role'").value = selectedParticipant.role;
+        document.querySelector("#modal-edit input[name='email'").value = selectedParticipant.email;
+
+       
+        selectedParticipant.links.forEach(function(link, i){
+            var element = {linkId: i, linkName: link.name, linkUrl:link.url};
+            links.push(element);
+        });
+
+        document.querySelector("#modal-edit #links").innerHTML = renderLinks();
+
+        
+
+    }
+
+    
+</script>
 
 
 @endsection
 @section('scripts-bottom')
 <script>
     document.getElementById("formDuvida").addEventListener("submit", function(event) {
-    var studentEmail = document.getElementById("studentEmail").value;
-    var formAction = "https://formsubmit.co/" + encodeURIComponent(studentEmail);
-    this.action = formAction;
-  });
-    $(function () {
+        var studentEmail = document.getElementById("studentEmail").value;
+        var formAction = "https://formsubmit.co/" + encodeURIComponent(studentEmail);
+        this.action = formAction;
+    });
+    $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>

@@ -11,7 +11,9 @@ use App\Http\Controllers\ProfessorUserController;
 use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
+use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\ParticipantLinkController;
 use App\Models\Collaborator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,3 +80,7 @@ Route::delete('collaborators/delete/photo/{photo}',[CollaboratorController::clas
 
 Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
     ->name('disciplinas.show');
+
+Route::post('participantes_disciplina/store', [DisciplineParticipantController::class,'store'])->name('participants_discipline.store');
+Route::put('/participantes_disciplina', [DisciplineParticipantController::class,'update'])->name('participants_discipline.update');
+Route::delete('participantes_disciplina/{id}', [DisciplineParticipantController::class,'destroy'])->name('participants_discipline.destroy');
