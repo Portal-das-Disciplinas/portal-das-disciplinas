@@ -120,13 +120,17 @@ Edição de Colaborador
     }
 
     function deleteLink(index){
-
+        var linkNames = document.querySelectorAll("input[name='linkName[]']");
+        var linkUrls = document.querySelectorAll("input[name='linkUrl[]']");
+        for(var i=0;i< linkNames.length;i++){
+            links[i].name = linkNames[i].value;
+            links[i].url = linkUrls[i].value;
+        }
         links = links.filter(function(link,i){
             if(index != i){
                 return link;
             }
         }); 
-        console.log('after delete:  '+ links);
         renderLinks();
     }
 </script>

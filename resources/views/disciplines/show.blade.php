@@ -477,17 +477,17 @@ mais.
         var html = "";
         for(var i=0;i<links.length;i++){
             html +=  "<div class=form-group>"+
-                                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter ...'"+
+                                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter, Facebook, etc...'"+
                                 " value='"+links[i].linkName+"'>"+
-                                "<input class='form-control' name='link-url[]' type='text' placeholder='URL' "+
+                                "<input class='form-control mt-1' name='link-url[]' type='text' placeholder='Url do link' "+
                                 " value='"+links[i].linkUrl+"'>"+
                                 /* label id=i servirá para armazenar o índice do elemento no array links */
                                 "<label id='"+ i  +"' class='btn btn-link mb-4 mt-0 p-0' "+"onclick='deleteFieldLink(event,\""+idModal+"\")'" +"> remover </label>"
                             "</div>";  
         }
         html += "<div class=form-group>"+
-                                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter ...'>"+
-                                "<input class='form-control' name='link-url[]' type='text' placeholder='URL' >"+
+                                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter, Facebook, etc...'>"+
+                                "<input class='form-control mt-1' name='link-url[]' type='text' placeholder='Url do link' >"+
                             "</div>"; 
         return html;
     }
