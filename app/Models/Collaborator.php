@@ -20,4 +20,8 @@ class Collaborator extends Model
         'isManager',
         'active'
     ];
+
+    public function links(){
+        return $this->hasMany(CollaboratorLink::class);
+    }
 }

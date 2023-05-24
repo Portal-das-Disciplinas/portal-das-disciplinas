@@ -1,4 +1,4 @@
-<div class='d-flex flex-column  align-items-center mx-4 mb-3'>
+<div class='d-flex flex-column  align-items-center mx-4 mb-3' style="width:250px"><!-- mx-4 mb-3-->
     <img class="clip-path regular-image" src="{{($image=='' || null) ? 'img/profiles_img/user2.png' : '/storage/'.$image}}" alt="{{ $alt_image ?? 'foto-dev' }}">
     <div class="text-center">
         <h3>{{$name ?? ''}}</h3>
@@ -14,6 +14,9 @@
                 <a href="{{ $lattes }}" class="smaller-p" target='_blank'> Lattes </a>       
             @endif
         </p>
+        @if(isset($links))
+            {{$links}}
+        @endif
         @if(isset($github) && $github!='')
         <p>
             <a href={{$github}} class="smaller-p">
