@@ -9,7 +9,7 @@ Sobre nós - Portal das Disciplinas IMD
 
 @section('content')
 <div id="modal-information" class="modal-information modal-information-invisible">
-    <div class="content">
+    <div class="content shadow-lg">
         <h3>Cadastro de Colaborador</h3>
         <form id="collaborators-form" action="{{route('collaborators.store')}}" enctype="multipart/form-data" method='post'>
             @csrf
@@ -28,6 +28,11 @@ Sobre nós - Portal das Disciplinas IMD
             <input id="lattesColaborador" name="lattes" type="text" class="form-control" placeholder="Endereço do currículo latttes">
             <label for="githubColaborador">Github</label>
             <input id="githubColaborador" name="github" type="text" class="form-control" placeholder="Github">
+            <span>Links</span>
+            <div id="links" class="mb-2">
+                <!-- Conteúdo gerando por javascript: function renderLinks() -->
+            </div>
+            <label class="btn btn-info text-white" onclick="addLinkField()">Adicionar Link</label>
             <div>
                 <label for="colaboradorAtivo">Ativo</label>
                 <input id="colaboradorAtivo" name="ativo" type="checkbox" checked>
@@ -36,6 +41,7 @@ Sobre nós - Portal das Disciplinas IMD
                 <label for="coordenador">Coordenador</label>
                 <input id="coordenador" name="coordenador" type="checkbox">
             </div>
+            
             <div class="buttons">
                 <input type="submit" hidden>
                 <button id="btn-fechar" onclick="closeModal(event,'modal-information')" class="btn btn-info">Fechar</button>
@@ -376,6 +382,55 @@ Sobre nós - Portal das Disciplinas IMD
 
 
 </div>
+<script>
+    links = [];
+    
+    function renderLinks(){
+        var html = "";
+        links.forEach(function(link,i){
+            html+= "<div class='mb-4'>"+
+                        "<input class=' mb-1 form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='"+link.name+"'>"+
+                        "<input class='form-control' name='linkUrl[]' type='text' placeholder='Url do link' value='"+link.url+"'>"+
+                        "<label id = '"+link.id+"'class='btn btn-link text-danger' onclick='deleteLinkField("+i+")'>remover</label>"+
+                    "</div>"
+        });
+        return html;
+    }
 
+    function addLinkField(){
+
+        linkNames = document.querySelectorAll("input[name='linkName[]']");
+        linkUrls = document.querySelectorAll("input[name='linkUrl[]']");
+
+        for(var i=0;i<linkNames.length;i++){
+            links[i].name = linkNames[i].value;
+            links[i].url = linkUrls[i].value;
+        }
+
+        links.push({name:"",url:""});
+        document.querySelector('#links').innerHTML = renderLinks();
+    }
+
+    function deleteLinkField(index){
+
+        linkNames = document.querySelectorAll("input[name='linkName[]']");
+        linkUrls = document.querySelectorAll("input[name='linkUrl[]']");
+
+        for(var i=0;i<linkNames.length;i++){
+            links[i].name = linkNames[i].value;
+            links[i].url = linkUrls[i].value;
+        }
+
+        links = links.filter(function(link, i){
+            if(index != i){
+                return link;
+            }
+        });
+
+        document.querySelector('#links').innerHTML = renderLinks();
+    }
+
+
+</script>
 
 @endsection

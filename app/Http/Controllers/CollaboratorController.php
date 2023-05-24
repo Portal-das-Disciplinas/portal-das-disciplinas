@@ -58,6 +58,9 @@ class CollaboratorController extends Controller
 
             $nomeArquivo = $request->file('foto')->store('img_profiles', 'public');
         }
+
+
+
         $col = new Collaborator();
         $col->name = $request->nome;
         $col->email = $request->email;
@@ -70,7 +73,23 @@ class CollaboratorController extends Controller
         if (isset($nomeArquivo)) {
             $col->urlPhoto =  $nomeArquivo;
         }
-        $col->save();
+        $saved = $col->save();
+        if ($saved) {
+            $linkNames = $request->linkName;
+            $linkUrls = $request->linkUrl;
+            if (isset($linkNames) && isset($linkUrls)) {
+                for ($i = 0; $i < count($linkNames); $i++) {
+                    if ($linkNames[$i] != "" && $linkUrls[$i] != "") {
+                        CollaboratorLink::create([
+                            'name' => $linkNames[$i],
+                            'url' => $linkUrls[$i],
+                            'collaborator_id' => $col->id
+                        ]);
+                    }
+                }
+            }
+        }
+
         return redirect()->route('information');
     }
 
@@ -94,7 +113,7 @@ class CollaboratorController extends Controller
     public function edit($id)
     {
         $collaborator = Collaborator::find($id);
-        
+
         return view('collaborators.edit', ['collaborator' => $collaborator]);
     }
 
@@ -132,24 +151,21 @@ class CollaboratorController extends Controller
         $linkNames = $request->linkName;
         $linkUrls = $request->linkUrl;
         $links = $collaborator->links;
-        forEach($links as $link){
-            $link->delete(); 
+        foreach ($links as $link) {
+            $link->delete();
         }
-        if(isset($linkNames)){
-            for($i=0;$i<count($linkNames);$i++){
-                if($linkNames[$i]!="" && $linkUrls[$i]!=""){
+        if (isset($linkNames)) {
+            for ($i = 0; $i < count($linkNames); $i++) {
+                if ($linkNames[$i] != "" && $linkUrls[$i] != "") {
                     CollaboratorLink::create([
-                        'name'=> $linkNames[$i],
+                        'name' => $linkNames[$i],
                         'url' => $linkUrls[$i],
                         'collaborator_id' => $collaborator->id
-                    ]); 
+                    ]);
                 }
-
-
-                
             }
         }
-        
+
 
         return redirect()->route('information');
     }
