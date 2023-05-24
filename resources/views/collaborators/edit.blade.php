@@ -56,18 +56,78 @@ Edição de Colaborador
                     <label for="isManager">Coordenador</label>
                     <input id="isManager" name="isManager" type="checkbox" @if($collaborator->isManager) checked @endif>
                 </div>
+                <p class="mt-4 mb-4">Links</p>
+                
+                <div id="links">
+                    <!--render links -->
+                </div>
+                <div >
+                    <label class=" btn btn-info d-inline-block text-white" onclick="addLinkField()">Adicionar Link</label>
+                </div>
+                
                 <div class="d-flex justify-content-end">
-                    <a id="btn-cancel" href="{{route('information')}}" class="mr-4">Cancelar</a>
+                    <a id="btn-cancel" href="{{route('information')}}" class='mr-4'>Cancelar</a>
                     <button class="btn btn-success" type="submit">Atualizar</button>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>
 
 <script>
+    let collaborator = @json($collaborator);
+    let collabLinks = @json($collaborator->links);
+
+    
+    let links = [];
+
+    if(collabLinks){
+        links = collabLinks;
+        renderLinks();
+    }
     function submitImage() {
         document.querySelector('#form-collaborator-photo').submit();
+    }
+
+    function renderLinks(){
+        
+        var html = "";
+        links.forEach(function(link, i){
+            html += "<div class='mb-4'>"+
+                        "<input class='form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='"+link.name+"'>"+
+                        "<input class='form-control mt-1' name='linkUrl[]' type='text' placeholder='Url do link' value='"+link.url+"'>"+
+                        "<input name='linkId[]' type='hidden' value='"+link.id +"'>"+
+                        "<label id = '"+link.id+"'class='btn btn-link text-danger' onclick='deleteLink("+i+")'>remover</label>"+
+                    "</div>"
+        });
+        document.querySelector('#links').innerHTML = html;
+        
+        
+
+    }
+
+    function addLinkField(){
+        var linkNames = document.querySelectorAll("input[name='linkName[]']");
+        var linkUrls = document.querySelectorAll("input[name='linkUrl[]']");
+        for(var i=0;i< linkNames.length;i++){
+            links[i].name = linkNames[i].value;
+            links[i].url = linkUrls[i].value;
+        }
+        links.push({name:"", url:""});
+        renderLinks();
+        
+    }
+
+    function deleteLink(index){
+
+        links = links.filter(function(link,i){
+            if(index != i){
+                return link;
+            }
+        }); 
+        console.log('after delete:  '+ links);
+        renderLinks();
     }
 </script>
 

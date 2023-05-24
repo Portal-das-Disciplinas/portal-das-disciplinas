@@ -183,11 +183,11 @@ Sobre nós - Portal das Disciplinas IMD
             <div class="info-collaborators-container mt-4">
 
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <h2 style="color:black">{{$sectionNameManagers ?? "[Coordenadores]"}}</h2>
+                <h2>{{$sectionNameManagers ?? "[Coordenadores]"}}</h2>
                 <span onclick="showModal('modal-section-managers')">editar</span>
                 @else
                 @if($hasManagers)
-                <h2 >{{$sectionNameManagers ?? ""}}</h2>
+                <h2>{{$sectionNameManagers ?? ""}}</h2>
                 @endif
                 @endif
             </div>
@@ -203,6 +203,13 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('alt_image') $collaborator->name @endslot
                     @slot('email'){{$collaborator->email}} @endslot
                     @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('links')
+                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                        @foreach($collaborator->links as $link)
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        @endforeach
+                    </div>
+                    @endslot
                     @slot('github') {{$collaborator->github}} @endslot
                     @slot('idCollaborator') {{$collaborator->id}} @endslot
                     @endcomponent
@@ -224,7 +231,7 @@ Sobre nós - Portal das Disciplinas IMD
             <div class="info-collaborators-container mt-4">
 
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <h2 class="">{{$sectionNameCurrentCollaborators ?? "[Colaboradores Atuais]"}}</h2>
+                <h2>{{$sectionNameCurrentCollaborators ?? "[Colaboradores Atuais]"}}</h2>
                 <span onclick="showModal('modal-section-current')">editar</span>
                 @else
                 @if($hasCurrentCollaborators)
@@ -245,9 +252,17 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('alt_image') $collaborator->name @endslot
                     @slot('email'){{$collaborator->email}} @endslot
                     @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('links')
+                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                        @foreach($collaborator->links as $link)
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        @endforeach
+                    </div>
+                    @endslot
                     @slot('github') {{$collaborator->github}} @endslot
                     @slot('idCollaborator') {{$collaborator->id}} @endslot
                     @endcomponent
+
                     @if(Auth::user() && Auth::user()->isAdmin)
                     <div class="d-flex">
                         <a href="collaborators/{{$collaborator->id}}/edit" class="mr-2">Editar</a>
@@ -259,7 +274,7 @@ Sobre nós - Portal das Disciplinas IMD
                     </div>
                     @endif
                 </div>
-                @endif        
+                @endif
                 @endforeach
 
             </div>
@@ -288,6 +303,13 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('alt_image') $collaborator->name @endslot
                     @slot('email'){{$collaborator->email}} @endslot
                     @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('links')
+                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                        @foreach($collaborator->links as $link)
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        @endforeach
+                    </div>
+                    @endslot
                     @slot('github') {{$collaborator->github}} @endslot
                     @endcomponent
                     @if(Auth::user() && Auth::user()->isAdmin)

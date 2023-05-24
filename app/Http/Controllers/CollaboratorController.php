@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
+use App\Models\CollaboratorLink;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -93,6 +94,7 @@ class CollaboratorController extends Controller
     public function edit($id)
     {
         $collaborator = Collaborator::find($id);
+        
         return view('collaborators.edit', ['collaborator' => $collaborator]);
     }
 
@@ -125,6 +127,30 @@ class CollaboratorController extends Controller
         $collaborator->active = $active;
         $collaborator->isManager = $isManager;
         $collaborator->save();
+
+        $linkIds = $request->linkId;
+        $linkNames = $request->linkName;
+        $linkUrls = $request->linkUrl;
+        $links = $collaborator->links;
+        forEach($links as $link){
+            $link->delete(); 
+        }
+        if(isset($linkNames)){
+            for($i=0;$i<count($linkNames);$i++){
+                if($linkNames[$i]!="" && $linkUrls[$i]!=""){
+                    CollaboratorLink::create([
+                        'name'=> $linkNames[$i],
+                        'url' => $linkUrls[$i],
+                        'collaborator_id' => $collaborator->id
+                    ]); 
+                }
+
+
+                
+            }
+        }
+        
+
         return redirect()->route('information');
     }
 
