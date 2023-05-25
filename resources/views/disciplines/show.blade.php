@@ -286,23 +286,25 @@ mais.
             <h1 class="container-fluid  text-center mt-5">Faça uma pergunta!</h1>
             <!-- É necessário autenticaro  email do professor anteriormente -->
 
-            <form id="formDuvida" action="https://formsubmit.co/" method="POST">
-
+            <form id="formDuvida" action="https://formsubmit.co/eugenio@imd.ufrn.br" method="POST">
                 <input type="hidden" name="_cc" value="{{ $discipline->professor->public_email }}" />
+                <input type="hidden" name="_subject" value="Portal das Disciplinas - Nova requisição">
+                <input type="hidden" name="_template" value="table">
+
                 <input type="text" name="_honey" style="display:none">                
                 
                 <div class="form-group">
                     <label for="studentEmail">Email</label>
-                    <input type="email" id='studentEmail' name='Email do estudante' class="form-control" placeholder="Digite aqui o seu email..." required>
+                    <input type="email" id='studentEmail' name='Email do estudante' class="form-control" placeholder="Digite seu email" required>
                 </div>
                 <div class="form-group">
                     <label for="studentQuestion">Título</label>
-                    <input type='text' id='studentQuestion' name='Título da pergunta' class="form-control" placeholder="Sua pergunta aqui...">
+                    <input type='text' id='studentQuestion' name='Título da pergunta' class="form-control" placeholder="Digite sua pergunta">
                 </div>
 
                 <div class="form-group">
                     <label for="studentQuestionDetails">Descrição da pergunta</label>
-                    <textarea class="form-control" name='Detalhes' rows="3" placeholder="Forneça mais detalhes da sua pergunta..."></textarea>
+                    <textarea class="form-control" name='Detalhes' rows="3" placeholder="Forneça mais detalhes"></textarea>
                 </div>
                 <input type="hidden" name="_next" value='http://127.0.0.1:8000/disciplinas/{{$discipline->id}}'>
                 <button class='blue-btn btn w-100' type="submit">Enviar pergunta</button>
