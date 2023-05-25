@@ -312,7 +312,7 @@ mais.
                     <label for="studentQuestionDetails">Descrição da pergunta</label>
                     <textarea class="form-control" name='Detalhes' rows="3" placeholder="Forneça mais detalhes"></textarea>
                 </div>
-                <input type="hidden" name="_next" value='http://127.0.0.1:8000/disciplinas/{{$discipline->id}}'>
+                <input type="hidden" name="_next" value='https://portaldasdisciplinas.imd.ufrn.br/disciplinas/{{$discipline->id}}'>
                 <button class='blue-btn btn w-100' type="submit">Enviar pergunta</button>
             </form>
         </div>
