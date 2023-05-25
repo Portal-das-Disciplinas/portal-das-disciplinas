@@ -9,8 +9,13 @@
 @endsection
 
 @section('description')
-{{ $discipline->name }} - {{ $discipline->code }}, tutorado por {{ $discipline->professor->name }}. Clique para saiber
+@if (isset($discipline->professor->name))
+{{ $discipline->name }} - {{ $discipline->code }}, tutorado por {{ $discipline->professor->name }}. Clique para saber
 mais.
+@else
+{{ $discipline->name }} - {{ $discipline->code }}, tutorado por indefinido. Clique para saber
+
+@endif
 @endsection
 
 @section('content')
@@ -279,6 +284,7 @@ mais.
     @include('faqs.create_modal', ['discipline' => $discipline])
     @endif
 </div>
+@if (isset($discipline->professor->name))
 <div class=" pt-4 pb-5" style=' margin-bottom: -3rem;'>
 
     <div class="container col-md-5">
@@ -289,6 +295,7 @@ mais.
             <form id="formDuvida" action="https://formsubmit.co/" method="POST">
                 <!-- COLOQUE NO INPUT ABAIXO O EMAIL PARA ENVIAR UMA CÓPIA (EMAIL DE EUGÊNIO) -->
                 <input type="hidden" name="_cc" value="eugenio@imd.ufrn.br" />
+                
                 <input type="hidden" name="_cc" value="{{ $discipline->professor->public_email }}" />
                 <div class="form-group">
                     <label for="studentEmail">Email</label>
@@ -310,7 +317,10 @@ mais.
     </div>
 
 </div>
+@endif
+
 <div class="d-flex flex-row flex-wrap justify-content-center">
+@if (isset($discipline->professor->name))
     <div class="conainer">
         <div class='section mb-5'>
             <h1 class="mb-3">Professor</h1>
@@ -347,8 +357,10 @@ mais.
                 </div>
             </div>
         </div>
-
     </div>
+@else
+
+@endif
 
     <!-- Seção créditos -->
     <div class="d-flex flex-column ml-5">
