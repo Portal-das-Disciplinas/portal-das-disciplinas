@@ -284,8 +284,7 @@ mais.
     <div class="container col-md-5">
         <div class="section">
             <h1 class="container-fluid  text-center mt-5">Faça uma pergunta!</h1>
-            <!-- É necessário autenticaro  email do professor anteriormente -->
-
+ 
             <form id="formDuvida" action="https://formsubmit.co/eugenio@imd.ufrn.br" method="POST">
                 <input type="hidden" name="_cc" value="{{ $discipline->professor->public_email }}" />
                 <input type="hidden" name="_subject" value="Portal das Disciplinas - Nova requisição">
