@@ -287,9 +287,10 @@ mais.
             <!-- É necessário autenticaro  email do professor anteriormente -->
 
             <form id="formDuvida" action="https://formsubmit.co/" method="POST">
-                <!-- COLOQUE NO INPUT ABAIXO O EMAIL PARA ENVIAR UMA CÓPIA (EMAIL DE EUGÊNIO) -->
-                <input type="hidden" name="_cc" value="eugenio@imd.ufrn.br" />
+
                 <input type="hidden" name="_cc" value="{{ $discipline->professor->public_email }}" />
+                <input type="text" name="_honey" style="display:none">                
+                
                 <div class="form-group">
                     <label for="studentEmail">Email</label>
                     <input type="email" id='studentEmail' name='Email do estudante' class="form-control" placeholder="Digite aqui o seu email..." required>
@@ -544,11 +545,6 @@ mais.
 @endsection
 @section('scripts-bottom')
 <script>
-    document.getElementById("formDuvida").addEventListener("submit", function(event) {
-        var studentEmail = document.getElementById("studentEmail").value;
-        var formAction = "https://formsubmit.co/" + encodeURIComponent(studentEmail);
-        this.action = formAction;
-    });
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
