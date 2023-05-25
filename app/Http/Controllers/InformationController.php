@@ -29,7 +29,7 @@ class InformationController extends Controller
             if(!$collaborator->isManager && $collaborator->active){
                 $hasCurrentCollaborators = true;
             }
-            if(!$collaborator->isManager && !$collaborator->active){
+            if(!$collaborator->active){
                 $hasFormerCollaborators = true;
             }
         }

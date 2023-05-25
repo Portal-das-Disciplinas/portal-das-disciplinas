@@ -215,7 +215,7 @@ Sobre nós - Portal das Disciplinas IMD
             </div>
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($collaborators as $collaborator)
-                @if($collaborator->isManager)
+                @if($collaborator->active && $collaborator->isManager)
                 <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
                     @component('components.info_contributors')
                     @slot('name') {{$collaborator->name}} @endslot
@@ -315,7 +315,7 @@ Sobre nós - Portal das Disciplinas IMD
             @if(true)
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($collaborators as $collaborator)
-                @if(!$collaborator->isManager && !$collaborator->active )
+                @if(!$collaborator->active )
                 <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
                     @component('components.info_contributors')
                     @slot('name') {{$collaborator->name}} @endslot
