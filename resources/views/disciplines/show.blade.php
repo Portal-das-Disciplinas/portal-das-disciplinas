@@ -9,8 +9,13 @@
 @endsection
 
 @section('description')
-{{ $discipline->name }} - {{ $discipline->code }}, tutorado por {{ $discipline->professor->name }}. Clique para saiber
+@if (isset($discipline->professor->name))
+{{ $discipline->name }} - {{ $discipline->code }}, tutorado por {{ $discipline->professor->name }}. Clique para saber
 mais.
+@else
+{{ $discipline->name }} - {{ $discipline->code }}, tutorado por indefinido. Clique para saber
+
+@endif
 @endsection
 
 @section('content')
@@ -279,6 +284,7 @@ mais.
     @include('faqs.create_modal', ['discipline' => $discipline])
     @endif
 </div>
+@if (isset($discipline->professor->name))
 <div class=" pt-4 pb-5" style=' margin-bottom: -3rem;'>
 
     <div class="container col-md-5">
@@ -286,22 +292,25 @@ mais.
             <h1 class="container-fluid  text-center mt-5">Faça uma pergunta!</h1>
             <!-- É necessário autenticaro  email do professor anteriormente -->
 
-            <form id="formDuvida" action="https://formsubmit.co/" method="POST">
-                <!-- COLOQUE NO INPUT ABAIXO O EMAIL PARA ENVIAR UMA CÓPIA (EMAIL DE EUGÊNIO) -->
-                <input type="hidden" name="_cc" value="eugenio@imd.ufrn.br" />
+            <form id="formDuvida" action="https://formsubmit.co/eugenio@imd.ufrn.br" method="POST">
                 <input type="hidden" name="_cc" value="{{ $discipline->professor->public_email }}" />
+                <input type="hidden" name="_subject" value="Portal das Disciplinas - Nova requisição">
+                <input type="hidden" name="_template" value="table">
+
+                <input type="text" name="_honey" style="display:none">                
+                
                 <div class="form-group">
                     <label for="studentEmail">Email</label>
-                    <input type="email" id='studentEmail' name='Email do estudante' class="form-control" placeholder="Digite aqui o seu email..." required>
+                    <input type="email" id='studentEmail' name='Email do estudante' class="form-control" placeholder="Digite seu email" required>
                 </div>
                 <div class="form-group">
                     <label for="studentQuestion">Título</label>
-                    <input type='text' id='studentQuestion' name='Título da pergunta' class="form-control" placeholder="Sua pergunta aqui...">
+                    <input type='text' id='studentQuestion' name='Título da pergunta' class="form-control" placeholder="Digite sua pergunta">
                 </div>
 
                 <div class="form-group">
                     <label for="studentQuestionDetails">Descrição da pergunta</label>
-                    <textarea class="form-control" name='Detalhes' rows="3" placeholder="Forneça mais detalhes da sua pergunta..."></textarea>
+                    <textarea class="form-control" name='Detalhes' rows="3" placeholder="Forneça mais detalhes"></textarea>
                 </div>
                 <input type="hidden" name="_next" value='https://portaldasdisciplinas.imd.ufrn.br/disciplinas/{{$discipline->id}}'>
                 <button class='blue-btn btn w-100' type="submit">Enviar pergunta</button>
@@ -310,7 +319,10 @@ mais.
     </div>
 
 </div>
+@endif
+
 <div class="d-flex flex-row flex-wrap justify-content-center">
+@if (isset($discipline->professor->name))
     <div class="conainer">
         <div class='section mb-5'>
             <h1 class="mb-3">Professor</h1>
@@ -347,8 +359,10 @@ mais.
                 </div>
             </div>
         </div>
-
     </div>
+@else
+
+@endif
 
     <!-- Seção créditos -->
     <div class="d-flex flex-column ml-5">
@@ -544,11 +558,6 @@ mais.
 @endsection
 @section('scripts-bottom')
 <script>
-    document.getElementById("formDuvida").addEventListener("submit", function(event) {
-        var studentEmail = document.getElementById("studentEmail").value;
-        var formAction = "https://formsubmit.co/" + encodeURIComponent(studentEmail);
-        this.action = formAction;
-    });
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })

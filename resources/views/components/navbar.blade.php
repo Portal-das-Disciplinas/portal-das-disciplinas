@@ -19,7 +19,7 @@
                   @guest
                       @if(Route::has('login'))
                           <a href="{{ route('login') }}"
-                              class='access-btn'>{{ __('Acesso Portal') }}</a>
+                              class='access-btn'>{{ __('Acesso Professores') }}</a>
                       @endif
                   @else
                   @endguest
