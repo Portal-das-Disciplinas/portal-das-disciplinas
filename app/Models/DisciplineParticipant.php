@@ -5,23 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Collaborator extends Model
+class DisciplineParticipant extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'bond',
         'role',
         'email',
-        'lattes',
-        'github',
-        'urlPhoto',
-        'isManager',
-        'active'
+        'discipline_id'
     ];
 
-    public function links(){
-        return $this->hasMany(CollaboratorLink::class);
+    function discipline(){
+        return $this->belongsTo(Discipline::class);
+    }
+
+    function links(){
+       return $this->hasMany(ParticipantLink::class); 
     }
 }

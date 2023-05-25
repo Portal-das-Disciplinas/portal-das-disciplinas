@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
+use App\Models\CollaboratorLink;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -47,21 +48,19 @@ class CollaboratorController extends Controller
         $active = true;
 
         if ($request->coordenador == 'on') {
-            if (Collaborator::query()->where('isManager', true)->exists()) {
-                return redirect()->back()->withErrors(['coordenador' => 'Coordenador já existente']);
-            } else {
-                $isManager = true;
-            }
+            $isManager = true;
         }
         if ($request->ativo != 'on') {
             $active = false;
         }
 
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
-            //$nomeArquivo = (md5($request->foto->getClientOriginalName() . strtotime("now"))) . "." . $request->foto->extension();
-            //$request->foto->move(public_path('/img/profiles_img/'), $nomeArquivo);
+
             $nomeArquivo = $request->file('foto')->store('img_profiles', 'public');
         }
+
+
+
         $col = new Collaborator();
         $col->name = $request->nome;
         $col->email = $request->email;
@@ -72,10 +71,25 @@ class CollaboratorController extends Controller
         $col->isManager = $isManager;
         $col->active = $active;
         if (isset($nomeArquivo)) {
-            // dd($nomeArquivo);
             $col->urlPhoto =  $nomeArquivo;
         }
-        $col->save();
+        $saved = $col->save();
+        if ($saved) {
+            $linkNames = $request->linkName;
+            $linkUrls = $request->linkUrl;
+            if (isset($linkNames) && isset($linkUrls)) {
+                for ($i = 0; $i < count($linkNames); $i++) {
+                    if ($linkNames[$i] != "" && $linkUrls[$i] != "") {
+                        CollaboratorLink::create([
+                            'name' => $linkNames[$i],
+                            'url' => $linkUrls[$i],
+                            'collaborator_id' => $col->id
+                        ]);
+                    }
+                }
+            }
+        }
+
         return redirect()->route('information');
     }
 
@@ -99,6 +113,7 @@ class CollaboratorController extends Controller
     public function edit($id)
     {
         $collaborator = Collaborator::find($id);
+
         return view('collaborators.edit', ['collaborator' => $collaborator]);
     }
 
@@ -122,13 +137,6 @@ class CollaboratorController extends Controller
             $isManager = true;
         }
         $collaborator = Collaborator::find($id);
-
-        if ($isManager && (Collaborator::where('isManager', true)->exists()) && ($collaborator->isManager == false)) {
-            return redirect()->back()->withErrors(['coordenador' => 'Coordenador já existente']);
-        }
-
-
-
         $collaborator->name = $request->name;
         $collaborator->email = $request->email;
         $collaborator->bond = $request->bond;
@@ -138,6 +146,27 @@ class CollaboratorController extends Controller
         $collaborator->active = $active;
         $collaborator->isManager = $isManager;
         $collaborator->save();
+
+        $linkIds = $request->linkId;
+        $linkNames = $request->linkName;
+        $linkUrls = $request->linkUrl;
+        $links = $collaborator->links;
+        foreach ($links as $link) {
+            $link->delete();
+        }
+        if (isset($linkNames)) {
+            for ($i = 0; $i < count($linkNames); $i++) {
+                if ($linkNames[$i] != "" && $linkUrls[$i] != "") {
+                    CollaboratorLink::create([
+                        'name' => $linkNames[$i],
+                        'url' => $linkUrls[$i],
+                        'collaborator_id' => $collaborator->id
+                    ]);
+                }
+            }
+        }
+
+
         return redirect()->route('information');
     }
 

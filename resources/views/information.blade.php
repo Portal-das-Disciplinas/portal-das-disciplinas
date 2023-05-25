@@ -6,114 +6,154 @@ Sobre nós - Portal das Disciplinas IMD
 @section('styles-head')
 <link rel="stylesheet" href="{{asset('css/about.css')}}">
 @endsection
-
 @section('content')
-<div id="modal-information" class="modal-information modal-information-invisible">
-    <div class="content">
-        <h3>Cadastro de Colaborador</h3>
-        <form id="collaborators-form" action="{{route('collaborators.store')}}" enctype="multipart/form-data" method='post'>
-            @csrf
-            <label class="btn btn-outline-info"for="fotoColaborador" name="foto">Adicionar Foto</label>
-            <input class="d-none" id="fotoColaborador" name="foto" type='file' onchange="changeFileName()">
-            <small id="fileName">Nenhum arquivo selecionado</small>
-            <label for="nomeColaborador">Nome</label>
-            <input id="nomeColaborador" name="nome" type=text class="form-control" placeholder="Nome e Sobrenome" required>
-            <label for="emailColaborador">e-mail</label>
-            <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail" required>
-            <label for="vinculoColaborador">Vínculo</label>
-            <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" placeholder="bolsista, voluntário..." required>
-            <label for="funcaoColaborador">Função</label>
-            <input id="funcaoColaborador" name="funcao" type=text class="form-control" placeholder="Desenvolvedor, Designer, ...">
-            <label for="lattesColaborador">Lattes</label>
-            <input id="lattesColaborador" name="lattes" type="text" class="form-control" placeholder="Endereço do currículo latttes">
-            <label for="githubColaborador">Github</label>
-            <input id="githubColaborador" name="github" type="text" class="form-control" placeholder="Github">
-            <div>
-                <label for="colaboradorAtivo">Ativo</label>
-                <input id="colaboradorAtivo" name="ativo" type="checkbox" checked>
+<div id="modal-information" class="modal fade" tabindex="-1" role='dialog'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Cadastro de Colaborador</h2>
             </div>
-            <div>
-                <label for="coordenador">Coordenador</label>
-                <input id="coordenador" name="coordenador" type="checkbox">
+            <div class="modal-body">
+                <form id="collaborators-form" class="form" action="{{route('collaborators.store')}}" enctype="multipart/form-data" method='post'>
+                    @csrf
+                    <div class="form-group">
+                        <label class="btn btn-outline-info" for="fotoColaborador" name="foto">Adicionar Foto</label>
+                        <input class="d-none" id="fotoColaborador" name="foto" type='file' onchange="changeFileName()">
+                        <small id="fileName">Nenhum arquivo selecionado</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="nomeColaborador">Nome</label>
+                        <input id="nomeColaborador" name="nome" type=text class="form-control" placeholder="Nome e Sobrenome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emailColaborador">E-mail</label>
+                        <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vinculoColaborador">Vínculo</label>
+                        <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" placeholder="bolsista, voluntário..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="funcaoColaborador">Função</label>
+                        <input id="funcaoColaborador" name="funcao" type=text class="form-control" placeholder="Desenvolvedor, Designer, ...">
+                    </div>
+                    <div class="form-group">
+                        <label for="lattesColaborador">Lattes</label>
+                        <input id="lattesColaborador" name="lattes" type="text" class="form-control" placeholder="Endereço do currículo latttes">
+                    </div>
+                    <div class="form-group">
+                        <label for="githubColaborador">Github</label>
+                        <input id="githubColaborador" name="github" type="text" class="form-control" placeholder="Github">
+                    </div>
+                    <hr class="hr">
+
+                    <div>
+                        <label class="text-primary">Links</label>
+                        <div id="links" class="mb-0">
+                            <!-- Conteúdo gerando por javascript: function renderLinks() -->
+                        </div>
+                        <label class="btn btn-info text-white mt-0" onclick="addLinkField()">Adicionar Link</label>
+                    </div>
+                    <div class=" d-flex justify-content-start align-items-baseline">
+                        <input id="colaboradorAtivo" class="mr-2" name="ativo" type="checkbox" checked>
+                        <label for="colaboradorAtivo">Ativo</label>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-baseline">
+                        <input class="mr-2" id="coordenador" name="coordenador" type="checkbox">
+                        <label for="coordenador">Coordenador</label>
+                    </div>
+                    <input id="btn-cadastrar" type="submit" hidden>
+                </form>
+                <div class="modal-footer">
+                    <label class="btn btn-secondary" data-dismiss="modal">Fechar</label>
+                    <label class="btn btn-primary" for="btn-cadastrar">Cadastrar</label>
+                </div>
             </div>
-            <div class="buttons">
-                <input type="submit" hidden>
-                <button id="btn-fechar" onclick="closeModal(event,'modal-information')" class="btn btn-info">Fechar</button>
-                <button id="btn-cadastrar" onclick="submitEvent(event, 'modal-information','collaborators-form')" class="btn btn-primary btn-success" type="submit">Cadastrar</button>
-            </div>
-        </form>
+        </div>
     </div>
 
 </div>
 
-<div id="modal-section-current" class="modal-information modal-information-invisible">
-    <div class="content">
-        <h3>Título para a seção</h3>
-        <form id="form-current-collaborators" action="{{route('information.supdate')}}" method="post">
-            @method('POST')
-            @csrf
-            <input name="value" type="text" class="form-control" placeholder="Título da seção" required>
-            <input name="name" type="hidden" value="sectionNameCurrentCollaborators">
-            <div class="buttons">
-                <input type="submit" hidden>
-                <button onclick="closeModal(event,'modal-section-current')" class=" btn btn-info">Fechar</button>
-                <button onclick="submitEvent(event,'modal-texto-colaboradores','form-current-collaborators')" class="btn btn-success" type="submit">Cadastrar</button>
+<div id="modal-section-managers" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Título para a seção</h2>
             </div>
-        </form>
-
+            <div class="modal-body">
+                <form class="form" id="form-current-managers" action="{{route('information.supdate')}}" method="post">
+                    @method('POST')
+                    @csrf
+                    <div class="form-group">
+                        <input name="value" type="text" class="form-control" placeholder="Título da seção" required>
+                    </div>
+                    <input name="name" type="hidden" value="sectionNameManagers">
+                    <input id="btn-modal-section-managers" class="btn btn-success" type="submit" hidden>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <label for="btn-modal-section-managers" class="btn btn-primary">Cadastrar</label>
+            </div>
+        </div>
     </div>
 </div>
 
-<div id="modal-section-formers" class="modal-information modal-information-invisible">
-    <div class="content">
-        <h3>Título para as seções colaboradores</h3>
-        <form id="form-former-collaborators" action="{{route('information.supdate')}}" method="post">
-            @method('POST')
-            @csrf
-            <input name="value" type="text" class="form-control" placeholder="Título da seção" required>
-            <input name="name" type="hidden" value="sectionNameFormerCollaborators">
-            <div class="buttons">
-                <input type="submit" hidden>
-                <button onclick="closeModal(event,'modal-section-formers')" class=" btn btn-info">Fechar</button>
-                <button onclick="submitEvent(event,'modal-section-formers','form-former-collaborators')" class="btn btn-success" type="submit">Cadastrar</button>
-            </div>
-        </form>
 
+<div id="modal-section-current" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Título para a seção</h3>
+            </div>
+            <div class="modal-body">
+                <form id="form-current-collaborators" class="form" action="{{route('information.supdate')}}" method="post">
+                    @method('POST')
+                    @csrf
+                    <div class="form-group">
+                        <input name="value" type="text" class="form-control" placeholder="Título da seção" required>
+                    </div>
+                    <input name="name" type="hidden" value="sectionNameCurrentCollaborators">
+                    <input id="btn-modal-section-current" type="submit" hidden>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <label for="btn-modal-section-current" class="btn btn-primary">Cadastrar</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-section-formers" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Título para a seção</h2>
+            </div>
+            <div class="modal-body">
+                <form id="form-former-collaborators" class="form" action="{{route('information.supdate')}}" method="post">
+                    @method('POST')
+                    @csrf
+                    <div class="form-group">
+                        <input name="value" type="text" class="form-control" placeholder="Título da seção" required>
+                    </div>
+                    <input name="name" type="hidden" value="sectionNameFormerCollaborators">
+                    <input id="btn-modal-section-formers" type="submit" hidden>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <label for="btn-modal-section-formers" class="btn btn-primary">Cadastrar</label>
+            </div>
+        </div>
     </div>
 </div>
 
 
 <script>
-
-    function changeFileName(){
-       document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
-    }
-
-    function showModal(idModal) {
-        var modal = document.getElementById(idModal);
-        scrollTo(0, 0);
-        modal.classList.remove("modal-information-invisible");
-        modal.querySelector('input[type=text]').focus();
-    }
-
-    function closeModal(event, idModal) {
-        var modal = document.getElementById(idModal);
-        event.preventDefault();
-        modal.classList.add("modal-information-invisible");
-        var elements = document.querySelector('#' + idModal).querySelector('form').querySelectorAll('input[type=text] ,input[type=email]');
-        elements.forEach((input) => {
-            input.value = "";
-        });
-    }
-
-    function submitEvent(event, idModal, idForm) {
-        if (document.getElementById('idForm').checkValidity()) {
-            var modal = document.getElementById(idModal);
-            modal.classList.add("modal-information-invisible");
-        }
-
-
-
+    function changeFileName() {
+        document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
     }
 </script>
 <!-- Styles -->
@@ -121,10 +161,10 @@ Sobre nós - Portal das Disciplinas IMD
     <h1 class='text-white'>Sobre & Colabore</h1>
 </div>
 @if($errors->any())
-            <h3 class="alert alert-danger text-center">
-                {{$errors->first()}}
-            </h3>
-            @endif
+<h3 class="alert alert-danger text-center">
+    {{$errors->first()}}
+</h3>
+@endif
 
 <div class='container py-5' id="top-container">
 
@@ -155,51 +195,27 @@ Sobre nós - Portal das Disciplinas IMD
                 </ul>
             </div>
         </div>
-        
+
 
         <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
 
             @if(Auth::user() && Auth::user()->isAdmin)
-            <button id="showb" class="btn btn-success btn-sm mt-4 mb-4" onclick="showModal('modal-information')">Adicionar Colaborador</button>
+            <button id="showb" class="btn btn-success btn-sm mt-4 mb-4" data-toggle="modal" data-target="#modal-information" onclick="showModsal('modal-information')">Adicionar Colaborador</button>
             @endif
-            <div class="info-collaborators-container">
-               
+            <div class="info-collaborators-container mt-4">
+
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <h2 class="mb-5">{{$sectionNameCurrentCollaborators ?? "[Colaboradores Atuais]"}}</h2>
-                <span onclick="showModal('modal-section-current')">editar</span>
+                <h2>{{$sectionNameManagers ?? "[Coordenadores]"}}</h2>
+                <span data-toggle="modal" data-target="#modal-section-managers">editar</span>
                 @else
-                @if(isset($manager) || sizeof($collaborators) > 0)
-                <h2 class="mb-5">{{$sectionNameCurrentCollaborators ?? ""}}</h2>
+                @if($hasManagers)
+                <h2>{{$sectionNameManagers ?? ""}}</h2>
                 @endif
                 @endif
             </div>
-            <div class="row">
-                @if(isset($manager))
-                @component('components.info_contributors')
-                @slot('name') {{$manager->name}} @endslot
-                @slot('profession') {{$manager->role}} @endslot
-                @slot('occupation') {{$manager->bond}} @endslot
-                @slot('email') {{$manager->email}} @endslot
-                @slot('lattes') {{$manager->lattes}} @endslot
-                @slot('image') {{$manager->urlPhoto}} @endslot
-                @slot('github') {{$manager->github}} @endslot
-                @endcomponent
-                @endif
-            </div>
-            @if(Auth::user() && Auth::user()->isAdmin)
-            @if(isset($manager))
-            <div class="d-flex">
-                <a href="collaborators/{{$manager->id}}/edit" class="mr-2">Editar</a>
-                <form action="collaborators/{{$manager->id}}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <input type="submit" class="btn btn-outline-danger btn-sm align-text-bottom ml-2" value="remover">
-                </form>
-            </div>
-            @endif
-            @endif
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($collaborators as $collaborator)
+                @if($collaborator->active && $collaborator->isManager)
                 <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
                     @component('components.info_contributors')
                     @slot('name') {{$collaborator->name}} @endslot
@@ -209,6 +225,13 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('alt_image') $collaborator->name @endslot
                     @slot('email'){{$collaborator->email}} @endslot
                     @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('links')
+                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                        @foreach($collaborator->links as $link)
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        @endforeach
+                    </div>
+                    @endslot
                     @slot('github') {{$collaborator->github}} @endslot
                     @slot('idCollaborator') {{$collaborator->id}} @endslot
                     @endcomponent
@@ -223,25 +246,25 @@ Sobre nós - Portal das Disciplinas IMD
                     </div>
                     @endif
                 </div>
-
+                @endif
                 @endforeach
 
             </div>
+            <div class="info-collaborators-container mt-4">
 
-           
-            <div class="info-collaborators-container">
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <h2 class="mt-4">{{$sectionNameFormerCollaborators ?? "[Antigos Colaboradores]"}} </h2>
-                <span onclick="showModal('modal-section-formers')">editar</span>
+                <h2>{{$sectionNameCurrentCollaborators ?? "[Colaboradores Atuais]"}}</h2>
+                <span data-toggle="modal" data-target="#modal-section-current">editar</span>
                 @else
-                @if(sizeof($formerCollaborators)>0)
-                <h2 class="mt-4">{{$sectionNameFormerCollaborators ?? ""}} </h2>
+                @if($hasCurrentCollaborators)
+                <h2>{{$sectionNameCurrentCollaborators ?? ""}}</h2>
                 @endif
-                @endif                  
+                @endif
             </div>
-            @if(sizeof($formerCollaborators)>0)
+
             <div class="d-flex flex-wrap justify-content-around mt-4">
-                @foreach($formerCollaborators as $collaborator)
+                @foreach($collaborators as $collaborator)
+                @if(!$collaborator->isManager && $collaborator->active)
                 <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
                     @component('components.info_contributors')
                     @slot('name') {{$collaborator->name}} @endslot
@@ -251,6 +274,64 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('alt_image') $collaborator->name @endslot
                     @slot('email'){{$collaborator->email}} @endslot
                     @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('links')
+                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                        @foreach($collaborator->links as $link)
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        @endforeach
+                    </div>
+                    @endslot
+                    @slot('github') {{$collaborator->github}} @endslot
+                    @slot('idCollaborator') {{$collaborator->id}} @endslot
+                    @endcomponent
+
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                    <div class="d-flex">
+                        <a href="collaborators/{{$collaborator->id}}/edit" class="mr-2">Editar</a>
+                        <form action="collaborators/{{$collaborator->id}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" class="btn btn-outline-danger btn-sm align-text-bottom ml-2" value="remover">
+                        </form>
+                    </div>
+                    @endif
+                </div>
+                @endif
+                @endforeach
+
+            </div>
+
+
+            <div class="info-collaborators-container mt-4">
+                @if(Auth::user() && Auth::user()->isAdmin)
+                <h2>{{$sectionNameFormerCollaborators ?? "[Antigos Colaboradores]"}} </h2>
+                <span data-toggle="modal" data-target="#modal-section-formers">editar</span>
+                @else
+                @if($hasFormerCollaborators)
+                <h2>{{$sectionNameFormerCollaborators ?? ""}} </h2>
+                @endif
+                @endif
+            </div>
+            @if(true)
+            <div class="d-flex flex-wrap justify-content-around mt-4">
+                @foreach($collaborators as $collaborator)
+                @if(!$collaborator->active )
+                <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
+                    @component('components.info_contributors')
+                    @slot('name') {{$collaborator->name}} @endslot
+                    @slot('profession') {{$collaborator->role}} @endslot
+                    @slot('occupation') {{$collaborator->bond}} @endslot
+                    @slot('image') {{$collaborator->urlPhoto}} @endslot
+                    @slot('alt_image') $collaborator->name @endslot
+                    @slot('email'){{$collaborator->email}} @endslot
+                    @slot('lattes') {{$collaborator->lattes}} @endslot
+                    @slot('links')
+                    <div class="d-flex justify-content-center align-items-center flex-wrap">
+                        @foreach($collaborator->links as $link)
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        @endforeach
+                    </div>
+                    @endslot
                     @slot('github') {{$collaborator->github}} @endslot
                     @endcomponent
                     @if(Auth::user() && Auth::user()->isAdmin)
@@ -265,6 +346,7 @@ Sobre nós - Portal das Disciplinas IMD
 
                     @endif
                 </div>
+                @endif
                 @endforeach
             </div>
             @endif
@@ -316,6 +398,56 @@ Sobre nós - Portal das Disciplinas IMD
 
 
 </div>
+<script>
+    links = [];
 
+    function renderLinks() {
+        var html = "";
+        links.forEach(function(link, i) {
+            html += "<div class='mb-4'>" +
+                "<input class=' mb-1 form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='" + link.name + "'>" +
+                "<input class='form-control' name='linkUrl[]' type='text' placeholder='Url do link' value='" + link.url + "'>" +
+                "<label id = '" + link.id + "'class='btn btn-link text-danger' onclick='deleteLinkField(" + i + ")'>remover</label>" +
+                "</div>"
+        });
+        return html;
+    }
+
+    function addLinkField() {
+
+        linkNames = document.querySelectorAll("input[name='linkName[]']");
+        linkUrls = document.querySelectorAll("input[name='linkUrl[]']");
+
+        for (var i = 0; i < linkNames.length; i++) {
+            links[i].name = linkNames[i].value;
+            links[i].url = linkUrls[i].value;
+        }
+
+        links.push({
+            name: "",
+            url: ""
+        });
+        document.querySelector('#links').innerHTML = renderLinks();
+    }
+
+    function deleteLinkField(index) {
+
+        linkNames = document.querySelectorAll("input[name='linkName[]']");
+        linkUrls = document.querySelectorAll("input[name='linkUrl[]']");
+
+        for (var i = 0; i < linkNames.length; i++) {
+            links[i].name = linkNames[i].value;
+            links[i].url = linkUrls[i].value;
+        }
+
+        links = links.filter(function(link, i) {
+            if (index != i) {
+                return link;
+            }
+        });
+
+        document.querySelector('#links').innerHTML = renderLinks();
+    }
+</script>
 
 @endsection

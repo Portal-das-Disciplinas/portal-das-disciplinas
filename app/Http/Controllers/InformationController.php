@@ -17,11 +17,29 @@ class InformationController extends Controller
 
     public function index(Request $request)
     {
-        $manager = Collaborator::query()->where('isManager', true)->first();
-        $actualCollabs = Collaborator::query()->where('isManager', false)->where('active', true)->get();
-        $formerCollabs = Collaborator::query()->where('active', false)->get();
+
+        $collaborators = Collaborator::All();
+        $hasManagers = false;
+        $hasCurrentCollaborators = false;
+        $hasFormerCollaborators = false;
+        foreach($collaborators as $collaborator){
+            if($collaborator->isManager && $collaborator->active){
+                $hasManagers = true;
+            }
+            if(!$collaborator->isManager && $collaborator->active){
+                $hasCurrentCollaborators = true;
+            }
+            if(!$collaborator->active){
+                $hasFormerCollaborators = true;
+            }
+        }
+        $managerSection = null;
         $currentCollaboratorsSection = null;
         $formerCollaboratorsSection = null;
+        $query = Information::query()->where('name', "sectionNameManagers");
+        if ($query->exists()) {
+            $managerSection = $query->first();
+        }
         $query = Information::query()->where('name', "sectionNameCurrentCollaborators");
         if ($query->exists()) {
             $currentCollaboratorsSection = $query->first();
@@ -32,13 +50,14 @@ class InformationController extends Controller
         }
 
         return view('information', [
-            'manager' => $manager ? $manager : null,
-            'formerCollaborators' => $formerCollabs,
-            'collaborators' => $actualCollabs,
+            'collaborators' => $collaborators,
+            'hasManagers' => $hasManagers,
+            'hasCurrentCollaborators' => $hasCurrentCollaborators,
+            'hasFormerCollaborators' => $hasFormerCollaborators,
+            'sectionNameManagers' => $managerSection ? $managerSection->value : null,
             'sectionNameCurrentCollaborators' => $currentCollaboratorsSection ? $currentCollaboratorsSection->value : null,
             'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection ? $formerCollaboratorsSection->value : null,
-            'idcurrent' =>  $currentCollaboratorsSection ? $currentCollaboratorsSection->id : null,
-            'idformer' =>   $formerCollaboratorsSection ? $formerCollaboratorsSection->id : null
+            
         ]);
     }
 
@@ -60,7 +79,6 @@ class InformationController extends Controller
 
     public function update(Request $request)
     {
-
         $idCurrentCollabsText = $request['id-current'];
         $idFormerCollabsText = $request['id-former'];
         Information::where('id', $idCurrentCollabsText)->update(['value' => $request['text-current']]);

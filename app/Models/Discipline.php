@@ -160,4 +160,8 @@ class Discipline extends Model
     {
         return $this->belongsTo(Emphasis::class);
     }
+
+    public function disciplineParticipants(){
+        return $this->hasMany(DisciplineParticipant::class);
+    }
 }

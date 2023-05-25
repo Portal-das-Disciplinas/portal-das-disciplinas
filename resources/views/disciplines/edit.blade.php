@@ -325,18 +325,16 @@
                 <div class="w-25 my-5">
             <!-- Button trigger modal -->
 
-        </div>
-        <button type="button" class="btn btn-outline-white btn-block text-white" data-toggle="modal"
-                data-target="#faqs-create" style='background-color:#1155CC'>
-                Registrar FAQ
-            </button>
-            </div>
-    
+        </div>   
             <div class="row d-flex p-2 mt-3 justify-content-center">
+                <button type="button" class="btn btn-primary btn-sm mr-5" data-toggle="modal"
+                    data-target="#faqs-create">
+                    Registrar FAQ
+                </button>
                 <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
                     Cancelar
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm ml-5">Editar</button>
+                <button type="submit" class="btn btn-success btn-sm ml-5">Editar</button>
             </div>
         </form>
     </div>

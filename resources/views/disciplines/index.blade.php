@@ -129,7 +129,11 @@
 
 
                             </div>
-                            <div class="card-footer smaller-p m-0">{{ $discipline->professor->name }}</div>
+                            @if (isset($discipline->professor->name))
+                            <div class="card-footer smaller-p m-0">{{$discipline->professor->name}}</div>
+                            @else
+                            <div class="card-footer smaller-p m-0">Indefinido</div>
+                            @endif
                         </div>
                     </div>
                 @endforeach
