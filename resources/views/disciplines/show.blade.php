@@ -25,10 +25,10 @@ mais.
 </div>
 @if(session('cadastroOK'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-   <strong>Cadastro realizado com sucesso</strong>
-   <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+    <strong>Cadastro realizado com sucesso</strong>
+    <button type="button" class="close" aria-label="Close" data-dismiss="alert">
         <span aria-hidden="true"><strong>&times;</strong></span>
-   </button>
+    </button>
 </div>
 @endif
 <div class="container mt-4">
@@ -297,8 +297,8 @@ mais.
                 <input type="hidden" name="_subject" value="Portal das Disciplinas - Nova requisição">
                 <input type="hidden" name="_template" value="table">
 
-                <input type="text" name="_honey" style="display:none">                
-                
+                <input type="text" name="_honey" style="display:none">
+
                 <div class="form-group">
                     <label for="studentEmail">Email</label>
                     <input type="email" id='studentEmail' name='Email do estudante' class="form-control" placeholder="Digite seu email" required>
@@ -322,7 +322,7 @@ mais.
 @endif
 
 <div class="d-flex flex-row flex-wrap justify-content-center">
-@if (isset($discipline->professor->name))
+    @if (isset($discipline->professor->name))
     <div class="conainer">
         <div class='section mb-5'>
             <h1 class="mb-3">Professor</h1>
@@ -360,9 +360,9 @@ mais.
             </div>
         </div>
     </div>
-@else
+    @else
 
-@endif
+    @endif
 
     <!-- Seção créditos -->
     <div class="d-flex flex-column ml-5">
@@ -382,7 +382,7 @@ mais.
                 @method('DELETE')
                 <button class=" mr-0 p-0 text-danger btn btn-link" type="submit">remover</button>
             </form>
-            
+
             @endif
             <small class="d-block">
                 <span href="#" class="">{{$participant->role}}</span>
@@ -398,7 +398,7 @@ mais.
 
 
     </div><!--Seção créditos -->
-    
+
     <div class="modal" id="modal-add" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -406,7 +406,7 @@ mais.
                     <h2 class="modal-title">Cadastro de participante</h2>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action = "{{route('participants_discipline.store')}}">
+                    <form method="post" action="{{route('participants_discipline.store')}}">
                         @csrf
                         <div class="form-group">
                             <label for="name">Nome</label>
@@ -424,12 +424,12 @@ mais.
                         <div class="mb-1" id="links"><!--links -->
                             <!-- Conteudo dinâmico gerado por javascript-->
                             <!-- renderLinks() -->
-                            
+
                         </div><!--links -->
-                        <input id="submit-form"type="submit" hidden>
-                        <input name="idDiscipline" type=text value="{{$discipline->id}}" hidden> 
+                        <input id="submit-form" type="submit" hidden>
+                        <input name="idDiscipline" type=text value="{{$discipline->id}}" hidden>
                     </form>
-                    <button id="add-link-field" class="btn btn-outline-primary btn-sm" onclick = "addLinkField('modal-add')">Adicionar Link</button>
+                    <button id="add-link-field" class="btn btn-outline-primary btn-sm" onclick="addLinkField('modal-add')">Adicionar Link</button>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -447,7 +447,7 @@ mais.
                     <h2 class="modal-title">Edição de participante</h2>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action = "{{route('participants_discipline.update')}}">
+                    <form method="post" action="{{route('participants_discipline.update')}}">
                         @csrf
                         @method('PUT')
                         <div class="form-group">
@@ -466,11 +466,11 @@ mais.
                         <div class="mb-1" id="links"><!--links -->
                             <!-- Conteudo dinâmico gerado por javascript-->
                             <!-- renderLinks() -->
-                            
+
                         </div><!--links -->
-                        <input id="submit-form-update"type="submit" hidden>
+                        <input id="submit-form-update" type="submit" hidden>
                         <input name="idDiscipline" type='text' value="{{$discipline->id}}" hidden>
-                        <input name = "idParticipant" type="text" hidden>
+                        <input name="idParticipant" type="text" hidden>
                     </form>
                     <button id="add-link-field" onclick="addLinkField('modal-edit')" class="btn btn-outline-primary btn-sm">Adicionar Link</button>
                 </div>
@@ -487,71 +487,86 @@ mais.
 <script>
     let links = [];
 
-    function renderLinks(idModal){
+    function renderLinks(idModal) {
+        
         var html = "";
-        for(var i=0;i<links.length;i++){
-            html +=  "<div class=form-group>"+
-                                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter, Facebook, etc...'"+
-                                " value='"+links[i].linkName+"'>"+
-                                "<input class='form-control mt-1' name='link-url[]' type='text' placeholder='Url do link' "+
-                                " value='"+links[i].linkUrl+"'>"+
-                                /* label id=i servirá para armazenar o índice do elemento no array links */
-                                "<label id='"+ i  +"' class='btn btn-link mb-4 mt-0 p-0' "+"onclick='deleteFieldLink(event,\""+idModal+"\")'" +"> remover </label>"
-                            "</div>";  
+        for (var i = 0; i < links.length; i++) {
+            html += "<div class=form-group>" +
+                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter, Facebook, etc...'" +
+                " value='" + links[i].linkName + "' required>" +
+                "<input class='form-control mt-1' name='link-url[]' type='text' placeholder='Url do link' " +
+                " value='" + links[i].linkUrl + "' required>" +
+                /* label id=i servirá para armazenar o índice do elemento no array links */
+                "<label id='" + i + "' class='btn btn-link mb-4 mt-0 p-0' " + "onclick='deleteFieldLink(event,\"" + idModal + "\")'" + "> remover </label>"
+            "</div>";
         }
-        html += "<div class=form-group>"+
-                                "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter, Facebook, etc...'>"+
-                                "<input class='form-control mt-1' name='link-url[]' type='text' placeholder='Url do link' >"+
-                            "</div>"; 
+
         return html;
     }
-    
-    function addLinkField(modalId){
 
-        var linkNames = document.querySelectorAll("#"+ modalId+" input[name='link-name[]']");
-        var linkUrls = document.querySelectorAll("#"+ modalId+" input[name='link-url[]']");
-        var selectedParcipant = null;
-        links = [];
-        for(var i=0;i<linkNames.length;i++){
-            var element = {linkId: i, linkName:linkNames[i].value, linkUrl:linkUrls[i].value};
-            links.push(element);
+    function addLinkField(modalId) {
+        var linkNames = document.querySelectorAll("#" + modalId + " input[name='link-name[]']");
+        var linkUrls = document.querySelectorAll("#" + modalId + " input[name='link-url[]']");
+        for (var i = 0; i < linkNames.length; i++) {
+            links[i] = {
+                linkId: i,
+                linkName: linkNames[i].value,
+                linkUrl: linkUrls[i].value
+            };
         }
-        
-        document.querySelector("#"+modalId+" #links").innerHTML = renderLinks(modalId);
+        var element = {
+            linkName: "",
+            linkUrl: ""
+        };
+        links.push(element);
+        document.querySelector("#" + modalId + " #links").innerHTML = renderLinks(modalId);
     }
 
-    function deleteFieldLink(event, idModal){
+    function deleteFieldLink(event, modalId) {
+        
+        var linkNames = document.querySelectorAll("#" + modalId + " input[name='link-name[]']");
+        var linkUrls = document.querySelectorAll("#" + modalId + " input[name='link-url[]']");
+        for (var i = 0; i < linkNames.length; i++) {
+            links[i] = {
+                linkId: i,
+                linkName: linkNames[i].value,
+                linkUrl: linkUrls[i].value
+            };
+        }
         var index = event.target.id;
         links = links.filter(item => index != item.linkId);
-        for(var i=0;i<links.length;i++){
+
+        for (var i = 0; i < links.length; i++) {
             links[i].linkId = i;
         }
-        
-        document.querySelector("#"+idModal+" #links").innerHTML = renderLinks(idModal);
+
+        document.querySelector("#" + modalId + " #links").innerHTML = renderLinks(modalId);
     }
 
-    function openModalEdit(event){
+    function openModalEdit(event) {
         links = [];
         var discipline = @json($discipline);
-        var selectedParticipant =discipline.discipline_participants[event.target.id];
+        var selectedParticipant = discipline.discipline_participants[event.target.id];
         document.querySelector("#modal-edit input[name='idParticipant']").value = selectedParticipant.id;
         document.querySelector("#modal-edit input[name='name'").value = selectedParticipant.name;
         document.querySelector("#modal-edit input[name='role'").value = selectedParticipant.role;
         document.querySelector("#modal-edit input[name='email'").value = selectedParticipant.email;
 
-       
-        selectedParticipant.links.forEach(function(link, i){
-            var element = {linkId: i, linkName: link.name, linkUrl:link.url};
+
+        selectedParticipant.links.forEach(function(link, i) {
+            var element = {
+                linkId: i,
+                linkName: link.name,
+                linkUrl: link.url
+            };
             links.push(element);
         });
 
         document.querySelector("#modal-edit #links").innerHTML = renderLinks('modal-edit');
 
-        
+
 
     }
-
-    
 </script>
 
 

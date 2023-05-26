@@ -27,7 +27,7 @@ class DisciplineParticipantController extends Controller
 
         if ($linkNames) {
             for ($i = 0; $i < count($linkNames); $i++) {
-                if ($linkNames[$i] != null) {
+                if ($linkNames[$i] != null && $linkUrls[$i]!=null) {
                     ParticipantLink::create([
                         'name' => $linkNames[$i],
                         'url' => $linkUrls[$i],
