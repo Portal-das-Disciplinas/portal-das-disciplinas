@@ -320,6 +320,14 @@ mais.
 
 </div>
 @endif
+@if($errors->has('link'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>{{$errors->first('link')}}</strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true" style="font-size:25px">&times;</span>
+  </button>
+</div>
+@endif
 <div class="container mt-5"><!-- seção professor e créditos -->
     <div class="row g-5">
         @if (isset($discipline->professor->name))
@@ -421,7 +429,7 @@ mais.
     </div>
 </div><!-- seção professor e créditos -->
 
-<div class="modal" id="modal-add" role="dialog">
+<div class="modal fade" id="modal-add" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -436,7 +444,7 @@ mais.
                     </div>
                     <div class="form-group">
                         <label for="role">Função</label>
-                        <input class="form-control" id="role" name="role" type="text" placeholder="Função do participante nesta disciplina" required>
+                        <input class="form-control" id="role" name="role" type="text" placeholder="Função do participante nesta disciplina" maxlength=20 required>
                     </div>
                     <div class="form-group">
                         <label for="role">E-mail</label>
@@ -462,7 +470,7 @@ mais.
 </div><!--modal-add -->
 
 
-<div class="modal" id="modal-edit" role="dialog"><!--modal edit -->
+<div class="modal fade" id="modal-edit" role="dialog"><!--modal edit -->
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -478,17 +486,16 @@ mais.
                     </div>
                     <div class="form-group">
                         <label for="role">Função</label>
-                        <input class="form-control" id="role" name="role" type="text" placeholder="Função do participante desta disciplina" required>
+                        <input class="form-control" id="role" name="role" type="text" placeholder="Função do participante desta disciplina" maxlength=30 required>
                     </div>
                     <div class="form-group">
                         <label for="role">E-mail</label>
                         <input class="form-control" id="email" name="email" type="email" placeholder="E-mail" required>
                     </div>
                     <label>Links</label>
-                    <div class="mb-1" id="links"><!--links -->
-                        <!-- Conteudo dinâmico gerado por javascript-->
-                        <!-- renderLinks() -->
-
+                    <!-- Conteudo dinâmico gerado por javascript-->
+                    <!-- renderLinks() -->
+                    <div class="mb-1" id="links">
                     </div><!--links -->
                     <input id="submit-form-update" type="submit" hidden>
                     <input name="idDiscipline" type='text' value="{{$discipline->id}}" hidden>
@@ -504,6 +511,23 @@ mais.
     </div>
 </div><!--modal-edit -->
 
+<div id="modalAlertLinks" class="modal show fade" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary">
+                <h3 class="text-white">Erro</h3>
+            </div>
+            <div class="modal-body bg-secondary text-white">
+                <span>O participante pode ter até 3 links</span>
+            </div>
+            <div class="modal-footer bg-secondary">
+                <button class="btn btn-primary" data-dismiss="modal">Entendido</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
     let links = [];
 
@@ -511,13 +535,13 @@ mais.
 
         var html = "";
         for (var i = 0; i < links.length; i++) {
-            html += "<div class=form-group>" +
+            html += "<div class='form-group'>" +
                 "<input class='form-control' name='link-name[]' type='text' placeholder='Instragram, Twitter, Facebook, etc...'" +
-                " value='" + links[i].linkName + "' required>" +
+                " value='" + links[i].linkName + "' required maxlength=20>" +
                 "<input class='form-control mt-1' name='link-url[]' type='text' placeholder='Url do link' " +
-                " value='" + links[i].linkUrl + "' required>" +
+                " value='" + links[i].linkUrl + "' required >" +
                 /* label id=i servirá para armazenar o índice do elemento no array links */
-                "<label id='" + i + "' class='btn btn-link mb-4 mt-0 p-0' " + "onclick='deleteFieldLink(event,\"" + idModal + "\")'" + "> remover </label>"
+                "<label id='" + i + "' class='btn btn-link mb-4 mt-0 p-0' " + "onclick='deleteFieldLink(event,\"" + idModal + "\")'" + "> remover </label>"+
             "</div>";
         }
 
@@ -525,6 +549,14 @@ mais.
     }
 
     function addLinkField(modalId) {
+
+        let linkFields = document.querySelectorAll("#"+ modalId + " #links .form-group" );
+        if(linkFields.length > 2 ){
+            $('#modalAlertLinks').modal('show');
+            return;
+        }
+
+
         var linkNames = document.querySelectorAll("#" + modalId + " input[name='link-name[]']");
         var linkUrls = document.querySelectorAll("#" + modalId + " input[name='link-url[]']");
         for (var i = 0; i < linkNames.length; i++) {
