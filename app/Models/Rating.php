@@ -10,7 +10,7 @@ class Rating extends Model
     use HasFactory;
 
     /**
-     * The table associated with the model.
+     * O nome da tabela associada com o modelo.
      *
      * @var string
      */

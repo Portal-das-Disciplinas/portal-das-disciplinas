@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Representa a classificação da disciplina
+ * 
+ */
 class Classification extends Model
 {
     use HasFactory;
 
     /**
-     * The table associated with the model.
+     * Nome da tabela associada com o modelo
      *
      * @var string
      */

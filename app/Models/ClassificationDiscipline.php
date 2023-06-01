@@ -10,11 +10,14 @@ class ClassificationDiscipline extends Model
     use HasFactory;
 
     /**
-     * The table associated with the model.
+     * Nome da tabela associada com o modelo.
      *
      * @var string
      */
     protected $table = 'classifications_disciplines';
+    /**
+     * Nome da chave estrageira na tabela no banco de dados.
+     */
     protected $primaryKey = 'classification_id';
 
     /**
