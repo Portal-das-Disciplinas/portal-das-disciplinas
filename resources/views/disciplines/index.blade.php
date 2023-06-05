@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('styles-head')
-<link rel="stylesheet" href="{{asset('css/index.css')}}">
+<link rel="stylesheet" href="{{ asset('css/index_' . env('PROJETO') . '.css') }}">
 @endsection
 @section('content')
 
@@ -8,16 +8,13 @@
     <div class="container">
         <div class="row">
             <div class="col-12 text-center my-4 title-subject-container">
-                <h1 class="title-subject display-title " style='color: #1F2937'>Portal das Disciplinas - IMD/UFRN</h1>
+                <h1 class="title-subject display-title " style='color: #1F2937'>Portal das Disciplinas - {{env('PROJETO_NOME_UFRN')}}</h1>
                 <div class="row justify-content-center">
-                    <p class='p-text mt-3  text-center col-md-10  larger-p'>Cada disciplina aqui conta com entrevistas,
-                        informações, materiais, indicação de dificuldades e muito mais sobre componentes
-                        curriculares do Bacharelado em TI do IMD/UFRN.<p>
+                    <p class='p-text mt-3  text-center col-md-10  larger-p'>{{env('PROJETO_DESCRICAO_ENTRADA')}}<p>
                 </div>
             </div>
         </div>
     </div>
-
 </section>
 
 <section class='disciplines remove-margin-bottom'>

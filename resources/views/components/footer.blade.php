@@ -22,7 +22,7 @@
             <div id="section1">
                 <div class="logo-and-title d-flex align-items-center">
                     <img fluid id="imd-footer" src="{{ asset('img/imd-footer-2.png') }}"/>
-                    <p id="pdd-title" class="ml-3 footer-title">Portal das Disciplinas - IMD/UFRN</p>
+                    <p id="pdd-title" class="ml-3 footer-title">Portal das Disciplinas - {{env('PROJETO_NOME_COMPLETO')}}</p>
                 </div>
                 <!-- <p id="pdd-sub" class="mt-3 footer-sub">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus culpa est recusandae.</p> -->
             </div>
@@ -33,7 +33,7 @@
         <div class="row">
             <hr>
             <div id="eqp-div" class="d-flex justify-content-between w-100 mt-2 pb-3 info-imd">
-                <div class="mt-1">&copy; Instituto Metrópole Digital. Natal, <?php echo date('Y') ?>. Todos os direitos reservados.</div>
+                <div class="mt-1">&copy; {{env('PROJETO_NOME_COMPLETO')}}. {{env('PROJETO_CIDADE')}}, <?php echo date('Y') ?>. Todos os direitos reservados.</div>
                 <div id="eqp-link">Desenvolvido por: <a href="{{route('information')}}" class="eqp-link">Equipe do Portal das Disciplinas</a></div>
             </div>
         </div>

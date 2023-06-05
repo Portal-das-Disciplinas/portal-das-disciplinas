@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Cadastrar disciplina - Portal das Disciplinas IMD
+    Cadastrar disciplina - Portal das Disciplinas {{ env('PROJETO') }}
 @endsection
 
 @section('robots')

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Editar disciplina - Portal das Disciplinas IMD
+    Editar disciplina - Portal das Disciplinas {{ env('PROJETO') }}
 @endsection
 
 @section('robots')

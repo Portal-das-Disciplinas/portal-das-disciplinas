@@ -1,9 +1,8 @@
 
   <header class="sticky-top shadow">
       <div class="menu-container container d-flex mt-0 justify-content-between align-items-center">
-
           <a class="navbar-brand" href="{{ route('index') }}">
-              <img src="{{ asset('img/new-imd-logo.svg') }}" class='logo-navbar' alt="Logo do IMD">
+              <img src="{{ asset('img/logo_' . env('PROJETO') . '.svg') }}" class='logo-navbar' alt="Logo do {{env('PROJETO')}}">
           </a>
           <div class="menu-section">
               <div class="container-menu-burger">

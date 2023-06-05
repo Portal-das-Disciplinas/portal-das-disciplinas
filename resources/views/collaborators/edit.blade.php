@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 @section('title')
-Edição de Colaborador
+Edição de Colaborador 
 @endsection
 @section('content')
 <div class="d-flex flex-column align-items-center w-100">

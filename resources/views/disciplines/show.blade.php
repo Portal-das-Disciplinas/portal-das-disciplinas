@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-{{ $discipline->name }} - Portal das Disciplinas IMD
+{{ $discipline->name }} - Portal das Disciplinas {{ env('PROJETO') }}
 @endsection
 
 @section('styles-head')

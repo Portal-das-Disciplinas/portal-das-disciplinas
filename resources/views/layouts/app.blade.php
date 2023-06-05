@@ -9,13 +9,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="keywords" content="portal das disciplinas, imd">
     <meta name="robots" content="@yield('robots','all')">
-    <title>@yield('title', 'Portal das Disciplinas IMD')</title>
+    <title>@yield('title', 'Portal das Disciplinas '.  env('PROJETO'))</title>
     <meta name="description" content="@yield('description','Conheça as disciplinas do IMD de forma mais prática!')">
-    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="shortcut icon"  href="{{asset('favicon_'. env('PROJETO') .'.ico')}}">
     {{-- bootstrap CSS --}}
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     {{-- CSS --}}
-    <link rel="stylesheet" href="{{asset('css/globals.css')}}">
+    <link rel="stylesheet" href="{{asset('globals_'. env('PROJETO') .'.css')}}" >
     <link rel="stylesheet" href="{{asset('css/navbar.css')}}">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
