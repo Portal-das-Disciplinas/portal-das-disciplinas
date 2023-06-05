@@ -17,7 +17,7 @@ class Media extends Model
     protected $table = 'medias';
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que são atribuíveis em massa.
      *
      * @var array
      */
@@ -40,6 +40,7 @@ class Media extends Model
     ];
 
     /**
+     * Retorna a disciplina da qual este este objeto pertence.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function discipline()

@@ -17,7 +17,7 @@ class Role extends Model
     protected $table = 'roles';
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que são atribuíveis em massa.
      *
      * @var array
      */
@@ -27,6 +27,7 @@ class Role extends Model
     ];
 
     /**
+     * Retorna todos os usuários que possuem esse objeto
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function users()

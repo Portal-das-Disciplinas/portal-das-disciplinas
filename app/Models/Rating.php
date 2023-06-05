@@ -17,7 +17,7 @@ class Rating extends Model
     protected $table = 'rating';
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que são atribuíveis em massa.
      *
      * @var array
      */
@@ -29,6 +29,7 @@ class Rating extends Model
     ];
 
     /**
+     * Retorna a disciplina da qual este objeto pertence
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function discipline()
@@ -37,6 +38,7 @@ class Rating extends Model
     }
 
     /**
+     * Retorna o aluno do qual este objeto pertence
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function student()

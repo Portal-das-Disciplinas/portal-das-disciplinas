@@ -15,9 +15,12 @@ class DisciplineParticipantController extends Controller
         $this->middleware('admin');
     }
 
-    /*Salva os participantes que contribuiram com o material da disciplina e seu links de redes sociais, etc...*/
-    /*Se o nome do link for nulo, ou a url do link for nulo o controlador retorna para a view com erros */
-    /*Se ambos, link e url forem nulos, o link é ignorado */
+    /**
+     * Salva os participantes que contribuiram com o material da disciplina e seu links de redes sociais, etc...
+     * Se o nome do link for nulo, ou a url do link for nulo o controlador retorna para a view com erros
+     * Se ambos, link e url forem nulos, o link é ignorado
+     * @param $request Objeto que contém as informações da requisição http.
+     */
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -61,6 +64,10 @@ class DisciplineParticipantController extends Controller
         return redirect('disciplinas/'. $request->idDiscipline)->with('cadastroOK','Cadastro realizado com sucesso');
     }
 
+    /**
+     * Atualiza as informações da disciplina
+     * @param $request Objeto que contém as informações da requisição http.
+     */
     public function update(Request $request){
         DB::beginTransaction();
         $disciplineParticipant = DisciplineParticipant::find($request->idParticipant);
@@ -100,6 +107,10 @@ class DisciplineParticipantController extends Controller
         return redirect('disciplinas/'. $request->idDiscipline)->with(['AtualizacaoOK'=>'Atualizado']);
     }
 
+    /**
+     * Apaga uma disciplina no banco de dados
+     * @param $id Identificador da disciplina
+     */
     public function destroy($id){
         DisciplineParticipant::destroy($id);
         return redirect()->back();

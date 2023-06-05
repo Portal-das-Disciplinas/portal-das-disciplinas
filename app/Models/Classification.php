@@ -21,7 +21,7 @@ class Classification extends Model
     protected $table = 'classifications';
 
     /**
-     * The attributes that are mass assignable.
+     *Os atributos que podem ser associados em massa
      *
      * @var array
      */
@@ -30,6 +30,7 @@ class Classification extends Model
     ];
 
     /**
+     * 
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function disciplines()
@@ -40,6 +41,7 @@ class Classification extends Model
     }
 
     /**
+     * 
      * @param $discipline_id
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

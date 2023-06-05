@@ -5,22 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 /**
- * Esta classe representa as informações do colaborador do portal das disciplina.
- *
+ * Esta classe representa as informações do colaborador do portal das disciplina,
+ * como programadores, web designers, coordenadores, etc...
  */
 class Collaborator extends Model
 {
     use HasFactory;
     /**
-     * @param name Nome do colaborador
-     * @param bond Vinculo do colaborador com o projeto
-     * @param role Função do colaborador no projeto
-     * @param email E-mail do colaborador
-     * @param lattes Endereço do link do colaborador do seu perfil lattes.
-     * @param github Endereço do link do github do colaborador caso possua.
-     * @param urlPhoto Nome do arquivo da foto do colaborador.
-     * @param isManager Caso o colaborador seja coordenador, o valor é True. False caso contrário.
-     * @param active Caso o colaborador esteja ativo no projeto, o valor é True. False caso contrário
+     * Atributos que são atribuíveis em massa.\n
+     * name: Nome do colaborador.\n
+     * bond: Vinculo do colaborador com o projeto.\n
+     * role: Função do colaborador no projeto.\n
+     * email: E-mail do colaborador.\n
+     * lattes: Link da url do perfil lattes do colaborador.\n
+     * github: Link da url do perfil do github do colaborador.\n
+     * urlPhoto: Local da photo do colaborador no servidor.\n
+     * isManager: Determina se o colaborador é coordenador ou não.\n
+     * active: Determina se o colaborador está ativo no projeto.
      */
     protected $fillable = [
         'name',
@@ -36,7 +37,7 @@ class Collaborator extends Model
 
     /**
      * Retorna todos os links de redes sociais do colaborador
-     * @return <array,Collaborator>
+     * @return HasMany
      */
     public function links(){
         return $this->hasMany(CollaboratorLink::class);

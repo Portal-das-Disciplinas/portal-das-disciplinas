@@ -15,7 +15,7 @@ class Emphasis extends Model
     protected $table = 'emphasis';
     
     /**
-     * @param name Nome da ênfase
+     * Os 
      */
     protected $fillable = [
         'name'

@@ -16,9 +16,7 @@ class Information extends Model
     protected $table = "informations";/*!<Nome da tabela que representa esse modelo */
 
     /**
-     * Nomes dos campos da classe
-     * @param name é uma chave única que irá referenciar o nome no banco
-     * @param value O valor da informção.
+     * Atributos 
      */
     protected $fillable = [
         'name',

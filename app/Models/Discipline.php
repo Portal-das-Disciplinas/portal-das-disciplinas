@@ -18,7 +18,7 @@ class Discipline extends Model
     protected $table = 'disciplines';
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que são atribuiveis em massa.
      *
      * @var array
      */

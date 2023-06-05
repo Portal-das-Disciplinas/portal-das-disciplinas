@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Classe que contém as informações de usuário do sistema
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que são associados em massa.
      *
      * @var array
      */
@@ -25,7 +28,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Atributos que não deveriam ser exibidos em arrays.
      *
      * @var array
      */
@@ -44,6 +47,7 @@ class User extends Authenticatable
     ];
 
     /**
+     *
      * @param $discipline
      * @return bool
      */

@@ -6,16 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Objeto que guarda o link do colaborador do projeto Portal das Disciplinas.
+ * Objeto que guarda um link de uma rede social do colaborador do projeto Portal das Disciplinas.
+ * 
  */
 class CollaboratorLink extends Model
 {
     use HasFactory;
     /**
-     * Nome dos campos do modelo no banco de dados.
-     * @param name Nome do link da rede social do colaborador.
-     * @param url Endereço do link da rede social do colaborador.
-     * @param collaborator_id ID do colaborador do qual o link pertence.
+     * Atributos que são atribuíveis em massa.
+     * 
      */
     protected $fillable = [
         'name',
@@ -24,7 +23,7 @@ class CollaboratorLink extends Model
     ];
 
     /**
-     * Retorna o objeto Collaborator do qual o link pertence
+     * Retorna o colaborador do qual o link pertence.
      * @return Collaborator
      */
     public function collaborator(){

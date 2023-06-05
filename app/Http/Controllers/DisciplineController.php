@@ -20,7 +20,9 @@ use App\Models\Faq;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
+/**
+ * Controlador responsável por realizar as tarefas relacionadas com as disciplinas.
+ */
 class DisciplineController extends Controller
 {
     const VIEW_PATH = 'disciplines.';
