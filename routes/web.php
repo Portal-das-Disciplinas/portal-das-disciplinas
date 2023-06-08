@@ -41,6 +41,7 @@ Route::get('/', [DisciplineController::class, 'index'])->name('index');
 Route::post('/search', [DisciplineController::class, 'search'])->name('search');
 
 Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter']);
+Route::get('/discipline/filter/advanced', [DisciplineController::class, 'disciplineAdvancedFilter']);
 //--Desativada por enquanto
 // route::get('/minhasdisciplinas', [DisciplineController::class, 'mydisciplines'])->name('mydisciplines');
 

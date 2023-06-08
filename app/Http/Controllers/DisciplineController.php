@@ -59,18 +59,12 @@ class DisciplineController extends Controller
 
     public function disciplineFilter(Request $request)
     {
-        dd($request);
+        // dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
 
         $emphasis_id = $request->emphasis;
         $discipline_name = $request->name_discipline;
-
-        $metodologias_range = $request->metodologias_range;
-        $discussao_range = $request->discussao_range;
-        $abordagem_range = $request->abordagem_range;
-        $avaliacao_range = $request->avaliacao_range;
-        $horario_range = $request->horario_range;
 
         $input;
         $collection = collect([]);
@@ -104,6 +98,43 @@ class DisciplineController extends Controller
         }
     }
 
+    public function disciplineAdvancedFilter(Request $request)
+    {
+        // dd($request);
+        $classifications = ClassificationDiscipline::all();
+        $disciplines[] = $request->currentDisciplines;
+        $collection = collect([]);
+        
+        if($request->metodologias_range == "-1") {
+            if($request->metodologias == "classicas"){
+                foreach($disciplines as $discipline){
+                    foreach($classifications as $classification){
+                        if($discipline->id == $classification->discipline_id) {
+                            
+                        }
+                    }
+                }        
+            }
+        }
+        
+        if($request->discussao_range != "-1") {
+
+        }
+        
+        if($request->abordagem_range != "-1") {
+
+        }
+        
+        if($request->avaliacao_range != "-1") {
+
+        }
+        
+        if($request->horario_range != "-1") {
+
+        }
+    }
+
+ 
     /**
      * Show the form for creating a new resource.
      *

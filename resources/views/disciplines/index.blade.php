@@ -69,7 +69,7 @@
 
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <form action="/discipline/filter/" method="get">
+                        <form action="/discipline/filter/advanced" method="get">
                             <div class="container">
                               <div class="row">
                                 <div class="col align-self-start">
@@ -198,8 +198,13 @@
                                     <div style="display:none;" id="horario-range">
                                         Presencial<input type="range" class="form-control-range" name="horario_range" value="-1" id="range-horario" min="-1" max="100">EAD
                                     </div>
-                                    
                                 </div>
+                                @foreach($disciplines as $discipline)
+                                    @php
+                                        $arr[] = $discipline->id;
+                                    @endphp
+                                @endforeach
+                                <input type="text" name="currentDisciplines[]" value="{{ implode(',', $arr) }}" style="display:none;"/>
                               </div>
                               <button type="submit">FILTRAR</button>
                             </div>
