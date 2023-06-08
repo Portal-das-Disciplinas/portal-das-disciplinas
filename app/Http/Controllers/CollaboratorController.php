@@ -70,6 +70,8 @@ class CollaboratorController extends Controller
         $col->github = $request->github;
         $col->isManager = $isManager;
         $col->active = $active;
+        $col->joinDate = $request->joinDate;
+        $col->leaveDate = $request->leaveDate;
         if (isset($nomeArquivo)) {
             $col->urlPhoto =  $nomeArquivo;
         }
@@ -145,6 +147,8 @@ class CollaboratorController extends Controller
         $collaborator->github = $request->github;
         $collaborator->active = $active;
         $collaborator->isManager = $isManager;
+        $collaborator->joinDate = $request->joinDate;
+        $collaborator->leaveDate = $request->leaveDate;
         $collaborator->save();
 
         $linkIds = $request->linkId;

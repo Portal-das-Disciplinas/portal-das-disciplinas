@@ -56,8 +56,20 @@ Edição de Colaborador
                     <label for="isManager">Coordenador</label>
                     <input id="isManager" name="isManager" type="checkbox" @if($collaborator->isManager) checked @endif>
                 </div>
-                <p class="mt-4 mb-4">Links</p>
-                
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            <label>Data de entrada</label>
+                            <input name="joinDate" type="date" class="form-control" value="{{$collaborator->joinDate}}">
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <label>Data de saída</label>
+                            <input name="leaveDate" type="date" class="form-control" value="{{$collaborator->leaveDate}}">
+                        </div>
+                    </div>
+
+                </div>
+                <p class="mt-4">Links</p>
                 <div id="links">
                     <!--render links -->
                 </div>

@@ -134,7 +134,9 @@ class CollaboratorSeeder extends Seeder
             'lattes' =>'http://lattes.cnpq.br',
             
             'isManager' => false,
-            'active' => false
+            'active' => false,
+            'joinDate' => date('2001-06-01'),
+            'leaveDate' =>date('2022-07-02')
         ]);
 
         $karinaSilva->save();
