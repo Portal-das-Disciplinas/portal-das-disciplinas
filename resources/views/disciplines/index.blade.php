@@ -92,7 +92,7 @@
                                         </svg>
                                     </button>
                                     <div id="metodologias-range" style="display:none;">
-                                        Clássicas<input value="-1" type="range" name="metodologias-range" class="form-control-range" min="-1" max="100">Ativas
+                                        Clássicas<input value="-1" type="range" name="metodologias-range" class="form-control-range" id="range-metodologia" min="-1" max="100">Ativas
                                     </div>
                                 </div>
                               </div>
@@ -118,7 +118,7 @@
                                         </svg>
                                     </button>
                                     <div id="discussao-range" style="display:none">
-                                        Social<input type="range" value="-1" class="form-control-range" name="discussao-range" min="-1" max="100">Técnica
+                                        Social<input type="range" value="-1" class="form-control-range" name="discussao-range" id="range-discussao" min="-1" max="100">Técnica
                                     </div>
                                 </div>
                               </div>
@@ -144,7 +144,7 @@
                                         </svg>
                                     </button>
                                     <div id="abordagem-range" style="display:none;">
-                                        Teórica<input type="range" class="form-control-range" name="abordagem-range" value="-1" min="-1" max="100">Prática
+                                        Teórica<input type="range" class="form-control-range" name="abordagem-range" value="-1" id="range-abordagem" min="-1" max="100">Prática
                                     </div>
                                 </div>
                               </div>
@@ -170,7 +170,7 @@
                                         </svg>
                                     </button>
                                     <div style="display:none;" id="avaliacao-range">
-                                        Provas<input type="range" class="form-control-range" name="avaliacao-range" value="-1" min="-1" max="100">Atividades
+                                        Provas<input type="range" class="form-control-range" name="avaliacao-range" value="-1" id="range-avaliacao" min="-1" max="100">Atividades
                                     </div>
                                 </div>
                               </div>
@@ -196,7 +196,7 @@
                                         </svg>
                                     </button>
                                     <div style="display:none;" id="horario-range">
-                                        Presencial<input type="range" class="form-control-range" name="horario-range" value="-1" min="0" max="100">EAD
+                                        Presencial<input type="range" class="form-control-range" name="horario-range" value="-1" id="range-horario" min="-1" max="100">EAD
                                     </div>
                                     
                                 </div>
@@ -341,14 +341,23 @@
     })
 
     $("#metodologiaButton").on("click", () => {
+        // desativa a caixa e faz os botões do meio desaparecerem
         $("#metodologias").css("display","none");
         $("#triggerMetodologia").prop('disabled', true);
+        
+        // se o range for aberto altera seu valor de mínimo para 0 ao invés de -1
+        $("#range-metodologia").attr({'min': 0});
+        $("#range-metodologia").attr({'value': 0});
 
         if($("#metodologias-range").css("display") != "none"){
             $("#metodologias-range").css("display","none");
             $("#metodologias-range").val('');
             $("#triggerMetodologia").prop('checked', false);
             $("#triggerMetodologia").prop('disabled', false);
+
+            // coloca o valor do range de volta pra -1 se for fechado
+            $("#range-metodologia").attr({'min': -1});
+            $("#range-metodologia").attr({'value': -1});
         } else {
             $("#metodologias-range").css("display","flex");
             $("#triggerMetodologia").prop('checked', false);
@@ -359,11 +368,17 @@
         $("#discussao").css("display","none");
         $("#triggerDiscussao").prop('disabled', true);
 
+        $("#range-discussao").attr({'min': 0});
+        $("#range-discussao").attr({'value': 0});
+
         if($("#discussao-range").css("display") != "none"){
             $("#discussao-range").css("display","none");
             $("#discussao-range").val('');
             $("#triggerDiscussao").prop('checked', false);
             $("#triggerDiscussao").prop('disabled', false);
+
+            $("#range-discussao").attr({'min': -1});
+            $("#range-discussao").attr({'value': -1});
         } else {
             $("#discussao-range").css("display","flex");
             $("#triggerDiscussao").prop('checked', false);
@@ -374,11 +389,17 @@
         $("#abordagem").css("display","none");
         $("#triggerAbordagem").prop('disabled', true);
 
+        $("#range-abordagem").attr({'min': 0});
+        $("#range-abordagem").attr({'value': 0});
+
         if($("#abordagem-range").css("display") != "none"){
             $("#abordagem-range").css("display","none");
             $("#abordagem-range").val('');
             $("#triggerAbordagem").prop('checked', false);
             $("#triggerAbordagem").prop('disabled', false);
+
+            $("#range-abordagem").attr({'min': -1});
+            $("#range-abordagem").attr({'value': -1});
         } else {
             $("#abordagem-range").css("display","flex");
             $("#triggerAbordagem").prop('checked', false);
@@ -389,11 +410,17 @@
         $("#avaliacao").css("display","none");
         $("#triggerAvaliacao").prop('disabled', true);
 
+        $("#range-avaliacao").attr({'min': 0});
+        $("#range-avaliacao").attr({'value': 0});
+
         if($("#avaliacao-range").css("display") != "none"){
             $("#avaliacao-range").css("display","none");
             $("#avaliacao-range").val('');
             $("#triggerAvaliacao").prop('checked', false);
             $("#triggerAvaliacao").prop('disabled', false);
+
+            $("#range-avaliacao").attr({'min': -1});
+            $("#range-avaliacao").attr({'value': -1});
         } else {
             $("#avaliacao-range").css("display","flex");
             $("#triggerAvaliacao").prop('checked', false);
@@ -404,11 +431,17 @@
         $("#horario").css("display","none");
         $("#triggerHorario").prop('disabled', true);
 
+        $("#range-horario").attr({'min': 0});
+        $("#range-horario").attr({'value': 0});
+
         if($("#horario-range").css("display") != "none"){
             $("#horario-range").css("display","none");
             $("#horario-range").val('');
             $("#triggerHorario").prop('checked', false);
             $("#triggerHorario").prop('disabled', false);
+
+            $("#range-horario").attr({'min': -1});
+            $("#range-horario").attr({'value': -1});
         } else {
             $("#horario-range").css("display","flex");
             $("#triggerHorario").prop('checked', false);
