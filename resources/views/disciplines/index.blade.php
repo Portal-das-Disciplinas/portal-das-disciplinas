@@ -69,7 +69,7 @@
 
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <form action="ainda falta a rota" method="get">
+                        <form action="/discipline/filter/advanced" method="get">
                             <div class="container">
                               <div class="row">
                                 <div class="col align-self-start">
@@ -78,15 +78,22 @@
                                 <div class="col align-self-center">
                                     <div class="row" id="metodologias" style="display:none;">
                                       <div class="col">
-                                      <button><input type="radio" value="" name="" id=""> Clássicas</button>
+                                      <button type="button"><input type="radio" value="classicas" name="metodologias" id=""> Clássicas</button>
                                       </div>
                                       <div class="col">
-                                       <button><input type="radio" value="" name="" id=""> Ativas</button>
+                                       <button type="button"><input type="radio" value="ativas" name="metodologias" id=""> Ativas</button>
                                       </div>
                                     </div>
                                 </div>
-                                <div class="col align-self-end">
-                                  One of three columns
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
+                                    <button type="button" id="metodologiaButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+                                        </svg>
+                                    </button>
+                                    <div id="metodologias-range" style="display:none;">
+                                        Clássicas<input value="-1" type="range" name="metodologias-range" class="form-control-range" min="-1" max="100">Ativas
+                                    </div>
                                 </div>
                               </div>
 
@@ -97,15 +104,22 @@
                                 <div class="col align-self-center">
                                     <div class="row" id="discussao" style="display:none;">
                                       <div class="col">
-                                        <button><input type="radio" value="" name="" id=""> Social</button>
+                                        <button type="button"><input type="radio" value="social" name="discussao" id="discussao"> Social</button>
                                       </div>
                                       <div class="col">
-                                        <button><input type="radio" value="" name="" id=""> Técnica</button>
+                                        <button type="button"><input type="radio" value="tecnica" name="discussao" id="discussao"> Técnica</button>
                                       </div>
                                     </div>
                                 </div>
-                                <div class="col align-self-end">
-                                  One of three columns
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
+                                    <button type="button" id="discussaoButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+                                        </svg>
+                                    </button>
+                                    <div id="discussao-range" style="display:none">
+                                        Social<input type="range" value="-1" class="form-control-range" name="discussao-range" min="-1" max="100">Técnica
+                                    </div>
                                 </div>
                               </div>
 
@@ -116,15 +130,22 @@
                                 <div class="col align-self-center">
                                 <div class="row" id="abordagem" style="display:none;">
                                     <div class="col">
-                                        <button><input type="radio" value="" name="" id=""> Teórica</button>
+                                        <button type="button"><input type="radio" value="teorica" name="abordagem" id="abordagem"> Teórica</button>
                                       </div>
                                       <div class="col">
-                                        <button><input type="radio" value="" name="" id=""> Prática</button>
+                                        <button type="button"><input type="radio" value="pratica" name="abordagem" id="abordagem"> Prática</button>
                                       </div>
                                     </div>
                                 </div>
-                                <div class="col align-self-end">
-                                  One of three columns
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
+                                    <button type="button" id="abordagemButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+                                        </svg>
+                                    </button>
+                                    <div id="abordagem-range" style="display:none;">
+                                        Teórica<input type="range" class="form-control-range" name="abordagem-range" value="-1" min="-1" max="100">Prática
+                                    </div>
                                 </div>
                               </div>
 
@@ -135,15 +156,22 @@
                                 <div class="col align-self-center">
                                 <div class="row" id="avaliacao" style="display:none;">
                                     <div class="col">
-                                        <button><input type="radio" value="" name="" id=""> Provas</button>
+                                        <button type="button"><input type="radio" value="provas" name="avaliacao" id="avaliacao"> Provas</button>
                                       </div>
                                       <div class="col">
-                                        <button><input type="radio" value="" name="" id=""> Atividades</button>
+                                        <button type="button"><input type="radio" value="atividades" name="avaliacao" id="avaliacao"> Atividades</button>
                                       </div>
                                     </div>
                                 </div>
-                                <div class="col align-self-end">
-                                  One of three columns
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
+                                    <button type="button" id="avaliacaoButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+                                        </svg>
+                                    </button>
+                                    <div style="display:none;" id="avaliacao-range">
+                                        Provas<input type="range" class="form-control-range" name="avaliacao-range" value="-1" min="-1" max="100">Atividades
+                                    </div>
                                 </div>
                               </div>
 
@@ -154,17 +182,26 @@
                                 <div class="col align-self-center">
                                 <div class="row" id="horario" style="display:none;">
                                     <div class="col">
-                                        <button><input type="radio" value="" name="" id=""> Presencial</button>
+                                        <button type="button"><input type="radio" value="presencial" name="horario" id="horario"> Presencial</button>
                                       </div>
                                       <div class="col">
-                                        <button><input type="radio" value="" name="" id=""> EAD</button>
+                                        <button type="button"><input type="radio" value="ead" name="horario" id="horario"> EAD</button>
                                       </div>
                                     </div>
                                 </div>
-                                <div class="col align-self-end">
-                                  One of three columns
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
+                                    <button type="button" id="horarioButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+                                        </svg>
+                                    </button>
+                                    <div style="display:none;" id="horario-range">
+                                        Presencial<input type="range" class="form-control-range" name="horario-range" value="-1" min="0" max="100">EAD
+                                    </div>
+                                    
                                 </div>
                               </div>
+                              <button type="submit">FILTRAR</button>
                             </div>
                         </form>  
                     </div>
@@ -300,6 +337,81 @@
             $("#horario").css("display","none");
         } else {
             $("#horario").css("display","flex");
+        }
+    })
+
+    $("#metodologiaButton").on("click", () => {
+        $("#metodologias").css("display","none");
+        $("#triggerMetodologia").prop('disabled', true);
+
+        if($("#metodologias-range").css("display") != "none"){
+            $("#metodologias-range").css("display","none");
+            $("#metodologias-range").val('');
+            $("#triggerMetodologia").prop('checked', false);
+            $("#triggerMetodologia").prop('disabled', false);
+        } else {
+            $("#metodologias-range").css("display","flex");
+            $("#triggerMetodologia").prop('checked', false);
+        }
+    })
+
+    $("#discussaoButton").on("click", () => {
+        $("#discussao").css("display","none");
+        $("#triggerDiscussao").prop('disabled', true);
+
+        if($("#discussao-range").css("display") != "none"){
+            $("#discussao-range").css("display","none");
+            $("#discussao-range").val('');
+            $("#triggerDiscussao").prop('checked', false);
+            $("#triggerDiscussao").prop('disabled', false);
+        } else {
+            $("#discussao-range").css("display","flex");
+            $("#triggerDiscussao").prop('checked', false);
+        }
+    })
+
+    $("#abordagemButton").on("click", () => {
+        $("#abordagem").css("display","none");
+        $("#triggerAbordagem").prop('disabled', true);
+
+        if($("#abordagem-range").css("display") != "none"){
+            $("#abordagem-range").css("display","none");
+            $("#abordagem-range").val('');
+            $("#triggerAbordagem").prop('checked', false);
+            $("#triggerAbordagem").prop('disabled', false);
+        } else {
+            $("#abordagem-range").css("display","flex");
+            $("#triggerAbordagem").prop('checked', false);
+        }
+    })
+
+    $("#avaliacaoButton").on("click", () => {
+        $("#avaliacao").css("display","none");
+        $("#triggerAvaliacao").prop('disabled', true);
+
+        if($("#avaliacao-range").css("display") != "none"){
+            $("#avaliacao-range").css("display","none");
+            $("#avaliacao-range").val('');
+            $("#triggerAvaliacao").prop('checked', false);
+            $("#triggerAvaliacao").prop('disabled', false);
+        } else {
+            $("#avaliacao-range").css("display","flex");
+            $("#triggerAvaliacao").prop('checked', false);
+        }
+    })
+
+    $("#horarioButton").on("click", () => {
+        $("#horario").css("display","none");
+        $("#triggerHorario").prop('disabled', true);
+
+        if($("#horario-range").css("display") != "none"){
+            $("#horario-range").css("display","none");
+            $("#horario-range").val('');
+            $("#triggerHorario").prop('checked', false);
+            $("#triggerHorario").prop('disabled', false);
+        } else {
+            $("#horario-range").css("display","flex");
+            $("#triggerHorario").prop('checked', false);
         }
     })
 </script>

@@ -94,6 +94,11 @@ class DisciplineController extends Controller
         }
     }
 
+    public function disciplineAdvancedFilter(Request $request) 
+    {
+        dd($request);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
