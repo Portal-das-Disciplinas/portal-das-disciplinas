@@ -36,7 +36,7 @@
             </div>
         @endauth
         
-        <div class="row justify-content-md-center mt-5">
+        <div class="row justify-content-md-center mt-5" style="margin-bottom:25px;">
             <div class="col">
                 <form action="/discipline/filter" method="GET">
                     @csrf
@@ -54,6 +54,121 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Filtragem via Classificações
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <form action="ainda falta a rota" method="get">
+                            <div class="container">
+                              <div class="row">
+                                <div class="col align-self-start">
+                                <input type="checkbox" name="triggerMetodologia" id="triggerMetodologia"> Metodologias
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="row" id="metodologias" style="display:none;">
+                                      <div class="col">
+                                      <button><input type="radio" value="" name="" id=""> Clássicas</button>
+                                      </div>
+                                      <div class="col">
+                                       <button><input type="radio" value="" name="" id=""> Ativas</button>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col align-self-end">
+                                  One of three columns
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col align-self-start">
+                                <input type="checkbox" name="triggerDiscussao" id="triggerDiscussao"> Discussão
+                                </div>
+                                <div class="col align-self-center">
+                                    <div class="row" id="discussao" style="display:none;">
+                                      <div class="col">
+                                        <button><input type="radio" value="" name="" id=""> Social</button>
+                                      </div>
+                                      <div class="col">
+                                        <button><input type="radio" value="" name="" id=""> Técnica</button>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col align-self-end">
+                                  One of three columns
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col align-self-start">
+                                <input type="checkbox" name="triggerAbordagem" id="triggerAbordagem"> Abordagem
+                                </div>
+                                <div class="col align-self-center">
+                                <div class="row" id="abordagem" style="display:none;">
+                                    <div class="col">
+                                        <button><input type="radio" value="" name="" id=""> Teórica</button>
+                                      </div>
+                                      <div class="col">
+                                        <button><input type="radio" value="" name="" id=""> Prática</button>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col align-self-end">
+                                  One of three columns
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col align-self-start">
+                                <input type="checkbox" name="triggerAvaliacao" id="triggerAvaliacao"> Avaliação
+                                </div>
+                                <div class="col align-self-center">
+                                <div class="row" id="avaliacao" style="display:none;">
+                                    <div class="col">
+                                        <button><input type="radio" value="" name="" id=""> Provas</button>
+                                      </div>
+                                      <div class="col">
+                                        <button><input type="radio" value="" name="" id=""> Atividades</button>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col align-self-end">
+                                  One of three columns
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col align-self-start">
+                                  <input type="checkbox" name="triggerHorario" id="triggerHorario"> Carga Horária
+                                </div>
+                                <div class="col align-self-center">
+                                <div class="row" id="horario" style="display:none;">
+                                    <div class="col">
+                                        <button><input type="radio" value="" name="" id=""> Presencial</button>
+                                      </div>
+                                      <div class="col">
+                                        <button><input type="radio" value="" name="" id=""> EAD</button>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col align-self-end">
+                                  One of three columns
+                                </div>
+                              </div>
+                            </div>
+                        </form>  
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -147,4 +262,45 @@
 </div>
 </div>
 
+<script>
+    $("#triggerMetodologia").on("click", () => {
+        if($("#metodologias").css("display") != "none"){
+            $("#metodologias").css("display","none");
+        } else {
+            $("#metodologias").css("display","flex");
+        }
+    })
+    
+    $("#triggerDiscussao").on("click", () => {
+        if($("#discussao").css("display") != "none"){
+            $("#discussao").css("display","none");
+        } else {
+            $("#discussao").css("display","flex");
+        }
+    })
+
+    $("#triggerAbordagem").on("click", () => {
+        if($("#abordagem").css("display") != "none"){
+            $("#abordagem").css("display","none");
+        } else {
+            $("#abordagem").css("display","flex");
+        }
+    })
+
+    $("#triggerAvaliacao").on("click", () => {
+        if($("#avaliacao").css("display") != "none"){
+            $("#avaliacao").css("display","none");
+        } else {
+            $("#avaliacao").css("display","flex");
+        }
+    })
+
+    $("#triggerHorario").on("click", () => {
+        if($("#horario").css("display") != "none"){
+            $("#horario").css("display","none");
+        } else {
+            $("#horario").css("display","flex");
+        }
+    })
+</script>
 @endsection
