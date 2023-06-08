@@ -1,7 +1,10 @@
 <div class='d-flex flex-column  align-items-center mx-4 mb-3' style="width:250px"><!-- mx-4 mb-3-->
-    <img class="clip-path regular-image" src="{{($image=='' || null) ? 'img/profiles_img/user2.png' : '/storage/'.$image}}" alt="{{ $alt_image ?? 'foto-dev' }}">
+    <img class="clip-path regular-image" src="{{'/storage/'.$image}}" alt="{{ $alt_image ?? 'foto-dev' }}" onerror="loadDefault(event)">
     <div class="text-center">
         <h3>{{$name ?? ''}}</h3>
+        @if(isset($period) && ($period!='null'))
+        <small style="line-height:1" class="mt-0 p-0 text-secondary">{{$period}}</small>
+        @endif
         <p class='p-text'>{{$profession ?? ''}} <code> {{$occupation ?? ''}}</code></p>   
         <p class='p-text'>
             @if (isset($email) && $email!='')
@@ -27,4 +30,10 @@
         @endif
 
     </div>
+    <script>
+        function loadDefault(event){
+
+            event.target.src = 'img/profiles_img/user2.png';
+        }
+    </script>
 </div>
