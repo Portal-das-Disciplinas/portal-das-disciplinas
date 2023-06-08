@@ -69,7 +69,7 @@
 
                 <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
-                        <form action="/discipline/filter/advanced" method="get">
+                        <form action="/discipline/filter/" method="get">
                             <div class="container">
                               <div class="row">
                                 <div class="col align-self-start">
@@ -92,7 +92,7 @@
                                         </svg>
                                     </button>
                                     <div id="metodologias-range" style="display:none;">
-                                        Clássicas<input value="-1" type="range" name="metodologias-range" class="form-control-range" id="range-metodologia" min="-1" max="100">Ativas
+                                        Clássicas<input value="-1" type="range" name="metodologias_range" class="form-control-range" id="range-metodologia" min="-1" max="100">Ativas
                                     </div>
                                 </div>
                               </div>
@@ -118,7 +118,7 @@
                                         </svg>
                                     </button>
                                     <div id="discussao-range" style="display:none">
-                                        Social<input type="range" value="-1" class="form-control-range" name="discussao-range" id="range-discussao" min="-1" max="100">Técnica
+                                        Social<input type="range" value="-1" class="form-control-range" name="discussao_range" id="range-discussao" min="-1" max="100">Técnica
                                     </div>
                                 </div>
                               </div>
@@ -144,7 +144,7 @@
                                         </svg>
                                     </button>
                                     <div id="abordagem-range" style="display:none;">
-                                        Teórica<input type="range" class="form-control-range" name="abordagem-range" value="-1" id="range-abordagem" min="-1" max="100">Prática
+                                        Teórica<input type="range" class="form-control-range" name="abordagem_range" value="-1" id="range-abordagem" min="-1" max="100">Prática
                                     </div>
                                 </div>
                               </div>
@@ -170,7 +170,7 @@
                                         </svg>
                                     </button>
                                     <div style="display:none;" id="avaliacao-range">
-                                        Provas<input type="range" class="form-control-range" name="avaliacao-range" value="-1" id="range-avaliacao" min="-1" max="100">Atividades
+                                        Provas<input type="range" class="form-control-range" name="avaliacao_range" value="-1" id="range-avaliacao" min="-1" max="100">Atividades
                                     </div>
                                 </div>
                               </div>
@@ -196,7 +196,7 @@
                                         </svg>
                                     </button>
                                     <div style="display:none;" id="horario-range">
-                                        Presencial<input type="range" class="form-control-range" name="horario-range" value="-1" id="range-horario" min="-1" max="100">EAD
+                                        Presencial<input type="range" class="form-control-range" name="horario_range" value="-1" id="range-horario" min="-1" max="100">EAD
                                     </div>
                                     
                                 </div>

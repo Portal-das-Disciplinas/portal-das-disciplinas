@@ -59,10 +59,19 @@ class DisciplineController extends Controller
 
     public function disciplineFilter(Request $request)
     {
+        dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
+
         $emphasis_id = $request->emphasis;
         $discipline_name = $request->name_discipline;
+
+        $metodologias_range = $request->metodologias_range;
+        $discussao_range = $request->discussao_range;
+        $abordagem_range = $request->abordagem_range;
+        $avaliacao_range = $request->avaliacao_range;
+        $horario_range = $request->horario_range;
+
         $input;
         $collection = collect([]);
 
@@ -88,15 +97,11 @@ class DisciplineController extends Controller
             $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
             
             return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
-        }
-        else {
+        } else if ($emphasis_id == null) {
+
+        } else {
             return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all); 
         }
-    }
-
-    public function disciplineAdvancedFilter(Request $request) 
-    {
-        dd($request);
     }
 
     /**
