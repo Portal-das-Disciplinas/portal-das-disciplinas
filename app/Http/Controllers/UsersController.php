@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 use function PHPSTORM_META\map;
-
+/**
+ * Classe que trata as tarefas relacionadas com o model User.
+ */
 class UsersController extends Controller
 {
 
@@ -19,6 +21,10 @@ class UsersController extends Controller
             ->with('is_teacher', $is_teacher);
     }
 
+    /**
+     * Atualiza um usuário
+     * @param $request Objeto contendo as informações da requisição http.
+     */
     public function update(Request $request)
     {
 
