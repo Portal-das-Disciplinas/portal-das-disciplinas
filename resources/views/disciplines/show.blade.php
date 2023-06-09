@@ -413,7 +413,7 @@ mais.
                                 <a href="mailto:{{$participant->email}}" class="ml-3">e-mail</a>
                                 <span class="text-primary">&nbsp;|</span>
                                 @foreach($participant->links as $link)
-                                <a href="{{$link->url}}" class="ml-2">{{$link->name}}</a>
+                                <a href="{{$link->url}}" rel="noopener" target="_blank" class="ml-2">{{$link->name}}</a>
                                 @if(!$loop->last)
                                 <span class="text-primary">&nbsp;|</span>
                                 @endif

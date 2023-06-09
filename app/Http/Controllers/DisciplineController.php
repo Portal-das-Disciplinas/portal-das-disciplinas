@@ -13,10 +13,12 @@ use App\Services\Urls\GoogleDriveService;
 use App\Services\Urls\YoutubeService;
 use Illuminate\Http\Request;
 use \App\Models\Discipline;
+use App\Models\DisciplineParticipant;
 use \App\Models\Media;
 use \App\Models\Emphasis;
 use App\Models\Professor;
 use App\Models\Faq;
+use App\Models\ParticipantLink;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -225,10 +227,33 @@ class DisciplineController extends Controller
                 }
             }
 
+            $participants = json_decode($request->participantsList);
+            if($participants){
+                foreach($participants as $participant){
+                    $participantModel = DisciplineParticipant::create([
+                        'name' => $participant->name,
+                        'role' => $participant->role,
+                        'email' => $participant->email,
+                        'discipline_id' => $discipline->id
+                    ]);
+                    if($participant->links){
+                        foreach($participant->links as $link){
+                            ParticipantLink::create([
+                                'name' => $link->name,
+                                'url' => $link->url,
+                                'discipline_participant_id' => $participantModel->id
+                            ]);
+                        }
+                    }
+                }
+            }
+            
+
             DB::commit();
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
+            dd($exception);
             return redirect()->route("disciplinas.create")
                 ->withInput();
         }

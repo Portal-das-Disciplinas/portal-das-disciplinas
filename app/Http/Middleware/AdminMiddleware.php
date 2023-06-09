@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class AdminMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Middleware que verifica se um usuário é administrador.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request Objeto contendo as informações da requisição.
      * @param  \Closure  $next
      * @return mixed
      */
