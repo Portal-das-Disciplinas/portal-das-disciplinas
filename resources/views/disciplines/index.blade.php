@@ -161,7 +161,7 @@
                                 </div>
                               </div>
 
-                              <div class="row">
+                              <!-- <div class="row">
                                 <div class="col align-self-start">
                                   <input type="checkbox" name="triggerHorario" id="triggerHorario"> Carga Horária
                                 </div>
@@ -179,14 +179,14 @@
                                     </div>
                                 </div>
                                 <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                </div>
+                                </div> -->
                                 @foreach($disciplines as $discipline)
                                     @php
                                         $arr[] = $discipline->id;
                                     @endphp
                                 @endforeach
-                                <input type="text" name="currentDisciplines[]" value="{{ implode(',', $arr) }}" style="display:none;"/>
-                              </div>
+                                <!-- <input type="text" name="currentDisciplines[]" value="{{ implode(',', $arr) }}" style="display:none;"/>
+                              </div> -->
                               <button type="submit">FILTRAR</button>
                             </div>
                         </form>  
