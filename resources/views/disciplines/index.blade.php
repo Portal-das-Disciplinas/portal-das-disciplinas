@@ -84,16 +84,11 @@
                                        <button type="button"><input type="radio" value="ativas" name="metodologias" id=""> Ativas</button>
                                       </div>
                                     </div>
-                                </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                    <button type="button" id="metodologiaButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
-                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
-                                        </svg>
-                                    </button>
                                     <div id="metodologias-range" style="display:none;">
                                         Clássicas<input value="-1" type="range" name="metodologias_range" class="form-control-range" id="range-metodologia" min="-1" max="100">Ativas
                                     </div>
+                                </div>
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
                                 </div>
                               </div>
 
@@ -110,16 +105,12 @@
                                         <button type="button"><input type="radio" value="tecnica" name="discussao" id="discussao"> Técnica</button>
                                       </div>
                                     </div>
-                                </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                    <button type="button" id="discussaoButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
-                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
-                                        </svg>
-                                    </button>
                                     <div id="discussao-range" style="display:none">
                                         Social<input type="range" value="-1" class="form-control-range" name="discussao_range" id="range-discussao" min="-1" max="100">Técnica
                                     </div>
+                                </div>
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
+                                    
                                 </div>
                               </div>
 
@@ -136,6 +127,9 @@
                                         <button type="button"><input type="radio" value="pratica" name="abordagem" id="abordagem"> Prática</button>
                                       </div>
                                     </div>
+                                    <div id="abordagem-range" style="display:none;">
+                                        Teórica<input type="range" class="form-control-range" name="abordagem_range" value="-1" id="range-abordagem" min="-1" max="100">Prática
+                                    </div>
                                 </div>
                                 <div class="col align-self-end" style="display:flex; justify-content:center;">
                                     <button type="button" id="abordagemButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
@@ -143,9 +137,6 @@
                                             <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
                                         </svg>
                                     </button>
-                                    <div id="abordagem-range" style="display:none;">
-                                        Teórica<input type="range" class="form-control-range" name="abordagem_range" value="-1" id="range-abordagem" min="-1" max="100">Prática
-                                    </div>
                                 </div>
                               </div>
 
@@ -162,16 +153,11 @@
                                         <button type="button"><input type="radio" value="atividades" name="avaliacao" id="avaliacao"> Atividades</button>
                                       </div>
                                     </div>
-                                </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                    <button type="button" id="avaliacaoButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
-                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
-                                        </svg>
-                                    </button>
                                     <div style="display:none;" id="avaliacao-range">
                                         Provas<input type="range" class="form-control-range" name="avaliacao_range" value="-1" id="range-avaliacao" min="-1" max="100">Atividades
                                     </div>
+                                </div>
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
                                 </div>
                               </div>
 
@@ -188,16 +174,11 @@
                                         <button type="button"><input type="radio" value="ead" name="horario" id="horario"> EAD</button>
                                       </div>
                                     </div>
-                                </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                    <button type="button" id="horarioButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
-                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
-                                        </svg>
-                                    </button>
                                     <div style="display:none;" id="horario-range">
                                         Presencial<input type="range" class="form-control-range" name="horario_range" value="-1" id="range-horario" min="-1" max="100">EAD
                                     </div>
+                                </div>
+                                <div class="col align-self-end" style="display:flex; justify-content:center;">
                                 </div>
                                 @foreach($disciplines as $discipline)
                                     @php
@@ -345,38 +326,46 @@
         }
     })
 
-    $("#metodologiaButton").on("click", () => {
-        // desativa a caixa e faz os botões do meio desaparecerem
+    $("#abordagemButton").on("click", () => {
         $("#metodologias").css("display","none");
         $("#triggerMetodologia").prop('disabled', true);
         
-        // se o range for aberto altera seu valor de mínimo para 0 ao invés de -1
         $("#range-metodologia").attr({'min': 0});
         $("#range-metodologia").attr({'value': 0});
 
-        if($("#metodologias-range").css("display") != "none"){
-            $("#metodologias-range").css("display","none");
-            $("#metodologias-range").val('');
-            $("#triggerMetodologia").prop('checked', false);
-            $("#triggerMetodologia").prop('disabled', false);
-
-            // coloca o valor do range de volta pra -1 se for fechado
-            $("#range-metodologia").attr({'min': -1});
-            $("#range-metodologia").attr({'value': -1});
-        } else {
-            $("#metodologias-range").css("display","flex");
-            $("#triggerMetodologia").prop('checked', false);
-        }
-    })
-
-    $("#discussaoButton").on("click", () => {
         $("#discussao").css("display","none");
         $("#triggerDiscussao").prop('disabled', true);
 
         $("#range-discussao").attr({'min': 0});
         $("#range-discussao").attr({'value': 0});
 
-        if($("#discussao-range").css("display") != "none"){
+        $("#abordagem").css("display","none");
+        $("#triggerAbordagem").prop('disabled', true);
+
+        $("#range-abordagem").attr({'min': 0});
+        $("#range-abordagem").attr({'value': 0});
+
+        $("#avaliacao").css("display","none");
+        $("#triggerAvaliacao").prop('disabled', true);
+
+        $("#range-avaliacao").attr({'min': 0});
+        $("#range-avaliacao").attr({'value': 0});
+
+        $("#horario").css("display","none");
+        $("#triggerHorario").prop('disabled', true);
+
+        $("#range-horario").attr({'min': 0});
+        $("#range-horario").attr({'value': 0});
+
+        if($("#abordagem-range").css("display") != "none"){
+            $("#metodologias-range").css("display","none");
+            $("#metodologias-range").val('');
+            $("#triggerMetodologia").prop('checked', false);
+            $("#triggerMetodologia").prop('disabled', false);
+
+            $("#range-metodologia").attr({'min': -1});
+            $("#range-metodologia").attr({'value': -1});
+
             $("#discussao-range").css("display","none");
             $("#discussao-range").val('');
             $("#triggerDiscussao").prop('checked', false);
@@ -384,20 +373,7 @@
 
             $("#range-discussao").attr({'min': -1});
             $("#range-discussao").attr({'value': -1});
-        } else {
-            $("#discussao-range").css("display","flex");
-            $("#triggerDiscussao").prop('checked', false);
-        }
-    })
 
-    $("#abordagemButton").on("click", () => {
-        $("#abordagem").css("display","none");
-        $("#triggerAbordagem").prop('disabled', true);
-
-        $("#range-abordagem").attr({'min': 0});
-        $("#range-abordagem").attr({'value': 0});
-
-        if($("#abordagem-range").css("display") != "none"){
             $("#abordagem-range").css("display","none");
             $("#abordagem-range").val('');
             $("#triggerAbordagem").prop('checked', false);
@@ -405,20 +381,7 @@
 
             $("#range-abordagem").attr({'min': -1});
             $("#range-abordagem").attr({'value': -1});
-        } else {
-            $("#abordagem-range").css("display","flex");
-            $("#triggerAbordagem").prop('checked', false);
-        }
-    })
 
-    $("#avaliacaoButton").on("click", () => {
-        $("#avaliacao").css("display","none");
-        $("#triggerAvaliacao").prop('disabled', true);
-
-        $("#range-avaliacao").attr({'min': 0});
-        $("#range-avaliacao").attr({'value': 0});
-
-        if($("#avaliacao-range").css("display") != "none"){
             $("#avaliacao-range").css("display","none");
             $("#avaliacao-range").val('');
             $("#triggerAvaliacao").prop('checked', false);
@@ -426,20 +389,7 @@
 
             $("#range-avaliacao").attr({'min': -1});
             $("#range-avaliacao").attr({'value': -1});
-        } else {
-            $("#avaliacao-range").css("display","flex");
-            $("#triggerAvaliacao").prop('checked', false);
-        }
-    })
 
-    $("#horarioButton").on("click", () => {
-        $("#horario").css("display","none");
-        $("#triggerHorario").prop('disabled', true);
-
-        $("#range-horario").attr({'min': 0});
-        $("#range-horario").attr({'value': 0});
-
-        if($("#horario-range").css("display") != "none"){
             $("#horario-range").css("display","none");
             $("#horario-range").val('');
             $("#triggerHorario").prop('checked', false);
@@ -448,6 +398,18 @@
             $("#range-horario").attr({'min': -1});
             $("#range-horario").attr({'value': -1});
         } else {
+            $("#metodologias-range").css("display","flex");
+            $("#triggerMetodologia").prop('checked', false);
+
+            $("#discussao-range").css("display","flex");
+            $("#triggerDiscussao").prop('checked', false);
+
+            $("#abordagem-range").css("display","flex");
+            $("#triggerAbordagem").prop('checked', false);
+
+            $("#avaliacao-range").css("display","flex");
+            $("#triggerAvaliacao").prop('checked', false);
+
             $("#horario-range").css("display","flex");
             $("#triggerHorario").prop('checked', false);
         }

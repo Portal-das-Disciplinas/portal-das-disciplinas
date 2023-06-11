@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use App\Enums\ClassificationID;
 use App\Enums\MediaType;
 use App\Http\Requests\Discipline\CreateRequest;
@@ -100,38 +102,12 @@ class DisciplineController extends Controller
 
     public function disciplineAdvancedFilter(Request $request)
     {
-        // dd($request);
+        dd($request);
         $classifications = ClassificationDiscipline::all();
-        $disciplines[] = $request->currentDisciplines;
-        $collection = collect([]);
+        $disciplines = Discipline::all();
+        $disciplines_ids[] = [$request->currentDisciplines];
+        $collectionOfDisciplines = collect([]);
         
-        if($request->metodologias_range == "-1") {
-            if($request->metodologias == "classicas"){
-                foreach($disciplines as $discipline){
-                    foreach($classifications as $classification){
-                        if($discipline->id == $classification->discipline_id) {
-                            
-                        }
-                    }
-                }        
-            }
-        }
-        
-        if($request->discussao_range != "-1") {
-
-        }
-        
-        if($request->abordagem_range != "-1") {
-
-        }
-        
-        if($request->avaliacao_range != "-1") {
-
-        }
-        
-        if($request->horario_range != "-1") {
-
-        }
     }
 
  
