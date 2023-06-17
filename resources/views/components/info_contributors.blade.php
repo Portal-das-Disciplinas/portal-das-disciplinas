@@ -8,13 +8,13 @@
         <p class='p-text'>{{$profession ?? ''}} <code> {{$occupation ?? ''}}</code></p>   
         <p class='p-text'>
             @if (isset($email) && $email!='')
-                <a href="mailto:{{ $email }}" class="smaller-p" target='_blank' > Email </a>     
+                <a href="mailto:{{ $email }}" class="smaller-p" rel='noopener' target='_blank'> Email </a>     
             @endif
             @if (isset($email) && isset($lattes) && $email!='' && $lattes!='')
                 |
             @endif
             @if (isset($lattes) && $lattes!='')
-                <a href="{{ $lattes }}" class="smaller-p" target='_blank'> Lattes </a>       
+                <a href="{{ $lattes }}" class="smaller-p" rel='noopener' target='_blank'> Lattes </a>       
             @endif
         </p>
         @if(isset($links))
@@ -22,7 +22,7 @@
         @endif
         @if(isset($github) && $github!='')
         <p>
-            <a href={{$github}} class="smaller-p">
+            <a href={{$github}} class="smaller-p" rel='noopener' target='_blank'>
                 <img src="/img/github-mark.svg" alt="Github logo" style="width:20px;">
                 Github
             </a>
