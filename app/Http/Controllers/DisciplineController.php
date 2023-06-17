@@ -108,6 +108,7 @@ class DisciplineController extends Controller
         $disciplines_all = Discipline::all();
         $collectionOfDisciplines = collect([]);
         $result = collect([]);
+        $resultFiltered = collect([]);
 
         if($request->metodologias_range == "-1" && $request->discussao_range == "-1" && $request->abordagem_range == "-1" && $request->avaliacao_range == "-1") {
             if($request->metodologias == null){
@@ -166,20 +167,43 @@ class DisciplineController extends Controller
                 }
             }
         } else {
-            // pesquisa modo avançado
-        }
-        $resultFiltered = collect([]);
+            if($request->metodologias_range > 0) {
+                $input = ClassificationDiscipline::where('classification_id', 1)->where('value', '<=', $request->metodologias_range)->get();
+                foreach($input as $i) {
+                    $result->push($i->discipline_id);
+                }
+            }
+            
+            if($request->discussao_range > 0) {
+                $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '<=', $request->discussao_range)->get();
+                foreach($input as $i) {
+                    $result->push($i->discipline_id);
+                }
+            }
 
-        // [9,10,11]
-        // [3,9,10,11,4,5,8,6,7]
+            if($request->abordagem_range > 0) {
+                $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '<=', $request->abordagem_range)->get();
+                foreach($input as $i) {
+                    $result->push($i->discipline_id);
+                }
+            }
+
+            if($request->avaliacao_range > 0) {
+                $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '<=', $request->avaliacao_range)->get();
+                foreach($input as $i) {
+                    $result->push($i->discipline_id);
+                }
+            }
+        }
+
         foreach($disciplines_all as $d){
-            // echo $d->id;
             foreach($result as $r) {
                 if($d->id == $r) {
                     $resultFiltered->push($d);
                 }
             }
         }
+
         return view('disciplines.index')->with('disciplines', $resultFiltered)->with('emphasis', $emphasis_all);
     }
 

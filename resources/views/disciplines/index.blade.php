@@ -64,6 +64,12 @@
                     <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                       Filtragem via Classificações
                     </button>
+
+                    <button style="float:right;" type="button" id="abordagemButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+                        </svg>
+                    </button>
                   </h5>
                 </div>
 
@@ -71,116 +77,90 @@
                     <div class="card-body">
                         <form action="/discipline/filter/advanced" method="get">
                             <div class="container">
-                              <div class="row">
-                                <div class="col align-self-start">
-                                <input type="checkbox" name="triggerMetodologia" id="triggerMetodologia"> Metodologias
-                                </div>
-                                <div class="col align-self-center">
+                                <div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col" style="display: flex; justify-content:center;">
+                                            <input type="checkbox" name="triggerMetodologia" id="triggerMetodologia">Metodologias
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
                                     <div class="row" id="metodologias" style="display:none;">
-                                      <div class="col">
-                                      <button type="button"><input type="radio" value="classicas" name="metodologias" id=""> Clássicas</button>
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button"><input type="radio" value="classicas" name="metodologias" id="metodologias"> Clássicas</button>
                                       </div>
-                                      <div class="col">
-                                       <button type="button"><input type="radio" value="ativas" name="metodologias" id=""> Ativas</button>
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button"><input type="radio" value="ativas" name="metodologias" id="metodologias"> Ativas</button>
                                       </div>
                                     </div>
                                     <div id="metodologias-range" style="display:none;">
-                                        Clássicas<input value="-1" type="range" name="metodologias_range" class="form-control-range" id="range-metodologia" min="-1" max="100">Ativas
+                                        Clássicas <input value="-1" type="range" name="metodologias_range" class="form-control-range" id="range-metodologia" min="-1" max="100"> Ativas
                                     </div>
                                 </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                </div>
-                              </div>
 
-                              <div class="row">
-                                <div class="col align-self-start">
-                                <input type="checkbox" name="triggerDiscussao" id="triggerDiscussao"> Discussão
-                                </div>
-                                <div class="col align-self-center">
+                                <div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col" style="display: flex; justify-content:center;">
+                                            <input type="checkbox" name="triggerDiscussao" id="triggerDiscussao">Discussão
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
                                     <div class="row" id="discussao" style="display:none;">
-                                      <div class="col">
+                                      <div class="col" style="display: flex; justify-content:center;">
                                         <button type="button"><input type="radio" value="social" name="discussao" id="discussao"> Social</button>
                                       </div>
-                                      <div class="col">
+                                      <div class="col" style="display: flex; justify-content:center;">
                                         <button type="button"><input type="radio" value="tecnica" name="discussao" id="discussao"> Técnica</button>
                                       </div>
                                     </div>
-                                    <div id="discussao-range" style="display:none">
-                                        Social<input type="range" value="-1" class="form-control-range" name="discussao_range" id="range-discussao" min="-1" max="100">Técnica
+                                    <div id="discussao-range" style="display:none;">
+                                        Social <input value="-1" type="range" name="discussao_range" class="form-control-range" id="discussao_range" min="-1" max="100">Técnica
                                     </div>
                                 </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                    
-                                </div>
-                              </div>
 
-                              <div class="row">
-                                <div class="col align-self-start">
-                                <input type="checkbox" name="triggerAbordagem" id="triggerAbordagem"> Abordagem
-                                </div>
-                                <div class="col align-self-center">
-                                <div class="row" id="abordagem" style="display:none;">
-                                    <div class="col">
+                                <div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col" style="display: flex; justify-content:center;">
+                                            <input type="checkbox" name="triggerAbordagem" id="triggerAbordagem">Abordagem
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
+                                    <div class="row" id="abordagem" style="display:none;">
+                                      <div class="col" style="display: flex; justify-content:center;">
                                         <button type="button"><input type="radio" value="teorica" name="abordagem" id="abordagem"> Teórica</button>
                                       </div>
-                                      <div class="col">
+                                      <div class="col" style="display: flex; justify-content:center;">
                                         <button type="button"><input type="radio" value="pratica" name="abordagem" id="abordagem"> Prática</button>
                                       </div>
                                     </div>
                                     <div id="abordagem-range" style="display:none;">
-                                        Teórica<input type="range" class="form-control-range" name="abordagem_range" value="-1" id="range-abordagem" min="-1" max="100">Prática
+                                        Teórica <input value="-1" type="range" name="abordagem_range" class="form-control-range" id="abordagem_range" min="-1" max="100">Prática
                                     </div>
                                 </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                    <button type="button" id="abordagemButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
-                                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                              </div>
 
-                              <div class="row">
-                                <div class="col align-self-start">
-                                <input type="checkbox" name="triggerAvaliacao" id="triggerAvaliacao"> Avaliação
-                                </div>
-                                <div class="col align-self-center">
-                                <div class="row" id="avaliacao" style="display:none;">
-                                    <div class="col">
+                                <div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col" style="display: flex; justify-content:center;">
+                                            <input type="checkbox" name="triggerAvaliacao" id="triggerAvaliacao">Avaliação
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
+                                    <div class="row" id="avaliacao" style="display:none;">
+                                      <div class="col" style="display: flex; justify-content:center;">
                                         <button type="button"><input type="radio" value="provas" name="avaliacao" id="avaliacao"> Provas</button>
                                       </div>
-                                      <div class="col">
+                                      <div class="col" style="display: flex; justify-content:center;">
                                         <button type="button"><input type="radio" value="atividades" name="avaliacao" id="avaliacao"> Atividades</button>
                                       </div>
                                     </div>
-                                    <div style="display:none;" id="avaliacao-range">
-                                        Provas<input type="range" class="form-control-range" name="avaliacao_range" value="-1" id="range-avaliacao" min="-1" max="100">Atividades
+                                    <div id="avaliacao-range" style="display:none;">
+                                        Provas <input value="-1" type="range" name="avaliacao_range" class="form-control-range" id="avaliacao_range" min="-1" max="100"> Atividades
                                     </div>
                                 </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                </div>
-                              </div>
-
-                              <!-- <div class="row">
-                                <div class="col align-self-start">
-                                  <input type="checkbox" name="triggerHorario" id="triggerHorario"> Carga Horária
-                                </div>
-                                <div class="col align-self-center">
-                                <div class="row" id="horario" style="display:none;">
-                                    <div class="col">
-                                        <button type="button"><input type="radio" value="presencial" name="horario" id="horario"> Presencial</button>
-                                      </div>
-                                      <div class="col">
-                                        <button type="button"><input type="radio" value="ead" name="horario" id="horario"> EAD</button>
-                                      </div>
-                                    </div>
-                                    <div style="display:none;" id="horario-range">
-                                        Presencial<input type="range" class="form-control-range" name="horario_range" value="-1" id="range-horario" min="-1" max="100">EAD
-                                    </div>
-                                </div>
-                                <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                </div> --> 
-                              <button type="submit">FILTRAR</button>
+                                <button type="submit">FILTRAR</button>
                             </div>
                         </form>  
                     </div>
