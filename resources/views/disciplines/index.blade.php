@@ -179,14 +179,7 @@
                                     </div>
                                 </div>
                                 <div class="col align-self-end" style="display:flex; justify-content:center;">
-                                </div> -->
-                                @foreach($disciplines as $discipline)
-                                    @php
-                                        $arr[] = $discipline->id;
-                                    @endphp
-                                @endforeach
-                                <!-- <input type="text" name="currentDisciplines[]" value="{{ implode(',', $arr) }}" style="display:none;"/>
-                              </div> -->
+                                </div> --> 
                               <button type="submit">FILTRAR</button>
                             </div>
                         </form>  
