@@ -240,7 +240,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
-                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
                     @endslot
@@ -289,7 +289,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
-                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
                     @endslot
@@ -347,7 +347,7 @@ Sobre nós - Portal das Disciplinas IMD
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
-                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
                     @endslot
