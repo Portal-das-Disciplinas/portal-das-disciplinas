@@ -91,14 +91,14 @@
                                     <div class="row" id="metodologias" style="display:none;">
                                       <div class="col" style="display: flex; justify-content:center;">
                                         <button type="button">
-                                            <input type="radio" value="classicas" name="metodologias" id="metodologias">
-                                            <label for="metodologias">Clássicas</label>
+                                            <input type="radio" value="classicas" name="metodologias" id="classicas">
+                                            <label for="classicas">Clássicas</label>
                                         </button>
                                       </div>
                                       <div class="col" style="display: flex; justify-content:center;">
                                         <button type="button">
-                                            <input type="radio" value="ativas" name="metodologias" id="metodologias">
-                                            <label for="metodologias">Ativas</label> 
+                                            <input type="radio" value="ativas" name="metodologias" id="ativas">
+                                            <label for="ativas">Ativas</label> 
                                         </button>
                                       </div>
                                     </div>
@@ -111,16 +111,25 @@
                                     <div class="row">
                                         <div class="col"></div>
                                         <div class="col" style="display: flex; justify-content:center;">
-                                            <input type="checkbox" name="triggerDiscussao" id="triggerDiscussao">Discussão
+                                            <button type="button">
+                                            <input type="checkbox" name="triggerDiscussao" id="triggerDiscussao">
+                                            <label for="triggerDiscussao">Discussão</label>
+                                            </button>
                                         </div>
                                         <div class="col"></div>
                                     </div>
                                     <div class="row" id="discussao" style="display:none;">
                                       <div class="col" style="display: flex; justify-content:center;">
-                                        <button type="button"><input type="radio" value="social" name="discussao" id="discussao"> Social</button>
+                                        <button type="button">
+                                            <input type="radio" value="social" name="discussao" id="social">
+                                            <label for="social">Social</label>
+                                        </button>
                                       </div>
                                       <div class="col" style="display: flex; justify-content:center;">
-                                        <button type="button"><input type="radio" value="tecnica" name="discussao" id="discussao"> Técnica</button>
+                                        <button type="button">
+                                        <input type="radio" value="tecnica" name="discussao" id="tecnica">
+                                        <label for="tecnica">Técnica</label>
+                                        </button>
                                       </div>
                                     </div>
                                     <div id="discussao-range" style="display:none;">
@@ -132,16 +141,25 @@
                                     <div class="row">
                                         <div class="col"></div>
                                         <div class="col" style="display: flex; justify-content:center;">
-                                            <input type="checkbox" name="triggerAbordagem" id="triggerAbordagem">Abordagem
+                                            <button type="button">
+                                            <input type="checkbox" name="triggerAbordagem" id="triggerAbordagem">
+                                            <label for="triggerAbordagem">Abordagem</label>
+                                            </button>
                                         </div>
                                         <div class="col"></div>
                                     </div>
                                     <div class="row" id="abordagem" style="display:none;">
                                       <div class="col" style="display: flex; justify-content:center;">
-                                        <button type="button"><input type="radio" value="teorica" name="abordagem" id="abordagem"> Teórica</button>
+                                        <button type="button">
+                                        <input type="radio" value="teorica" name="abordagem" id="teorica">
+                                        <label for="teorica">Teórica</label>                                        
+                                        </button>
                                       </div>
                                       <div class="col" style="display: flex; justify-content:center;">
-                                        <button type="button"><input type="radio" value="pratica" name="abordagem" id="abordagem"> Prática</button>
+                                        <button type="button">
+                                        <input type="radio" value="pratica" name="abordagem" id="pratica">
+                                        <label for="pratica">Prática</label>
+                                        </button>
                                       </div>
                                     </div>
                                     <div id="abordagem-range" style="display:none;">
@@ -153,16 +171,25 @@
                                     <div class="row">
                                         <div class="col"></div>
                                         <div class="col" style="display: flex; justify-content:center;">
-                                            <input type="checkbox" name="triggerAvaliacao" id="triggerAvaliacao">Avaliação
+                                            <button type="button">
+                                            <input type="checkbox" name="triggerAvaliacao" id="triggerAvaliacao">
+                                            <label for="triggerAvaliacao">Avaliação</label>
+                                            </button>
                                         </div>
                                         <div class="col"></div>
                                     </div>
                                     <div class="row" id="avaliacao" style="display:none;">
                                       <div class="col" style="display: flex; justify-content:center;">
-                                        <button type="button"><input type="radio" value="provas" name="avaliacao" id="avaliacao"> Provas</button>
+                                        <button type="button">
+                                        <input type="radio" value="provas" name="avaliacao" id="provas">
+                                        <label for="provas">Provas</label> 
+                                        </button>
                                       </div>
                                       <div class="col" style="display: flex; justify-content:center;">
-                                        <button type="button"><input type="radio" value="atividades" name="avaliacao" id="avaliacao"> Atividades</button>
+                                        <button type="button">
+                                        <input type="radio" value="atividades" name="avaliacao" id="atividades">
+                                        <label for="atividades">Atividades</label>
+                                        </button>
                                       </div>
                                     </div>
                                     <div id="avaliacao-range" style="display:none;">
