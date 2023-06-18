@@ -61,11 +61,11 @@
             <div class="card">
                 <div class="card-header" id="headingOne">
                   <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <button id="filterButton" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                       Filtragem via Classificações
                     </button>
 
-                    <button style="float:right;" type="button" id="abordagemButton" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                    <button id="advancedFilter" style="float:right;" type="button" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
                         <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                             <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
                         </svg>
@@ -81,16 +81,25 @@
                                     <div class="row">
                                         <div class="col"></div>
                                         <div class="col" style="display: flex; justify-content:center;">
-                                            <input type="checkbox" name="triggerMetodologia" id="triggerMetodologia">Metodologias
+                                            <button type="button">
+                                                <input type="checkbox" name="triggerMetodologia" id="triggerMetodologia" />
+                                                <label for="triggerMetodologia"> Metodologias </label>
+                                            </button>
                                         </div>
                                         <div class="col"></div>
                                     </div>
                                     <div class="row" id="metodologias" style="display:none;">
                                       <div class="col" style="display: flex; justify-content:center;">
-                                        <button type="button"><input type="radio" value="classicas" name="metodologias" id="metodologias"> Clássicas</button>
+                                        <button type="button">
+                                            <input type="radio" value="classicas" name="metodologias" id="metodologias">
+                                            <label for="metodologias">Clássicas</label>
+                                        </button>
                                       </div>
                                       <div class="col" style="display: flex; justify-content:center;">
-                                        <button type="button"><input type="radio" value="ativas" name="metodologias" id="metodologias"> Ativas</button>
+                                        <button type="button">
+                                            <input type="radio" value="ativas" name="metodologias" id="metodologias">
+                                            <label for="metodologias">Ativas</label> 
+                                        </button>
                                       </div>
                                     </div>
                                     <div id="metodologias-range" style="display:none;">
@@ -258,134 +267,5 @@
 </div>
 </div>
 
-<script>
-    $("#triggerMetodologia").on("click", () => {
-        if($("#metodologias").css("display") != "none"){
-            $("#metodologias").css("display","none");
-        } else {
-            $("#metodologias").css("display","flex");
-        }
-    })
-    
-    $("#triggerDiscussao").on("click", () => {
-        if($("#discussao").css("display") != "none"){
-            $("#discussao").css("display","none");
-        } else {
-            $("#discussao").css("display","flex");
-        }
-    })
-
-    $("#triggerAbordagem").on("click", () => {
-        if($("#abordagem").css("display") != "none"){
-            $("#abordagem").css("display","none");
-        } else {
-            $("#abordagem").css("display","flex");
-        }
-    })
-
-    $("#triggerAvaliacao").on("click", () => {
-        if($("#avaliacao").css("display") != "none"){
-            $("#avaliacao").css("display","none");
-        } else {
-            $("#avaliacao").css("display","flex");
-        }
-    })
-
-    $("#triggerHorario").on("click", () => {
-        if($("#horario").css("display") != "none"){
-            $("#horario").css("display","none");
-        } else {
-            $("#horario").css("display","flex");
-        }
-    })
-
-    $("#abordagemButton").on("click", () => {
-        $("#metodologias").css("display","none");
-        $("#triggerMetodologia").prop('disabled', true);
-        
-        $("#range-metodologia").attr({'min': 0});
-        $("#range-metodologia").attr({'value': 0});
-
-        $("#discussao").css("display","none");
-        $("#triggerDiscussao").prop('disabled', true);
-
-        $("#range-discussao").attr({'min': 0});
-        $("#range-discussao").attr({'value': 0});
-
-        $("#abordagem").css("display","none");
-        $("#triggerAbordagem").prop('disabled', true);
-
-        $("#range-abordagem").attr({'min': 0});
-        $("#range-abordagem").attr({'value': 0});
-
-        $("#avaliacao").css("display","none");
-        $("#triggerAvaliacao").prop('disabled', true);
-
-        $("#range-avaliacao").attr({'min': 0});
-        $("#range-avaliacao").attr({'value': 0});
-
-        $("#horario").css("display","none");
-        $("#triggerHorario").prop('disabled', true);
-
-        $("#range-horario").attr({'min': 0});
-        $("#range-horario").attr({'value': 0});
-
-        if($("#abordagem-range").css("display") != "none"){
-            $("#metodologias-range").css("display","none");
-            $("#metodologias-range").val('');
-            $("#triggerMetodologia").prop('checked', false);
-            $("#triggerMetodologia").prop('disabled', false);
-
-            $("#range-metodologia").attr({'min': -1});
-            $("#range-metodologia").attr({'value': -1});
-
-            $("#discussao-range").css("display","none");
-            $("#discussao-range").val('');
-            $("#triggerDiscussao").prop('checked', false);
-            $("#triggerDiscussao").prop('disabled', false);
-
-            $("#range-discussao").attr({'min': -1});
-            $("#range-discussao").attr({'value': -1});
-
-            $("#abordagem-range").css("display","none");
-            $("#abordagem-range").val('');
-            $("#triggerAbordagem").prop('checked', false);
-            $("#triggerAbordagem").prop('disabled', false);
-
-            $("#range-abordagem").attr({'min': -1});
-            $("#range-abordagem").attr({'value': -1});
-
-            $("#avaliacao-range").css("display","none");
-            $("#avaliacao-range").val('');
-            $("#triggerAvaliacao").prop('checked', false);
-            $("#triggerAvaliacao").prop('disabled', false);
-
-            $("#range-avaliacao").attr({'min': -1});
-            $("#range-avaliacao").attr({'value': -1});
-
-            $("#horario-range").css("display","none");
-            $("#horario-range").val('');
-            $("#triggerHorario").prop('checked', false);
-            $("#triggerHorario").prop('disabled', false);
-
-            $("#range-horario").attr({'min': -1});
-            $("#range-horario").attr({'value': -1});
-        } else {
-            $("#metodologias-range").css("display","flex");
-            $("#triggerMetodologia").prop('checked', false);
-
-            $("#discussao-range").css("display","flex");
-            $("#triggerDiscussao").prop('checked', false);
-
-            $("#abordagem-range").css("display","flex");
-            $("#triggerAbordagem").prop('checked', false);
-
-            $("#avaliacao-range").css("display","flex");
-            $("#triggerAvaliacao").prop('checked', false);
-
-            $("#horario-range").css("display","flex");
-            $("#triggerHorario").prop('checked', false);
-        }
-    })
-</script>
+<script src="{{ asset('js/indexSidebar.js') }}"></script>
 @endsection

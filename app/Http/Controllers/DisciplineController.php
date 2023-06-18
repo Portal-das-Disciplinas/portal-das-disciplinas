@@ -106,7 +106,7 @@ class DisciplineController extends Controller
         $emphasis_all = Emphasis::all();
         $classifications_all = ClassificationDiscipline::all();
         $disciplines_all = Discipline::all();
-        $collectionOfDisciplines = collect([]);
+        $disciplines_ids = collect([]);
         $result = collect([]);
         $resultFiltered = collect([]);
 
@@ -116,12 +116,12 @@ class DisciplineController extends Controller
             } else if($request->metodologias == "classicas"){
                 $input = ClassificationDiscipline::where('classification_id',1)->where('value','<=',50)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             } else {
                 $input = ClassificationDiscipline::where('classification_id',1)->where('value','>',50)->get();
                 foreach($input as $i){
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
 
@@ -130,12 +130,12 @@ class DisciplineController extends Controller
             } else if($request->discussao == "social"){
                 $input = ClassificationDiscipline::where('classification_id',2)->where('value','<=',50)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             } else {
                 $input = ClassificationDiscipline::where('classification_id',2)->where('value','>',50)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
 
@@ -144,12 +144,12 @@ class DisciplineController extends Controller
             } else if($request->abordagem == "teorica"){
                 $input = ClassificationDiscipline::where('classification_id',3)->where('value','<=',50)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             } else {
                 $input = ClassificationDiscipline::where('classification_id',3)->where('value','>',50)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
 
@@ -158,53 +158,59 @@ class DisciplineController extends Controller
             } else if($request->avaliacao == "provas"){
                 $input = ClassificationDiscipline::where('classification_id',4)->where('value','<=',50)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             } else {
                 $input = ClassificationDiscipline::where('classification_id',4)->where('value','>',50)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
         } else {
             if($request->metodologias_range > 0) {
                 $input = ClassificationDiscipline::where('classification_id', 1)->where('value', '<=', $request->metodologias_range)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
             
             if($request->discussao_range > 0) {
                 $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '<=', $request->discussao_range)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
 
             if($request->abordagem_range > 0) {
                 $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '<=', $request->abordagem_range)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
 
             if($request->avaliacao_range > 0) {
                 $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '<=', $request->avaliacao_range)->get();
                 foreach($input as $i) {
-                    $result->push($i->discipline_id);
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
         }
 
         foreach($disciplines_all as $d){
-            foreach($result as $r) {
+            foreach($disciplines_ids as $r) {
                 if($d->id == $r) {
-                    $resultFiltered->push($d);
+                    $result->push($d);
                 }
             }
         }
 
-        return view('disciplines.index')->with('disciplines', $resultFiltered)->with('emphasis', $emphasis_all);
+        $collection = $result->duplicates()->keys();
+
+        foreach($collection as $col) {
+            $result->pull($col);
+        }
+        
+        return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all);
     }
 
  
