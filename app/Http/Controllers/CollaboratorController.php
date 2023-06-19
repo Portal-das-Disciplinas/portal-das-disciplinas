@@ -63,8 +63,6 @@ class CollaboratorController extends Controller
             $nomeArquivo = $request->file('foto')->store('img_profiles', 'public');
         }
 
-
-
         $col = new Collaborator();
         $col->name = $request->nome;
         $col->email = $request->email;
@@ -74,6 +72,8 @@ class CollaboratorController extends Controller
         $col->github = $request->github;
         $col->isManager = $isManager;
         $col->active = $active;
+        $col->joinDate = $request->joinDate;
+        $col->leaveDate = $request->leaveDate;
         if (isset($nomeArquivo)) {
             $col->urlPhoto =  $nomeArquivo;
         }
@@ -144,9 +144,27 @@ class CollaboratorController extends Controller
         $collaborator->github = $request->github;
         $collaborator->active = $active;
         $collaborator->isManager = $isManager;
-        $collaborator->save();
+        $collaborator->joinDate = $request->joinDate;
+        $collaborator->leaveDate = $request->leaveDate;
 
-        $linkIds = $request->linkId;
+        if($request->imageChanged == "on"){
+            if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
+                if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
+                    Storage::disk('public')->delete($collaborator->urlPhoto);
+                }
+                $nomeArquivo = $request->file('photo')->store('img_profiles', 'public');
+                $collaborator->urlPhoto = $nomeArquivo;
+            }
+            else{
+                if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
+                    Storage::disk('public')->delete($collaborator->urlPhoto);
+                    $collaborator->urlPhoto = null;
+                }
+            }
+        }
+
+        $collaborator->save();
+        //$linkIds = $request->linkId;
         $linkNames = $request->linkName;
         $linkUrls = $request->linkUrl;
         $links = $collaborator->links;
@@ -168,46 +186,6 @@ class CollaboratorController extends Controller
 
         return redirect()->route('information');
     }
-
-    /**
-     * Atualiza a foto de perfil do colaborador
-     * @param $request Objeto contendo as informações de requisição
-     * @param $id Identificador único do colaborador
-     */
-    public function updatePhoto(Request $request, $id)
-    {
-
-        $collaborator = Collaborator::find($id);
-        if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
-            if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
-                Storage::disk('public')->delete($collaborator->urlPhoto);
-            }
-            $nomeArquivo = $request->file('photo')->store('img_profiles', 'public');
-            $collaborator->urlPhoto = $nomeArquivo;
-            $collaborator->save();
-            return redirect()->back()->withInput();
-        }
-    }
-
-    /**
-     * Apaga a foto do colaborador no servidor.
-     * @param $request Objeto contendo as informações de requisição do colaborador.
-     * @param $Identificador único do colaborador
-     */
-    public function deletePhoto(Request $request, $id)
-    {
-
-        $collaborator = Collaborator::find($id);
-        if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
-            Storage::disk('public')->delete($collaborator->urlPhoto);
-            $collaborator->urlPhoto = null;
-            $collaborator->save();
-        }
-
-        return redirect()->back()->with('mensagem', 'Foto removida');
-    }
-
-
 
     /**
      * Apaga o colaborador do banco de dados

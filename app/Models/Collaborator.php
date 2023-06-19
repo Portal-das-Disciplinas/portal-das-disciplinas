@@ -32,7 +32,9 @@ class Collaborator extends Model
         'github',
         'urlPhoto',
         'isManager',
-        'active'
+        'active',
+        'joinDate',
+        'leaveDate'
     ];
 
     /**
@@ -42,4 +44,5 @@ class Collaborator extends Model
     public function links(){
         return $this->hasMany(CollaboratorLink::class);
     }
+
 }

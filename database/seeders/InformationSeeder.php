@@ -15,6 +15,11 @@ class InformationSeeder extends Seeder
     public function run()
     {
         Information::create([
+            'name' => 'sectionNameManagers',
+            'value' => 'Coordenadores'
+        ]);
+
+        Information::create([
             'name' => 'sectionNameCurrentCollaborators',
             'value' => 'Colaboradores Atuais'
         ]);
