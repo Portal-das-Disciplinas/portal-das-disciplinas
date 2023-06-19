@@ -3395,14 +3395,12 @@
                                     s > 1 && we(d),
                                     s > 1 &&
                                         _e(
-                                            e
-                                                .slice(0, s - 1)
-                                                .concat({
-                                                    value:
-                                                        " " === e[s - 2].type
-                                                            ? "*"
-                                                            : "",
-                                                })
+                                            e.slice(0, s - 1).concat({
+                                                value:
+                                                    " " === e[s - 2].type
+                                                        ? "*"
+                                                        : "",
+                                            })
                                         ).replace(W, "$1"),
                                     n,
                                     s < i && Te(e.slice(s, i)),
