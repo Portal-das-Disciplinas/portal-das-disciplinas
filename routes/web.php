@@ -74,8 +74,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::resource('collaborators',CollaboratorController::class);
-Route::put('collaborators/update/photo/{photo}',[CollaboratorController::class,'updatePhoto'])->name('collaborators.update.photo');
-Route::delete('collaborators/delete/photo/{photo}',[CollaboratorController::class,'deletePhoto'])->name('collaborators.delete.photo');
+
 
 
 Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])

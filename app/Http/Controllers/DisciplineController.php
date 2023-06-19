@@ -15,10 +15,12 @@ use App\Services\Urls\GoogleDriveService;
 use App\Services\Urls\YoutubeService;
 use Illuminate\Http\Request;
 use \App\Models\Discipline;
+use App\Models\DisciplineParticipant;
 use \App\Models\Media;
 use \App\Models\Emphasis;
 use App\Models\Professor;
 use App\Models\Faq;
+use App\Models\ParticipantLink;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -56,12 +58,11 @@ class DisciplineController extends Controller
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
             ->with('disciplines', $disciplines)
-            ->with('emphasis', $emphasis); 
+            ->with('emphasis', $emphasis);
     }
 
     public function disciplineFilter(Request $request)
     {
-        // dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
 
@@ -72,22 +73,21 @@ class DisciplineController extends Controller
         $collection = collect([]);
 
         if ($discipline_name != null && $emphasis_id != null) {
-            $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
+            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
 
-            foreach($input as $i) {
-                if($i->emphasis_id == $emphasis_id) {
+            foreach ($input as $i) {
+                if ($i->emphasis_id == $emphasis_id) {
                     $collection->push($i);
                 }
             }
 
-            return view('disciplines.index')->with('disciplines', $collection)->with('emphasis',$emphasis_all);
+            return view('disciplines.index')->with('disciplines', $collection)->with('emphasis', $emphasis_all);
         } else if ($emphasis_id != null) {
             $input = Discipline::where('emphasis_id', $emphasis_id)->get();
-            
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
-        } else if ($discipline_name != null) {
-            $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
 
+            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all);
+        } else if ($discipline_name != null) {
+            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
             return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
         }  else if($emphasis_id == null) {
             $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
@@ -232,7 +232,7 @@ class DisciplineController extends Controller
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis);
-            }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -334,9 +334,8 @@ class DisciplineController extends Controller
             $titles = $request->input('title');
             $contents = $request->input('content');
 
-            if($titles != null)
-            {
-                foreach($titles as $key => $title) {
+            if ($titles != null) {
+                foreach ($titles as $key => $title) {
                     Faq::create([
                         'discipline_id' => $discipline->id,
                         'title' => $title,
@@ -344,6 +343,28 @@ class DisciplineController extends Controller
                     ]);
                 }
             }
+
+            $participants = json_decode($request->participantsList);
+            if ($participants) {
+                foreach ($participants as $participant) {
+                    $participantModel = DisciplineParticipant::create([
+                        'name' => $participant->name,
+                        'role' => $participant->role,
+                        'email' => $participant->email,
+                        'discipline_id' => $discipline->id
+                    ]);
+                    if ($participant->links) {
+                        foreach ($participant->links as $link) {
+                            ParticipantLink::create([
+                                'name' => $link->name,
+                                'url' => $link->url,
+                                'discipline_participant_id' => $participantModel->id
+                            ]);
+                        }
+                    }
+                }
+            }
+
 
             DB::commit();
             return redirect()->route("disciplinas.show", $discipline->id);
@@ -402,13 +423,21 @@ class DisciplineController extends Controller
                 'professor',
                 'medias',
                 'faqs',
+                'disciplineParticipants',
             ])
             ->findOrFail($id);
         $classifications = Classification::all();
+        $participants = array();
+        for ($i = 0; $i < count($discipline->disciplineParticipants()->get()); $i++) {
+            array_push($participants, json_decode($discipline->disciplineParticipants()->get()[$i]));
+            $participants[$i]->links = json_decode($discipline->disciplineParticipants()->get()[$i]->links);
+        }
+
 
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
             ->with('classifications', $classifications)
-            ->with('emphasis', $emphasis); 
+            ->with('emphasis', $emphasis)
+            ->with('participants', $participants);
     }
 
     /**
@@ -420,6 +449,7 @@ class DisciplineController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
+
         DB::beginTransaction();
         try {
             $user = Auth::user();
@@ -429,6 +459,9 @@ class DisciplineController extends Controller
                 $professor = Professor::query()->find($request->input('professor'));
             }
 
+
+
+
             $discipline = Discipline::query()->find($id);
             $discipline->update([
                 'name' => $request->input('name'),
@@ -437,8 +470,51 @@ class DisciplineController extends Controller
                 'emphasis_id' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),
-                'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
+                'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id,
             ]);
+
+            $participantsFromJson = (json_decode($request->participantList));
+            /* Deleta os participantes que não estão na lista da requisição */
+            $databaseDisciplineParticipants = $discipline->disciplineParticipants()->get();
+            foreach ($databaseDisciplineParticipants as $participant) {
+                $hasParticipant = false;
+                for ($i = 0; $i < count($participantsFromJson); $i++) {
+                    if (isset($participantsFromJson[$i]->id) && ($participantsFromJson[$i]->id == $participant->id)) {
+                        $hasParticipant = true;
+                    }
+                }
+                if (!$hasParticipant) {
+                    $discipline->disciplineParticipants()->find($participant->id)->delete();
+                }
+            }
+            /*Inclui ou atualiza os participantes da disciplina */
+            foreach ($participantsFromJson as $json) {
+                $participant = new DisciplineParticipant();
+                if (isset($json->id)) {
+                    $participant->id = $json->id;
+                }
+                
+                $participant->name = $json->name;
+                $participant->role = $json->role;
+                $participant->email = $json->email;
+                $participant->discipline()->associate($discipline);
+                if (isset($json->id)) {
+                    $discipline->disciplineParticipants()->updateOrCreate(['id' => $json->id], $participant->toArray());
+
+                } else {
+                    $participant->save();
+                    //$discipline->disciplineParticipants()->save($participant->toArray());
+                }
+                ParticipantLink::where('discipline_participant_id', $participant->id)->delete();
+                foreach ($json->links as $linkJson) {
+                    $link = new ParticipantLink();
+                    $link->name = $linkJson->name;
+                    $link->url = $linkJson->url;
+                    $participant->links()->save($link);
+                }
+
+                
+            }
 
             $url = $request->input('media-trailer') ?? '';
             $mediaId = YoutubeService::getIdFromUrl($url);
@@ -537,7 +613,7 @@ class DisciplineController extends Controller
                     ['value' => $request->input('classification-' . $classificationId)]
                 );
             }
-
+            $discipline->save();
             DB::commit();
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
