@@ -7,9 +7,9 @@
     <div class="container">
         <div class="row">
             <div class="col-12 text-center my-4 title-subject-container">
-                <h1 class="title-subject display-title ">Portal das Disciplinas - {{config('globals.PROJETO_SIGLA_SETOR_INSTITUICAO')}}</h1>
+                <h1 class="title-subject display-title ">Portal das Disciplinas - {{$theme['PROJETO_SIGLA_SETOR_INSTITUICAO']}}</h1>
                 <div class="row justify-content-center">
-                    <p class='p-text mt-3  text-center col-md-10  larger-p'>{{config('globals.PROJETO_DISCIPLINAS_DESCRICAO')}}<p>
+                    <p class='p-text mt-3  text-center col-md-10  larger-p'>{{$theme['PROJETO_DISCIPLINAS_DESCRICAO']}}<p>
                 </div>
             </div>
         </div>
