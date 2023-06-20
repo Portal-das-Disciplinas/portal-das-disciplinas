@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Cadastrar disciplina - Portal das Disciplinas {{ config('globals.PROJETO') }}
+    Cadastrar disciplina - Portal das Disciplinas
 @endsection
 
 @section('robots')
