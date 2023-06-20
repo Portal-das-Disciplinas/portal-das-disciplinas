@@ -18,12 +18,21 @@ use \App\Models\Emphasis;
 use App\Models\Professor;
 use App\Models\Faq;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class DisciplineController extends Controller
 {
     const VIEW_PATH = 'disciplines.';
+
+    protected $theme;
+
+    public function __construct()
+    {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
+    }
 
     /**
      * Display a listing of the resource.
@@ -32,6 +41,7 @@ class DisciplineController extends Controller
      */
     public function index(Request $request)
     {
+
         $name_discipline = $request->name_discipline ?? null;
         // $emphasis = $request->emphasis ?? null;
 
@@ -54,7 +64,8 @@ class DisciplineController extends Controller
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
             ->with('disciplines', $disciplines)
-            ->with('emphasis', $emphasis); 
+            ->with('emphasis', $emphasis)
+            ->with('theme', $this->theme); 
     }
 
     public function disciplineFilter(Request $request)
@@ -111,7 +122,8 @@ class DisciplineController extends Controller
         }
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
-            ->with('emphasis', $emphasis);
+            ->with('emphasis', $emphasis)
+            ->with('theme', $this->theme); 
             }
 
     /**
@@ -257,11 +269,13 @@ class DisciplineController extends Controller
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
             return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))
-                ->with('classifications', $classifications);
+                ->with('classifications', $classifications)
+                ->with('theme', $this->theme);
         }
 
         return view(self::VIEW_PATH . 'show', compact('discipline'))
-            ->with('classifications', $classifications);
+            ->with('classifications', $classifications)
+            ->with('theme', $this->theme); 
     }
 
     /**
@@ -288,7 +302,8 @@ class DisciplineController extends Controller
 
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
             ->with('classifications', $classifications)
-            ->with('emphasis', $emphasis); 
+            ->with('emphasis', $emphasis)
+            ->with('theme', $this->theme); 
     }
 
     /**
@@ -417,6 +432,14 @@ class DisciplineController extends Controller
                     ['value' => $request->input('classification-' . $classificationId)]
                 );
             }
+
+            $faqsMap = Faq::all()->pluck('id')->toArray();
+            foreach ($faqsMap as $faqId) {
+                ClassificationDiscipline::updateOrCreate(
+                    ['title' => $discipline->id, 'title' => $faqId],
+                    ['content' => $request->input('content-' . $faqId)]
+                );
+            }            
 
             DB::commit();
             return redirect()->route("disciplinas.show", $discipline->id);

@@ -1,7 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="pt_BR">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="CaID-sWQ4oro51-MUzVaQlu5v5a4XqK2Xpg9uVmONKI" />
     <meta name="lang" content="pt-BR">
@@ -9,15 +9,39 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="keywords" content="portal das disciplinas, imd">
     <meta name="robots" content="@yield('robots','all')">
-    <title>@yield('title', 'Portal das Disciplinas '.  env('PROJETO'))</title>
+    <title>@yield('title', 'Portal das Disciplinas - '.  $theme['PROJETO_SIGLA_SETOR'])</title>
     <meta name="description" content="@yield('description','Conheça as disciplinas do IMD de forma mais prática!')">
-    <link rel="shortcut icon"  href="{{asset('favicon_'. env('PROJETO') .'.ico')}}">
     {{-- bootstrap CSS --}}
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     {{-- CSS --}}
-    <link rel="stylesheet" href="{{asset('globals_'. env('PROJETO') .'.css')}}" >
+    <link rel="stylesheet" href="{{asset('css/globals.css')}}" >
     <link rel="stylesheet" href="{{asset('css/navbar.css')}}">
-    
+    {{-- Personal CSS --}}
+    @php
+    $css = "
+    <style>
+        :root {
+            --primary-color: {$theme['primary-color']};
+            --main-bg-color: {$theme['main-bg-color']};
+            --main-md-color: {$theme['main-md-color']};
+            --main-title-bg-color: {$theme['main-title-bg-color']};
+            --main-text-color: {$theme['main-text-color']};
+
+            --primary-color-darker: {$theme['primary-color-darker']};
+            --primary-color-lighter: {$theme['primary-color-lighter']};
+
+            --secondary-color: {$theme['secondary-color']};
+            --secondary-color-darker: {$theme['secondary-color-darker']};
+            --secondary-color-lighter: {$theme['secondary-color-lighter']};
+
+            --on-secondary: {$theme['on-secondary']};
+            --on-primary: {$theme['on-primary']};
+        }
+    </style>
+    ";
+    @endphp
+    {!! $css !!}
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;700;900&display=swap" rel="stylesheet">

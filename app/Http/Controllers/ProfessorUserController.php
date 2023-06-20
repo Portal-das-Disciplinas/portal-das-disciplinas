@@ -9,11 +9,20 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProfessorUserController extends Controller
 {
     const VIEW_PATH = "admin.";
+
+    protected $theme;
+
+    public function __construct()
+    {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
+    }
 
     public function index()
     {
@@ -22,12 +31,12 @@ class ProfessorUserController extends Controller
             'user',
         ])->get();
         //dd($professors);
-        return view(self::VIEW_PATH . 'professor.' . 'index', compact('professors'));
+        return view(self::VIEW_PATH . 'professor.' . 'index', compact('professors'))->with('theme', $this->theme);
     }
 
     public function create(CreateRequest $request)
     {
-        return view(self::VIEW_PATH . 'professor.' . 'create');
+        return view(self::VIEW_PATH . 'professor.' . 'create')->with('theme', $this->theme);
     }
 
     public function edit($id)

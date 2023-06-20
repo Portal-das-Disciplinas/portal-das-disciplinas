@@ -229,4 +229,8 @@ return [
 
     ],
 
+    'files' => [
+        'globals',
+    ],
+
 ];

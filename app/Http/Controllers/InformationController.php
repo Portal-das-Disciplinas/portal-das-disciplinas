@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Collaborator;
 use App\Models\Information;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class InformationController extends Controller
 {
+    protected $theme;
 
     public function __construct()
     {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
         $this->middleware('admin')->except('index');
     }
 
@@ -58,7 +62,9 @@ class InformationController extends Controller
             'sectionNameCurrentCollaborators' => $currentCollaboratorsSection ? $currentCollaboratorsSection->value : null,
             'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection ? $formerCollaboratorsSection->value : null,
             
-        ]);
+            ])
+            ->with('theme', $this->theme)
+            ;
     }
 
     public function store(Request $request)

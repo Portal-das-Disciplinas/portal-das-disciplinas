@@ -22,18 +22,18 @@
             <div id="section1">
                 <div class="logo-and-title d-flex align-items-center">
                     <img fluid id="imd-footer" src="{{ asset('img/imd-footer-2.png') }}"/>
-                    <p id="pdd-title" class="ml-3 footer-title">Portal das Disciplinas - {{env('PROJETO_NOME_COMPLETO')}}</p>
+                    <p id="pdd-title" class="ml-3 footer-title">Portal das Disciplinas - {{$theme['PROJETO_SIGLA_SETOR']}}</p>
                 </div>
                 <!-- <p id="pdd-sub" class="mt-3 footer-sub">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus culpa est recusandae.</p> -->
             </div>
             <div>
-                <img id="ufrn-logo" class='blackImg' fluid src="{{ asset('img/ufrnlogo-alt.png') }}"/>
+                <img id="ufrn-logo" class='blackImg' fluid src="{{ asset('storage/img/logo_university.png') }}"/>
             </div>
         </div>
         <div class="row">
             <hr>
             <div id="eqp-div" class="d-flex justify-content-between w-100 mt-2 pb-3 info-imd">
-                <div class="mt-1">&copy; {{env('PROJETO_NOME_COMPLETO')}}. {{env('PROJETO_CIDADE')}}, <?php echo date('Y') ?>. Todos os direitos reservados.</div>
+                <div class="mt-1">&copy; {{$theme['PROJETO_NOME_COMPLETO_SETOR']}}. {{$theme['PROJETO_CIDADE']}}, <?php echo date('Y') ?>. Todos os direitos reservados.</div>
                 <div id="eqp-link">Desenvolvido por: <a href="{{route('information')}}" class="eqp-link">Equipe do Portal das Disciplinas</a></div>
             </div>
         </div>

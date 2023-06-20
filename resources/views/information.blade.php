@@ -1,7 +1,5 @@
 @extends('layouts.app')
-@section('title')
-Sobre nós - Portal das Disciplinas {{ env('PROJETO') }}
-@endsection
+
 
 @section('styles-head')
 <link rel="stylesheet" href="{{asset('css/about.css')}}">

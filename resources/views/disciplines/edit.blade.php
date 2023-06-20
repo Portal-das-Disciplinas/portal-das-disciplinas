@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Editar disciplina - Portal das Disciplinas {{ env('PROJETO') }}
+    Editar disciplina - Portal das Disciplinas
 @endsection
 
 @section('robots')
@@ -322,22 +322,38 @@
                         </div>
                     </div> 
                 </div>
-                <div class="w-25 my-5">
-            <!-- Button trigger modal -->
-
-        </div>   
-            <div class="row d-flex p-2 mt-3 justify-content-center">
-                <button type="button" class="btn btn-primary btn-sm mr-5" data-toggle="modal"
-                    data-target="#faqs-create">
-                    Registrar FAQ
-                </button>
-                <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
-                    Cancelar
-                </a>
-                <button type="submit" class="btn btn-success btn-sm ml-5">Editar</button>
             </div>
-        </form>
+            <div class='page-title'>
+                <h3>Perguntas Frequentes</h3>
+            </div>
+            @foreach($discipline -> faqs as $faq)
+            <div> 
+                <div class="form-group">
+                    <label for="title[{{$faq->id}}]" class="col-form-label">Pergunta</label>
+                    <input type="text" class="form-control" id="title[{{$faq->id}}]" name="title[{{$faq->id}}]" value="{{$faq->title}}">
+                </div>
+                <div class="form-group">
+                    <label for="title[{{$faq->id}}]" class="col-form-label">Resposta</label>
+                    <textarea class="form-control" id="title[{{$faq->id}}]" name="title[{{$faq->id}}]">{{$faq->content}}</textarea>
+                </div>
+                <div class="form-group">
+                    <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn delete-button btn-danger" value="Apagar">Apagar</button>
+                    </form>
+                </div>
+            </div>
+            @endforeach
     </div>
+    <div class="row d-flex p-2 mt-3 justify-content-center">
+
+        <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
+            Cancelar
+        </a>
+        <button type="submit" class="btn btn-success btn-sm ml-5">Editar</button>       
+    </div>
+    </form>
 </div>
 
 

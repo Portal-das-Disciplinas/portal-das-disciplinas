@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Cadastrar disciplina - Portal das Disciplinas {{ env('PROJETO') }}
+    Cadastrar disciplina - Portal das Disciplinas {{ config('globals.PROJETO') }}
 @endsection
 
 @section('robots')
@@ -315,7 +315,7 @@
                 </div>
             </div>
             <div class='page-title'>
-                <h3>Cadastro de FAQ</h3>
+                <h3>Perguntas Frequentes</h3>
             </div>
             <div id="faqs">
   
@@ -396,15 +396,17 @@
     })
 
     var addButton = document.getElementById('add-faq');
-    let counter = 0;
+var faqs = document.getElementById('faqs');
+let counter = 0;
 
-    addButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        counter++;
-            // Create new elements
+addButton.addEventListener('click', function(event) {
+    event.preventDefault();
+    counter++;
+
+    // Create new elements
     let newDiv = document.createElement('div');
     newDiv.classList.add('modal-body');
-    
+
     // Create form group for title
     let formGroupTitle = document.createElement('div');
     formGroupTitle.classList.add('form-group');
@@ -419,11 +421,11 @@
     titleInput.classList.add('form-control');
     titleInput.id = `title${counter}`;
     titleInput.name = `title[${counter}]`;
-    
+
     // Append title elements
     formGroupTitle.appendChild(titleLabel);
     formGroupTitle.appendChild(titleInput);
-    
+
     // Create form group for content
     let formGroupContent = document.createElement('div');
     formGroupContent.classList.add('form-group');
@@ -442,13 +444,26 @@
     formGroupContent.appendChild(contentLabel);
     formGroupContent.appendChild(contentTextarea);
 
-    // Append form groups to newDiv
+    // Create delete button
+    let deleteButton = document.createElement('button');
+    deleteButton.classList.add('btn');
+    deleteButton.classList.add('delete-button');
+    deleteButton.classList.add('btn-danger');
+    deleteButton.textContent = "Deletar FAQ";
+
+    // Add event listener to delete button
+    deleteButton.addEventListener('click', function() {
+        newDiv.remove();
+    });
+
+    // Append form groups, delete button to newDiv
     newDiv.appendChild(formGroupTitle);
     newDiv.appendChild(formGroupContent);
+    newDiv.appendChild(deleteButton);
 
-    // Append to faqs
+    // Append newDiv to faqs
     faqs.appendChild(newDiv);
-        });
+    });
 </script>
 
 <style scoped>

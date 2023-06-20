@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\ProfessorUserController;
 use App\Http\Controllers\Chart\PassRateController;
@@ -71,6 +72,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('classificacoes', ClassificationController::class)
         ->except(['show']);
+
+    Route::resource('configuracoes', ThemeController::class);
 });
 
 Route::resource('collaborators',CollaboratorController::class);
