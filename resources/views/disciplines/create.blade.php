@@ -400,70 +400,70 @@ var faqs = document.getElementById('faqs');
 let counter = 0;
 
 addButton.addEventListener('click', function(event) {
-    event.preventDefault();
-    counter++;
+event.preventDefault();
+counter++;
 
-    // Create new elements
-    let newDiv = document.createElement('div');
-    newDiv.classList.add('modal-body');
+// Create new elements
+let newDiv = document.createElement('div');
+newDiv.classList.add('modal-body');
 
-    // Create form group for title
-    let formGroupTitle = document.createElement('div');
-    formGroupTitle.classList.add('form-group');
+// Create form group for title
+let formGroupTitle = document.createElement('div');
+formGroupTitle.classList.add('form-group');
 
-    let titleLabel = document.createElement('label');
-    titleLabel.setAttribute('for', `title${counter}`);
-    titleLabel.classList.add('col-form-label');
-    titleLabel.textContent = "Pergunta";
+let titleLabel = document.createElement('label');
+titleLabel.setAttribute('for', `title${counter}`);
+titleLabel.classList.add('col-form-label');
+titleLabel.textContent = "Pergunta";
 
-    let titleInput = document.createElement('input');
-    titleInput.type = "text";
-    titleInput.classList.add('form-control');
-    titleInput.id = `title${counter}`;
-    titleInput.name = `title[${counter}]`;
+let titleInput = document.createElement('input');
+titleInput.type = "text";
+titleInput.classList.add('form-control');
+titleInput.id = `title${counter}`;
+titleInput.name = `title[${counter}]`;
 
-    // Append title elements
-    formGroupTitle.appendChild(titleLabel);
-    formGroupTitle.appendChild(titleInput);
+// Append title elements
+formGroupTitle.appendChild(titleLabel);
+formGroupTitle.appendChild(titleInput);
 
-    // Create form group for content
-    let formGroupContent = document.createElement('div');
-    formGroupContent.classList.add('form-group');
+// Create form group for content
+let formGroupContent = document.createElement('div');
+formGroupContent.classList.add('form-group');
 
-    let contentLabel = document.createElement('label');
-    contentLabel.setAttribute('for', `content${counter}`);
-    contentLabel.classList.add('col-form-label');
-    contentLabel.textContent = "Resposta";
+let contentLabel = document.createElement('label');
+contentLabel.setAttribute('for', `content${counter}`);
+contentLabel.classList.add('col-form-label');
+contentLabel.textContent = "Resposta";
 
-    let contentTextarea = document.createElement('textarea');
-    contentTextarea.classList.add('form-control');
-    contentTextarea.id = `content${counter}`;
-    contentTextarea.name = `content[${counter}]`;
+let contentTextarea = document.createElement('textarea');
+contentTextarea.classList.add('form-control');
+contentTextarea.id = `content${counter}`;
+contentTextarea.name = `content[${counter}]`;
 
-    // Append content elements
-    formGroupContent.appendChild(contentLabel);
-    formGroupContent.appendChild(contentTextarea);
+// Append content elements
+formGroupContent.appendChild(contentLabel);
+formGroupContent.appendChild(contentTextarea);
 
-    // Create delete button
-    let deleteButton = document.createElement('button');
-    deleteButton.classList.add('btn');
-    deleteButton.classList.add('delete-button');
-    deleteButton.classList.add('btn-danger');
-    deleteButton.textContent = "Deletar FAQ";
+// Create delete button
+let deleteButton = document.createElement('button');
+deleteButton.classList.add('btn');
+deleteButton.classList.add('delete-button');
+deleteButton.classList.add('btn-danger');
+deleteButton.textContent = "Deletar FAQ";
 
-    // Add event listener to delete button
-    deleteButton.addEventListener('click', function() {
-        newDiv.remove();
-    });
+// Add event listener to delete button
+deleteButton.addEventListener('click', function() {
+    newDiv.remove();
+});
 
-    // Append form groups, delete button to newDiv
-    newDiv.appendChild(formGroupTitle);
-    newDiv.appendChild(formGroupContent);
-    newDiv.appendChild(deleteButton);
+// Append form groups, delete button to newDiv
+newDiv.appendChild(formGroupTitle);
+newDiv.appendChild(formGroupContent);
+newDiv.appendChild(deleteButton);
 
-    // Append newDiv to faqs
-    faqs.appendChild(newDiv);
-    });
+// Append newDiv to faqs
+faqs.appendChild(newDiv);
+});
 </script>
 
 <style scoped>

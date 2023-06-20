@@ -62,10 +62,10 @@ class DisciplineController extends Controller
         $emphasis = Emphasis::all();
         $disciplines = Discipline::all();
         return view('disciplines.index')
-            // ->with('name_discipline', $name_discipline)
-            ->with('disciplines', $disciplines)
-            ->with('emphasis', $emphasis)
-            ->with('theme', $this->theme); 
+        // ->with('name_discipline', $name_discipline)
+        ->with('disciplines', $disciplines)
+        ->with('emphasis', $emphasis)
+        ->with('theme', $this->theme); 
     }
 
     public function disciplineFilter(Request $request)

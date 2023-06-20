@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Storage;
 class ProfessorUserController extends Controller
 {
     const VIEW_PATH = "admin.";
-
     protected $theme;
 
     public function __construct()
