@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
 use App\Models\Information;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,9 @@ class InformationController extends Controller
         if ($query->exists()) {
             $formerCollaboratorsSection = $query->first();
         }
+
+
+
 
         return view('information', [
             'collaborators' => $collaborators,
