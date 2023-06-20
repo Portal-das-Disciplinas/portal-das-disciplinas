@@ -1,18 +1,13 @@
 
   <header class="sticky-top shadow">
       <div class="menu-container container d-flex mt-0 justify-content-between align-items-center">
-
           <a class="navbar-brand" href="{{ route('index') }}">
-              <img src="{{ asset('img/new-imd-logo.svg') }}" class='logo-navbar' alt="Logo do IMD">
+              <img src="{{ asset('storage/img/logo.png') }}" class='logo-navbar' alt="Logo do {{ $theme['PROJETO_SIGLA_SETOR']}}">
           </a>
           <div class="menu-section">
               <div class="container-menu-burger">
                   <div class="menu-burger"></div>
               </div>
-
-
-
-
               <nav>
                   <a href="{{ route("index") }}">Inicio</a>
                   <a href="{{ route('information') }}">Sobre & Colabore</a>
@@ -61,6 +56,9 @@
                                               <div class="dropdown-item py-3"> <i class="fas fa-star mr-2 "></i>Painel
                                                   de
                                                   Classificações</div>
+                                          </a>
+                                          <a href="{{ route("configuracoes.index") }}">
+                                              <div class="dropdown-item py-3"> <i class="fas fa-cogs mr-2"></i>Configurações</div>
                                           </a>
                                       @endif
 
