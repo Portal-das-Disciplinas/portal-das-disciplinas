@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Editar disciplina - Portal das Disciplinas IMD
+    Editar disciplina - Portal das Disciplinas
 @endsection
 
 @section('robots')
@@ -279,54 +279,38 @@ noindex, follow
                         </div>
                     </div>
                 </div>
-                <h3>Créditos</h3>
-                <div class="container-fluid card pt-3 pb-3">
-                    <div class="row">
-                        <div class="col" id="participants"></div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary" onclick="addParticipantField(event)">
-                                Adicionar participante
-                            </button>
-                        </div>
-                    </div>
-                    <input id="participantsList" name="participantList" hidden>
-
+            </div>
+            <div class='page-title'>
+                <h3>Perguntas Frequentes</h3>
+            </div>
+            @foreach($discipline -> faqs as $faq)
+            <div> 
+                <div class="form-group">
+                    <label for="title[{{$faq->id}}]" class="col-form-label">Pergunta</label>
+                    <input type="text" class="form-control" id="title[{{$faq->id}}]" name="title[{{$faq->id}}]" value="{{$faq->title}}">
                 </div>
-                <div id="modalLinksLimit" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title">Erro</h3>
-                            </div>
-                            <div class="modal-body bg-warning">
-                                <p>Número máximo de links alcançado.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="title[{{$faq->id}}]" class="col-form-label">Resposta</label>
+                    <textarea class="form-control" id="title[{{$faq->id}}]" name="title[{{$faq->id}}]">{{$faq->content}}</textarea>
                 </div>
-
-                <div class="w-25 my-5">
-                    <!-- Button trigger modal -->
-
-
+                <div class="form-group">
+                    <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn delete-button btn-danger" value="Apagar">Apagar</button>
+                    </form>
                 </div>
-                <div class="row d-flex p-2 mt-3 justify-content-center">
-                    <button type="button" class="btn btn-primary btn-sm mr-5" data-toggle="modal" data-target="#faqs-create">
-                        Registrar FAQ
-                    </button>
-                    <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
-                        Cancelar
-                    </a>
-                    <button type="submit" class="btn btn-success btn-sm ml-5">Salvar alterações</button>
-                </div>
-        </form>
+            </div>
+            @endforeach
     </div>
+    <div class="row d-flex p-2 mt-3 justify-content-center">
+
+        <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
+            Cancelar
+        </a>
+        <button type="submit" class="btn btn-success btn-sm ml-5">Editar</button>    
+    </div>
+    </form>
 </div>
 
 

@@ -5,19 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Classification;
 use App\Models\Discipline;
+use Illuminate\Support\Facades\Storage;
+
 
 class ClassificationController extends Controller
 {
+    protected $theme;
+
+    public function __construct()
+    {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
+    }
+
     public function index()
     {
         $classifications = Classification::all();
         return view('admin.classification.index')
-            ->with('classifications', $classifications);
+            ->with('classifications', $classifications)
+            ->with('theme', $this->theme);
     }
 
     public function create()
     {
-        return view('admin.classification.form');
+        return view('admin.classification.form')
+            ->with('theme', $this->theme);
     }
 
     public function store(Request $request)
@@ -50,7 +62,9 @@ class ClassificationController extends Controller
     public function show($id)
     {
         $classification = Classification::find($id);
-        return view('admin.classification.form')->with('classification', $classification);
+        return view('admin.classification.form')
+            ->with('classification', $classification)
+            ->with('theme', $this->theme);
     }
 
     public function edit($id)
@@ -59,7 +73,8 @@ class ClassificationController extends Controller
         return view('admin.classification.form')
             ->with('classification', $classification)
             ->with('id', $id)
-            ->with('edit', true);
+            ->with('edit', true)
+            ->with('theme', $this->theme);
     }
     
     public function update(Request $request, $id)
