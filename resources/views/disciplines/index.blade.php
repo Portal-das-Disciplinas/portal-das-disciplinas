@@ -32,7 +32,7 @@
             </div>
         @endauth
         
-        <div class="row justify-content-md-center mt-5">
+        <div class="row justify-content-md-center mt-5" style="margin-bottom:25px;">
             <div class="col">
                 <form action="/discipline/filter" method="GET">
                     @csrf
@@ -50,6 +50,153 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                  <h5 class="mb-0">
+                    <button id="filterButton" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Filtragem via Classificações
+                    </button>
+
+                    <button id="advancedFilter" style="float:right;" type="button" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
+                        </svg>
+                    </button>
+                  </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <form action="/discipline/filter/advanced" method="get">
+                            <div class="container">
+                                <div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col" style="display: flex; justify-content:center;">
+                                            <button type="button">
+                                                <input type="checkbox" name="triggerMetodologia" id="triggerMetodologia" />
+                                                <label for="triggerMetodologia"> Metodologias </label>
+                                            </button>
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
+                                    <div class="row" id="metodologias" style="display:none;">
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button">
+                                            <input type="radio" value="classicas" name="metodologias" id="classicas">
+                                            <label for="classicas">Clássicas</label>
+                                        </button>
+                                      </div>
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button">
+                                            <input type="radio" value="ativas" name="metodologias" id="ativas">
+                                            <label for="ativas">Ativas</label> 
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div id="metodologias-range" style="display:none;">
+                                        Clássicas <input value="-1" type="range" name="metodologias_range" class="form-control-range" id="range-metodologia" min="-1" max="100"> Ativas
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col" style="display: flex; justify-content:center;">
+                                            <button type="button">
+                                            <input type="checkbox" name="triggerDiscussao" id="triggerDiscussao">
+                                            <label for="triggerDiscussao">Discussão</label>
+                                            </button>
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
+                                    <div class="row" id="discussao" style="display:none;">
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button">
+                                            <input type="radio" value="social" name="discussao" id="social">
+                                            <label for="social">Social</label>
+                                        </button>
+                                      </div>
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button">
+                                        <input type="radio" value="tecnica" name="discussao" id="tecnica">
+                                        <label for="tecnica">Técnica</label>
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div id="discussao-range" style="display:none;">
+                                        Social <input value="-1" type="range" name="discussao_range" class="form-control-range" id="discussao_range" min="-1" max="100">Técnica
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col" style="display: flex; justify-content:center;">
+                                            <button type="button">
+                                            <input type="checkbox" name="triggerAbordagem" id="triggerAbordagem">
+                                            <label for="triggerAbordagem">Abordagem</label>
+                                            </button>
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
+                                    <div class="row" id="abordagem" style="display:none;">
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button">
+                                        <input type="radio" value="teorica" name="abordagem" id="teorica">
+                                        <label for="teorica">Teórica</label>                                        
+                                        </button>
+                                      </div>
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button">
+                                        <input type="radio" value="pratica" name="abordagem" id="pratica">
+                                        <label for="pratica">Prática</label>
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div id="abordagem-range" style="display:none;">
+                                        Teórica <input value="-1" type="range" name="abordagem_range" class="form-control-range" id="abordagem_range" min="-1" max="100">Prática
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="row">
+                                        <div class="col"></div>
+                                        <div class="col" style="display: flex; justify-content:center;">
+                                            <button type="button">
+                                            <input type="checkbox" name="triggerAvaliacao" id="triggerAvaliacao">
+                                            <label for="triggerAvaliacao">Avaliação</label>
+                                            </button>
+                                        </div>
+                                        <div class="col"></div>
+                                    </div>
+                                    <div class="row" id="avaliacao" style="display:none;">
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button">
+                                        <input type="radio" value="provas" name="avaliacao" id="provas">
+                                        <label for="provas">Provas</label> 
+                                        </button>
+                                      </div>
+                                      <div class="col" style="display: flex; justify-content:center;">
+                                        <button type="button">
+                                        <input type="radio" value="atividades" name="avaliacao" id="atividades">
+                                        <label for="atividades">Atividades</label>
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div id="avaliacao-range" style="display:none;">
+                                        Provas <input value="-1" type="range" name="avaliacao_range" class="form-control-range" id="avaliacao_range" min="-1" max="100"> Atividades
+                                    </div>
+                                </div>
+                                <button type="submit">FILTRAR</button>
+                            </div>
+                        </form>  
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -143,4 +290,5 @@
 </div>
 </div>
 
+<script src="{{ asset('js/indexSidebar.js') }}"></script>
 @endsection

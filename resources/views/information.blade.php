@@ -61,6 +61,18 @@
                         <label for="coordenador">Coordenador</label>
                     </div>
                     <input id="btn-cadastrar" type="submit" hidden>
+                    <div class="container">
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label>Data de entrada</label>
+                                <input name="joinDate" id="joinDate" type="date" class="form-control">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>Data de saída</label>
+                                <input name="leaveDate" id="leaveDate" type="date" class="form-control">
+                            </div>
+                        </div>
+                    </div>
                 </form>
                 <div class="modal-footer">
                     <label class="btn btn-secondary" data-dismiss="modal">Fechar</label>
@@ -226,7 +238,7 @@
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
-                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
                     @endslot
@@ -248,8 +260,8 @@
                 @endforeach
 
             </div>
-            <div class="info-collaborators-container mt-4">
 
+            <div class="info-collaborators-container mt-4">
                 @if(Auth::user() && Auth::user()->isAdmin)
                 <h2>{{$sectionNameCurrentCollaborators ?? "[Colaboradores Atuais]"}}</h2>
                 <span data-toggle="modal" data-target="#modal-section-current">editar</span>
@@ -269,13 +281,13 @@
                     @slot('profession') {{$collaborator->role}} @endslot
                     @slot('occupation') {{$collaborator->bond}} @endslot
                     @slot('image') {{$collaborator->urlPhoto}} @endslot
-                    @slot('alt_image') $collaborator->name @endslot
+                    @slot('alt_image') {{$collaborator->name}} @endslot
                     @slot('email'){{$collaborator->email}} @endslot
                     @slot('lattes') {{$collaborator->lattes}} @endslot
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
-                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
                     @endslot
@@ -317,6 +329,13 @@
                 <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
                     @component('components.info_contributors')
                     @slot('name') {{$collaborator->name}} @endslot
+                    @slot('period')
+                    @if($collaborator->joinDate && $collaborator->leaveDate)
+                    {{
+                        date_format(date_create($collaborator->joinDate),'Y') ." - ". date_format(date_create($collaborator->leaveDate),'Y')
+                    }}
+                    @endif
+                    @endslot
                     @slot('profession') {{$collaborator->role}} @endslot
                     @slot('occupation') {{$collaborator->bond}} @endslot
                     @slot('image') {{$collaborator->urlPhoto}} @endslot
@@ -326,7 +345,7 @@
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
-                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1">{{$link->name}}</a>
+                        <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
                     @endslot

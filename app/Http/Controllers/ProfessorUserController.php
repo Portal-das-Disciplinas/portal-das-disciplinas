@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
-
+/**
+ * Classe que realiza tarefas relacionadas com o Professor.
+ */
 class ProfessorUserController extends Controller
 {
     const VIEW_PATH = "admin.";
@@ -23,6 +25,9 @@ class ProfessorUserController extends Controller
         $this->theme = json_decode($contents, true);
     }
 
+    /**
+     * Retorna a view com as listagem dos professores
+     */
     public function index()
     {
 
@@ -33,11 +38,19 @@ class ProfessorUserController extends Controller
         return view(self::VIEW_PATH . 'professor.' . 'index', compact('professors'))->with('theme', $this->theme);
     }
 
+    /**
+     * Exibe um formulário para criação de um professor.
+     * @param $request Objeto contendo informações da requisição http.
+     */
     public function create(CreateRequest $request)
     {
         return view(self::VIEW_PATH . 'professor.' . 'create')->with('theme', $this->theme);
     }
 
+    /**
+     * Exibe um formulário para edição das informações de um professor.
+     * @param $id Identificador único do professor.
+     */
     public function edit($id)
     {
         $professor = Professor::where('id', $id)->with('user')->first();
@@ -48,6 +61,10 @@ class ProfessorUserController extends Controller
             ->with('is_teacher', $is_teacher);
     }
 
+    /**
+     * Armazena o professor no banco de dados.
+     * @param $request Objeto contendo as informções da requisição http.
+     */
     public function store(StoreRequest $request)
     {
         DB::beginTransaction();
@@ -82,6 +99,10 @@ class ProfessorUserController extends Controller
         }
     }
 
+    /**
+     * Deleta um determinado professor no banco de dados.
+     * @param $id Indetificador único do professor.
+     */
     public function destroy($id)
     {
         $professor = Professor::findOrFail($id);
@@ -89,6 +110,11 @@ class ProfessorUserController extends Controller
         return redirect()->route('professores.index');
     }
 
+    /**
+     * Atualiza as informações do professor no banco de dados.
+     * @param $request Objeto contendo as informações de requisição http.
+     * @param $id Identificador único do Professor.
+     */
     public function update(Request $request, $id)
     {
         // $rules = [
