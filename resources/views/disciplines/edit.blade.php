@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Editar disciplina - Portal das Disciplinas
+Editar disciplina - Portal das Disciplinas
 @endsection
 
 @section('robots')
