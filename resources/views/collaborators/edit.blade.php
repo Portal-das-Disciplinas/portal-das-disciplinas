@@ -1,11 +1,13 @@
 @extends('layouts.app')
-@section('content')
 @section('title')
 Edição de Colaborador 
 @endsection
+@section('robots')
+noindex, follow
+@endsection
 @section('content')
 <div class="d-flex flex-column align-items-center w-100 mb-5 mt-5">
-    <h1>Cadastro de Colaborador</h1>
+    <h1>Edição de Colaborador</h1>
     @if($errors->any())
     <h3 class="alert alert-danger w-100 text-center">
         {{$errors->first()}}
@@ -32,7 +34,7 @@ Edição de Colaborador
                 <label for="name">Nome</label>
                 <input id="name" name="name" type=text class="form-control" value="{{$collaborator->name}}" placeholder="Nome e Sobrenome" required>
                 <label for="email">e-mail</label>
-                <input id="email" name="email" type="email" class="form-control" value="{{$collaborator->email}}" placeholder="E-mail" required>
+                <input id="email" name="email" type="email" class="form-control" value="{{$collaborator->email}}" placeholder="E-mail">
                 <label for="bond">Vínculo</label>
                 <input id="bond" name="bond" type="text" class="form-control" value="{{$collaborator->bond}}" placeholder="bolsista, voluntário..." required>
                 <label for="role">Função</label>

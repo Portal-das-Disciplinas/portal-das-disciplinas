@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         <label for="emailColaborador">E-mail</label>
-                        <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail" required>
+                        <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail">
                     </div>
                     <div class="form-group">
                         <label for="vinculoColaborador">Vínculo</label>
