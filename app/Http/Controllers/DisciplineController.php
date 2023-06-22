@@ -38,6 +38,7 @@ class DisciplineController extends Controller
         // $emphasis = $request->emphasis ?? null;
 
         $emphasis = Emphasis::all();
+        $classifications = Classification::all();
         // $disciplines = Discipline::query()
         //     ->with([
         //         'professor',
@@ -56,7 +57,8 @@ class DisciplineController extends Controller
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
             ->with('disciplines', $disciplines)
-            ->with('emphasis', $emphasis); 
+            ->with('emphasis', $emphasis)
+            ->with('classifications', $classifications); 
     }
 
     public function disciplineFilter(Request $request)
@@ -209,7 +211,9 @@ class DisciplineController extends Controller
         foreach($collection as $col) {
             $result->pull($col);
         }
-        
+        // dd($result);
+        $result->sort();
+        // dd($result);
         return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all);
     }
 
