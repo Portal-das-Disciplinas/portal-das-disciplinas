@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(UserTableSeeder::class);
         $this->call(EmphasisSeeder::class);
-        $this->call(CollaboratorSeeder::class);
-        $this->call(InformationSeeder::class);
+        //$this->call(CollaboratorSeeder::class);
+        //$this->call(InformationSeeder::class);
 
         if (app()->isLocal()) {
             // $this->call(DisciplineTableSeeder::class);
