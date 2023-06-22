@@ -8,6 +8,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class InformationController extends Controller
 {
@@ -27,20 +28,22 @@ class InformationController extends Controller
         $hasManagers = false;
         $hasCurrentCollaborators = false;
         $hasFormerCollaborators = false;
-        foreach($collaborators as $collaborator){
-            if($collaborator->isManager && $collaborator->active){
+        foreach ($collaborators as $collaborator) {
+            if ($collaborator->isManager && $collaborator->active) {
                 $hasManagers = true;
             }
-            if(!$collaborator->isManager && $collaborator->active){
+            if (!$collaborator->isManager && $collaborator->active) {
                 $hasCurrentCollaborators = true;
             }
-            if(!$collaborator->active){
+            if (!$collaborator->active) {
                 $hasFormerCollaborators = true;
             }
         }
         $managerSection = null;
         $currentCollaboratorsSection = null;
         $formerCollaboratorsSection = null;
+        $sectionCollaborateTitle = null;
+        $sectionCollaborateText = null;
         $query = Information::query()->where('name', "sectionNameManagers");
         if ($query->exists()) {
             $managerSection = $query->first();
@@ -52,6 +55,14 @@ class InformationController extends Controller
         $query = Information::query()->where('name', "sectionNameFormerCollaborators");
         if ($query->exists()) {
             $formerCollaboratorsSection = $query->first();
+        }
+        $query = Information::query()->where('name', 'sectionCollaborateTitle');
+        if ($query->exists()) {
+            $sectionCollaborateTitle = $query->first();
+        }
+        $query = Information::query()->where('name', 'sectionCollaborateText');
+        if ($query->exists()) {
+            $sectionCollaborateText = $query->first();
         }
 
 
@@ -65,10 +76,10 @@ class InformationController extends Controller
             'sectionNameManagers' => $managerSection ? $managerSection->value : null,
             'sectionNameCurrentCollaborators' => $currentCollaboratorsSection ? $currentCollaboratorsSection->value : null,
             'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection ? $formerCollaboratorsSection->value : null,
-            
-            ])
-            ->with('theme', $this->theme)
-            ;
+            'sectionCollaborateTitle' => $sectionCollaborateTitle->value,
+            'sectionCollaborateText' => $sectionCollaborateText->value
+        ])
+            ->with('theme', $this->theme);
     }
 
     public function store(Request $request)
@@ -97,14 +108,20 @@ class InformationController extends Controller
 
     public function StoreOrUpdate(Request $request)
     {
-        if (Information::where('name', $request->name)->exists()) {
-            Information::where('name', $request->name)->first()->update(['value' => $request->value]);
-        } else {
-            Information::create([
-                'name' => $request->name,
-                'value' => $request->value
-            ]);
+        DB::beginTransaction();
+        try {
+            if (Information::where('name', $request->name)->exists()) {
+                Information::where('name', $request->name)->first()->update(['value' => $request->value]);
+            } else {
+                Information::create([
+                    'name' => $request->name,
+                    'value' => $request->value
+                ]);
+            }
+            DB::commit();
+            return redirect()->route('information');
+        } catch (\Exception $exception) {
+            DB::rollBack();
         }
-        return redirect()->route('information');
     }
 }
