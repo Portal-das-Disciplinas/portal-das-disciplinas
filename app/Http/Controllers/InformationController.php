@@ -76,8 +76,8 @@ class InformationController extends Controller
             'sectionNameManagers' => $managerSection ? $managerSection->value : null,
             'sectionNameCurrentCollaborators' => $currentCollaboratorsSection ? $currentCollaboratorsSection->value : null,
             'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection ? $formerCollaboratorsSection->value : null,
-            'sectionCollaborateTitle' => $sectionCollaborateTitle->value,
-            'sectionCollaborateText' => $sectionCollaborateText->value
+            'sectionCollaborateTitle' => $sectionCollaborateTitle ? $sectionCollaborateTitle->value : "",
+            'sectionCollaborateText' => $sectionCollaborateText ? $sectionCollaborateText->value : ""
         ])
             ->with('theme', $this->theme);
     }
