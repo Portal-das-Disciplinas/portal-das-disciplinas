@@ -20,7 +20,7 @@ class ClassificationController extends Controller
 
     public function index()
     {
-        $classifications = Classification::all();
+        $classifications = Classification::all()->sortBy('order');
         return view('admin.classification.index')
             ->with('classifications', $classifications)
             ->with('theme', $this->theme);
@@ -40,11 +40,14 @@ class ClassificationController extends Controller
             'type_b' => 'required',
         ]);
 
+        $lastOrder = Classification::max('order');
+
         $classification = new Classification();
         $classification->name = $request->name;
         $classification->type_a = $request->type_a ?? '';
         $classification->type_b = $request->type_b ?? '';
         $classification->description = $request->description ?? '';
+        $classification->order = $lastOrder + 1;
         $classification->save();
 
         $disciplines = Discipline::all();
@@ -99,6 +102,12 @@ class ClassificationController extends Controller
     {
         $classification = Classification::find($id);
         $classification->delete();
+
+        $classifications = Classification::All()->sortBy('order');
+        foreach($classifications as $index => $classification){
+            $classification->order = $index;
+            $classification->save();
+        }
 
         return redirect()->route('classificacoes.index');
     }
