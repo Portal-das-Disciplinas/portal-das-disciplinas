@@ -73,6 +73,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('classificacoes', ClassificationController::class)
         ->except(['show']);
 
+    Route::put('classificacoes/update/ordem', [ClassificationController::class, 'updateClassificationOrder'])->name('updateOrder');
+
     Route::resource('configuracoes', ThemeController::class);
 });
 

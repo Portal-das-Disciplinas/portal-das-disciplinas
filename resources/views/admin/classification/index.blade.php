@@ -103,8 +103,9 @@ Painel de Administração
                     </div>
                 </div>
                 @foreach($classifications as $classification)
-                <div id="{{'container'.$loop->index}}" class="classification_container container-fluid mb-2 pt-3 pb-3 pl-5 pr-5"> <!--canvas do cartão -->
-                    <div id="{{'card'.$loop->index}}" class="classification_card  row pt-1 pb-1 d-flex align-items-center" draggable='true'><!--cartão -->
+                <div id="{{'container'.$classification->id}}" class="classification_container container-fluid mb-2 pt-3 pb-3 pl-5 pr-5"> <!--canvas do cartão -->
+                    <div id="{{'card'.$classification->id}}" class="classification_card  row pt-1 pb-1 d-flex align-items-center" draggable='true'><!--cartão -->
+                        <input type="hidden" name="idClassification"value = "{{$classification->id}}">
                         <div class="col-md-8">
                             <div class="container-fluid">
                                 <div class="row">
@@ -140,12 +141,12 @@ Painel de Administração
                                     </div>
                                     <div class="col-4">
                                         <div class="d-flex flex-row justify-content-center align-items-center">
-                                            <button class="btn btn-success btn-sm ml-5 mr-1" onclick="moveUp('card'+'{{$loop->index}}')">
+                                            <button class="btn btn-success btn-sm ml-5 mr-1" onclick="moveUp('card'+'{{$classification->id}}')">
                                                 <span class="material-symbols-outlined">
                                                     arrow_upward_alt
                                                 </span>
                                             </button>
-                                            <button class=" btn btn-primary btn-sm" onclick="moveDown('card'+'{{$loop->index}}')">
+                                            <button class=" btn btn-outline-primary btn-sm" onclick="moveDown('card'+'{{$classification->id}}')">
                                                 <span class="material-symbols-outlined">
                                                     arrow_downward_alt</span>
                                             </button>

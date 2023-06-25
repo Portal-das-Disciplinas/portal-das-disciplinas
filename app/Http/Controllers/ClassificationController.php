@@ -98,6 +98,17 @@ class ClassificationController extends Controller
         return redirect()->route('classificacoes.index');
     }
 
+    function updateClassificationOrder(Request $request){
+       $data =  json_decode($request->idList);
+       foreach($data as $index => $idClassification){
+            $classification = Classification::find($idClassification);
+            $classification->order = $index;
+            $classification->save();
+       }
+
+        return response()->json($data);
+    }
+
     public function destroy($id)
     {
         $classification = Classification::find($id);

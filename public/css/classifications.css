@@ -8,7 +8,13 @@
     box-shadow: 5px 5px 10px rgba(1,1,1,0.2);
     border-radius: 5px;
     cursor:move;
+    transition: all ease 1s;
 
+}
+
+.updating-order{
+    transition: all ease 0.1s;
+    opacity:50%
 }
 
 .buttons_area{
@@ -23,7 +29,10 @@
     display: flex;
 }
 
-
+.isDragging{
+    transition: all linear 0s;
+    opacity: 5%;
+}
 
 
 @media screen and (max-width: 575px){
