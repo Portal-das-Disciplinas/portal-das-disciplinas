@@ -128,8 +128,8 @@ noindex, follow
         var html = "";
         links.forEach(function(link, i) {
             html += "<div class='mb-4'>" +
-                "<input class='form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='" + link.name + "'>" +
-                "<input class='form-control mt-1' name='linkUrl[]' type='text' placeholder='Url do link' value='" + link.url + "'>" +
+                "<input class='form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' required value='" + link.name + "'>" +
+                "<input class='form-control mt-1' name='linkUrl[]' type='url' placeholder='http://' required value='" + link.url + "'>" +
                 "<input name='linkId[]' type='hidden' value='" + link.id + "'>" +
                 "<label id = '" + link.id + "'class='btn btn-link text-danger' onclick='deleteLink(" + i + ")'>remover</label>" +
                 "</div>"

@@ -503,8 +503,8 @@
         var html = "";
         links.forEach(function(link, i) {
             html += "<div class='mb-4'>" +
-                "<input class=' mb-1 form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='" + link.name + "'>" +
-                "<input class='form-control' name='linkUrl[]' type='text' placeholder='Url do link' value='" + link.url + "'>" +
+                "<input class=' mb-1 form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' required value='" + link.name + "'>" +
+                "<input class='form-control' name='linkUrl[]' type='url' placeholder='Url do link' required value='" + link.url + "'>" +
                 "<label id = '" + link.id + "'class='btn btn-link text-danger' onclick='deleteLinkField(" + i + ")'>remover</label>" +
                 "</div>"
         });

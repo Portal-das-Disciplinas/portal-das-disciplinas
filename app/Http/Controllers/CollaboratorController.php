@@ -7,11 +7,12 @@ use App\Models\CollaboratorLink;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CollaboratorController extends Controller
 {
     protected $theme;
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -47,6 +48,9 @@ class CollaboratorController extends Controller
      */
     public function store(Request $request)
     {
+
+
+
         $isManager = false;
         $active = true;
 
@@ -81,6 +85,10 @@ class CollaboratorController extends Controller
             $linkNames = $request->linkName;
             $linkUrls = $request->linkUrl;
             if (isset($linkNames) && isset($linkUrls)) {
+                $valid = Validator::make($request->all(), [
+                    'linkUrl.*' => 'url|nullable'
+                ]);
+                
                 for ($i = 0; $i < count($linkNames); $i++) {
                     if ($linkNames[$i] != "" && $linkUrls[$i] != "") {
                         CollaboratorLink::create([
@@ -90,6 +98,9 @@ class CollaboratorController extends Controller
                         ]);
                     }
                 }
+                if ($valid->fails()) {
+                     return redirect()->route('information')->withErrors(['url'=>'AVISO: Contêm links inválidos']);
+                 }
             }
         }
 
@@ -117,7 +128,7 @@ class CollaboratorController extends Controller
     {
         $collaborator = Collaborator::find($id);
 
-        return view('collaborators.edit', ['collaborator' => $collaborator])->with('theme',$this->theme);
+        return view('collaborators.edit', ['collaborator' => $collaborator])->with('theme', $this->theme);
     }
 
     /**
@@ -151,15 +162,14 @@ class CollaboratorController extends Controller
         $collaborator->joinDate = $request->joinDate;
         $collaborator->leaveDate = $request->leaveDate;
 
-        if($request->imageChanged == "on"){
+        if ($request->imageChanged == "on") {
             if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
                 if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
                     Storage::disk('public')->delete($collaborator->urlPhoto);
                 }
                 $nomeArquivo = $request->file('photo')->store('img_profiles', 'public');
                 $collaborator->urlPhoto = $nomeArquivo;
-            }
-            else{
+            } else {
                 if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
                     Storage::disk('public')->delete($collaborator->urlPhoto);
                     $collaborator->urlPhoto = null;
@@ -175,7 +185,10 @@ class CollaboratorController extends Controller
         foreach ($links as $link) {
             $link->delete();
         }
-        if (isset($linkNames)) {
+        if (isset($linkNames) && isset($linkUrls)) {
+            $validUrls = Validator::make($request->All(),[
+                'linkUrl.*' => 'url|nullable'
+            ]);
             for ($i = 0; $i < count($linkNames); $i++) {
                 if ($linkNames[$i] != "" && $linkUrls[$i] != "") {
                     CollaboratorLink::create([
@@ -185,9 +198,10 @@ class CollaboratorController extends Controller
                     ]);
                 }
             }
+            if($validUrls->fails()){
+                return redirect()->route('information')->withErrors(['url' => 'AVISO: contêm links inválidos']);
+            }
         }
-
-
         return redirect()->route('information');
     }
 
