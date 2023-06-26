@@ -40,9 +40,9 @@ noindex, follow
                 <label for="role">Função</label>
                 <input id="role" name="role" type=text class="form-control" value="{{$collaborator->role}}" placeholder="Desenvolvedor, Designer, ..." required>
                 <label for="lattes">Lattes</label>
-                <input id="lattes" name="lattes" type="text" class="form-control" value="{{$collaborator->lattes}}" placeholder="Endereço do currículo latttes">
+                <input id="lattes" name="lattes" type="url" class="form-control" value="{{$collaborator->lattes}}" placeholder="https://" >
                 <label for="github">Github</label>
-                <input id="github" name="github" type="text" class="form-control" value="{{$collaborator->github}}" placeholder="Github">
+                <input id="github" name="github" type="url" class="form-control" value="{{$collaborator->github}}" placeholder="https://">
                 <div>
                     <label for="active">Ativo</label>
                     <input id="active" name="active" type="checkbox" @if($collaborator->active) checked @endif>
