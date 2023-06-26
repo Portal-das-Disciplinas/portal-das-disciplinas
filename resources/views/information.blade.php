@@ -25,7 +25,7 @@
                     </div>
                     <div class="form-group">
                         <label for="emailColaborador">E-mail</label>
-                        <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail" required>
+                        <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail">
                     </div>
                     <div class="form-group">
                         <label for="vinculoColaborador">Vínculo</label>
@@ -82,6 +82,46 @@
         </div>
     </div>
 
+</div>
+
+<div id="modal-section-collaborate" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edição da seção colabore</h3>
+            </div>
+            <div class="modal-body">
+                <div id="errors" class="alert alert-danger alert-dismissible fade d-none" role="alert">
+                    <strong>Ocorreram erros ao cadastrar</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="section-collaborate-form-title" class="form" action="{{route('information.supdate')}}" method="POST" onsubmit="submitCollaborateSection(event)">
+                    @csrf
+                    @method('POST')
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input name="name" type="text" hidden value="sectionCollaborateTitle">
+                        <input id="collaborateTitleInput" name="value" class="form-control" type="text" placeholder="Título para a seção" value="{{$sectionCollaborateTitle}}" required>
+                    </div>
+                </form>
+                <form id="section-collaborate-form-text" class="form" action="{{route('information.supdate')}}" method="POST">
+                    @csrf
+                    @method('POST')
+                    <div class="form-group">
+                        <label>Conteúdo para a seção</label>
+                        <input name="name" type="text" hidden value="sectionCollaborateText">
+                        <textarea id="collaborateTextInput" name="value" rows=10 class="form-control">{{$sectionCollaborateText}}</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" data-target="#modal-section-collaborate">Fechar</button>
+                <button class="btn btn-primary" onclick="updateSectionCollaborate(event)">Salvar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="modal-section-managers" class="modal fade" tabindex="-1" role="dialog">
@@ -160,12 +200,6 @@
     </div>
 </div>
 
-
-<script>
-    function changeFileName() {
-        document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
-    }
-</script>
 <!-- Styles -->
 <div class='banner text-center d-flex align-items-center justify-content-center '>
     <h1 class='text-white'>Sobre & Colabore</h1>
@@ -180,7 +214,7 @@
 
     <div class='row'>
         <div class="col-md-5 p-text">
-            <h2>O que é o Portal das Disciplinas</h2>
+            <h2 class="mb-5">O que é o Portal das Disciplinas</h2>
             <div class="row justify-content">
                 <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px; margin-bottom: 8%">
                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qG4ATq0qJlE" allowfullscreen></iframe>
@@ -192,8 +226,21 @@
             </section>
 
             <div>
-                <h2>Colabore</h2>
-                <p class="text-justify mb-3">Caso tenha interesse em colaborar na adição de novas funcionalidades do site como sistema de classificações dinâmicos, refinamento de mecanismos de busca, interação com o portal de dados abertos da UFRN para recuperação de índices de aprovação de disciplinas, implementação de fóruns no portal, entre outros, por favor, entre em contato conosco.</p>
+                <div class="d-flex align-items-baseline justify-content-between">
+                    @if($sectionCollaborateTitle != "")
+                    <h2 id="sectionCollaborateTitle">{{$sectionCollaborateTitle}}</h2>
+                    @endif
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                    @if($sectionCollaborateTitle == "")
+                    <p class="text-secondary"><i>[Sem título para a seção]</i></p>
+                    @endif
+                    <label class="text-primary" style="cursor:pointer"onclick="$('#modal-section-collaborate').modal('show')">Editar</label>
+                    @endif
+                </div>
+                @if(($sectionCollaborateTitle == "") && Auth::user() && Auth::user()->isAdmin)
+                <p class="text-secondary"><i>[Não há conteúdo para essa seção]</i></p>
+                @endif
+                <p style="white-space:pre-wrap;" id="sectionCollaborateText" class="text-justify mb-3">{{$sectionCollaborateText}}</p>
             </div>
 
             <div class="break-word">
@@ -412,9 +459,43 @@
     </section>
 -->
 
-
-
 </div>
+
+<script>
+    function changeFileName() {
+        document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
+    }
+
+    function updateSectionCollaborate(event) {
+        $.ajax({
+            url: "{{route('information.supdate')}}",
+            method: 'POST',
+            data: $('#section-collaborate-form-title').serialize(),
+            error: function(e) {
+                document.querySelector('#modal-section-collaborate #errors').classList.remove('d-none');
+                document.querySelector('#modal-section-collaborate #errors').classList.add('show');
+            },
+            success: function(result) {
+                $.ajax({
+                    url: "{{route('information.supdate')}}",
+                    method: 'POST',
+                    data: $('#section-collaborate-form-text').serialize(),
+                    success: function(result) {
+                        $('#modal-section-collaborate').modal('hide')
+                        window.location.href = "{{route('information')}}";
+                    },
+                    error: function(e) {
+                        document.querySelector('#modal-section-collaborate #errors').classList.remove('d-none');
+                        document.querySelector('#modal-section-collaborate #errors').classList.add('show');
+                    }
+                });
+            }
+
+        })
+
+    }
+</script>
+
 <script>
     links = [];
 

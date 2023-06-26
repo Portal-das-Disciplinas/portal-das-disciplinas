@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Storage;
 
 class CollaboratorController extends Controller
 {
+    protected $theme;
+    
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function index()
     {
     }
@@ -23,6 +24,8 @@ class CollaboratorController extends Controller
 
     public function __construct()
     {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
         $this->middleware('admin')->except(['index', 'show']);
     }
 
@@ -114,7 +117,7 @@ class CollaboratorController extends Controller
     {
         $collaborator = Collaborator::find($id);
 
-        return view('collaborators.edit', ['collaborator' => $collaborator]);
+        return view('collaborators.edit', ['collaborator' => $collaborator])->with('theme',$this->theme);
     }
 
     /**

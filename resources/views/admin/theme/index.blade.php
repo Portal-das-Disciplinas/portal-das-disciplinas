@@ -18,27 +18,43 @@ Painel de Administração
         <form method="POST" action="{{ route('configuracoes.store') }}" class="p-4" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
-                <label for="logo" class="form-label">Logotipo</label></br>
+                <label for="logo" class="form-label">Logotipo do projeto ou instituição</label></br>
                 <input type="file" name="logo">
             </div>
             <div class="mb-3">
-                <label for="logo_university" class="form-label">Logotipo da Universidade</label></br>
+                <label for="logo_university" class="form-label">Logotipo da universidade</label></br>
                 <input type="file" name="logo_university">
             </div>
             <div class="mb-3">
-            <label for="PROJETO_SIGLA_SETOR" class="form-label">PROJETO_SIGLA_SETOR:</label>
+                <label for="favicon" class="form-label">Ícone do projeto ou instituição</label></br>
+                <input type="file" name="favicon">
+            </div>
+            <div class="mb-3">
+                <label for="banner" class="form-label">Imagem do banner na página da Disciplina</label></br>
+                <input type="file" name="banner">
+            </div>
+            <div class="mb-3">
+            <label for="PROJETO_SIGLA_SETOR" class="form-label">Cor #1 do efeito do banner da página da Disciplina</label>
+            <input type="text" name="PROJETO_SIGLA_SETOR" id="PROJETO_SIGLA_SETOR" class="form-control" value="{{$theme['banner_color_hex_1']}}">
+            </div>
+            <div class="mb-3">
+            <label for="PROJETO_SIGLA_SETOR" class="form-label">Cor #2 do efeito do banner da página da Disciplina</label>
+            <input type="text" name="PROJETO_SIGLA_SETOR" id="PROJETO_SIGLA_SETOR" class="form-control" value="{{$theme['banner_color_hex_2']}}">
+            </div>
+            <div class="mb-3">
+            <label for="PROJETO_SIGLA_SETOR" class="form-label">Sigla do Setor ou Instituição:</label>
             <input type="text" name="PROJETO_SIGLA_SETOR" id="PROJETO_SIGLA_SETOR" class="form-control" value="{{$theme['PROJETO_SIGLA_SETOR']}}">
             </div>
             <div class="mb-3">
-            <label for="PROJETO_CIDADE" class="form-label">PROJETO_CIDADE:</label>
+            <label for="PROJETO_CIDADE" class="form-label">Nome da cidade:</label>
             <input type="text" name="PROJETO_CIDADE" id="PROJETO_CIDADE" class="form-control" value="{{$theme['PROJETO_CIDADE']}}">
             </div>
             <div class="mb-3">
-            <label for="PROJETO_SIGLA_SETOR_INSTITUICAO" class="form-label">PROJETO_SIGLA_SETOR_INSTITUICAO:</label>
+            <label for="PROJETO_SIGLA_SETOR_INSTITUICAO" class="form-label">Sigla do Setor e Institução:</label>
             <input type="text" name="PROJETO_SIGLA_SETOR_INSTITUICAO" id="PROJETO_SIGLA_SETOR_INSTITUICAO" class="form-control" value="{{$theme['PROJETO_SIGLA_SETOR_INSTITUICAO']}}">
             </div>
             <div class="mb-3">
-            <label for="PROJETO_DISCIPLINAS_DESCRICAO" class="form-label">PROJETO_DISCIPLINAS_DESCRICAO:</label>
+            <label for="PROJETO_DISCIPLINAS_DESCRICAO" class="form-label">Descrição do projeto na página principal:</label>
             <input type="text" name="PROJETO_DISCIPLINAS_DESCRICAO" id="PROJETO_DISCIPLINAS_DESCRICAO" class="form-control" value="{{$theme['PROJETO_DISCIPLINAS_DESCRICAO']}}">
             </div>
             <div class="mb-3">

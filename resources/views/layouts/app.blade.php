@@ -11,6 +11,7 @@
     <meta name="robots" content="@yield('robots','all')">
     <title>@yield('title', 'Portal das Disciplinas - '.  $theme['PROJETO_SIGLA_SETOR'])</title>
     <meta name="description" content="@yield('description','Conheça as disciplinas do IMD de forma mais prática!')">
+    <link rel="shortcut icon" href="{{ asset('storage/img/favicon.ico') }}" />
     {{-- bootstrap CSS --}}
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
     {{-- CSS --}}
@@ -36,6 +37,19 @@
 
             --on-secondary: {$theme['on-secondary']};
             --on-primary: {$theme['on-primary']};
+        }
+
+        .banner {
+            background: linear-gradient(
+            30deg,
+            {$theme['banner_color_hex_1']},
+            {$theme['banner_color_hex_2']}
+            ),
+            url({$theme['banner_link']});
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 364px;
         }
     </style>
     ";
