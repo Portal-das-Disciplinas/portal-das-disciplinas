@@ -14,11 +14,20 @@ use function PHPSTORM_META\map;
 class UsersController extends Controller
 {
 
+    protected $theme;
+
+    public function __construct()
+    {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
+    }
+
     public function index()
     {
         $is_teacher = Auth::user()->professor ?? false;
         return view('profile')
-            ->with('is_teacher', $is_teacher);
+            ->with('is_teacher', $is_teacher)
+            ->with('theme', $this->theme);
     }
 
     /**
