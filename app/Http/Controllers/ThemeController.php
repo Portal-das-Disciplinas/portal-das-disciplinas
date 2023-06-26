@@ -30,6 +30,7 @@ class ThemeController extends Controller
         $logo = $request->file('logo');
         $logo_university =  $request->file('logo_university');
         $favicon =  $request->file('favicon');
+        $banner =  $request->file('banner');
 
         if ($logo) {
             if (Storage::exists('public/img/logo')) {
@@ -50,6 +51,13 @@ class ThemeController extends Controller
                 Storage::delete('public/img/favicon');
             }
             $path = $favicon->storeAs('public/img', 'favicon.ico');
+        }
+
+        if ($banner) {
+            if (Storage::exists('public/img/banner')) {
+                Storage::delete('public/img/banner');
+            }
+            $path = $banner->storeAs('public/img', 'banner.png');
         }
 
         $contents = Storage::get('theme/theme.json');

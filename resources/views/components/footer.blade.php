@@ -24,7 +24,6 @@
                     <img fluid id="imd-footer" src="{{ asset('img/imd-footer-2.png') }}"/>
                     <p id="pdd-title" class="ml-3 footer-title">Portal das Disciplinas - {{$theme['PROJETO_SIGLA_SETOR']}}</p>
                 </div>
-                <!-- <p id="pdd-sub" class="mt-3 footer-sub">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Delectus culpa est recusandae.</p> -->
             </div>
             <div>
                 <img id="ufrn-logo" class='blackImg' fluid src="{{ asset('storage/img/logo_university.png') }}"/>
