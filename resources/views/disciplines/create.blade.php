@@ -259,11 +259,13 @@ noindex, follow
                     @enderror
                 </div>
             </div>
-            <div class='page-title'>
-                <h3>Perguntas Frequentes</h3>
-            </div>
-            <div id="faqs">
-            </div>
+      
+       
+        </div>
+        <div class='page-title'>
+            <h3>Perguntas Frequentes</h3>
+        </div>
+        <div id="faqs">
         </div>
 
         {{-- <div class="form-row mt-3">
@@ -291,7 +293,9 @@ noindex, follow
 </div> --}}
 
 <div class="row d-flex p-2 mt-3 justify-content-center">
-
+    <a id="add-faq" class="btn btn-primary btn-sm mr-5">
+        Adicionar FAQ
+    </a>
     <a href="{{ route('home') }}" class="btn btn-danger">
         Cancelar
     </a>
