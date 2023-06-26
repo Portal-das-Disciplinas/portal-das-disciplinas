@@ -40,9 +40,9 @@ noindex, follow
                 <label for="role">Função</label>
                 <input id="role" name="role" type=text class="form-control" value="{{$collaborator->role}}" placeholder="Desenvolvedor, Designer, ..." required>
                 <label for="lattes">Lattes</label>
-                <input id="lattes" name="lattes" type="text" class="form-control" value="{{$collaborator->lattes}}" placeholder="Endereço do currículo latttes">
+                <input id="lattes" name="lattes" type="url" class="form-control" value="{{$collaborator->lattes}}" placeholder="https://" >
                 <label for="github">Github</label>
-                <input id="github" name="github" type="text" class="form-control" value="{{$collaborator->github}}" placeholder="Github">
+                <input id="github" name="github" type="url" class="form-control" value="{{$collaborator->github}}" placeholder="https://">
                 <div>
                     <label for="active">Ativo</label>
                     <input id="active" name="active" type="checkbox" @if($collaborator->active) checked @endif>
@@ -128,8 +128,8 @@ noindex, follow
         var html = "";
         links.forEach(function(link, i) {
             html += "<div class='mb-4'>" +
-                "<input class='form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='" + link.name + "'>" +
-                "<input class='form-control mt-1' name='linkUrl[]' type='text' placeholder='Url do link' value='" + link.url + "'>" +
+                "<input class='form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' required value='" + link.name + "'>" +
+                "<input class='form-control mt-1' name='linkUrl[]' type='url' placeholder='http://' required value='" + link.url + "'>" +
                 "<input name='linkId[]' type='hidden' value='" + link.id + "'>" +
                 "<label id = '" + link.id + "'class='btn btn-link text-danger' onclick='deleteLink(" + i + ")'>remover</label>" +
                 "</div>"
