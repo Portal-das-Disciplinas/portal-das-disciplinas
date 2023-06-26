@@ -404,7 +404,7 @@ class DisciplineController extends Controller
             ->findOrFail($id);
         $user = Auth::user();
 
-        $classifications = Classification::all();
+        $classifications = Classification::all()->sortBy('order');
 
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
