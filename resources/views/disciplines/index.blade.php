@@ -38,7 +38,7 @@
         
         <div class="row justify-content-md-center mt-5" style="margin-bottom:25px;">
             <div class="col">
-                <form action="/discipline/filter" method="GET">
+                <form id="filter" action="/discipline/filter" method="GET">
                     @csrf
                     <div class="input-group search-bar">
                         <input type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" 
@@ -50,7 +50,7 @@
                             @endforeach
                         </select>
                         <div class="input-group-append">
-                            <button class="btn btn-primary search-button" type="submit" id="button-addon2"><i class='fas fa-search search-icon'></i>Pesquisar</button>
+                            <button onclick="sendMultipleForm()" class="btn btn-primary search-button" type="submit" id="filterButton"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
                     </div>
                 </form>
@@ -73,26 +73,7 @@
                   </h5>
                 </div>
 
-                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                        <div class="container">
-                            <form action="/discipline/filter/advanced" method="get">
-                            @foreach($classifications ?? '' as $classification)
-                                <div class="row">
-                                    <div class="col">
-                                        <a class="flex-sm-fill text-sm-center nav-link">{{ $classification->name }}</a>
-                                    </div>
-                                    <div class="col">
-                                        <input type="range" style="width:80%;" id="trigger{{ $classification->name }}" name="{{ $classification->name }}" min="-1" max="100">
-                                        <output for="trigger{{ $classification->name }}" onforminput="value = trigger{{ $classification->name }}.valueAsNumber;"></output>
-                                    </div>
-                                </div>
-                            @endforeach
-                                <button type="submit">FILTRAR</button>
-                            </form>
-                        </div>  
-                    </div>
-                </div>
+                
             </div>
         </div>
         

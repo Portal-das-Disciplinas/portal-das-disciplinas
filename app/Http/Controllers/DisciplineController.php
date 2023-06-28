@@ -65,6 +65,11 @@ class DisciplineController extends Controller
 
     public function disciplineFilter(Request $request)
     {
+        // collection com todos os values de uma disciplina em específico
+        // usar isso pra comparar os values com a classification_di que você deseja
+        $class = ClassificationDiscipline::where('discipline_id', 9)->get();
+        
+        dd($class);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
 
@@ -104,7 +109,6 @@ class DisciplineController extends Controller
 
     public function disciplineAdvancedFilter(Request $request)
     {
-        // dd($request);
         $emphasis_all = Emphasis::all();
         $classifications_all = ClassificationDiscipline::all();
         $disciplines_all = Discipline::all();
@@ -112,7 +116,17 @@ class DisciplineController extends Controller
         $result = collect([]);
         $resultFiltered = collect([]);
 
-        if($request->metodologias_range == "-1" && $request->discussao_range == "-1" && $request->abordagem_range == "-1" && $request->avaliacao_range == "-1") {
+        if($discipline_name != null && $emphasis_id != null && $request->metodologias_range == "-1" && $request->discussao_range == "-1" && $request->abordagem_range == "-1" && $request->avaliacao_range == "-1") {
+            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
+
+            foreach ($input as $i) {
+                if ($i->emphasis_id == $emphasis_id) {
+                    $collection->push($i);
+                }
+            }
+
+            
+        } else if($request->metodologias_range == "-1" && $request->discussao_range == "-1" && $request->abordagem_range == "-1" && $request->avaliacao_range == "-1") {
             if($request->metodologias == null){
                 // echo 'faz nada';
             } else if($request->metodologias == "classicas"){
