@@ -1,4 +1,4 @@
-$("#advancedFilter").css("display", "none");
+// $("#advancedFilter").css("display", "none");
 
 $("#filterButton").on("click", () => {
     $("#advancedFilter").css("display", "flex");

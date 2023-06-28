@@ -50,10 +50,9 @@
                             @endforeach
                         </select>
                         <div class="input-group-append">
-                            <button onclick="sendMultipleForm()" class="btn btn-primary search-button" type="submit" id="filterButton"><i class='fas fa-search search-icon'></i>Pesquisar</button>
+                            <!-- <button class="btn btn-primary search-button" type="submit" id="filterButton"><i class='fas fa-search search-icon'></i>Pesquisar</button> -->
                         </div>
                     </div>
-                </form>
             </div>
         </div>
 
@@ -61,7 +60,7 @@
             <div class="card">
                 <div class="card-header" id="headingOne">
                   <h5 class="mb-0">
-                    <button id="filterButton" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <button type="button" id="filterButton" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                       Filtragem via Classificações
                     </button>
 
@@ -73,7 +72,25 @@
                   </h5>
                 </div>
 
-                
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="container">
+                            @foreach($classifications ?? '' as $classification)
+                                <div class="row">
+                                    <div class="col">
+                                        <a class="flex-sm-fill text-sm-center nav-link">{{ $classification->name }}</a>
+                                    </div>
+                                    <div class="col">
+                                        <input type="range" style="width:80%;" id="trigger{{ mb_strtolower($classification->name) }}" name="{{ mb_strtolower($classification->name) }}" min="-1" max="100">
+                                        <output for="trigger{{ mb_strtolower($classification->name) }}" onforminput="value = trigger{{ mb_strtolower($classification->name) }}.valueAsNumber;"></output>
+                                    </div>
+                                </div>
+                            @endforeach
+                                <button type="submit">FILTRAR</button>
+                            </form>
+                        </div>  
+                    </div>
+                </div>
             </div>
         </div>
         
