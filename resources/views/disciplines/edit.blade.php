@@ -55,11 +55,13 @@ noindex, follow
                     Ênfase da disciplina
                 </label>
                 <select name="emphasis" id="emphasis" class='form-control'>
-                    <option selected disabled> Selecione uma ênfase</option>
+                    <option  value=""> Nehuma </option>
                     @foreach($emphasis as $emphase)
-                    <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
+                    <option value="{{ $emphase->id }}" @if(isset($discipline->emphasis_id) && $emphase->id == $discipline->emphasis_id) selected @endif>{{ $emphase->name }}</option>
                     @endforeach
                 </select>
+
+               
 
 
             </div>
@@ -387,7 +389,6 @@ $classificationsJson = json_encode($classifications);
     classifications
 
     let faqs = @json($discipline -> faqs);
-    console.log(faqs);
 
     function addFaqField(event) {
         event.preventDefault();
@@ -438,12 +439,12 @@ $classificationsJson = json_encode($classifications);
 
     renderFaqs('#faqs');
 
-
     //Scripts relacionados com a adição de participantes da disciplina
     let data = @json($participants);
     setParticipants(data);
     sendParticipantsToFormInput();
     renderParticipants('#participants');
+
 </script>
 
 
