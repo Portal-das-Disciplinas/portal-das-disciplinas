@@ -251,15 +251,6 @@
                 @endif
                 <p style="white-space:pre-wrap;" id="sectionCollaborateText" class="text-justify mb-3">{{$sectionCollaborateText}}</p>
             </div>
-
-            <div class="break-word">
-                <b>Lista de emails para contato</b>
-                <ul class="ml-3">
-                    <li>eugenio@imd.ufrn.br</li>
-                    <li>pedrogab96@gmail.com</li>
-                    <li>victor_brandao@outlook.com</li>
-                </ul>
-            </div>
         </div>
 
 
