@@ -249,17 +249,17 @@ class DisciplineController extends Controller
                     $collection->push($i);
                 }
             }
-            // dd($collection);
-            // fazer função para correr a collection e checar quais delas se encaixam nos requisitos
+            dd($collection);
+            // fazer função para correr a collection e checar quais delas se encaixam nos requisitos que o usuário manda via form
             $filtered = $collection->filter(function ($value, $key) {
-                $disciplineClassificationValue = ClassificationDiscipline::where('discipline_id', $value->id)->where('classification_id',1)->get();
-                dd(ClassificationDiscipline::where('discipline_id',$value->id));
-                if ($disciplineClassificationValue->value >= $request->metodologias) {
-                    $result->push($disciplineClassificationValue);
+                $classificationValue = ClassificationDiscipline::where('discipline_id', $value->id)->where('classification_id',1)->get();
+                foreach($classificationValue as $class) {
+                    dd($class);
+                    
                 }
             });
 
-            return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all);
+            // return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all);
         } else if ($discipline_name != null && $emphasis_id != null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
 
