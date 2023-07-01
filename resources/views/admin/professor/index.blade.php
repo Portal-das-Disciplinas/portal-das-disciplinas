@@ -69,6 +69,9 @@ Painel de Administração
 
 <script>
     $(document).ready(function() {
+
+        sortTable(0, 'asc');
+
         $('.sortable').click(function() {
             var column = $(this).index();
             var order = $(this).hasClass('asc') ? 'desc' : 'asc';
