@@ -214,7 +214,6 @@ class CollaboratorController extends Controller
         }
 
         $collaborator->save();
-        //$linkIds = $request->linkId;
         $linkNames = $request->linkName;
         $linkUrls = $request->linkUrl;
         $links = $collaborator->links;
