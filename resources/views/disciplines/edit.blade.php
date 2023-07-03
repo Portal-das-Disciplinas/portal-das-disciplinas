@@ -14,10 +14,18 @@ noindex, follow
     <div class='page-title'>
         <h1>Editar disciplina</h1>
     </div>
+    @error('faq')
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Preencha todos os campos <strong>Pergunta</strong> e <strong>Resposta</strong> das Faqs
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    @enderror
 
     <h4 class="text-center m-4"></h4>
     <div class=" font-weight-bold">
-        <form action="{{ route("disciplinas.update" , $discipline->id)}}" method="post">
+        <form action="{{ route('disciplinas.update' , $discipline->id)}}" method="post">
             @csrf
             @method('PUT')
             <div class="form-row">
@@ -47,11 +55,13 @@ noindex, follow
                     Ênfase da disciplina
                 </label>
                 <select name="emphasis" id="emphasis" class='form-control'>
-                    <option selected disabled> Selecione uma ênfase</option>
+                    <option  value=""> Nehuma </option>
                     @foreach($emphasis as $emphase)
-                    <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
+                    <option value="{{ $emphase->id }}" @if(isset($discipline->emphasis_id) && $emphase->id == $discipline->emphasis_id) selected @endif>{{ $emphase->name }}</option>
                     @endforeach
                 </select>
+
+               
 
 
             </div>
@@ -283,34 +293,53 @@ noindex, follow
             <div class='page-title'>
                 <h3>Perguntas Frequentes</h3>
             </div>
-            @foreach($discipline -> faqs as $faq)
-            <div> 
-                <div class="form-group">
-                    <label for="title[{{$faq->id}}]" class="col-form-label">Pergunta</label>
-                    <input type="text" class="form-control" id="title[{{$faq->id}}]" name="title[{{$faq->id}}]" value="{{$faq->title}}">
+            <div id="faqs"><!-- Conteúdo gerado por javascript --></div>
+            <button class="btn btn-primary" onclick="addFaqField(event)">Adicionar Faq</button>
+
+
+
+            <h3 class="page-title">Créditos</h3>
+            <div class="container-fluid card pt-3 pb-3">
+                <div class="row">
+                    <div class="col" id="participants"></div>
+
                 </div>
-                <div class="form-group">
-                    <label for="title[{{$faq->id}}]" class="col-form-label">Resposta</label>
-                    <textarea class="form-control" id="title[{{$faq->id}}]" name="title[{{$faq->id}}]">{{$faq->content}}</textarea>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-primary" onclick="addParticipantField(event)">
+                            Adicionar participante
+                        </button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <form action=" {{route('disciplinas.faqs.destroy', [$discipline->id, $faq->id])}}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn delete-button btn-danger" value="Apagar">Apagar</button>
-                    </form>
+                <input id="participantsList" name="participantList" hidden>
+
+            </div>
+            <div id="modalLinksLimit" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Erro</h3>
+                        </div>
+                        <div class="modal-body bg-warning">
+                            <p>Número máximo de links alcançado.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            @endforeach
-    </div>
-    <div class="row d-flex p-2 mt-3 justify-content-center">
 
-        <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
-            Cancelar
-        </a>
-        <button type="submit" class="btn btn-success btn-sm ml-5">Editar</button>    
+            <div class="row d-flex p-2 mt-3 justify-content-center">
+                <a href="{{ route('home') }}" class="btn btn-danger btn-sm">
+                    Cancelar
+                </a>
+                <button type="submit" class="btn btn-success btn-sm ml-5">Salvar alterações</button>
+            </div>
+        </form>
     </div>
-    </form>
+
+
 </div>
 
 
@@ -324,7 +353,7 @@ $classificationsJson = json_encode($classifications);
 
 @endsection
 @section('scripts-bottom')
-<script src="{{asset('js/disciplines.js')}}" ></script>
+<script src="{{asset('js/disciplines.js')}}"></script>
 
 <script>
     let classifications = JSON.parse('{!! $classificationsJson !!}');
@@ -355,12 +384,66 @@ $classificationsJson = json_encode($classifications);
         $('[data-toggle="tooltip"]').tooltip()
     })
 
+
+    /*scripts relacionados com a adição das faqs */
+    classifications
+
+    let faqs = @json($discipline -> faqs);
+
+    function addFaqField(event) {
+        event.preventDefault();
+        faqs.push({
+            title: "",
+            content: ""
+        });
+        renderFaqs("#faqs");
+    }
+
+    function removeFaqField(index) {
+        event.preventDefault();
+        faqs = faqs.filter(function(faq, idx) {
+            return idx != index;
+        });
+
+        renderFaqs("#faqs");
+    }
+
+    function onchangeTitle(event, index) {
+        faqs[index].title = event.target.value;
+    }
+
+    function onchangeContent(event, index) {
+        faqs[index].content = event.target.value;
+    }
+
+
+
+    function renderFaqs(target) {
+        let html = "";
+        faqs.forEach(function(faq, index) {
+            html += "<div class='form card p-1 mb-2' style='background-color:#f2f2f2'>" +
+                "<input name='faqId[]' hidden value='" + faq.id + "'>" +
+                "<label>Pergunta</label>" +
+                "<input class='form-control mb-1' name='faqTitle[]' type='text' value='" + faq.title + "' onchange='onchangeTitle(event," + index + ")' required>" +
+                "<label>Resposta</label>" +
+                "<textarea class='form-control' name='faqContent[]' onchange='onchangeContent(event," + index + ")' required>" + faq.content + "</textarea>" +
+                "<div class='d-flex justify-content-end'>" +
+                "<label onclick='removeFaqField(" + index + ")' class='text-danger' style='cursor:pointer'>remover</label>" +
+                "</div>" +
+                "</div>";
+        });
+
+        document.querySelector(target).innerHTML = html;
+
+    }
+
+    renderFaqs('#faqs');
+
     //Scripts relacionados com a adição de participantes da disciplina
     let data = @json($participants);
     setParticipants(data);
     sendParticipantsToFormInput();
     renderParticipants('#participants');
-
 
 </script>
 

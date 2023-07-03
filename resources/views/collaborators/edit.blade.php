@@ -5,6 +5,19 @@ Edição de Colaborador
 @section('robots')
 noindex, follow
 @endsection
+@section('styles-head')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" 
+                       integrity="sha512-cyzxRvewl+FOKTtpBzYjW6x6IAYUCZy3sGP40hn+DQkqeluGRCax7qztK2ImL64SA+C7kVWdLI6wvdlStawhyw==" 
+                       crossorigin="anonymous" 
+                       referrerpolicy="no-referrer" />
+<style>
+    .cropper-view-box,
+    .cropper-face {
+      border-radius: 50%;
+    }
+</style>
+
+@endsection
 @section('content')
 <div class="d-flex flex-column align-items-center w-100 mb-5 mt-5">
     <h1>Edição de Colaborador</h1>
@@ -22,7 +35,9 @@ noindex, follow
         <div class="row">
             <div class="d-flex flex-column justify-content-start align-items-center col-md-4">
                 <div class="d-flex flex-column justify-content-center">
-                    <img id="photoImg" class="img-thumbnail" src="{{ $collaborator->urlPhoto ? '/storage/'.$collaborator->urlPhoto : asset('img/profiles_img/user2.png')}}" width="200px">
+                    <div class="mb-3" style="max-width:200px">
+                        <img id="photoImg" class="d-block w-100" src="{{ $collaborator->urlPhoto ? '/storage/'.$collaborator->urlPhoto : asset('img/profiles_img/user2.png')}}">
+                    </div>
                     <label class="btn btn-outline-primary btn-sm mb-3" for="photo" name="labelPhoto">Alterar Foto</label>
                     <input class="d-none" id="photo" name="photo" type='file' onchange="changePhoto(event)">
                     <input id="imageChanged" type="checkbox" name="imageChanged" hidden>
@@ -40,9 +55,9 @@ noindex, follow
                 <label for="role">Função</label>
                 <input id="role" name="role" type=text class="form-control" value="{{$collaborator->role}}" placeholder="Desenvolvedor, Designer, ..." required>
                 <label for="lattes">Lattes</label>
-                <input id="lattes" name="lattes" type="text" class="form-control" value="{{$collaborator->lattes}}" placeholder="Endereço do currículo latttes">
+                <input id="lattes" name="lattes" type="url" class="form-control" value="{{$collaborator->lattes}}" placeholder="https://" >
                 <label for="github">Github</label>
-                <input id="github" name="github" type="text" class="form-control" value="{{$collaborator->github}}" placeholder="Github">
+                <input id="github" name="github" type="url" class="form-control" value="{{$collaborator->github}}" placeholder="https://">
                 <div>
                     <label for="active">Ativo</label>
                     <input id="active" name="active" type="checkbox" @if($collaborator->active) checked @endif>
@@ -73,16 +88,14 @@ noindex, follow
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-12">
                 <div class="d-flex justify-content-end col-md-12">
                     <a id="btn-cancel" href="{{route('information')}}" class='mr-4'>Cancelar</a>
-                    <button class="btn btn-success" type="submit">Atualizar</button>
+                    <button class="btn btn-success" type="button" onclick="submitForm(event)">Atualizar</button>
                 </div>
             </div>
         </div class="row">
-
     </form>
 
 </div>
@@ -90,22 +103,41 @@ noindex, follow
 <script>
     let collaborator = @json($collaborator);
     let collabLinks = @json($collaborator->links);
-
-
     let links = [];
 
     if (collabLinks) {
         links = collabLinks;
         renderLinks();
     }
+    /*Quando o usuário clica em cancelar o upload,  a lista files do input[type=file] 
+      fica vazia, então a variável previous file guarda o último arquivo
+      antes do usuário ter clicado em cancelar.*/
+    let previousFile = null;
 
     function changePhoto(event) {
         event.preventDefault();
-        document.querySelector("#imageChanged").checked = true;
 
+        /*Quando target.files.lenght == 0 significa que o usuário
+          cancelou o upload ou deletou a imagem                 */
+        if(event.target.files.length == 0){
+            if(document.querySelector('#photoImg').src != '/img/profiles_img/user2.png'){
+                if(previousFile != null){
+                    let dt = new DataTransfer();
+                    dt.items.add(previousFile);
+                    document.querySelector("#photo").files = dt.files;
+                    previousFile = dt.files[0];
+                }  
+            }
+            return false;
+        }
+        document.querySelector("#imageChanged").checked = true;
+        cropper.replace(document.querySelector('#photoImg').src);
+        
         let reader = new FileReader();
         reader.onload = (e) => {
             document.querySelector('#photoImg').src = e.target.result;
+            cropper.replace(document.querySelector('#photoImg').src);
+            previousFile = document.querySelector("#photo").files[0]; 
         }
 
         reader.onerror = (event) => {
@@ -113,14 +145,54 @@ noindex, follow
             document.querySelector('#photoImg').src = '/img/profiles_img/user2.png';
         }
         let file = event.target.files[0];
+        previousFile = event.target.files[0];
         reader.readAsDataURL(file);
+    }
+    
+    window.onload = ()=>{
+        cropper.replace(document.querySelector('#photoImg').src);
     }
 
     function deletePhoto(event) {
         event.preventDefault();
         document.querySelector("#imageChanged").checked = true;
         document.querySelector('#photoImg').src = '/img/profiles_img/user2.png';
+        document.querySelector('#photo').files = new DataTransfer().files;
+        cropper.replace(document.querySelector('#photoImg').src);
+        previousFile = null;
+    }
 
+    let cropper = new Cropper(document.querySelector('#photoImg'),{
+        aspectRatio:1,
+        dragMode:'none',
+        cropBoxMovable:true,
+        cropBoxResizable:false,
+        guides:false,
+        viewMode:1,
+        minCropBoxWidth:200,
+        minCropBoxHeight:200,
+ 
+    });
+    
+    function submitForm(event){
+        event.preventDefault();
+        
+        let inputPhoto = document.querySelector('#photo');
+        if(inputPhoto.files.length !=0){
+            let dt = new DataTransfer();
+            let img = cropper.getCroppedCanvas().toBlob((blob)=>{
+            croppedFile = new File([blob], "photo");
+            dt = new DataTransfer();
+            dt.items.add(croppedFile);
+            let inputPhoto = document.querySelector('#photo');
+            inputPhoto.files = dt.files;
+            document.querySelector('#collaborators-form').submit();
+            });
+        }
+        else{
+            document.querySelector('#collaborators-form').submit();
+        }
+        
     }
 
     function renderLinks() {
@@ -128,8 +200,8 @@ noindex, follow
         var html = "";
         links.forEach(function(link, i) {
             html += "<div class='mb-4'>" +
-                "<input class='form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='" + link.name + "'>" +
-                "<input class='form-control mt-1' name='linkUrl[]' type='text' placeholder='Url do link' value='" + link.url + "'>" +
+                "<input class='form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' required value='" + link.name + "'>" +
+                "<input class='form-control mt-1' name='linkUrl[]' type='url' placeholder='http://' required value='" + link.url + "'>" +
                 "<input name='linkId[]' type='hidden' value='" + link.id + "'>" +
                 "<label id = '" + link.id + "'class='btn btn-link text-danger' onclick='deleteLink(" + i + ")'>remover</label>" +
                 "</div>"
@@ -169,4 +241,12 @@ noindex, follow
     }
 </script>
 
+@endsection
+
+@section('scripts-head')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" 
+    integrity="sha512-6lplKUSl86rUVprDIjiW8DuOniNX8UDoRATqZSds/7t6zCQZfaCe3e5zcGaQwxa8Kpn5RTM9Fvl3X2lLV4grPQ==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer">
+</script>
 @endsection

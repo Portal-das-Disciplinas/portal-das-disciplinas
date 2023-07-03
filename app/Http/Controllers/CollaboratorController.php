@@ -7,11 +7,12 @@ use App\Models\CollaboratorLink;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CollaboratorController extends Controller
 {
     protected $theme;
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -47,6 +48,28 @@ class CollaboratorController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make( $request->all(),[
+            'nome' => 'required',
+            'email' => 'email|nullable',
+            'vinculo' => 'required',
+            'funcao' => 'required',
+            'lattes' => 'url|nullable',
+            'github' => 'url|nullable',
+            
+        ]);
+
+        $validatorLinks = Validator::make($request->only('linkUrl'),[
+            'linkUrl.*'=> 'url|nullable',
+        ]);
+
+        if($validator->fails()){
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+        if($validatorLinks->fails()){
+            return redirect()->back()->withInput()->withErrors('A url do link está em um formato inválido');
+        }
+        
+
         $isManager = false;
         $active = true;
 
@@ -81,6 +104,7 @@ class CollaboratorController extends Controller
             $linkNames = $request->linkName;
             $linkUrls = $request->linkUrl;
             if (isset($linkNames) && isset($linkUrls)) {
+               
                 for ($i = 0; $i < count($linkNames); $i++) {
                     if ($linkNames[$i] != "" && $linkUrls[$i] != "") {
                         CollaboratorLink::create([
@@ -90,6 +114,7 @@ class CollaboratorController extends Controller
                         ]);
                     }
                 }
+
             }
         }
 
@@ -117,7 +142,7 @@ class CollaboratorController extends Controller
     {
         $collaborator = Collaborator::find($id);
 
-        return view('collaborators.edit', ['collaborator' => $collaborator])->with('theme',$this->theme);
+        return view('collaborators.edit', ['collaborator' => $collaborator])->with('theme', $this->theme);
     }
 
     /**
@@ -129,6 +154,28 @@ class CollaboratorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make( $request->all(),[
+            'name' => 'required',
+            'email' => 'email|nullable',
+            'bond' => 'required',
+            'role' => 'required',
+            'lattes' => 'url|nullable',
+            'github' => 'url|nullable',
+            
+        ]);
+
+        if($validator->fails()){
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+
+        $validatorLinkUrl = Validator::make($request->only('linkUrl'),[
+            'linkUrl.*' => 'url|nullable'
+        ]);
+
+        if($validatorLinkUrl->fails()){
+            return redirect()->back()->withInput()->withErrors('A url do link está em um formato inválido');
+        }
+
         $active = false;
         $isManager = false;
 
@@ -151,15 +198,14 @@ class CollaboratorController extends Controller
         $collaborator->joinDate = $request->joinDate;
         $collaborator->leaveDate = $request->leaveDate;
 
-        if($request->imageChanged == "on"){
+        if ($request->imageChanged == "on") {
             if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
                 if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
                     Storage::disk('public')->delete($collaborator->urlPhoto);
                 }
                 $nomeArquivo = $request->file('photo')->store('img_profiles', 'public');
                 $collaborator->urlPhoto = $nomeArquivo;
-            }
-            else{
+            } else {
                 if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
                     Storage::disk('public')->delete($collaborator->urlPhoto);
                     $collaborator->urlPhoto = null;
@@ -168,14 +214,14 @@ class CollaboratorController extends Controller
         }
 
         $collaborator->save();
-        //$linkIds = $request->linkId;
         $linkNames = $request->linkName;
         $linkUrls = $request->linkUrl;
         $links = $collaborator->links;
         foreach ($links as $link) {
             $link->delete();
         }
-        if (isset($linkNames)) {
+        if (isset($linkNames) && isset($linkUrls)) {
+            
             for ($i = 0; $i < count($linkNames); $i++) {
                 if ($linkNames[$i] != "" && $linkUrls[$i] != "") {
                     CollaboratorLink::create([
@@ -185,9 +231,9 @@ class CollaboratorController extends Controller
                     ]);
                 }
             }
+            
         }
-
-
+        
         return redirect()->route('information');
     }
 

@@ -16,32 +16,32 @@
                     @csrf
                     <div class="form-group">
                         <label class="btn btn-outline-info" for="fotoColaborador" name="foto">Adicionar Foto</label>
-                        <input class="d-none" id="fotoColaborador" name="foto" type='file' onchange="changeFileName()">
+                        <input class="d-none" id="fotoColaborador" name="foto" type='file' value="{{old('foto')}}" onchange="changeFileName()">
                         <small id="fileName">Nenhum arquivo selecionado</small>
                     </div>
                     <div class="form-group">
                         <label for="nomeColaborador">Nome</label>
-                        <input id="nomeColaborador" name="nome" type=text class="form-control" placeholder="Nome e Sobrenome" required>
+                        <input id="nomeColaborador" name="nome" type=text class="form-control" value="{{old('nome')}}" placeholder="Nome e Sobrenome" required>
                     </div>
                     <div class="form-group">
                         <label for="emailColaborador">E-mail</label>
-                        <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail">
+                        <input id="emailColaborador" name="email" type="email" class="form-control" value="{{old('email')}}" placeholder="e-mail">
                     </div>
                     <div class="form-group">
                         <label for="vinculoColaborador">Vínculo</label>
-                        <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" placeholder="bolsista, voluntário..." required>
+                        <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" value="{{old('vinculo')}}"placeholder="bolsista, voluntário..." required>
                     </div>
                     <div class="form-group">
                         <label for="funcaoColaborador">Função</label>
-                        <input id="funcaoColaborador" name="funcao" type=text class="form-control" placeholder="Desenvolvedor, Designer, ...">
+                        <input id="funcaoColaborador" name="funcao" type=text class="form-control" value="{{old('funcao')}}"placeholder="Desenvolvedor, Designer, ...">
                     </div>
                     <div class="form-group">
                         <label for="lattesColaborador">Lattes</label>
-                        <input id="lattesColaborador" name="lattes" type="text" class="form-control" placeholder="Endereço do currículo latttes">
+                        <input id="lattesColaborador" name="lattes" type="url" class="form-control" value="{{old('lattes')}}" placeholder="https://">
                     </div>
                     <div class="form-group">
                         <label for="githubColaborador">Github</label>
-                        <input id="githubColaborador" name="github" type="text" class="form-control" placeholder="Github">
+                        <input id="githubColaborador" name="github" type="url" class="form-control" value="{{old('github')}}"placeholder="https://">
                     </div>
                     <hr class="hr">
 
@@ -205,9 +205,18 @@
     <h1 class='text-white'>Sobre & Colabore</h1>
 </div>
 @if($errors->any())
-<h3 class="alert alert-danger text-center">
-    {{$errors->first()}}
-</h3>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div class="d-flex justify-content-center">
+        <div>
+            @foreach($errors->all() as $error)
+            <li>{{$error}}</li>
+            @endforeach
+        </div>
+    </div>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 @endif
 
 <div class='container py-5' id="top-container">
@@ -241,15 +250,6 @@
                 <p class="text-secondary"><i>[Não há conteúdo para essa seção]</i></p>
                 @endif
                 <p style="white-space:pre-wrap;" id="sectionCollaborateText" class="text-justify mb-3">{{$sectionCollaborateText}}</p>
-            </div>
-
-            <div class="break-word">
-                <b>Lista de emails para contato</b>
-                <ul class="ml-3">
-                    <li>eugenio@imd.ufrn.br</li>
-                    <li>pedrogab96@gmail.com</li>
-                    <li>victor_brandao@outlook.com</li>
-                </ul>
             </div>
         </div>
 
@@ -503,8 +503,8 @@
         var html = "";
         links.forEach(function(link, i) {
             html += "<div class='mb-4'>" +
-                "<input class=' mb-1 form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='" + link.name + "'>" +
-                "<input class='form-control' name='linkUrl[]' type='text' placeholder='Url do link' value='" + link.url + "'>" +
+                "<input class=' mb-1 form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' required value='" + link.name + "'>" +
+                "<input class='form-control' name='linkUrl[]' type='url' placeholder='https://' required value='" + link.url + "'>" +
                 "<label id = '" + link.id + "'class='btn btn-link text-danger' onclick='deleteLinkField(" + i + ")'>remover</label>" +
                 "</div>"
         });
