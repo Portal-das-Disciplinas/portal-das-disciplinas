@@ -356,8 +356,8 @@ $classificationsJson = json_encode($classifications);
 <script src="{{asset('js/disciplines.js')}}"></script>
 
 <script>
-    let classifications = JSON.parse('{!! $classificationsJson !!}');
-
+    //let classifications = JSON.parse('{!! $classificationsJson !!}');
+    let classifications = @json($classifications);         
     function handleInput(value, element) {
         const sliderContainer = element.parentNode
         const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
