@@ -439,7 +439,7 @@ class DisciplineController extends Controller
                 'disciplineParticipants',
             ])
             ->findOrFail($id);
-        $classifications = Classification::all()->sortBy('order');
+        $classifications = Classification::query()->orderBy('order','ASC')->get();
         $participants = array();
         for ($i = 0; $i < count($discipline->disciplineParticipants()->get()); $i++) {
             array_push($participants, json_decode($discipline->disciplineParticipants()->get()[$i]));
