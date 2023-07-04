@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
 use App\Models\CollaboratorLink;
+use App\Models\Link;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -142,7 +143,8 @@ class CollaboratorController extends Controller
     {
         $collaborator = Collaborator::find($id);
 
-        return view('collaborators.edit', ['collaborator' => $collaborator])->with('theme', $this->theme);
+        return view('collaborators.edit', ['collaborator' => $collaborator])
+            ->with('theme', $this->theme);
     }
 
     /**
