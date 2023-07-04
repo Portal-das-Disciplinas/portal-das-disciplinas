@@ -126,6 +126,7 @@ noindex, follow
                     dt.items.add(previousFile);
                     document.querySelector("#photo").files = dt.files;
                     previousFile = dt.files[0];
+                    hasPhoto = false;
                 }  
             }
             return false;
@@ -137,19 +138,25 @@ noindex, follow
         reader.onload = (e) => {
             document.querySelector('#photoImg').src = e.target.result;
             cropper.replace(document.querySelector('#photoImg').src);
-            previousFile = document.querySelector("#photo").files[0]; 
+            previousFile = document.querySelector("#photo").files[0];
+            hasPhoto = true; 
         }
 
         reader.onerror = (event) => {
             alert("erro ao carregar a imagem do seu dispositivo");
             document.querySelector('#photoImg').src = '/img/profiles_img/user2.png';
+            hasPhoto = false;
         }
         let file = event.target.files[0];
         previousFile = event.target.files[0];
         reader.readAsDataURL(file);
     }
-    
+    let hasPhoto = false;
     window.onload = ()=>{
+        if(document.querySelector('#photoImg').src != '/img/profiles_img/user2.png'){
+            hasPhoto = true;
+        }
+        
         cropper.replace(document.querySelector('#photoImg').src);
     }
 
@@ -160,6 +167,7 @@ noindex, follow
         document.querySelector('#photo').files = new DataTransfer().files;
         cropper.replace(document.querySelector('#photoImg').src);
         previousFile = null;
+        hasPhoto = false;
     }
 
     let cropper = new Cropper(document.querySelector('#photoImg'),{
@@ -178,7 +186,7 @@ noindex, follow
         event.preventDefault();
         
         let inputPhoto = document.querySelector('#photo');
-        if(inputPhoto.files.length !=0){
+        if(hasPhoto){
             let dt = new DataTransfer();
             let img = cropper.getCroppedCanvas().toBlob((blob)=>{
             croppedFile = new File([blob], "photo");
@@ -190,6 +198,7 @@ noindex, follow
             });
         }
         else{
+            
             document.querySelector('#collaborators-form').submit();
         }
         
