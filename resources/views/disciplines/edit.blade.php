@@ -386,9 +386,8 @@ $classificationsJson = json_encode($classifications);
 
 
     /*scripts relacionados com a adição das faqs */
-    classifications
 
-    let faqs = @json($discipline -> faqs);
+    let faqs = @json($discipline->faqs);
 
     function addFaqField(event) {
         event.preventDefault();
