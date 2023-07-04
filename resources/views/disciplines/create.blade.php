@@ -336,11 +336,11 @@ $classificationsJson = json_encode($classifications);
 
 @section('scripts-bottom')
 <script>
-    let classifications = JSON.parse('{!! $classificationsJson !!}');
+    //let classifications = JSON.parse('{!! $classificationsJson !!}');
+    let classifications = @json($classifications);
 
 
     function handleInput(value, element) {
-        //console.log(value)
         const sliderContainer = element.parentNode
         const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
         const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
