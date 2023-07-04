@@ -40,7 +40,6 @@ noindex, follow
                     </div>
                     <label class="btn btn-outline-primary btn-sm mb-3" for="photo" name="labelPhoto">Alterar Foto</label>
                     <input class="d-none" id="photo" name="photo" type='file' onchange="changePhoto(event)">
-                    <input id="imageChanged" type="checkbox" name="imageChanged" hidden>
                     <button class="btn btn-outline-danger" onclick="deletePhoto(event)">remover</button>
                 </div>
             </div>
@@ -126,12 +125,13 @@ noindex, follow
                     dt.items.add(previousFile);
                     document.querySelector("#photo").files = dt.files;
                     previousFile = dt.files[0];
+                    
+                }else{
                     hasPhoto = false;
                 }  
             }
             return false;
         }
-        document.querySelector("#imageChanged").checked = true;
         cropper.replace(document.querySelector('#photoImg').src);
         
         let reader = new FileReader();
@@ -162,7 +162,6 @@ noindex, follow
 
     function deletePhoto(event) {
         event.preventDefault();
-        document.querySelector("#imageChanged").checked = true;
         document.querySelector('#photoImg').src = '/img/profiles_img/user2.png';
         document.querySelector('#photo').files = new DataTransfer().files;
         cropper.replace(document.querySelector('#photoImg').src);
@@ -179,12 +178,10 @@ noindex, follow
         viewMode:1,
         minCropBoxWidth:200,
         minCropBoxHeight:200,
- 
     });
     
     function submitForm(event){
         event.preventDefault();
-        
         let inputPhoto = document.querySelector('#photo');
         if(hasPhoto){
             let dt = new DataTransfer();
@@ -198,14 +195,12 @@ noindex, follow
             });
         }
         else{
-            
             document.querySelector('#collaborators-form').submit();
         }
         
     }
 
     function renderLinks() {
-
         var html = "";
         links.forEach(function(link, i) {
             html += "<div class='mb-4'>" +
@@ -216,7 +211,6 @@ noindex, follow
                 "</div>"
         });
         document.querySelector('#links').innerHTML = html;
-
     }
 
     function addLinkField() {
