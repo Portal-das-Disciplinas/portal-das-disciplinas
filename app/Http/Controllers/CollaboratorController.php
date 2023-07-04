@@ -199,8 +199,7 @@ class CollaboratorController extends Controller
         $collaborator->isManager = $isManager;
         $collaborator->joinDate = $request->joinDate;
         $collaborator->leaveDate = $request->leaveDate;
-
-        if ($request->imageChanged == "on") {
+        if (true || $request->imageChanged == "on") {
             if ($request->hasFile('photo') && $request->file('photo')->isValid()) {
                 if (Storage::disk('public')->exists($collaborator->urlPhoto)) {
                     Storage::disk('public')->delete($collaborator->urlPhoto);
