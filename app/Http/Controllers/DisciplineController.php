@@ -20,6 +20,7 @@ use \App\Models\Media;
 use \App\Models\Emphasis;
 use App\Models\Professor;
 use App\Models\Faq;
+use App\Models\Link;
 use App\Models\ParticipantLink;
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -66,11 +67,15 @@ class DisciplineController extends Controller
         //     ->get();
         $emphasis = Emphasis::all();
         $disciplines = Discipline::all();
+        $opinionLinkForm = Link::where('name','opinionForm')->first();
+       
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
             ->with('disciplines', $disciplines)
             ->with('emphasis', $emphasis)
-            ->with('theme', $this->theme);
+            ->with('theme', $this->theme)
+            ->with('showOpinionForm', true)
+            ->with('opinionLinkForm',$opinionLinkForm);
     }
 
     public function disciplineFilter(Request $request)

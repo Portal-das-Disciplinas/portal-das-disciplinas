@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
 use App\Models\Information;
+use App\Models\Link;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -65,7 +66,7 @@ class InformationController extends Controller
             $sectionCollaborateText = $query->first();
         }
 
-
+        $opinioLinkForm = Link::where('name','opinionForm')->first();
 
 
         return view('information', [
@@ -77,7 +78,9 @@ class InformationController extends Controller
             'sectionNameCurrentCollaborators' => $currentCollaboratorsSection ? $currentCollaboratorsSection->value : null,
             'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection ? $formerCollaboratorsSection->value : null,
             'sectionCollaborateTitle' => $sectionCollaborateTitle ? $sectionCollaborateTitle->value : "",
-            'sectionCollaborateText' => $sectionCollaborateText ? $sectionCollaborateText->value : ""
+            'sectionCollaborateText' => $sectionCollaborateText ? $sectionCollaborateText->value : "",
+            'showOpinionForm' => true,
+            'opinionLinkForm' => $opinioLinkForm
         ])
             ->with('theme', $this->theme);
     }
