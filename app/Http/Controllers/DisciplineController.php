@@ -236,6 +236,7 @@ class DisciplineController extends Controller
 
         $emphasis_id = $request->emphasis;
         $discipline_name = $request->name_discipline;
+        $metodologias = $request->metodologias;
 
         $input;
         $collection = collect([]);
@@ -249,16 +250,20 @@ class DisciplineController extends Controller
                     $collection->push($i);
                 }
             }
-            dd($collection);
+            // dd($collection);
             // fazer função para correr a collection e checar quais delas se encaixam nos requisitos que o usuário manda via form
-            $filtered = $collection->filter(function ($value, $key) {
-                $classificationValue = ClassificationDiscipline::where('discipline_id', $value->id)->where('classification_id',1)->get();
+            foreach($collection as $col) {
+                // dd($col);
+                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',1)->get();
                 foreach($classificationValue as $class) {
-                    dd($class);
-                    
+                    // dd($class);
+                    if($class->value >= $metodologias) {
+                        $result->push($class);
+                    }
                 }
-            });
+            }
 
+            dd($result);
             // return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all);
         } else if ($discipline_name != null && $emphasis_id != null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
