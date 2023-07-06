@@ -251,7 +251,7 @@ class DisciplineController extends Controller
                     $collection->push($i);
                 }
             }
-            // dd($collection);
+            dd($collection);
             // fazer função para correr a collection e checar quais delas se encaixam nos requisitos que o usuário manda via form
             foreach($collection as $col) {
                 // dd($col);
@@ -295,10 +295,11 @@ class DisciplineController extends Controller
 
         $disciplinesResult = collect([]);
         foreach($result as $r) {
-            $disc = Discipline::where()
+            $disc = Discipline::where('id', $r->discipline_id)->get();
+            $disciplinesResult->push($disc);
         }
 
-        return view('disciplines.index')->with('classifications', $classifications_all)->with('disciplines', $result)->with('emphasis', $emphasis_all);
+        return view('disciplines.index')->with('classifications', $classifications_all)->with('disciplines', $disciplinesResult)->with('emphasis', $emphasis_all);
     }
 
  
