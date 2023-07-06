@@ -237,11 +237,16 @@ class DisciplineController extends Controller
 
         $emphasis_id = $request->emphasis;
         $discipline_name = $request->name_discipline;
+
         $metodologias = $request->metodologias;
+        $discussao = $request->discussão;
+        $abordagem = $request->abordagem;
+        $avaliacao = $request->avaliação;
 
         $input;
         $collection = collect([]);
         $result = collect([]);
+        $disciplinesResult = collect([]);
 
         if($discipline_name != null && $emphasis_id != null && $request->metodologias > -1) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
@@ -251,21 +256,56 @@ class DisciplineController extends Controller
                     $collection->push($i);
                 }
             }
-            dd($collection);
-            // fazer função para correr a collection e checar quais delas se encaixam nos requisitos que o usuário manda via form
+            
+            // função para correr a $collection e checar quais delas se encaixam nos requisitos que o usuário manda via form
             foreach($collection as $col) {
-                // dd($col);
                 $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',1)->get();
                 foreach($classificationValue as $class) {
-                    // dd($class);
                     if($class->value >= $metodologias) {
                         $result->push($class);
                     }
                 }
             }
 
-            // dd($result);
-            // return view('disciplines.index')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all);
+            foreach($collection as $col) {
+                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',2)->get();
+                foreach($classificationValue as $class) {
+                    if($class->value >= $discussao) {
+                        $result->push($class);
+                    }
+                }
+            }
+            
+            foreach($collection as $col) {
+                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',3)->get();
+                foreach($classificationValue as $class) {
+                    if($class->value >= $abordagem) {
+                        $result->push($class);
+                    }
+                }
+            }
+            
+            foreach($collection as $col) {
+                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',4)->get();
+                foreach($classificationValue as $class) {
+                    if($class->value >= $avaliacao) {
+                        $result->push($class);
+                    }
+                }
+            }
+
+            foreach($collection as $col) {
+                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',5)->get();
+                foreach($classificationValue as $class) {
+                    if($class->value >= $metodologias) {
+                        $result->push($class);
+                    }
+                }
+            }
+
+        } else if ($discipline_name != null && $emphasis_id != null && $request->metodologias < 0) {
+            // significa que o usuário vai pesquisar via pesquisa simples, sem usar os ranges
+
         } else if ($discipline_name != null && $emphasis_id != null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
 
@@ -292,14 +332,21 @@ class DisciplineController extends Controller
         } else {
             return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all); 
         }
-
-        $disciplinesResult = collect([]);
+        
+        // foreach pra colocar só as models de disciplinas em vez de models de classification_disciplines numa collection que será
+        // retornada para a view 
         foreach($result as $r) {
             $disc = Discipline::where('id', $r->discipline_id)->get();
             $disciplinesResult->push($disc);
         }
 
-        return view('disciplines.index')->with('classifications', $classifications_all)->with('disciplines', $disciplinesResult)->with('emphasis', $emphasis_all);
+        // mecanismo para remover valores repetidos
+        $repeatedDisciplines = $disciplinesResult->duplicates()->keys();
+        foreach($repeatedDisciplines as $repeat) {
+            $disciplinesResult->pull($repeat);
+        }
+
+        return view('disciplines.index')->with('classifications', $classifications_all)->with('disciplines', $disciplinesResult->collapse())->with('emphasis', $emphasis_all);
     }
 
  
