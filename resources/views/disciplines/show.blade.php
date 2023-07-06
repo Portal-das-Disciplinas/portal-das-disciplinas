@@ -369,11 +369,12 @@ mais.
                         </div>
                     </div>
                 </div>
-        @endif
+        
             </div><!-- seção professor -->
         </div>
-
+        @endif
         <!-- Seção créditos -->
+        @if((Auth::user() && Auth::user()->isAdmin) || count($discipline->disciplineParticipants)>0)
         <div class="col">
             <div class="d-flex flex-column shadow p-2 align-items-start">
                 <div class="d-flex flex-row justify-content-start align-items-baseline">
@@ -426,6 +427,7 @@ mais.
                 @endforeach
             </div><!--Seção créditos -->
         </div> <!--col-->
+        @endif
     </div>
 </div><!-- seção professor e créditos -->
 
