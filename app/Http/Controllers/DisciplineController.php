@@ -233,6 +233,7 @@ class DisciplineController extends Controller
     public function multiDisciplineFilter (Request $request) {
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
+        $classifications_all = Classification::all();
 
         $emphasis_id = $request->emphasis;
         $discipline_name = $request->name_discipline;
@@ -263,8 +264,8 @@ class DisciplineController extends Controller
                 }
             }
 
-            dd($result);
-            // return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all);
+            // dd($result);
+            // return view('disciplines.index')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all);
         } else if ($discipline_name != null && $emphasis_id != null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
 
@@ -291,6 +292,13 @@ class DisciplineController extends Controller
         } else {
             return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all); 
         }
+
+        $disciplinesResult = collect([]);
+        foreach($result as $r) {
+            $disc = Discipline::where()
+        }
+
+        return view('disciplines.index')->with('classifications', $classifications_all)->with('disciplines', $result)->with('emphasis', $emphasis_all);
     }
 
  
