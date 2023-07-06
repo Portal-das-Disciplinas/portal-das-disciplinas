@@ -46,6 +46,10 @@ Painel de Administração
             <input type="text" name="PROJETO_SIGLA_SETOR" id="PROJETO_SIGLA_SETOR" class="form-control" value="{{$theme['PROJETO_SIGLA_SETOR']}}">
             </div>
             <div class="mb-3">
+            <label for="PROJETO_NOME_COMPLETO_SETOR" class="form-label">Nome da Instituição do projeto:</label>
+            <input type="text" name="PROJETO_NOME_COMPLETO_SETOR" id="PROJETO_NOME_COMPLETO_SETOR" class="form-control" value="{{$theme['PROJETO_NOME_COMPLETO_SETOR']}}">
+            </div>
+            <div class="mb-3">
             <label for="PROJETO_CIDADE" class="form-label">Nome da cidade:</label>
             <input type="text" name="PROJETO_CIDADE" id="PROJETO_CIDADE" class="form-control" value="{{$theme['PROJETO_CIDADE']}}">
             </div>
