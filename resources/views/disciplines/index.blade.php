@@ -50,7 +50,7 @@
                             @endforeach
                         </select>
                         <div class="input-group-append">
-                            <!-- <button class="btn btn-primary search-button" type="submit" id="filterButton"><i class='fas fa-search search-icon'></i>Pesquisar</button> -->
+                            <button class="btn btn-primary search-button" type="submit"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
                     </div>
             </div>
@@ -81,12 +81,25 @@
                                         <a class="flex-sm-fill text-sm-center nav-link">{{ $classification->name }}</a>
                                     </div>
                                     <div class="col">
-                                        <input type="range" style="width:80%;" id="trigger{{ mb_strtolower($classification->name) }}" name="{{ mb_strtolower($classification->name) }}" min="-1" max="100">
-                                        <output for="trigger{{ mb_strtolower($classification->name) }}" onforminput="value = trigger{{ mb_strtolower($classification->name) }}.valueAsNumber;"></output>
+                                        <div class="simpleClass">
+                                            <div class="row">
+                                                <div class="col-6 flex-sm-fill text-sm-center nav-link">
+                                                    <input class="btn btn-primary" type="button" value="{{ mb_strtolower($classification->name) }}" name="{{ mb_strtolower($classification->name) }}">
+                                                </div>
+                                                <div class="col-6 flex-sm-fill text-sm-center nav-link">
+                                                    <input class="btn btn-primary" type="button" value="{{ mb_strtolower($classification->name) }}" name="{{ mb_strtolower($classification->name) }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="advancedClass" style="display:none;">
+                                            <input type="range" style="width:80%;" id="trigger{{ mb_strtolower($classification->name) }}" name="{{ mb_strtolower($classification->name) }}" min="-1" max="100" onchange="updateTextInput(this.value);">
+                                            
+                                        </div>
+                                        <!-- <output for="trigger{{ mb_strtolower($classification->name) }}" onforminput="value = trigger{{ mb_strtolower($classification->name) }}.valueAsNumber;"></output> -->
                                     </div>
                                 </div>
                             @endforeach
-                                <button type="submit">FILTRAR</button>
                             </form>
                         </div>  
                     </div>

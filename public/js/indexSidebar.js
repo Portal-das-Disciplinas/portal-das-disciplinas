@@ -1,4 +1,4 @@
-// $("#advancedFilter").css("display", "none");
+$("#advancedFilter").css("display", "none");
 
 $("#filterButton").on("click", () => {
     $("#advancedFilter").css("display", "flex");
@@ -7,6 +7,16 @@ $("#filterButton").on("click", () => {
         $("#advancedFilter").css("display", "flex");
     } else {
         $("#advancedFilter").css("display", "none");
+    }
+});
+
+$("#advancedFilter").on("click", () => {
+    if ($(".advancedClass[class='advancedClass']").css("display") == "none") {
+        $(".advancedClass[class='advancedClass']").css("display", "flex");
+        $(".simpleClass[class='simpleClass']").css("display", "none");
+    } else {
+        $(".advancedClass[class='advancedClass']").css("display", "none");
+        $(".simpleClass[class='simpleClass']").css("display", "flex");
     }
 });
 
