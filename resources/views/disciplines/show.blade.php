@@ -369,10 +369,10 @@ mais.
                         </div>
                     </div>
                 </div>
-        @endif
+        
             </div><!-- seção professor -->
         </div>
-
+        @endif
         <!-- Seção créditos -->
         <div class="col">
             <div class="d-flex flex-column shadow p-2 align-items-start">
