@@ -67,6 +67,7 @@ class ThemeController extends Controller
         
         $themeInputs = [
             'PROJETO_SIGLA_SETOR',
+            'PROJETO_NOME_COMPLETO_SETOR',
             'PROJETO_CIDADE',
             'PROJETO_SIGLA_SETOR_INSTITUICAO',
             'PROJETO_DISCIPLINAS_DESCRICAO',

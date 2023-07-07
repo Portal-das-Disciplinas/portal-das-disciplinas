@@ -104,7 +104,7 @@ function renderParticipants(idElement) {
             "</div>" +
             "<div class='form-group'>" +
             "<label>E-mail</label>" +
-            "<input id='" + participant.index + "' class='form-control' type='email' name='participantEmail[]' placeholder='E-mail do Participante' required value='" + participant.email + "' onchange='onChangeParticipantEmail(event)'>" +
+            "<input id='" + participant.index + "' class='form-control' type='email' name='participantEmail[]' placeholder='E-mail do Participante' value='" + participant.email + "' onchange='onChangeParticipantEmail(event)'>" +
             "</div>" +
             "<hr class='hr'>" +
             "<span>LINKS</span>" +

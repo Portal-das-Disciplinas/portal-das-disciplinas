@@ -369,11 +369,12 @@ mais.
                         </div>
                     </div>
                 </div>
-        @endif
+        
             </div><!-- seção professor -->
         </div>
-
+        @endif
         <!-- Seção créditos -->
+        @if((Auth::user() && Auth::user()->isAdmin) || count($discipline->disciplineParticipants)>0)
         <div class="col">
             <div class="d-flex flex-column shadow p-2 align-items-start">
                 <div class="d-flex flex-row justify-content-start align-items-baseline">
@@ -410,7 +411,9 @@ mais.
                         <div class="collapse card" id="linksCollapse{{$participant->id}}">
                             <small>
                                 <strong><i>{{$participant->role}}</i></strong>
+                                @if(isset($participant->email) && $participant->email != "")
                                 <a href="mailto:{{$participant->email}}" class="ml-3">e-mail</a>
+                                @endif
                                 <span class="text-primary">&nbsp;|</span>
                                 @foreach($participant->links as $link)
                                 <a href="{{$link->url}}" rel="noopener" target="_blank" class="ml-2">{{$link->name}}</a>
@@ -426,6 +429,7 @@ mais.
                 @endforeach
             </div><!--Seção créditos -->
         </div> <!--col-->
+        @endif
     </div>
 </div><!-- seção professor e créditos -->
 
