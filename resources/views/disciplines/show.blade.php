@@ -411,7 +411,9 @@ mais.
                         <div class="collapse card" id="linksCollapse{{$participant->id}}">
                             <small>
                                 <strong><i>{{$participant->role}}</i></strong>
+                                @if(isset($participant->email) && $participant->email != "")
                                 <a href="mailto:{{$participant->email}}" class="ml-3">e-mail</a>
+                                @endif
                                 <span class="text-primary">&nbsp;|</span>
                                 @foreach($participant->links as $link)
                                 <a href="{{$link->url}}" rel="noopener" target="_blank" class="ml-2">{{$link->name}}</a>
