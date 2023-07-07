@@ -66,7 +66,7 @@ class DisciplineController extends Controller
         //     })
         //     ->get();
         $emphasis = Emphasis::all();
-        $disciplines = Discipline::all();
+        $disciplines = Discipline::query()->orderBy('name','ASC')->get();
         $opinionLinkForm = Link::where('name','opinionForm')->first();
        
         return view('disciplines.index')
