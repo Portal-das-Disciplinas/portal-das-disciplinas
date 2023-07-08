@@ -23,6 +23,7 @@ class ProfessorUserController extends Controller
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
+   
     }
 
     /**
@@ -30,7 +31,6 @@ class ProfessorUserController extends Controller
      */
     public function index()
     {
-
         $professors = Professor::query()->with([
             'user',
         ])->get();
@@ -58,7 +58,8 @@ class ProfessorUserController extends Controller
 
         return view(self::VIEW_PATH . 'professor.edit')
             ->with('professor', $professor)
-            ->with('is_teacher', $is_teacher);
+            ->with('is_teacher', $is_teacher)
+            ->with('theme', $this->theme);
     }
 
     /**
@@ -67,6 +68,8 @@ class ProfessorUserController extends Controller
      */
     public function store(StoreRequest $request)
     {
+
+        
         DB::beginTransaction();
         try {
             $user = User::create([
@@ -183,7 +186,8 @@ class ProfessorUserController extends Controller
         // }
 
         return back()
-            ->with('success', 'Dados atualizado com sucesso!');
+            ->with('success', 'Dados atualizado com sucesso!')
+            ->with('theme', $this->theme);
     }
 
 
