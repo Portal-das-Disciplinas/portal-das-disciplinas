@@ -21,7 +21,7 @@ mais.
 @section('content')
 <div class='banner text-center d-flex flex-column align-items-center justify-content-center  text-white'>
     <h1 class='display-title'>{{ $discipline->name }} - {{ $discipline->code }}</h1>
-    @if(isset($discipline->emphase) && ($discipline->emphase->name != 'Núcleo Comum'))
+    @if(isset($discipline->emphase))
     <h3>{{$discipline->emphase->name}}</h3>
     @endif
 </div>
@@ -415,8 +415,11 @@ mais.
                                 <strong><i>{{$participant->role}}</i></strong>
                                 @if(isset($participant->email) && $participant->email != "")
                                 <a href="mailto:{{$participant->email}}" class="ml-3">e-mail</a>
-                                @endif
+                                @if(count($participant->links)>0)
                                 <span class="text-primary">&nbsp;|</span>
+                                @endif
+                                @endif
+                                
                                 @foreach($participant->links as $link)
                                 <a href="{{$link->url}}" rel="noopener" target="_blank" class="ml-2">{{$link->name}}</a>
                                 @if(!$loop->last)
