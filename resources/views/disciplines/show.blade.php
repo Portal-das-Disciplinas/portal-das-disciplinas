@@ -415,8 +415,11 @@ mais.
                                 <strong><i>{{$participant->role}}</i></strong>
                                 @if(isset($participant->email) && $participant->email != "")
                                 <a href="mailto:{{$participant->email}}" class="ml-3">e-mail</a>
-                                @endif
+                                @if(count($participant->links)>0)
                                 <span class="text-primary">&nbsp;|</span>
+                                @endif
+                                @endif
+                                
                                 @foreach($participant->links as $link)
                                 <a href="{{$link->url}}" rel="noopener" target="_blank" class="ml-2">{{$link->name}}</a>
                                 @if(!$loop->last)
