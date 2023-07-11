@@ -21,7 +21,7 @@ mais.
 @section('content')
 <div class='banner text-center d-flex flex-column align-items-center justify-content-center  text-white'>
     <h1 class='display-title'>{{ $discipline->name }} - {{ $discipline->code }}</h1>
-    @if(isset($discipline->emphase) && ($discipline->emphase->name != 'Núcleo Comum'))
+    @if(isset($discipline->emphase))
     <h3>{{$discipline->emphase->name}}</h3>
     @endif
 </div>
