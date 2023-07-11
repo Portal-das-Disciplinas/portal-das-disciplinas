@@ -411,6 +411,7 @@ class DisciplineController extends Controller
 
         $classifications = Classification::all()->sortBy('order');
 
+
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
             return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))

@@ -21,7 +21,9 @@ mais.
 @section('content')
 <div class='banner text-center d-flex flex-column align-items-center justify-content-center  text-white'>
     <h1 class='display-title'>{{ $discipline->name }} - {{ $discipline->code }}</h1>
-    <h3>{{ $discipline->emphasis}}</h3>
+    @if(isset($discipline->emphase) && ($discipline->emphase->name != 'Núcleo Comum'))
+    <h3>{{$discipline->emphase->name}}</h3>
+    @endif
 </div>
 @if(session('cadastroOK'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">

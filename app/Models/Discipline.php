@@ -158,7 +158,7 @@ class Discipline extends Model
 
     public function emphase()
     {
-        return $this->belongsTo(Emphasis::class);
+        return $this->belongsTo('App\Models\Emphasis','emphasis_id');
     }
 
     public function disciplineParticipants(){
