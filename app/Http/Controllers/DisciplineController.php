@@ -416,7 +416,6 @@ class DisciplineController extends Controller
             $can = $user->canDiscipline($discipline);
             return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))
                 ->with('classifications', $classifications)
-                ->with('emphasis', Discipline::find($id)->emphase)
                 ->with('theme', $this->theme);
         }
 
