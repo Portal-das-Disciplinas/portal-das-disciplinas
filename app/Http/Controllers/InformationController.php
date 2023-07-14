@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
+use App\Models\DisciplineParticipant;
 use App\Models\Information;
 use App\Models\Link;
 use DateTime;
@@ -68,6 +69,8 @@ class InformationController extends Controller
 
         $opinioLinkForm = Link::where('name','opinionForm')->first();
 
+        $videoAboutProducers = DisciplineParticipant::query()->orderBy('name','ASC')->where('worked_on','video_about')->get();
+
 
         return view('information', [
             'collaborators' => $collaborators,
@@ -80,7 +83,8 @@ class InformationController extends Controller
             'sectionCollaborateTitle' => $sectionCollaborateTitle ? $sectionCollaborateTitle->value : "",
             'sectionCollaborateText' => $sectionCollaborateText ? $sectionCollaborateText->value : "",
             'showOpinionForm' => true,
-            'opinionLinkForm' => $opinioLinkForm
+            'opinionLinkForm' => $opinioLinkForm,
+            'videoAboutProducers' => $videoAboutProducers
         ])
             ->with('theme', $this->theme);
     }

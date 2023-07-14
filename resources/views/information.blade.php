@@ -200,6 +200,34 @@
     </div>
 </div>
 
+<div id="modal-video-producers" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header">
+                 <h3 class="modal-title">Participantes do vídeo</h3>
+             </div>
+             <div class="modal-body">
+                 <div id="formVideoContentProducers"class="form">
+                 </div>
+                 <form id="formContentProducersJson" method="post" action="{{route('content_producers.store_update')}}">
+                    @csrf
+                    <input name="contentProducers" type='hidden'>
+                 </form>
+                 <button id="btnAddParticipant"class="btn btn-primary" onclick="addParticipantField()">Adicionar Produtor</button>
+             </div>
+             <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary btn-sm" for="btnAddParticipant" onclick="submitFormContentProducers()">Salvar</button>
+
+             </div>               
+        </div>
+
+    </div>
+
+</div>
+
+
+
 <!-- Styles -->
 <div class='banner text-center d-flex align-items-center justify-content-center '>
     <h1 class='text-white'>Sobre & Colabore</h1>
@@ -224,12 +252,33 @@
     <div class='row'>
         <div class="col-md-5 p-text">
             <h2 class="mb-5">O que é o Portal das Disciplinas</h2>
-            <div class="row justify-content">
-                <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px; margin-bottom: 8%">
+            <div class="row">
+                <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px">
                     <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qG4ATq0qJlE" allowfullscreen></iframe>
                 </div>
             </div>
-            <section class='our-team'>
+            <div class="row mb-5 d-flex flex-column">
+                <div class="d-flex justify-content-between">
+                    <b class="pl-1"data-toggle="collapse" data-target="#collapseCreditos">
+                        créditos <li class="fa fa-caret-down"></li>
+                    </b>
+                    <span class="text-primary" style="cursor:pointer" onclick="openModalVideoProducers()">editar</span>
+                </div>
+                <div id="collapseCreditos" class="collapse pl-1">
+                    <div class="d-flex flex-column" style="line-height:1.5">
+                        @foreach($videoAboutProducers as $producer)
+                        <small class="">
+                            <a href="mailto:{{$producer->email}}" style="color:black">
+                                {{$producer->name}}
+                            </a>
+                        </small>
+                        @endforeach
+ 
+                    </div>
+                </div>
+                    
+            </div>
+            <section class='our-team p-0'>
                 <h2>Nossa equipe</h2>
                 <p class="text-justify mb-3">Veja ao lado os membros responsáveis por este portal.</p>
             </section>
@@ -243,7 +292,7 @@
                     @if($sectionCollaborateTitle == "")
                     <p class="text-secondary"><i>[Sem título para a seção]</i></p>
                     @endif
-                    <label class="text-primary" style="cursor:pointer"onclick="$('#modal-section-collaborate').modal('show')">Editar</label>
+                    <label class="text-primary" style="cursor:pointer"onclick="$('#modal-section-collaborate').modal('show')">editar</label>
                     @endif
                 </div>
                 @if(($sectionCollaborateTitle == "") && Auth::user() && Auth::user()->isAdmin)
@@ -548,4 +597,13 @@
     }
 </script>
 
+<script>
+    let databaseVideoContentProducers = @json($videoAboutProducers);
+    let videoContentProducers = @json($videoAboutProducers);// usado no modal
+</script>
+
+@endsection
+
+@section('scripts-bottom')
+    <script src="{{asset('js/about.js')}}"></script>
 @endsection
