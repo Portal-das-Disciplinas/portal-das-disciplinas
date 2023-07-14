@@ -88,6 +88,7 @@ Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
     ->name('disciplinas.show');
 
 Route::post('participantes_disciplina/store', [DisciplineParticipantController::class,'store'])->name('participants_discipline.store');
+Route::post('produtores/videoportal/supdate',[DisciplineParticipantController::class,'storeOrUpdatePortalVideoProducers'])->name('content_producers.store_update');
 Route::put('/participantes_disciplina', [DisciplineParticipantController::class,'update'])->name('participants_discipline.update');
 Route::delete('participantes_disciplina/{id}', [DisciplineParticipantController::class,'destroy'])->name('participants_discipline.destroy');
 Route::resource('links', LinksController::class);
