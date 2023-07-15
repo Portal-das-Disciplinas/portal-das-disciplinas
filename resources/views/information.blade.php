@@ -204,7 +204,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
              <div class="modal-header">
-                 <h3 class="modal-title">Participantes do vídeo</h3>
+                 <h3 class="modal-title">Produtores do vídeo</h3>
              </div>
              <div class="modal-body">
                  <div id="formVideoContentProducers"class="form">
