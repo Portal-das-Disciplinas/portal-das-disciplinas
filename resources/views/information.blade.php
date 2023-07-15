@@ -259,10 +259,25 @@
             </div>
             <div class="row mb-5 d-flex flex-column">
                 <div class="d-flex justify-content-between">
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                    <b class="pl-1"data-toggle="collapse" data-target="#collapseCreditos">
+                        @if(count($videoAboutProducers) >0)
+                        créditos <li class="fa fa-caret-down"></li>
+                        @else
+                        <span class='text-secondary'>Não há créditos</span>
+                        @endif
+                    </b>
+                    @endif
+                    @guest
+                    @if(count($videoAboutProducers)>0)
                     <b class="pl-1"data-toggle="collapse" data-target="#collapseCreditos">
                         créditos <li class="fa fa-caret-down"></li>
                     </b>
+                    @endif
+                    @endguest
+                    @if(Auth::user() && Auth::user()->isAdmin)
                     <span class="text-primary" style="cursor:pointer" onclick="openModalVideoProducers()">editar</span>
+                    @endif
                 </div>
                 <div id="collapseCreditos" class="collapse pl-1">
                     <div class="d-flex flex-column" style="line-height:1.5">
