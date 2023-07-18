@@ -55,6 +55,7 @@ Route::get('/discipline/filter/advanced', [DisciplineController::class, 'discipl
 Route::get('sobre', [InformationController::class, 'index'])->name('information');
 Route::put('information/{information}',[InformationController::class,'update'])->name('information.update');
 Route::post('information/supdate',[InformationController::class,'storeOrUpdate'])->name('information.supdate');
+Route::delete('information/delete/{name}',[InformationController::class,'deleteByName'])->name('information.deleteByName');
 
 Route::get('colaborar', function () {
     return view('collaborate');

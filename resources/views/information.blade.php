@@ -221,12 +221,30 @@
 
              </div>               
         </div>
-
     </div>
-
 </div>
 
-
+<div id="modalAlterarVideo" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Alteração de vídeo</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form" method="post" action="{{route('information.supdate')}}">
+                    @csrf
+                    <input type="hidden" name="name" value="linkVideoPortal">
+                    <input class="form-control" name="value" type="url" required placeholder="URL do link" onchange="onChangeInputLink()">
+                    <small class="d-none text-danger">* URL inválida</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary btn-sm" onclick="updateVideoPortal()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Styles -->
 <div class='banner text-center d-flex align-items-center justify-content-center '>
@@ -252,15 +270,34 @@
     <div class='row'>
         <div class="col-md-5 p-text">
             <h2 class="mb-5">O que é o Portal das Disciplinas</h2>
-            <div class="row">
-                <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qG4ATq0qJlE" allowfullscreen></iframe>
+            <div class="row-fluid">
+                @if(Auth::user() && Auth::user()->isAdmin)
+                <div class="d-flex justify-content-end">
+                    <span class="text-primary" style="cursor:pointer" onclick="$('#modalAlterarVideo').modal('show')">alterar</span>
+                    <form id="deleteVideoForm" method='post' action="{{route('information.deleteByName','linkVideoPortal')}}">
+                        @csrf
+                        @method('delete')
+                        <span class="text-danger ml-4" style="cursor:pointer" onclick="removeVideo()">remover</span>
+                    </form>
                 </div>
+                @endif
+
+                @if(isset($videoUrl))
+                <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px;">
+                    <iframe class="embed-responsive-item" src="{{$videoUrl ?? null}}" allowfullscreen></iframe>
+                </div>
+                @else
+                @if(Auth::user() && Auth::user()->isAdmin)
+                <div class="d-flex justify-content-center">
+                    <h1 class="text-secondary p-5"> -NÃO HÁ VÍDEO- </h1>
+                </div>
+                @endif
+                @endif
             </div>
-            <div class="row mb-5 d-flex flex-column">
+            <div class="row-fluid mb-5 d-flex flex-column">
                 <div class="d-flex justify-content-between">
                     @if(Auth::user() && Auth::user()->isAdmin)
-                    <b class="pl-1"data-toggle="collapse" data-target="#collapseCreditos">
+                    <b class="pl-0"data-toggle="collapse" data-target="#collapseCreditos">
                         @if(count($videoAboutProducers) >0)
                         créditos <li class="fa fa-caret-down"></li>
                         @else
@@ -269,8 +306,8 @@
                     </b>
                     @endif
                     @guest
-                    @if(count($videoAboutProducers)>0)
-                    <b class="pl-1"data-toggle="collapse" data-target="#collapseCreditos">
+                    @if(count($videoAboutProducers)>0 && (isset($videoUrl)))
+                    <b class="pl-0"data-toggle="collapse" data-target="#collapseCreditos">
                         créditos <li class="fa fa-caret-down"></li>
                     </b>
                     @endif
