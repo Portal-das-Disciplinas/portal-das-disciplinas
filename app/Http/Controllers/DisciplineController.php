@@ -623,15 +623,26 @@ class DisciplineController extends Controller
                 ]);
             }
 
+            // atualizar as classificações de uma disciplina pelo id
+            $classification_collection = collect([]);
+            $classification_collection = ClassificationDiscipline::where('discipline_id', $id)->get();
             $classificationsMap = Classification::all()->pluck('id')->toArray();
-            foreach ($classificationsMap as $classificationId) {
-                ClassificationDiscipline::updateOrCreate(
-                    [
-                        'discipline_id' => $discipline->id,
-                        'classification_id' => $classificationId
-                    ],
-                    ['value' => $request->input('classification-' . $classificationId)]
-                );
+            // foreach ($classificationsMap as $classificationId) {
+            //     ClassificationDiscipline::updateOrCreate(
+            //         [
+            //             'discipline_id' => $discipline->id,
+            //             'classification_id' => $classificationId
+            //         ],
+            //         ['value' => $request->input('classification-' . $classificationId)]
+            //     );
+            // }
+        
+            foreach($classification_collection as $col) {
+                foreach($classificationsMap as $class){
+                    ClassificationDiscipline::where('discipline_id',$id)
+                    ->where('classification_id', $class)
+                    ->update(['value' => $request->input('classification-'.$class)]);
+                }
             }
 
             $faqValidator = Validator::make($request->all(), [
