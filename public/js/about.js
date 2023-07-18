@@ -90,3 +90,22 @@ function openModalVideoProducers(){
     $('#modal-video-producers').modal('show');
     renderInputParticipants('#formVideoContentProducers');
 }
+
+function updateVideoPortal(){
+    let form = document.querySelector("#modalAlterarVideo form");
+    if(form.checkValidity()==true){
+        form.submit();
+    }
+    else{
+        document.querySelector("#modalAlterarVideo small").classList.remove('d-none');
+    }
+}
+
+function removeVideo(){
+    document.querySelector('#deleteVideoForm').submit();
+}
+
+function onChangeInputLink(){
+    document.querySelector("#modalAlterarVideo small").classList.add('d-none');
+}
+

@@ -6,6 +6,7 @@ use App\Models\Collaborator;
 use App\Models\DisciplineParticipant;
 use App\Models\Information;
 use App\Models\Link;
+use App\Services\Urls\YoutubeService;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -66,9 +67,17 @@ class InformationController extends Controller
         if ($query->exists()) {
             $sectionCollaborateText = $query->first();
         }
-
         $opinioLinkForm = Link::where('name','opinionForm')->first();
+        $link = Information::where('name', 'linkVideoPortal')->first();
+        if(isset($link) && $link->value !=""){
+            $mediaId = YoutubeService::getIdFromUrl($link->value);
+            $videoUrl = 'https://www.youtube.com/embed/' . $mediaId;
 
+        }
+        if($link == ""){
+            $link = null;
+        }
+        
         $videoAboutProducers = DisciplineParticipant::query()->orderBy('name','ASC')->where('worked_on','video_about')->get();
 
 
@@ -84,7 +93,8 @@ class InformationController extends Controller
             'sectionCollaborateText' => $sectionCollaborateText ? $sectionCollaborateText->value : "",
             'showOpinionForm' => true,
             'opinionLinkForm' => $opinioLinkForm,
-            'videoAboutProducers' => $videoAboutProducers
+            'videoAboutProducers' => $videoAboutProducers,
+            'videoUrl' => $videoUrl ?? null
         ])
             ->with('theme', $this->theme);
     }
@@ -128,7 +138,25 @@ class InformationController extends Controller
             DB::commit();
             return redirect()->route('information');
         } catch (\Exception $exception) {
+            dd($exception);
             DB::rollBack();
         }
     }
+
+    public function deleteByName(Request $request, $name){
+        DB::beginTransaction();
+        try{
+            $information = Information::where('name', $name)->first();
+            $information->delete();
+            DB::commit();
+            return redirect()->route('information');
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['information','Não foi possível remover']);
+        }
+       
+
+    }
+
+    
 }
