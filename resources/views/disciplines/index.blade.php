@@ -283,9 +283,15 @@
             </div>
         @endif
     @endisset
-
+    <ul class="nav justify-content-center">
+          <li class="nav-item" style="background-color:#fff">
+            <a class="nav-link active" href="#">Active</a>
+          </li>
+          <li class="nav-item" style="background-color:#fff">
+            <a class="nav-link active" href="#">Link</a>
+          </li>
+        </ul>
     </div>
-
 </section>
 </div>
 </div>

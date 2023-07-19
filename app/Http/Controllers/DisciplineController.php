@@ -71,7 +71,7 @@ class DisciplineController extends Controller
        
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
-            ->with('disciplines', $disciplines)
+            ->with('disciplines', $disciplines->paginate(4))
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
