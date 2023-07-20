@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Link;
 use App\Models\Professor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,9 +28,12 @@ class UsersController extends Controller
     public function index()
     {
         $is_teacher = Auth::user()->professor ?? false;
+        $opinionLinkForm = Link::where('name','opinionForm')->first();
         return view('profile')
             ->with('is_teacher', $is_teacher)
-            ->with('theme', $this->theme);
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('showOpinionForm',true);
     }
 
     /**

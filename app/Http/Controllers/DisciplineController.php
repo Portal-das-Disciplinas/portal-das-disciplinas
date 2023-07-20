@@ -47,7 +47,7 @@ class DisciplineController extends Controller
      */
     public function index(Request $request)
     {
-
+        
         $name_discipline = $request->name_discipline ?? null;
         // $emphasis = $request->emphasis ?? null;
 
@@ -245,10 +245,13 @@ class DisciplineController extends Controller
         if (Auth::user()->isAdmin) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
+        $opinioLinkForm = Link::where('name','opinionForm')->first();
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
-            ->with('theme', $this->theme);
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm', $opinioLinkForm)
+            ->with('showOpinionForm',true);
     }
     /**
      * Store a newly created resource in storage.
@@ -410,18 +413,22 @@ class DisciplineController extends Controller
         $user = Auth::user();
 
         $classifications = Classification::all()->sortBy('order');
-
-
+                
+        $opinioLinkForm = Link::where('name','opinionForm')->first();
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
             return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))
                 ->with('classifications', $classifications)
-                ->with('theme', $this->theme);
+                ->with('theme', $this->theme)
+                ->with('opinionLinkForm',$opinioLinkForm)
+                ->with('showOpinionForm',true);
         }
-
+        
         return view(self::VIEW_PATH . 'show', compact('discipline'))
             ->with('classifications', $classifications)
-            ->with('theme', $this->theme);
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm', $opinioLinkForm)
+            ->with('showOpinionForm',true);
     }
 
     /**
@@ -452,12 +459,14 @@ class DisciplineController extends Controller
             $participants[$i]->links = json_decode($discipline->disciplineParticipants()->get()[$i]->links);
         }
 
-
+        $opinioLinkForm = Link::where('name','opinionForm')->first();
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
-            ->with('participants', $participants);
+            ->with('participants', $participants)
+            ->with('opinionLinkForm', $opinioLinkForm)
+            ->with('showOpinionForm',true);
     }
 
     /**
