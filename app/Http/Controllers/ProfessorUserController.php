@@ -115,6 +115,7 @@ class ProfessorUserController extends Controller
 
     /**
      * Atualiza as informações do professor no banco de dados.
+     * Essa função é chamada apenas se o usuário que alterou o professor é admin.
      * @param $request Objeto contendo as informações de requisição http.
      * @param $id Identificador único do Professor.
      */
@@ -150,10 +151,10 @@ class ProfessorUserController extends Controller
         $professor->rede_social4 = $request->rede_social4;
         $professor->save();
 
-
+        //dd("update");
         $professor->user->name = $request->name;
         $professor->user->email = $request->email;
-        $professor->user->password = bcrypt($request->password);
+        $professor->user->password = bcrypt($request->new_password);
         $professor->user->save();
 
 

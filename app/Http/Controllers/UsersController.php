@@ -33,7 +33,8 @@ class UsersController extends Controller
     }
 
     /**
-     * Atualiza um usuário
+     * Atualiza um usuário.
+     * Função chamada quando o usuário não é admin.
      * @param $request Objeto contendo as informações da requisição http.
      */
     public function update(Request $request)
