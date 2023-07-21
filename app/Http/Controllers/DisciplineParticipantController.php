@@ -106,7 +106,7 @@ class DisciplineParticipantController extends Controller
             $p->save(); 
             
         }
-        if(DisciplineParticipant::query()->where('worked_on','video_about')->count() >6){
+        if(DisciplineParticipant::query()->where('worked_on','video_about')->count() >10){
             DB::rollBack();
             return redirect()->back()->withErrors(['Número de produtores excedido']);
         }

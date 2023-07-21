@@ -213,11 +213,11 @@
                     @csrf
                     <input name="contentProducers" type='hidden'>
                  </form>
-                 <button id="btnAddParticipant"class="btn btn-primary" onclick="addParticipantField()">Adicionar Produtor</button>
+                 <button id="btnAddParticipant"class="btn btn-outline-primary btn-sm" onclick="addParticipantField()">Adicionar campo</button>
              </div>
              <div class="modal-footer">
                 <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
-                <button class="btn btn-primary btn-sm" for="btnAddParticipant" onclick="submitFormContentProducers()">Salvar</button>
+                <button class="btn btn-primary btn-sm" for="btnAddParticipant" onclick="submitFormContentProducers()">Salvar Produtores</button>
 
              </div>               
         </div>

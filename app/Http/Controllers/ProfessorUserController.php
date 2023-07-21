@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Professor\CreateRequest;
 use App\Http\Requests\Professor\StoreRequest;
+use App\Models\Link;
 use App\Models\Professor;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -56,10 +57,13 @@ class ProfessorUserController extends Controller
         $professor = Professor::where('id', $id)->with('user')->first();
         $is_teacher = $professor->user->role_id == 3;
 
+        $opinionLinkForm = Link::where('name','opinionForm')->first();
         return view(self::VIEW_PATH . 'professor.edit')
             ->with('professor', $professor)
             ->with('is_teacher', $is_teacher)
-            ->with('theme', $this->theme);
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm', $opinionLinkForm)
+            ->with('showOpinionForm',true);
     }
 
     /**
