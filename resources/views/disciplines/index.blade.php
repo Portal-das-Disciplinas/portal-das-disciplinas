@@ -238,7 +238,7 @@
                                                 <div class="dropdown show">
                                                     <div class="advanced-options d-flex align-items-center mt-2 p-text"
                                                         data-toggle="dropdown">
-                                                        <a class='mr-2'>Opções avançadas</a>
+                                                        <a class='mr-2' style="cursor:pointer">Opções avançadas</a>
                                                         <i class="fas fa-caret-down"></i>
                                                     </div>
                                                     <div class="user-dropdown dropdown-menu">
