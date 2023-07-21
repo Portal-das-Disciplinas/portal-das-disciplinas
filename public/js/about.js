@@ -21,7 +21,7 @@ function renderInputParticipants(parentElement){
 }
 
 function addParticipantField(){
-    if(videoContentProducers.length < 6){
+    if(videoContentProducers.length < 10){
         videoContentProducers.push({name:"", email:""});
         renderInputParticipants('#formVideoContentProducers');
     }
