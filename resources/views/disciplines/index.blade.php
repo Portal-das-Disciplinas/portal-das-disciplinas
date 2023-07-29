@@ -283,15 +283,21 @@
             </div>
         @endif
     @endisset
+    @php
+        $maxPagesQuantity = round($disciplinesQuantity/4);
+        $initialPage = 1;
+        $currentPage = 1;
+    @endphp
     <ul class="nav justify-content-center">
           <li class="nav-item" style="background-color:#fff">
-            <a class="nav-link active" href="#">Active</a>
+            <a class="nav-link active" onclick="teste()" href="?page={{ $currentPage }}">Active</a>
           </li>
           <li class="nav-item" style="background-color:#fff">
-            <a class="nav-link active" href="#">Link</a>
+            <a class="nav-link active" onclick="updateCurrentPage('soma')" href="?page={{ $currentPage }}">Link</a>
           </li>
         </ul>
     </div>
+    {{ $disciplines->links() }}
 </section>
 </div>
 </div>

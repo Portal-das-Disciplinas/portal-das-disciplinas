@@ -75,7 +75,8 @@ class DisciplineController extends Controller
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
-            ->with('opinionLinkForm',$opinionLinkForm);
+            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('disciplinesQuantity', count($disciplines));
     }
 
     public function disciplineFilter(Request $request)
