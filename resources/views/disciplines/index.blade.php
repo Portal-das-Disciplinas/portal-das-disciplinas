@@ -34,7 +34,7 @@
         
         <div class="row justify-content-md-center mt-5" style="margin-bottom:25px;">
             <div class="col">
-                <form action="/discipline/filter" method="GET">
+                <form action="/discipline/filter" method="POST">
                     @csrf
                     <div class="input-group search-bar">
                         <input type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" 
@@ -136,60 +136,19 @@
             </div>
         @endif
     @endisset
-    @php
-    $rota = url()->current();
-    @endphp
         <ul class="nav justify-content-center">
           <li class="nav-item" style="background-color:#fff">
-            <a class="nav-link active" onclick="updateCurrentPage('subtracao')" href="">Active</a>
+            <a class="nav-link active">Anterior</a>
           </li>
           <li class="nav-item" style="background-color:#fff">
-            <a class="nav-link active" onclick="updateCurrentPage('soma')" href="">Link</a>
+            <a class="nav-link active">Pŕoximo</a>
           </li>
         </ul>
     </div>
+        {{ $disciplines->links() }}
 </section>
 </div>
 </div>
 
 <script src="{{ asset('js/indexSidebar.js') }}"></script>
-<script>
-    function updateCurrentPage(action) {
-        if((window.location.href).includes('?page')) {
-            // tratar e tirar o ?page da string
-            
-            let url = window.location.href;
-            const splittedUrl = url.split('?page=');
-            const newUrl = splittedUrl[0];
-            currentPage = splittedUrl[1];
-        } else {
-            // faz nada
-        }
-        
-        let currentPage = 1;
-        let url = document.URL;
-        alert('reinicio' + currentPage)
-
-        if (action == 'soma') {
-            currentPage += 1;
-            alert('soma' + currentPage);
-        } else {
-            currentPage -= 1;
-            alert('menos' + currentPage);
-            if (currentPage < 1) {
-                return 0;
-            }
-        }
-        
-        if (url === 'http://127.0.0.1:8000/') {
-            // não foi realizada pesquisa
-            console.log('sem pesquisa');
-            window.location.href = url + "?page=" + currentPage;
-        } else {
-            // ?page= tem que ser colocado no final da URL
-            console.log('com pesquisa');
-            window.location.href = url + "&page=" + currentPage;
-        }
-    }
-</script>
 @endsection

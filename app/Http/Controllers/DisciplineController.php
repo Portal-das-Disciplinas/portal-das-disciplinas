@@ -99,21 +99,36 @@ class DisciplineController extends Controller
                 }
             }
 
-            return view('disciplines.index')->with('disciplines', $collection)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            return view('disciplines.index')
+            ->with('disciplines', $collection)
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else if ($emphasis_id != null) {
             $input = Discipline::where('emphasis_id', $emphasis_id)->get();
 
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            return view('disciplines.index')
+            ->with('disciplines', $input)
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else if ($discipline_name != null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            return view('disciplines.index')
+            ->with('disciplines', $input)
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else if ($emphasis_id == null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
 
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            return view('disciplines.index')
+            ->with('disciplines', $input)
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else if ($emphasis_id == null) {
         } else {
-            return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            return redirect('/')
+            ->with('disciplines', $disciplines_all)
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         }
     }
 
