@@ -34,17 +34,12 @@
         
         <div class="row justify-content-md-center mt-5" style="margin-bottom:25px;">
             <div class="col">
-                <form action="/discipline/filter" method="POST">
+                <form action="/discipline/filter" method="GET">
                     @csrf
                     <div class="input-group search-bar">
                         <input type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" 
                         aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
-                        <select name="emphasis" id="emphasis" class='form-control col-3' >
-                            <option selected value=""> Todas as ênfases </option>
-                            @foreach($emphasis ?? '' as $emphase)
-                                <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
-                            @endforeach
-                        </select>
+                        
                         <div class="input-group-append">
                             <button class="btn btn-primary search-button" type="submit" id="button-addon2"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
@@ -120,10 +115,6 @@
 
                                     @endauth
                                 </div>
-
-
-
-
                             </div>
                             @if (isset($discipline->professor->name))
                             <div class="card-footer smaller-p m-0">{{$discipline->professor->name}}</div>
@@ -136,16 +127,8 @@
             </div>
         @endif
     @endisset
-        <ul class="nav justify-content-center">
-          <li class="nav-item" style="background-color:#fff">
-            <a class="nav-link active">Anterior</a>
-          </li>
-          <li class="nav-item" style="background-color:#fff">
-            <a class="nav-link active">Pŕoximo</a>
-          </li>
-        </ul>
     </div>
-        {{ $disciplines->links() }}
+    {{ $disciplines->links() }}
 </section>
 </div>
 </div>
