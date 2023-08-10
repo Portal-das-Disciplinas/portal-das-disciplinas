@@ -115,11 +115,10 @@ class DisciplineController extends Controller
         } else if ($discipline_name != null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
             
-            $data = compact('input', 'emphasis_all');
-            
             
             return view('disciplines.index')
-            ->with($data)
+            ->with('disciplines', $input->paginate(4))
+            ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         } else if ($emphasis_id == null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
