@@ -28,6 +28,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class DisciplineController extends Controller
 {
     const VIEW_PATH = 'disciplines.';
@@ -84,9 +87,9 @@ class DisciplineController extends Controller
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
 
-        $emphasis_id = $request->emphasis;
-        $discipline_name = $request->name_discipline;
-
+        $emphasis_id = $request->input('emphasis');
+        $discipline_name = $request->input('name_discipline');
+     
         $input;
         $collection = collect([]);
 
@@ -99,43 +102,42 @@ class DisciplineController extends Controller
                 }
             }
 
-            $data = compact('collection', 'emphasis_all');
-
             return view('disciplines.index')
-            ->with($data)
+            ->with('disciplines', $collection->paginate(4))
+            ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         } else if ($emphasis_id != null) {
             $input = Discipline::where('emphasis_id', $emphasis_id)->get();
 
-            $data = compact('input', 'emphasis_all');
-
-            return view('disciplines.index')
-            ->with($data)
-            ->with('theme', $this->theme);
-        } else if ($discipline_name != null) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-            
-            
             return view('disciplines.index')
             ->with('disciplines', $input->paginate(4))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
+        } else if ($discipline_name != null) {
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(3);
+            
+            // $disciplines->withQueryString();
+            
+            // dd($request);
+            // dd($disciplines);
+            return view('disciplines.index', compact('disciplines'))
             ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         } else if ($emphasis_id == null) {
             $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
 
-            $data = compact('input', 'emphasis_all');
-
             return view('disciplines.index')
-            ->with($data)
+            ->with('disciplines', $input->paginate(4))
+            ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         } else {
-            $data = compact('disciplines_all', 'emphasis_all');
-
-            return view('disciplines.index')
-            ->with($data)
+            return redirect('/')
+            ->with('disciplines', $disciplines_all->paginate(4))
+            ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         }
     }
+
 
     public function disciplineAdvancedFilter(Request $request)
     {

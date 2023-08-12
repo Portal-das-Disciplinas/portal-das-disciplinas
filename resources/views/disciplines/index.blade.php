@@ -49,18 +49,20 @@
         </div>
         
     @isset($disciplines)
+        
         @if($disciplines->count() == 0)
             <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
         @else
             <div class="row pb-5">
                 @foreach($disciplines as $discipline)
-                    <div class="col-12 col-sm-6 col-lg-3 mt-5 ">
+                
+                <div class="col-12 col-sm-6 col-lg-3 mt-5 ">
                         <div class="discipline-card card shadow light-border-radius">
-                            @if(!is_null($discipline->trailer))
+                            @if(!is_null($discipline['trailer']))
                                 <div class="teacher-video-container">
                                     <div class="embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item light-border-radius"
-                                            src="{{ $discipline->trailer->view_url }}" allowfullscreen></iframe>
+                                            src="{{ $discipline['trailer']['url'] }}" allowfullscreen></iframe>
                                     </div>
                                 </div>
                             @else
@@ -70,19 +72,19 @@
 
                             <div class="card-body d-flex justify-content-between flex-column">
                                 <div class="card-top-container">
-                                    <h3 class="card-title">{{ $discipline->name }}</h3>
+                                    <h3 class="card-title">{{ $discipline['name'] }}</h3>
                                     <p class='card-text p-text'>
-                                        {{ Str::limit($discipline->description, 70,' (...)') }}
+                                        {{ Str::limit($discipline['description'], 70,' (...)') }}
                                     </p>
 
                                 </div>
                                 <div class="card-bottom-container">
-                                    <a href="{{ route('disciplinas.show', $discipline->id) }}"
+                                    <a href="{{ route('disciplinas.show', $discipline['id']) }}"
                                         class="view-more-btn btn w-100 p-text">Ver
                                         disciplina</a>
                                     @auth
                                         <div class='d-flex justify-content-end'>
-                                            @if(Auth::user()->canDiscipline($discipline->id))
+                                            @if(Auth::user()->canDiscipline($discipline['id']))
                                                 <div class="dropdown show">
                                                     <div class="advanced-options d-flex align-items-center mt-2 p-text"
                                                         data-toggle="dropdown">
@@ -92,7 +94,7 @@
                                                     <div class="user-dropdown dropdown-menu">
 
                                                         <form
-                                                            action=" {{ route('disciplinas.destroy', $discipline->id) }}"
+                                                            action=" {{ route('disciplinas.destroy', $discipline['id']) }}"
                                                             class="dropdown-item" method="post">
                                                             @csrf
                                                             @method('DELETE')
@@ -100,7 +102,7 @@
                                                                 value="Apagar">Apagar</button>
                                                         </form>
                                                         <form
-                                                            action=" {{ route('disciplinas.edit', $discipline->id) }}"
+                                                            action=" {{ route('disciplinas.edit', $discipline['id']) }}"
                                                             class="dropdown-item" method="get" class='dropdown-item'>
                                                             @csrf
                                                             @method('UPDATE')
@@ -128,7 +130,7 @@
         @endif
     @endisset
     </div>
-    {{ $disciplines->links() }}
+    {{ $disciplines->appends(request()->input())->links('layouts.paginationLinks') }}
 </section>
 </div>
 </div>
