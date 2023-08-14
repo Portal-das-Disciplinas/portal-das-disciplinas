@@ -28,6 +28,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class DisciplineController extends Controller
 {
     const VIEW_PATH = 'disciplines.';
@@ -71,11 +74,12 @@ class DisciplineController extends Controller
        
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
-            ->with('disciplines', $disciplines)
+            ->with('disciplines', $disciplines->paginate(4))
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
-            ->with('opinionLinkForm',$opinionLinkForm);
+            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('disciplinesQuantity', count($disciplines));
     }
 
     public function disciplineFilter(Request $request)
@@ -83,38 +87,51 @@ class DisciplineController extends Controller
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
 
-        $emphasis_id = $request->emphasis;
-        $discipline_name = $request->name_discipline;
-
+        $emphasis_id = $request->input('emphasis');
+        $discipline_name = $request->input('name_discipline');
+     
         $input;
-        $collection = collect([]);
+        $disciplines = collect([]);
 
         if ($discipline_name != null && $emphasis_id != null) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-
-            foreach ($input as $i) {
-                if ($i->emphasis_id == $emphasis_id) {
-                    $collection->push($i);
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate();
+            // dd($disciplines);
+            foreach ($disciplines as $key => $i) {
+                if ($i->emphasis_id != $emphasis_id) {
+                    unset($disciplines[$key]);
                 }
             }
 
-            return view('disciplines.index')->with('disciplines', $collection)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            $disciplines->paginate(2);
+            return view('disciplines.index', compact('disciplines'))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else if ($emphasis_id != null) {
-            $input = Discipline::where('emphasis_id', $emphasis_id)->get();
+            $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(4);
 
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            return view('disciplines.index', compact('disciplines'))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else if ($discipline_name != null) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(4);
+            
+            return view('disciplines.index', compact('disciplines'))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else if ($emphasis_id == null) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(4);
 
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
-        } else if ($emphasis_id == null) {
+            return view('disciplines.index', compact('disciplines'))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else {
-            return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
+            return redirect('/')
+            ->with('disciplines', $disciplines_all->paginate(4))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         }
     }
+
 
     public function disciplineAdvancedFilter(Request $request)
     {
