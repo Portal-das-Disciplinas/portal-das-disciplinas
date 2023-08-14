@@ -40,6 +40,13 @@
                         <input type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" 
                         aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
                         
+                        <select name="emphasis" id="emphasis" class='form-control col-3' >
+                            <option selected value=""> Todas as ênfases </option>
+                            @foreach($emphasis ?? '' as $emphase)
+                                <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
+                            @endforeach
+                        </select>
+
                         <div class="input-group-append">
                             <button class="btn btn-primary search-button" type="submit" id="button-addon2"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
