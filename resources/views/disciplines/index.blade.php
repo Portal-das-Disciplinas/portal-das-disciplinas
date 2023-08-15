@@ -69,7 +69,7 @@
                                 <div class="teacher-video-container">
                                     <div class="embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item light-border-radius"
-                                            src="{{ $discipline['trailer']['url'] }}" allowfullscreen></iframe>
+                                            src="{{$discipline->trailer->view_url}}" allowfullscreen></iframe>
                                     </div>
                                 </div>
                             @else
