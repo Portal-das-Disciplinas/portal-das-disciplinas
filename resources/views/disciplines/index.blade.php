@@ -137,7 +137,9 @@
         @endif
     @endisset
     </div>
+    <div style="display:flex; justify-content:center;">
     {{ $disciplines->appends(request()->input())->links('layouts.paginationLinks') }}
+    </div>
 </section>
 </div>
 </div>
