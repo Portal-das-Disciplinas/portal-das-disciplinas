@@ -94,15 +94,17 @@ class DisciplineController extends Controller
         $disciplines = collect([]);
 
         if ($discipline_name != null && $emphasis_id != null) {
-            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
-
-            foreach ($disciplines as $key => $i) {
-                if ($i->emphasis_id != $emphasis_id) {
-                    unset($disciplines[$key]);
-                }
-            }
-            
-            $disciplines->paginate(12);
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")
+            ->where("emphasis_id",$emphasis_id)
+            ->paginate(12);
+            // dd($disciplines);
+            // foreach ($disciplines as $key => $i) {
+            //     if ($i->emphasis_id != $emphasis_id) {
+            //         unset($disciplines[$key]);
+            //     }
+            // }
+            // dd($disciplines);
+            // $disciplines->paginate(12);
             
             return view('disciplines.index', compact('disciplines'))
             ->with('emphasis', $emphasis_all)
