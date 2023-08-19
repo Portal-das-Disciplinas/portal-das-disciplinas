@@ -74,7 +74,7 @@ class DisciplineController extends Controller
        
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
-            ->with('disciplines', $disciplines->paginate(4))
+            ->with('disciplines', $disciplines->paginate(12))
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
@@ -94,39 +94,40 @@ class DisciplineController extends Controller
         $disciplines = collect([]);
 
         if ($discipline_name != null && $emphasis_id != null) {
-            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate();
-            // dd($disciplines);
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
+
             foreach ($disciplines as $key => $i) {
                 if ($i->emphasis_id != $emphasis_id) {
                     unset($disciplines[$key]);
                 }
             }
-
-            $disciplines->paginate(2);
+            
+            $disciplines->paginate(12);
+            
             return view('disciplines.index', compact('disciplines'))
             ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         } else if ($emphasis_id != null) {
-            $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(4);
+            $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
 
             return view('disciplines.index', compact('disciplines'))
             ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         } else if ($discipline_name != null) {
-            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(4);
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
             
             return view('disciplines.index', compact('disciplines'))
             ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         } else if ($emphasis_id == null) {
-            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(4);
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
 
             return view('disciplines.index', compact('disciplines'))
             ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         } else {
             return redirect('/')
-            ->with('disciplines', $disciplines_all->paginate(4))
+            ->with('disciplines', $disciplines_all->paginate(12))
             ->with('emphasis', $emphasis_all)
             ->with('theme', $this->theme);
         }
