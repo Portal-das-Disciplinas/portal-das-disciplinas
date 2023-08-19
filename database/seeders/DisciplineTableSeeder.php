@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Discipline;
 
+use Database\Factories\DisciplineFactory;
 
 class DisciplineTableSeeder extends Seeder
 {
@@ -16,6 +17,8 @@ class DisciplineTableSeeder extends Seeder
      */
     public function run()
     {
+        // Discipline::factory()->count(50)->create();
+
         Discipline::create([
             'emphasis_id' => 1,
             'professor_id' => 1,
