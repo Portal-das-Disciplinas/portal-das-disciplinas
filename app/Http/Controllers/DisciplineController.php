@@ -26,11 +26,14 @@ use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
-
+/**
+ * Controlador responsável por realizar as tarefas relacionadas com as disciplinas.
+ */
 class DisciplineController extends Controller
 {
     const VIEW_PATH = 'disciplines.';

@@ -5,21 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Classe que representa uma pergunta que é muito frequente sobre a disciplina.
+ */
 class Faq extends Model
 {
     use HasFactory;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * Nome da tabela associada com o modelo.
      */
     protected $table = 'faqs';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * Os atributos que podem ser associados em massa, no método create.
+     * title: Título da pergunta.\n
+     * content: Conteúdo da pergunta.\n
+     * discipline_id: ID da disciplina da qual contém a pergunta.
      */
     protected $fillable = [
         'title',
@@ -28,6 +30,7 @@ class Faq extends Model
     ];
 
     /**
+     * Retorna a disciplina da qual essa pergunta faz parte.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function discipline()

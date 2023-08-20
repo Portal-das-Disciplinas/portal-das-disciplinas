@@ -10,7 +10,7 @@ class TagDiscipline extends Model
     use HasFactory;
 
     /**
-     * The table associated with the model.
+     * Nome da tabela associada com o modelo.
      *
      * @var string
      */

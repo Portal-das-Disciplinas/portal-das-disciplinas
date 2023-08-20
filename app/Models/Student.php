@@ -5,21 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Contém informações do aluno
+ */
 class Student extends Model
 {
     use HasFactory;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * Nome da tabela associada ao modelo.
      */
     protected $table = 'students';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * Os atributos que podem ser atribuidos em massa.\n
+     * name: Nome do aluno.\n
+     * profile_pic_link: Link da foto de perfil do aluno.\n
+     * user_id: ID do usuário(User) do qual está vinculado ao aluno(Student).
      */
     protected $fillable = [
         'name',
@@ -28,6 +30,7 @@ class Student extends Model
     ];
 
     /**
+     * Retorna o usuário(User) vinculado a este aluno(Student).
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()

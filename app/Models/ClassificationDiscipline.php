@@ -10,17 +10,20 @@ class ClassificationDiscipline extends Model
     use HasFactory;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * Nome da tabela associada com o modelo.
      */
     protected $table = 'classifications_disciplines';
+    /**
+     * Nome da chave estrageira na tabela no banco de dados.
+     */
     protected $primaryKey = 'classification_id';
 
     /**
-     * The attributes that are mass assignable.
+     * Os atributos que são associados em massa, no método create.\n
+     * classification_id: ID da classificação(Classification).
+     * discipline_id: ID da disciplina.
+     * value: Valor da classificação.
      *
-     * @var array
      */
     protected $fillable = [
         'classification_id',
@@ -29,6 +32,7 @@ class ClassificationDiscipline extends Model
     ];
 
     /**
+     * Retorna a classificação.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function classification()
@@ -37,6 +41,7 @@ class ClassificationDiscipline extends Model
     }
 
     /**
+     * Retorna a disciplina
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function discipline()

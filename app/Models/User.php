@@ -8,14 +8,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Classe que contém as informações de usuário do sistema
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * Os atributos que são associados em massa.\n
+     * name -> Nome do usuário.\n
+     * email ->E-mail utilizando para o usuário fazer login.\n
+     * password -> Senha do usuário.\n
+     * role_id -> ID da Role para determinar o nível de acesso do usuário.
      */
     protected $fillable = [
         'name',
@@ -25,9 +30,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
+     * Atributos que não devem ser exibidos ao obter o modelo.
      */
     protected $hidden = [
         'password',
@@ -35,15 +38,14 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * Atributos que são convertidos para outros tipos.
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
     /**
+     *Retorna true se o usuário pode editar a disciplina.
      * @param $discipline
      * @return bool
      */
@@ -65,6 +67,7 @@ class User extends Authenticatable
     }
 
     /**
+     * Retorna se o usuário é um administrador.
      * @return bool
      */
     public function getIsAdminAttribute(): bool
@@ -72,13 +75,15 @@ class User extends Authenticatable
         return $this->role->priority_level == 999;
     }
     /**
+     * Retorna se o usuário é um professor.
      * @return bool
      */
     public function getIsProfessorAttribute(): bool
     {
         return $this->role->priority_level == 2;
     }
-        /**
+    /**
+     * Retorna true se o usuário é um aluno.
      * @return bool
      */
     public function getIsStudentAttribute(): bool
@@ -86,6 +91,7 @@ class User extends Authenticatable
         return $this->role->priority_level == 1;
     }
     /**
+     * Retorna o nível de acesso do usuário.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function role()
@@ -94,6 +100,7 @@ class User extends Authenticatable
     }
 
     /**
+     * Retorna o objeto Student caso o usuário possua.
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function student()
@@ -102,6 +109,7 @@ class User extends Authenticatable
     }
 
     /**
+     * Retorna o objeto Professor caso o usuário possua.
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function professor()
