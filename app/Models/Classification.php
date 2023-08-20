@@ -5,27 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Representa a classificação da disciplina
+ * 
+ */
 class Classification extends Model
 {
     use HasFactory;
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
+     * Nome da tabela associada com o modelo
      */
     protected $table = 'classifications';
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     *Os atributos que podem ser associados em massa, no metodo create.
      */
     protected $fillable = [
         'name',
     ];
 
     /**
+     * Retorna as disciplinas que possuem esta classificação(Classification).
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function disciplines()
@@ -36,6 +37,7 @@ class Classification extends Model
     }
 
     /**
+     * 
      * @param $discipline_id
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

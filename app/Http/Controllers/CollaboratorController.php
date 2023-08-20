@@ -10,6 +10,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
+
+/**
+ * Controlador que trata as tarefas relacionadas ao model Collaborator
+ */
 class CollaboratorController extends Controller
 {
     protected $theme;
@@ -42,7 +46,7 @@ class CollaboratorController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Salva um novo colaborador no banco de dados
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -121,19 +125,14 @@ class CollaboratorController extends Controller
         return redirect()->route('information');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         //
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostra um formulário para editar as informações do colaborador.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -147,7 +146,7 @@ class CollaboratorController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Atualiza um colaborador no banco de dados.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -236,9 +235,9 @@ class CollaboratorController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Apaga o colaborador do banco de dados
      *
-     * @param  int  $id
+     * @param  int  $id Identificador do colaborador.
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
