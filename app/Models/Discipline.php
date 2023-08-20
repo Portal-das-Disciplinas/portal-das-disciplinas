@@ -12,15 +12,19 @@ class Discipline extends Model
 
     /**
      * O nome da tabela associada com o modelo
-     *
-     * @var string
      */
     protected $table = 'disciplines';
 
     /**
-     * Os atributos que são atribuiveis em massa.
-     *
-     * @var array
+     * Os atributos que são atribuiveis em massa.\n
+     * code: Código da disciplina.\n
+     * name: Nome da disciplina.\n
+     * description: Descrição da disciplina.\n
+     * trailer: Link do trailer da disciplina.\n
+     * emphasis_id: ID da ênfase desta disciplina.\n
+     * difficulties: Texto aborda as dificuldades da disciplina.\n
+     * professor_id: ID do professor que leciona a discipilina.\n
+     * acquirements: Texto que aborda as competências desejadas para cursar a disciplina.\n
      */
     protected $fillable = [
         'code',
@@ -43,6 +47,7 @@ class Discipline extends Model
             ->first()->value ?? 0;
     }
     /**
+     * Retorna o trailer da disciplina.
      * @return Media|null
      */
     public function getTrailerAttribute(): ?Media
@@ -53,6 +58,7 @@ class Discipline extends Model
     }
 
     /**
+     * Verifica se a disciplina tem um trailer.
      * @return bool
      */
     public function getHasTrailerMediaAttribute(): bool
@@ -74,6 +80,7 @@ class Discipline extends Model
     }
 
     /**
+     * Obtém as mídias do tipo $type, que não são trailers.
      * @param string $type
      * @return Collection
      */
@@ -84,6 +91,11 @@ class Discipline extends Model
             ->where('type', $type);
     }
 
+    /**
+     * Obtém uma mídia do tipo $type que não é trailler.
+     * @param string $type
+     * @return Media
+     */
     public function getMediaByType(string $type)
     {
         return $this->medias
@@ -93,6 +105,7 @@ class Discipline extends Model
     }
 
     /**
+     * Verifica se há um mídia de um determinado tipo
      * @param string $type
      * @return bool
      */
@@ -105,6 +118,7 @@ class Discipline extends Model
     }
 
     /**
+     * Retorna o professor da disciplina.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function professor()
@@ -113,6 +127,7 @@ class Discipline extends Model
     }
 
     /**
+     * Retorna todas as mídias que a disciplina possui.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function medias()
@@ -121,6 +136,7 @@ class Discipline extends Model
     }
 
     /**
+     * Retorna todas as Faqs que a disciplina possui.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function faqs()
@@ -129,6 +145,7 @@ class Discipline extends Model
     }
 
     /**
+     * Retorna todas as classificações.
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function classifications()
@@ -139,6 +156,7 @@ class Discipline extends Model
     }
 
     /**
+     * Retorna todas as classificações desta disciplina.
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
      public function classificationsDisciplines()
@@ -147,6 +165,7 @@ class Discipline extends Model
     }
 
     /**
+     * Retorna todas as tags desta disciplina.(obs)
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function tags()
@@ -156,11 +175,16 @@ class Discipline extends Model
             'id', 'tag_id');
     }
 
+    /**
+     * Retorna a ênfase da disciplina.
+     */
     public function emphase()
     {
         return $this->belongsTo('App\Models\Emphasis','emphasis_id');
     }
-
+    /**
+     * Retorna todos os participantes que contribuiram para gerar conteúdo para a página desta disciplina.
+     */
     public function disciplineParticipants(){
         return $this->hasMany(DisciplineParticipant::class)->orderBy('name');
     }

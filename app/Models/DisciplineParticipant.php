@@ -28,7 +28,7 @@ class DisciplineParticipant extends Model
     ];
 
     /**
-     * Retorna a disciplina que o participante produziu conteudo.
+     * Retorna a disciplina da qual o participante produziu conteudo.
      * @return BelongsTo
      */
     function discipline(){
@@ -36,7 +36,7 @@ class DisciplineParticipant extends Model
     }
 
     /**
-     * Retorna os links de redes sociais do participante
+     * Retorna os links das redes sociais do participante
      * @return HasMany
      */
     function links(){

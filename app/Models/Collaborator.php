@@ -39,7 +39,7 @@ class Collaborator extends Model
 
     /**
      * Retorna todos os links de redes sociais do colaborador
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function links(){
         return $this->hasMany(CollaboratorLink::class);

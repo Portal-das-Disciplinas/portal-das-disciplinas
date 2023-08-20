@@ -12,10 +12,14 @@ class Emphasis extends Model
 {
     use HasFactory;
 
+    /**
+     * Nome da tabela no banco de dados
+     */
     protected $table = 'emphasis';
     
     /**
-     * Os 
+     * Os atributos que são associados em massa, no método create.\n
+     * name: Nome da ênfase.
      */
     protected $fillable = [
         'name'

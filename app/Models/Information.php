@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Guarda alguma informação que pode ser editada no site, como o nome
  * da seção coordenador, usuários ativos e inativos da view sobre
- * 
  */
 class Information extends Model
 {
@@ -16,7 +15,9 @@ class Information extends Model
     protected $table = "informations";/*!<Nome da tabela que representa esse modelo */
 
     /**
-     * Atributos 
+     * Atributos que são associados em massa.\n
+     * name: Nome único para identificação da informação.\n
+     * value: Valor da informação.
      */
     protected $fillable = [
         'name',

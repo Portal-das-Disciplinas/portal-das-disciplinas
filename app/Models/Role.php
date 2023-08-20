@@ -4,22 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * Esta classe representa do nível de acesso de um usuário,
+ * como administrador, professor, aluno.
+ */
 class Role extends Model
 {
     use HasFactory;
 
     /**
      * Nome da tabela associada com o modelo.
-     *
-     * @var string
      */
     protected $table = 'roles';
 
     /**
-     * Os atributos que são atribuíveis em massa.
-     *
-     * @var array
+     * Os atributos que são atribuíveis em massa.\n
+     * name: Nome da Role.\n
+     * priority_level: Nível de acesso.
      */
     protected $fillable = [
         'name',

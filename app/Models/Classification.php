@@ -15,22 +15,18 @@ class Classification extends Model
 
     /**
      * Nome da tabela associada com o modelo
-     *
-     * @var string
      */
     protected $table = 'classifications';
 
     /**
-     *Os atributos que podem ser associados em massa
-     *
-     * @var array
+     *Os atributos que podem ser associados em massa, no metodo create.
      */
     protected $fillable = [
         'name',
     ];
 
     /**
-     * 
+     * Retorna as disciplinas que possuem esta classificação(Classification).
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function disciplines()

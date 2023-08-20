@@ -12,10 +12,10 @@ class ParticipantLink extends Model
     use HasFactory;
 
     /**
-     * Campos do modelo no banco de dados
-     * @param name Nome do link da rede social do participante
-     * @param url Endereço do link da rede social do participante
-     * @param discipline_participant_id O ID do participante no banco de dados
+     * Atributos do modelo no banco de dados para associação em massa no método create\n
+     * name: Nome do link da rede social do participante\n
+     * url: Endereço do link da rede social do participante\n
+     * discipline_participant_id: O ID do participante no banco de dados\n
      */
     protected $fillable = [
         'name',
@@ -25,7 +25,7 @@ class ParticipantLink extends Model
 
     /**
      * Retorna o partipante do qual é dono do link
-     * @return DisciplineParticipant
+     * @return BelongsTo
      */
     public function disciplineParticipant(){
 
