@@ -172,14 +172,14 @@
                   <div class="invalid-feedback">{{$message}}</div>
                 @enderror
               </div>
-
+              <!--
               <div class="form-group col-12 pb-2">
                 <label for="current_password">Senha atual</label>
                 <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current_password" name='current_password'>
                 @error('current_password')
                   <div class="invalid-feedback">{{$message}}</div>
                 @enderror
-              </div>
+              </div> -->
 
                 <button type="submit" class="btn col-12">Atualizar</button>
 

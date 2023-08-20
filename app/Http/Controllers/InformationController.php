@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
+use App\Models\DisciplineParticipant;
 use App\Models\Information;
+use App\Models\Link;
+use App\Services\Urls\YoutubeService;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class InformationController extends Controller
 {
+    protected $theme;
 
     public function __construct()
     {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
         $this->middleware('admin')->except('index');
     }
 
@@ -23,20 +31,22 @@ class InformationController extends Controller
         $hasManagers = false;
         $hasCurrentCollaborators = false;
         $hasFormerCollaborators = false;
-        foreach($collaborators as $collaborator){
-            if($collaborator->isManager && $collaborator->active){
+        foreach ($collaborators as $collaborator) {
+            if ($collaborator->isManager && $collaborator->active) {
                 $hasManagers = true;
             }
-            if(!$collaborator->isManager && $collaborator->active){
+            if (!$collaborator->isManager && $collaborator->active) {
                 $hasCurrentCollaborators = true;
             }
-            if(!$collaborator->active){
+            if (!$collaborator->active) {
                 $hasFormerCollaborators = true;
             }
         }
         $managerSection = null;
         $currentCollaboratorsSection = null;
         $formerCollaboratorsSection = null;
+        $sectionCollaborateTitle = null;
+        $sectionCollaborateText = null;
         $query = Information::query()->where('name', "sectionNameManagers");
         if ($query->exists()) {
             $managerSection = $query->first();
@@ -49,8 +59,26 @@ class InformationController extends Controller
         if ($query->exists()) {
             $formerCollaboratorsSection = $query->first();
         }
+        $query = Information::query()->where('name', 'sectionCollaborateTitle');
+        if ($query->exists()) {
+            $sectionCollaborateTitle = $query->first();
+        }
+        $query = Information::query()->where('name', 'sectionCollaborateText');
+        if ($query->exists()) {
+            $sectionCollaborateText = $query->first();
+        }
+        $opinioLinkForm = Link::where('name','opinionForm')->first();
+        $link = Information::where('name', 'linkVideoPortal')->first();
+        if(isset($link) && $link->value !=""){
+            $mediaId = YoutubeService::getIdFromUrl($link->value);
+            $videoUrl = 'https://www.youtube.com/embed/' . $mediaId;
 
-
+        }
+        if($link == ""){
+            $link = null;
+        }
+        
+        $videoAboutProducers = DisciplineParticipant::query()->orderBy('name','ASC')->where('worked_on','video_about')->get();
 
 
         return view('information', [
@@ -61,8 +89,14 @@ class InformationController extends Controller
             'sectionNameManagers' => $managerSection ? $managerSection->value : null,
             'sectionNameCurrentCollaborators' => $currentCollaboratorsSection ? $currentCollaboratorsSection->value : null,
             'sectionNameFormerCollaborators' =>  $formerCollaboratorsSection ? $formerCollaboratorsSection->value : null,
-            
-        ]);
+            'sectionCollaborateTitle' => $sectionCollaborateTitle ? $sectionCollaborateTitle->value : "",
+            'sectionCollaborateText' => $sectionCollaborateText ? $sectionCollaborateText->value : "",
+            'showOpinionForm' => true,
+            'opinionLinkForm' => $opinioLinkForm,
+            'videoAboutProducers' => $videoAboutProducers,
+            'videoUrl' => $videoUrl ?? null
+        ])
+            ->with('theme', $this->theme);
     }
 
     public function store(Request $request)
@@ -91,14 +125,38 @@ class InformationController extends Controller
 
     public function StoreOrUpdate(Request $request)
     {
-        if (Information::where('name', $request->name)->exists()) {
-            Information::where('name', $request->name)->first()->update(['value' => $request->value]);
-        } else {
-            Information::create([
-                'name' => $request->name,
-                'value' => $request->value
-            ]);
+        DB::beginTransaction();
+        try {
+            if (Information::where('name', $request->name)->exists()) {
+                Information::where('name', $request->name)->first()->update(['value' => $request->value]);
+            } else {
+                Information::create([
+                    'name' => $request->name,
+                    'value' => $request->value
+                ]);
+            }
+            DB::commit();
+            return redirect()->route('information');
+        } catch (\Exception $exception) {
+            dd($exception);
+            DB::rollBack();
         }
-        return redirect()->route('information');
     }
+
+    public function deleteByName(Request $request, $name){
+        DB::beginTransaction();
+        try{
+            $information = Information::where('name', $name)->first();
+            $information->delete();
+            DB::commit();
+            return redirect()->route('information');
+        }catch(\Exception $e){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['information','Não foi possível remover']);
+        }
+       
+
+    }
+
+    
 }

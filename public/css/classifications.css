@@ -1,0 +1,57 @@
+.classification_container{
+    background-color: rgb(255, 250, 245);
+}
+
+.classification_card{
+    display: flex;
+    background-color: white;
+    box-shadow: 5px 5px 10px rgba(1,1,1,0.2);
+    border-radius: 5px;
+    cursor:move;
+    transition: all ease 1s;
+
+}
+
+.updating-order{
+    transition: all ease 0.1s;
+    opacity:50%
+}
+
+.buttons_area{
+    display: flex;
+}
+
+.info_sm{
+    display: none;
+}
+
+.index_info{
+    display: flex;
+}
+
+.isDragging{
+    transition: all linear 0s;
+    opacity: 5%;
+}
+
+
+@media screen and (max-width: 575px){
+    .classifications_header{
+        display: none;
+    }
+
+    .info_sm{
+        display: block;
+    }
+
+    .index_info{
+        display: none;
+    }
+
+    .item-name{
+
+        border-radius: 5px;
+        border: 1px solid rgba(163, 163, 163,0.5);
+        margin-bottom: 2px;
+    }
+}

@@ -1,21 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Open+Sans:wght@400;500&family=Vollkorn:wght@400;700&display=swap");
 
 :root {
-    --main-bg-color: #0c3f7c;
-    --main-md-color: #acb2b8;
-    --main-title-bg-color: white;
-    --main-text-color: black;
 
-    --primary-color: #0553a1;
-    --primary-color-darker: #03396e;
-    --primary-color-lighter: #3069a1;
-
-    --secondary-color: #ffbf00;
-    --secondary-color-darker: #e5ac00;
-    --secondary-color-lighter: #ffcc33;
-
-    --on-secondary: rgb(32, 32, 32);
-    --on-primary: #fff;
     /* SECONDARYS: #DAFF7D, FFBF00 , FFBF00, #F3CA40, #44FFD2*/
 }
 
@@ -88,18 +74,6 @@ h6 {
     color: white;
 }
 
-.banner {
-    background: linear-gradient(
-            30deg,
-            rgba(1, 75, 140, 0.8),
-            rgba(2, 76, 141, 0.9)
-        ),
-        url("https://hongkong.imd.ufrn.br/filemanagerportal/source/2020/CURSOS%20TECNICOS%20IMD%20POLOS%20INTERIOR.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 364px;
-}
 
 .page-title {
     color: var(--primary-color);

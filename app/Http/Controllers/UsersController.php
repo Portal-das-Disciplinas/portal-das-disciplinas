@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Link;
 use App\Models\Professor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
 
 use function PHPSTORM_META\map;
 /**
@@ -14,15 +17,28 @@ use function PHPSTORM_META\map;
 class UsersController extends Controller
 {
 
+    protected $theme;
+
+    public function __construct()
+    {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
+    }
+
     public function index()
     {
         $is_teacher = Auth::user()->professor ?? false;
+        $opinionLinkForm = Link::where('name','opinionForm')->first();
         return view('profile')
-            ->with('is_teacher', $is_teacher);
+            ->with('is_teacher', $is_teacher)
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('showOpinionForm',true);
     }
 
     /**
-     * Atualiza um usuário
+     * Atualiza um usuário.
+     * Função chamada quando o usuário não é admin.
      * @param $request Objeto contendo as informações da requisição http.
      */
     public function update(Request $request)

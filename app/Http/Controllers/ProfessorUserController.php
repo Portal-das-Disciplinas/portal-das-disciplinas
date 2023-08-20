@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Professor\CreateRequest;
 use App\Http\Requests\Professor\StoreRequest;
+use App\Models\Link;
 use App\Models\Professor;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Classe que realiza tarefas relacionadas com o Professor.
@@ -16,18 +18,25 @@ use Illuminate\Support\Facades\Auth;
 class ProfessorUserController extends Controller
 {
     const VIEW_PATH = "admin.";
+    protected $theme;
+
+    public function __construct()
+    {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
+   
+    }
 
     /**
      * Retorna a view com as listagem dos professores
      */
     public function index()
     {
-
         $professors = Professor::query()->with([
             'user',
         ])->get();
         //dd($professors);
-        return view(self::VIEW_PATH . 'professor.' . 'index', compact('professors'));
+        return view(self::VIEW_PATH . 'professor.' . 'index', compact('professors'))->with('theme', $this->theme);
     }
 
     /**
@@ -36,7 +45,7 @@ class ProfessorUserController extends Controller
      */
     public function create(CreateRequest $request)
     {
-        return view(self::VIEW_PATH . 'professor.' . 'create');
+        return view(self::VIEW_PATH . 'professor.' . 'create')->with('theme', $this->theme);
     }
 
     /**
@@ -48,9 +57,13 @@ class ProfessorUserController extends Controller
         $professor = Professor::where('id', $id)->with('user')->first();
         $is_teacher = $professor->user->role_id == 3;
 
+        $opinionLinkForm = Link::where('name','opinionForm')->first();
         return view(self::VIEW_PATH . 'professor.edit')
             ->with('professor', $professor)
-            ->with('is_teacher', $is_teacher);
+            ->with('is_teacher', $is_teacher)
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm', $opinionLinkForm)
+            ->with('showOpinionForm',true);
     }
 
     /**
@@ -59,6 +72,8 @@ class ProfessorUserController extends Controller
      */
     public function store(StoreRequest $request)
     {
+
+        
         DB::beginTransaction();
         try {
             $user = User::create([
@@ -104,6 +119,7 @@ class ProfessorUserController extends Controller
 
     /**
      * Atualiza as informações do professor no banco de dados.
+     * Essa função é chamada apenas se o usuário que alterou o professor é admin.
      * @param $request Objeto contendo as informações de requisição http.
      * @param $id Identificador único do Professor.
      */
@@ -139,10 +155,10 @@ class ProfessorUserController extends Controller
         $professor->rede_social4 = $request->rede_social4;
         $professor->save();
 
-
+        //dd("update");
         $professor->user->name = $request->name;
         $professor->user->email = $request->email;
-        $professor->user->password = bcrypt($request->password);
+        $professor->user->password = bcrypt($request->new_password);
         $professor->user->save();
 
 
@@ -175,7 +191,8 @@ class ProfessorUserController extends Controller
         // }
 
         return back()
-            ->with('success', 'Dados atualizado com sucesso!');
+            ->with('success', 'Dados atualizado com sucesso!')
+            ->with('theme', $this->theme);
     }
 
 
