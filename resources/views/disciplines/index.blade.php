@@ -60,12 +60,30 @@
             <div class="card">
                 <div class="card-header" id="headingOne">
                   <h5 class="mb-0">
-                    <button type="button" id="filterButton" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <button type="button" id="AccordionButton" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                       Filtragem via Classificações
                     </button>
 
-                    <button id="advancedOptionButton" style="float:right;" type="button" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
-                        <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <button 
+                        id="advancedOptionButton" 
+                        style="float:right;" 
+                        type="button" 
+                        data-toggle="tooltip" 
+                        data-placement="right" 
+                        title="Pesquisa Avançada"
+                    >
+                        <svg 
+                            id="i-edit" 
+                            xmlns="http://www.w3.org/2000/svg" 
+                            viewBox="0 0 32 32" 
+                            width="32" 
+                            height="32" 
+                            fill="none" 
+                            stroke="currentcolor" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            stroke-width="2"
+                        >
                             <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
                         </svg>
                     </button>
@@ -81,25 +99,23 @@
                                         <a class="flex-sm-fill text-sm-center nav-link">{{ $classification->name }}</a>
                                     </div>
                                     <div class="col">
-                                        <div class="simpleSearch">
-                                            <div class="row">
-                                                <div class="col-6 flex-sm-fill text-sm-center nav-link">
+                                        <div class="simpleSearch row">
+                                                <div class="col-6 nav-link">
                                                     <input 
-                                                        class="btn btn-primary" 
+                                                        class="btn btn-primary btn-lg btn-block" 
                                                         type="button" 
                                                         value="{{ $classification->type_a }}" 
                                                         name="{{ mb_strtolower($classification->name) }}"
                                                     >
                                                 </div>
-                                                <div class="col-6 flex-sm-fill text-sm-center nav-link">
+                                                <div class="col-6 nav-link">
                                                     <input 
-                                                        class="btn btn-primary" 
+                                                        class="btn btn-primary btn-lg btn-block" 
                                                         type="button" 
                                                         value="{{ $classification->type_b }}" 
                                                         name="{{ mb_strtolower($classification->name) }}"
                                                     >
                                                 </div>
-                                            </div>
                                         </div>
 
                                         <div class="advancedSearch">
@@ -107,7 +123,8 @@
                                                 type="range" 
                                                 style="width:80%;" 
                                                 id="range" 
-                                                name="{{ mb_strtolower($classification->name) }}" 
+                                                name="{{ mb_strtolower($classification->name) }}"
+                                                value="-1" 
                                                 min="-1" 
                                                 max="100"
                                             >
