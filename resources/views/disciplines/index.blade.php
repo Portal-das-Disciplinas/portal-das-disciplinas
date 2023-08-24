@@ -64,7 +64,7 @@
                       Filtragem via Classificações
                     </button>
 
-                    <button id="advancedFilter" style="float:right;" type="button" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
+                    <button id="advancedOptionButton" style="float:right;" type="button" data-toggle="tooltip" data-placement="right" title="Pesquisa Avançada">
                         <svg id="i-edit" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                             <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
                         </svg>
@@ -75,28 +75,43 @@
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                     <div class="card-body">
                         <div class="container">
-                            @foreach($classifications ?? '' as $classification)
+                            @foreach($classifications as $classification)
                                 <div class="row">
                                     <div class="col">
                                         <a class="flex-sm-fill text-sm-center nav-link">{{ $classification->name }}</a>
                                     </div>
                                     <div class="col">
-                                        <div class="simpleClass">
+                                        <div class="simpleSearch">
                                             <div class="row">
                                                 <div class="col-6 flex-sm-fill text-sm-center nav-link">
-                                                    <input class="btn btn-primary" type="button" value="{{ mb_strtolower($classification->name) }}" name="{{ mb_strtolower($classification->name) }}">
+                                                    <input 
+                                                        class="btn btn-primary" 
+                                                        type="button" 
+                                                        value="{{ $classification->type_a }}" 
+                                                        name="{{ mb_strtolower($classification->name) }}"
+                                                    >
                                                 </div>
                                                 <div class="col-6 flex-sm-fill text-sm-center nav-link">
-                                                    <input class="btn btn-primary" type="button" value="{{ mb_strtolower($classification->name) }}" name="{{ mb_strtolower($classification->name) }}">
+                                                    <input 
+                                                        class="btn btn-primary" 
+                                                        type="button" 
+                                                        value="{{ $classification->type_b }}" 
+                                                        name="{{ mb_strtolower($classification->name) }}"
+                                                    >
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="advancedClass" style="display:none;">
-                                            <input type="range" style="width:80%;" id="trigger{{ mb_strtolower($classification->name) }}" name="{{ mb_strtolower($classification->name) }}" min="-1" max="100" onchange="updateTextInput(this.value);">
-                                            
+                                        <div class="advancedSearch">
+                                            <input 
+                                                type="range" 
+                                                style="width:80%;" 
+                                                id="range" 
+                                                name="{{ mb_strtolower($classification->name) }}" 
+                                                min="-1" 
+                                                max="100"
+                                            >
                                         </div>
-                                        <!-- <output for="trigger{{ mb_strtolower($classification->name) }}" onforminput="value = trigger{{ mb_strtolower($classification->name) }}.valueAsNumber;"></output> -->
                                     </div>
                                 </div>
                             @endforeach
@@ -174,10 +189,6 @@
 
                                     @endauth
                                 </div>
-
-
-
-
                             </div>
                             @if (isset($discipline->professor->name))
                             <div class="card-footer smaller-p m-0">{{$discipline->professor->name}}</div>
@@ -197,5 +208,5 @@
 </div>
 </div>
 
-<script src="{{ asset('js/indexSidebar.js') }}"></script>
+<script src="{{ asset('js/indexClassificationForm.js') }}"></script>
 @endsection
