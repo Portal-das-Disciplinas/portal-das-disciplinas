@@ -100,19 +100,19 @@
                                         <div class="simpleSearch row">
                                                 <div class="col-6 nav-link">
                                                     <input 
-                                                        class="btn btn-primary btn-lg btn-block" 
-                                                        type="button" 
+                                                        type="radio" 
                                                         value="{{ $classification->type_a }}" 
                                                         name="{{ mb_strtolower($classification->name) }}"
                                                     >
+                                                    <label for="inputA">{{ $classification->type_a }}</label>
                                                 </div>
                                                 <div class="col-6 nav-link">
-                                                    <input 
-                                                        class="btn btn-primary btn-lg btn-block" 
-                                                        type="button" 
+                                                    <input  
+                                                        type="radio" 
                                                         value="{{ $classification->type_b }}" 
                                                         name="{{ mb_strtolower($classification->name) }}"
                                                     >
+                                                    <label for="inputB">{{ $classification->type_b }}</label>
                                                 </div>
                                         </div>
 
@@ -121,7 +121,7 @@
                                                 type="range" 
                                                 style="width:80%;" 
                                                 id="range" 
-                                                name="{{ mb_strtolower($classification->name) }}"
+                                                name="range{{ $classification->name }}"
                                                 value="-1" 
                                                 min="-1" 
                                                 max="100"

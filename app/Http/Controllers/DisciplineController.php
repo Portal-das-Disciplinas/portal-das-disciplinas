@@ -19,6 +19,7 @@ use App\Models\DisciplineParticipant;
 use \App\Models\Media;
 use \App\Models\Emphasis;
 use App\Models\Professor;
+use App\Models\Link;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
 use Exception;
@@ -82,7 +83,7 @@ class DisciplineController extends Controller
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
             ->with('opinionLinkForm',$opinionLinkForm)
-            ->with('disciplinesQuantity', count($disciplines));
+            ->with('classifications', $classifications);
     }
 
     public function disciplineFilter(Request $request)
