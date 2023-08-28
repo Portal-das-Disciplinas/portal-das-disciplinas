@@ -1,23 +1,19 @@
 @extends('layouts.app')
 @section('styles-head')
-<link rel="stylesheet" href="{{asset('css/index.css')}}">
+<link rel="stylesheet" href="{{ asset('css/index.css') }}">
 @endsection
 @section('content')
-
 <section class='hero-section mb-4'>
     <div class="container">
         <div class="row">
             <div class="col-12 text-center my-4 title-subject-container">
-                <h1 class="title-subject display-title " style='color: #1F2937'>Portal das Disciplinas - IMD/UFRN</h1>
+                <h1 class="title-subject display-title ">Portal das Disciplinas - {{$theme['PROJETO_SIGLA_SETOR_INSTITUICAO']}}</h1>
                 <div class="row justify-content-center">
-                    <p class='p-text mt-3  text-center col-md-10  larger-p'>Cada disciplina aqui conta com entrevistas,
-                        informações, materiais, indicação de dificuldades e muito mais sobre componentes
-                        curriculares do Bacharelado em TI do IMD/UFRN.<p>
+                    <p class='p-text mt-3  text-center col-md-10  larger-p'>{{$theme['PROJETO_DISCIPLINAS_DESCRICAO']}}<p>
                 </div>
             </div>
         </div>
     </div>
-
 </section>
 
 <section class='disciplines remove-margin-bottom'>
@@ -43,12 +39,14 @@
                     <div class="input-group search-bar">
                         <input type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" 
                         aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
+                        
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
                             <option selected value=""> Todas as ênfases </option>
                             @foreach($emphasis ?? '' as $emphase)
                                 <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
                             @endforeach
                         </select>
+
                         <div class="input-group-append">
                             <button class="btn btn-primary search-button" type="submit"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
@@ -140,18 +138,20 @@
         </div>
         
     @isset($disciplines)
+        
         @if($disciplines->count() == 0)
             <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
         @else
             <div class="row pb-5">
                 @foreach($disciplines as $discipline)
-                    <div class="col-12 col-sm-6 col-lg-3 mt-5 ">
+                
+                <div class="col-12 col-sm-6 col-lg-3 mt-5 ">
                         <div class="discipline-card card shadow light-border-radius">
-                            @if(!is_null($discipline->trailer))
+                            @if(!is_null($discipline['trailer']))
                                 <div class="teacher-video-container">
                                     <div class="embed-responsive embed-responsive-16by9">
                                         <iframe class="embed-responsive-item light-border-radius"
-                                            src="{{ $discipline->trailer->view_url }}" allowfullscreen></iframe>
+                                            src="{{$discipline->trailer->view_url}}" allowfullscreen></iframe>
                                     </div>
                                 </div>
                             @else
@@ -161,29 +161,29 @@
 
                             <div class="card-body d-flex justify-content-between flex-column">
                                 <div class="card-top-container">
-                                    <h3 class="card-title">{{ $discipline->name }}</h3>
+                                    <h3 class="card-title">{{ $discipline['name'] }}</h3>
                                     <p class='card-text p-text'>
-                                        {{ Str::limit($discipline->description, 70,' (...)') }}
+                                        {{ Str::limit($discipline['description'], 70,' (...)') }}
                                     </p>
 
                                 </div>
                                 <div class="card-bottom-container">
-                                    <a href="{{ route('disciplinas.show', $discipline->id) }}"
+                                    <a href="{{ route('disciplinas.show', $discipline['id']) }}"
                                         class="view-more-btn btn w-100 p-text">Ver
                                         disciplina</a>
                                     @auth
                                         <div class='d-flex justify-content-end'>
-                                            @if(Auth::user()->canDiscipline($discipline->id))
+                                            @if(Auth::user()->canDiscipline($discipline['id']))
                                                 <div class="dropdown show">
                                                     <div class="advanced-options d-flex align-items-center mt-2 p-text"
                                                         data-toggle="dropdown">
-                                                        <a class='mr-2'>Opções avançadas</a>
+                                                        <a class='mr-2' style="cursor:pointer">Opções avançadas</a>
                                                         <i class="fas fa-caret-down"></i>
                                                     </div>
                                                     <div class="user-dropdown dropdown-menu">
 
                                                         <form
-                                                            action=" {{ route('disciplinas.destroy', $discipline->id) }}"
+                                                            action=" {{ route('disciplinas.destroy', $discipline['id']) }}"
                                                             class="dropdown-item" method="post">
                                                             @csrf
                                                             @method('DELETE')
@@ -191,7 +191,7 @@
                                                                 value="Apagar">Apagar</button>
                                                         </form>
                                                         <form
-                                                            action=" {{ route('disciplinas.edit', $discipline->id) }}"
+                                                            action=" {{ route('disciplinas.edit', $discipline['id']) }}"
                                                             class="dropdown-item" method="get" class='dropdown-item'>
                                                             @csrf
                                                             @method('UPDATE')
@@ -218,9 +218,10 @@
             </div>
         @endif
     @endisset
-
     </div>
-
+    <div style="display:flex; justify-content:center;">
+    {{ $disciplines->appends(request()->input())->links('layouts.paginationLinks') }}
+    </div>
 </section>
 </div>
 </div>

@@ -22,12 +22,28 @@ use App\Models\Professor;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Support\Facades\Validator;
+
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+/**
+ * Controlador responsável por realizar as tarefas relacionadas com as disciplinas.
+ */
 class DisciplineController extends Controller
 {
     const VIEW_PATH = 'disciplines.';
+
+    protected $theme;
+
+    public function __construct()
+    {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
+    }
 
     /**
      * Display a listing of the resource.
@@ -36,6 +52,7 @@ class DisciplineController extends Controller
      */
     public function index(Request $request)
     {
+        
         $name_discipline = $request->name_discipline ?? null;
         // $emphasis = $request->emphasis ?? null;
 
@@ -55,12 +72,17 @@ class DisciplineController extends Controller
         //     })
         //     ->get();
         $emphasis = Emphasis::all();
-        $disciplines = Discipline::all();
+        $disciplines = Discipline::query()->orderBy('name','ASC')->get();
+        $opinionLinkForm = Link::where('name','opinionForm')->first();
+       
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
-            ->with('disciplines', $disciplines)
-            ->with('classifications', $classifications)
-            ->with('emphasis', $emphasis);
+            ->with('disciplines', $disciplines->paginate(12))
+            ->with('emphasis', $emphasis)
+            ->with('theme', $this->theme)
+            ->with('showOpinionForm', true)
+            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('disciplinesQuantity', count($disciplines));
     }
 
     public function disciplineFilter(Request $request)
@@ -69,165 +91,58 @@ class DisciplineController extends Controller
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
 
-        $emphasis_id = $request->emphasis;
-        $discipline_name = $request->name_discipline;
-
+        $emphasis_id = $request->input('emphasis');
+        $discipline_name = $request->input('name_discipline');
+     
         $input;
-        $collection = collect([]);
+        $disciplines = collect([]);
 
         if ($discipline_name != null && $emphasis_id != null) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-
-            foreach ($input as $i) {
-                if ($i->emphasis_id == $emphasis_id) {
-                    $collection->push($i);
-                }
-            }
-
-            return view('disciplines.index')->with('disciplines', $collection)->with('emphasis', $emphasis_all);
-        } else if ($emphasis_id != null) {
-            $input = Discipline::where('emphasis_id', $emphasis_id)->get();
-
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all);
-        } else if ($discipline_name != null) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
-        }  else if($emphasis_id == null) {
-            $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")
+            ->where("emphasis_id",$emphasis_id)
+            ->paginate(12);
+            // dd($disciplines);
+            // foreach ($disciplines as $key => $i) {
+            //     if ($i->emphasis_id != $emphasis_id) {
+            //         unset($disciplines[$key]);
+            //     }
+            // }
+            // dd($disciplines);
+            // $disciplines->paginate(12);
             
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
-        } else if ($emphasis_id == null) {
+            return view('disciplines.index', compact('disciplines'))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
+        } else if ($emphasis_id != null) {
+            $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
 
+            return view('disciplines.index', compact('disciplines'))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
+        } else if ($discipline_name != null) {
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
+            
+            return view('disciplines.index', compact('disciplines'))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
+        } else if ($emphasis_id == null) {
+            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
+
+            return view('disciplines.index', compact('disciplines'))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         } else {
-            return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all); 
+            return redirect('/')
+            ->with('disciplines', $disciplines_all->paginate(12))
+            ->with('emphasis', $emphasis_all)
+            ->with('theme', $this->theme);
         }
     }
 
-    // public function disciplineAdvancedFilter(Request $request)
-    // {
-    //     $emphasis_all = Emphasis::all();
-    //     $classifications_all = ClassificationDiscipline::all();
-    //     $disciplines_all = Discipline::all();
-    //     $disciplines_ids = collect([]);
-    //     $result = collect([]);
-    //     $resultFiltered = collect([]);
 
-    //     if($discipline_name != null && $emphasis_id != null && $request->metodologias_range == "-1" && $request->discussao_range == "-1" && $request->abordagem_range == "-1" && $request->avaliacao_range == "-1") {
-    //         $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-
-    //         foreach ($input as $i) {
-    //             if ($i->emphasis_id == $emphasis_id) {
-    //                 $collection->push($i);
-    //             }
-    //         }
-
-            
-    //     } else if($request->metodologias_range == "-1" && $request->discussao_range == "-1" && $request->abordagem_range == "-1" && $request->avaliacao_range == "-1") {
-    //         if($request->metodologias == null){
-    //             // echo 'faz nada';
-    //         } else if($request->metodologias == "classicas"){
-    //             $input = ClassificationDiscipline::where('classification_id',1)->where('value','<=',50)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         } else {
-    //             $input = ClassificationDiscipline::where('classification_id',1)->where('value','>',50)->get();
-    //             foreach($input as $i){
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         }
-
-    //         if($request->discussao == null){
-    //             // echo 'faz nada';
-    //         } else if($request->discussao == "social"){
-    //             $input = ClassificationDiscipline::where('classification_id',2)->where('value','<=',50)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         } else {
-    //             $input = ClassificationDiscipline::where('classification_id',2)->where('value','>',50)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         }
-
-    //         if($request->abordagem == null){
-    //             // echo 'faz nada';
-    //         } else if($request->abordagem == "teorica"){
-    //             $input = ClassificationDiscipline::where('classification_id',3)->where('value','<=',50)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         } else {
-    //             $input = ClassificationDiscipline::where('classification_id',3)->where('value','>',50)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         }
-
-    //         if($request->avaliacao == null){
-    //             // echo 'faz nada';
-    //         } else if($request->avaliacao == "provas"){
-    //             $input = ClassificationDiscipline::where('classification_id',4)->where('value','<=',50)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         } else {
-    //             $input = ClassificationDiscipline::where('classification_id',4)->where('value','>',50)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         }
-    //     } else {
-    //         if($request->metodologias_range > 0) {
-    //             $input = ClassificationDiscipline::where('classification_id', 1)->where('value', '<=', $request->metodologias_range)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         }
-            
-    //         if($request->discussao_range > 0) {
-    //             $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '<=', $request->discussao_range)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         }
-
-    //         if($request->abordagem_range > 0) {
-    //             $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '<=', $request->abordagem_range)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         }
-
-    //         if($request->avaliacao_range > 0) {
-    //             $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '<=', $request->avaliacao_range)->get();
-    //             foreach($input as $i) {
-    //                 $disciplines_ids->push($i->discipline_id);
-    //             }
-    //         }
-    //     }
-
-    //     foreach($disciplines_all as $d){
-    //         foreach($disciplines_ids as $r) {
-    //             if($d->id == $r) {
-    //                 $result->push($d);
-    //             }
-    //         }
-    //     }
-
-    //     $collection = $result->duplicates()->keys();
-
-    //     foreach($collection as $col) {
-    //         $result->pull($col);
-    //     }
-    //     // dd($result);
-    //     $result->sort();
-    //     // dd($result);
-    //     return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all);
-    // }
-
-    public function multiDisciplineFilter (Request $request) {
+    public function disciplineAdvancedFilter(Request $request)
+    {
+        // dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
         $classifications_all = Classification::all();
@@ -243,110 +158,112 @@ class DisciplineController extends Controller
         $input;
         $collection = collect([]);
         $result = collect([]);
-        $disciplinesResult = collect([]);
+        $resultFiltered = collect([]);
 
-        if($discipline_name != null && $emphasis_id != null && $request->metodologias > -1) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-            
-            foreach ($input as $i) {
-                if ($i->emphasis_id == $emphasis_id) {
-                    $collection->push($i);
+        if($request->metodologias_range == "-1" && $request->discussao_range == "-1" && $request->abordagem_range == "-1" && $request->avaliacao_range == "-1") {
+            if($request->metodologias == null){
+                // echo 'faz nada';
+            } else if($request->metodologias == "classicas"){
+                $input = ClassificationDiscipline::where('classification_id',1)->where('value','<=',50)->get();
+                foreach($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
                 }
-            }
-            
-            // função para correr a $collection e checar quais delas se encaixam nos requisitos que o usuário manda via form
-            foreach($collection as $col) {
-                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',1)->get();
-                foreach($classificationValue as $class) {
-                    if($class->value >= $metodologias) {
-                        $result->push($class);
-                    }
+            } else {
+                $input = ClassificationDiscipline::where('classification_id',1)->where('value','>',50)->get();
+                foreach($input as $i){
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
 
-            foreach($collection as $col) {
-                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',2)->get();
-                foreach($classificationValue as $class) {
-                    if($class->value >= $discussao) {
-                        $result->push($class);
-                    }
+            if ($request->discussao == null) {
+                // echo 'faz nada';
+            } else if ($request->discussao == "social") {
+                $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '<=', 50)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
                 }
-            }
-            
-            foreach($collection as $col) {
-                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',3)->get();
-                foreach($classificationValue as $class) {
-                    if($class->value >= $abordagem) {
-                        $result->push($class);
-                    }
-                }
-            }
-            
-            foreach($collection as $col) {
-                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',4)->get();
-                foreach($classificationValue as $class) {
-                    if($class->value >= $avaliacao) {
-                        $result->push($class);
-                    }
+            } else {
+                $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '>', 50)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
 
-            foreach($collection as $col) {
-                $classificationValue = ClassificationDiscipline::where('discipline_id', $col->id)->where('classification_id',5)->get();
-                foreach($classificationValue as $class) {
-                    if($class->value >= $metodologias) {
-                        $result->push($class);
-                    }
+            if ($request->abordagem == null) {
+                // echo 'faz nada';
+            } else if ($request->abordagem == "teorica") {
+                $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '<=', 50)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
+                }
+            } else {
+                $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '>', 50)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
 
-        } else if ($discipline_name != null && $emphasis_id != null && $request->metodologias < 0) {
-            // significa que o usuário vai pesquisar via pesquisa simples, sem usar os ranges
-
-        } else if ($discipline_name != null && $emphasis_id != null) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-
-            foreach ($input as $i) {
-                if ($i->emphasis_id == $emphasis_id) {
-                    $collection->push($i);
+            if ($request->avaliacao == null) {
+                // echo 'faz nada';
+            } else if ($request->avaliacao == "provas") {
+                $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '<=', 50)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
+                }
+            } else {
+                $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '>', 50)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
                 }
             }
-
-            return view('disciplines.index')->with('disciplines', $collection)->with('emphasis', $emphasis_all);
-        } else if ($emphasis_id != null) {
-            $input = Discipline::where('emphasis_id', $emphasis_id)->get();
-
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis', $emphasis_all);
-        } else if ($discipline_name != null) {
-            $input = Discipline::where("name", "like", "%" . $discipline_name . "%")->get();
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
-        }  else if($emphasis_id == null) {
-            $input = Discipline::where("name", "like", "%".$discipline_name."%")->get();
-            
-            return view('disciplines.index')->with('disciplines', $input)->with('emphasis',$emphasis_all);
-        } else if ($emphasis_id == null) {
-
         } else {
-            return redirect('/')->with('disciplines', $disciplines_all)->with('emphasis', $emphasis_all); 
-        }
-        
-        // foreach pra colocar só as models de disciplinas em vez de models de classification_disciplines numa collection que será
-        // retornada para a view 
-        foreach($result as $r) {
-            $disc = Discipline::where('id', $r->discipline_id)->get();
-            $disciplinesResult->push($disc);
+            if ($request->metodologias_range > 0) {
+                $input = ClassificationDiscipline::where('classification_id', 1)->where('value', '<=', $request->metodologias_range)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
+                }
+            }
+
+            if ($request->discussao_range > 0) {
+                $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '<=', $request->discussao_range)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
+                }
+            }
+
+            if ($request->abordagem_range > 0) {
+                $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '<=', $request->abordagem_range)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
+                }
+            }
+
+            if ($request->avaliacao_range > 0) {
+                $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '<=', $request->avaliacao_range)->get();
+                foreach ($input as $i) {
+                    $disciplines_ids->push($i->discipline_id);
+                }
+            }
         }
 
-        // mecanismo para remover valores repetidos
-        $repeatedDisciplines = $disciplinesResult->duplicates()->keys();
-        foreach($repeatedDisciplines as $repeat) {
-            $disciplinesResult->pull($repeat);
+        foreach($disciplines_all as $d){
+            foreach($disciplines_ids as $r) {
+                if($d->id == $r) {
+                    $result->push($d);
+                }
+            }
         }
 
-        return view('disciplines.index')->with('classifications', $classifications_all)->with('disciplines', $disciplinesResult->collapse())->with('emphasis', $emphasis_all);
+        $collection = $result->duplicates()->keys();
+
+        foreach($collection as $col) {
+            $result->pull($col);
+        }
+
+        return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
     }
 
- 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -362,11 +279,14 @@ class DisciplineController extends Controller
         if (Auth::user()->isAdmin) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
+        $opinioLinkForm = Link::where('name','opinionForm')->first();
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
-            ->with('emphasis', $emphasis);
+            ->with('emphasis', $emphasis)
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm', $opinioLinkForm)
+            ->with('showOpinionForm',true);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -526,16 +446,23 @@ class DisciplineController extends Controller
             ->findOrFail($id);
         $user = Auth::user();
 
-        $classifications = Classification::all();
-
+        $classifications = Classification::all()->sortBy('order');
+                
+        $opinioLinkForm = Link::where('name','opinionForm')->first();
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
             return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))
-                ->with('classifications', $classifications);
+                ->with('classifications', $classifications)
+                ->with('theme', $this->theme)
+                ->with('opinionLinkForm',$opinioLinkForm)
+                ->with('showOpinionForm',true);
         }
-
+        
         return view(self::VIEW_PATH . 'show', compact('discipline'))
-            ->with('classifications', $classifications);
+            ->with('classifications', $classifications)
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm', $opinioLinkForm)
+            ->with('showOpinionForm',true);
     }
 
     /**
@@ -559,18 +486,21 @@ class DisciplineController extends Controller
                 'disciplineParticipants',
             ])
             ->findOrFail($id);
-        $classifications = Classification::all();
+        $classifications = Classification::query()->orderBy('order','ASC')->get();
         $participants = array();
         for ($i = 0; $i < count($discipline->disciplineParticipants()->get()); $i++) {
             array_push($participants, json_decode($discipline->disciplineParticipants()->get()[$i]));
             $participants[$i]->links = json_decode($discipline->disciplineParticipants()->get()[$i]->links);
         }
 
-
+        $opinioLinkForm = Link::where('name','opinionForm')->first();
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
-            ->with('participants', $participants);
+            ->with('theme', $this->theme)
+            ->with('participants', $participants)
+            ->with('opinionLinkForm', $opinioLinkForm)
+            ->with('showOpinionForm',true);
     }
 
     /**
@@ -626,14 +556,13 @@ class DisciplineController extends Controller
                 if (isset($json->id)) {
                     $participant->id = $json->id;
                 }
-                
+
                 $participant->name = $json->name;
                 $participant->role = $json->role;
                 $participant->email = $json->email;
                 $participant->discipline()->associate($discipline);
                 if (isset($json->id)) {
                     $discipline->disciplineParticipants()->updateOrCreate(['id' => $json->id], $participant->toArray());
-
                 } else {
                     $participant->save();
                     //$discipline->disciplineParticipants()->save($participant->toArray());
@@ -645,8 +574,6 @@ class DisciplineController extends Controller
                     $link->url = $linkJson->url;
                     $participant->links()->save($link);
                 }
-
-                
             }
 
             $url = $request->input('media-trailer') ?? '';
@@ -739,17 +666,81 @@ class DisciplineController extends Controller
                 ]);
             }
 
+            // atualizar as classificações de uma disciplina pelo id
+            $classification_collection = collect([]);
+            $classification_collection = ClassificationDiscipline::where('discipline_id', $id)->get();
             $classificationsMap = Classification::all()->pluck('id')->toArray();
-            foreach ($classificationsMap as $classificationId) {
-                ClassificationDiscipline::updateOrCreate(
-                    ['discipline_id' => $discipline->id, 'classification_id' => $classificationId],
-                    ['value' => $request->input('classification-' . $classificationId)]
-                );
+            // foreach ($classificationsMap as $classificationId) {
+            //     ClassificationDiscipline::updateOrCreate(
+            //         [
+            //             'discipline_id' => $discipline->id,
+            //             'classification_id' => $classificationId
+            //         ],
+            //         ['value' => $request->input('classification-' . $classificationId)]
+            //     );
+            // }
+        
+            foreach($classification_collection as $col) {
+                foreach($classificationsMap as $class){
+                    ClassificationDiscipline::where('discipline_id',$id)
+                    ->where('classification_id', $class)
+                    ->update(['value' => $request->input('classification-'.$class)]);
+                }
             }
+
+            $faqValidator = Validator::make($request->all(), [
+                'faqTitle.*' => 'required',
+                'faqContent.*' => 'required'
+            ]);
+
+            if ($faqValidator->fails()) {
+
+                return redirect()->back()->withInput()->withErrors(['faq' => 'faq']);
+            }
+
+            $databaseFaqsIds = Faq::where('discipline_id', $discipline->id)->pluck('id')->toArray();
+            $faqIds = $request->faqId;
+            $faqTitles = $request->faqTitle;
+            $faqContents = $request->faqContent;
+
+            if (isset($faqIds)) {
+
+                foreach ($faqIds as $i => $ids) {
+                    if (!isset($ids) ||  $ids != 'undefined') {
+                        Faq::where('id', $faqIds[$i])->update(['title' => $faqTitles[$i], 'content' => $faqContents[$i]]);
+                    } else {
+                        Faq::create([
+                            'title' => $faqTitles[$i],
+                            'content' => $faqContents[$i],
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }
+                }
+
+                if (count($databaseFaqsIds) > 0) {
+                    foreach ($databaseFaqsIds as $i => $dIds) {
+                        if (!in_array($dIds, $faqIds)) {
+                            Faq::find($dIds)->delete();
+                        }
+                    }
+                }
+            }else{
+                Faq::where('discipline_id',$discipline->id)->delete();
+            }
+
+
+            /* foreach ($faqsMap as $faqId) {
+                Faq::updateOrCreate(
+                    ['title' => $discipline->id,'title' => $faqId],
+                    ['content' => $request->input('content-' . $faqId)]
+                );
+            }     */
+
             $discipline->save();
             DB::commit();
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
+            dd($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput();
@@ -785,7 +776,8 @@ class DisciplineController extends Controller
 
         return view('disciplines-search')
             ->with('disciplines', $disciplines)
-            ->with('search', $search);
+            ->with('search', $search)
+            ->with('theme', $this->theme);
     }
 
     public function mydisciplines()
@@ -806,6 +798,7 @@ class DisciplineController extends Controller
             ->get();
 
         return view('my-disciplines')
-            ->with('disciplines', $disciplines);
+            ->with('disciplines', $disciplines)
+            ->with('theme', $this->theme);
     }
 }

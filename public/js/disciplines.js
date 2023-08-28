@@ -104,7 +104,7 @@ function renderParticipants(idElement) {
             "</div>" +
             "<div class='form-group'>" +
             "<label>E-mail</label>" +
-            "<input id='" + participant.index + "' class='form-control' type='email' name='participantEmail[]' placeholder='E-mail do Participante' required value='" + participant.email + "' onchange='onChangeParticipantEmail(event)'>" +
+            "<input id='" + participant.index + "' class='form-control' type='email' name='participantEmail[]' placeholder='E-mail do Participante' value='" + participant.email + "' onchange='onChangeParticipantEmail(event)'>" +
             "</div>" +
             "<hr class='hr'>" +
             "<span>LINKS</span>" +
@@ -115,7 +115,7 @@ function renderParticipants(idElement) {
                 "<input class='form-control' type='text' name='linkName[]' maxlength='20' placeholder='Nome da rede social' required value='" + link.name + "' onchange='onChangeLinkName(event," + participant.index + "," + index + ")'>" +
                 "</div>" +
                 "<div class='form-group'>" +
-                "<input class='form-control mb-0' type='text' name='linkUrl[] p-0' placeholder='Url do link' required value='" + link.url + "' onchange='onChangeLinkUrl(event," + participant.index + "," + index + ")'>" +
+                "<input class='form-control mb-0' type='url' name='linkUrl[] p-0' placeholder='http://' required value='" + link.url + "' onchange='onChangeLinkUrl(event," + participant.index + "," + index + ")'>" +
                 "</div>" +
                 "<div class='d-flex mb-2'><small id='" + link.index + "' class='text-danger' style='cursor:pointer;line-height:0.5' onclick='removeLinkField(event," + participant.index + "," + index + ")'>remover link</small></div>" +
                 "</div>";

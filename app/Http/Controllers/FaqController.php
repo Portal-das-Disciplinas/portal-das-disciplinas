@@ -7,6 +7,7 @@ use App\Http\Requests\Faq\StoreRequest;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 
+/** */
 class FaqController extends Controller
 {
     /**

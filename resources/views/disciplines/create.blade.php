@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Cadastrar disciplina - Portal das Disciplinas IMD
+    Cadastrar disciplina - Portal das Disciplinas
 @endsection
 
 @section('robots')
@@ -259,16 +259,16 @@ noindex, follow
                     @enderror
                 </div>
             </div>
+      
+       
         </div>
         <div class='page-title'>
-            <h3>Cadastro de FAQ</h3>
+            <h3>Perguntas Frequentes</h3>
         </div>
         <div id="faqs">
-
         </div>
-        <a id="add-faq" class="btn btn-primary btn-sm">
-            + Adicionar FAQ
-        </a>
+        <a id="add-faq" class="btn btn-primary">Adicionar FAQ</a>
+
         <div class='d-flex page-title align-items-center'>
             <h3>Cadastro de créditos</h3>
         </div>
@@ -318,12 +318,12 @@ noindex, follow
 </div>
 </div> --}}
 
-<div class="row d-flex p-2 mt-3 justify-content-center">
-
-    <a href="{{ route('home') }}" class="btn btn-danger">
-        Cancelar
-    </a>
-    <button type="submit" class="btn btn-success ml-5">Registrar</button>
+<div class="row d-flex mt-3 justify-content-center">
+    <div class="col-12 d-flex justify-content-end">
+        <button type="submit" class="btn btn-success">Registrar</button>
+        <a href="{{ route('home') }}" class="btn btn-danger ml-5">Cancelar</a>
+    </div>
+    
 </div>
 </form>
 </div>
@@ -336,11 +336,11 @@ $classificationsJson = json_encode($classifications);
 
 @section('scripts-bottom')
 <script>
-    let classifications = JSON.parse('{!! $classificationsJson !!}');
+    //let classifications = JSON.parse('{!! $classificationsJson !!}');
+    let classifications = @json($classifications);
 
 
     function handleInput(value, element) {
-        //console.log(value)
         const sliderContainer = element.parentNode
         const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
         const rightOutput = sliderContainer.nextElementSibling.querySelector('span')
@@ -366,63 +366,77 @@ $classificationsJson = json_encode($classifications);
     })
 
     var addButton = document.getElementById('add-faq');
-    let counter = 0;
+var faqs = document.getElementById('faqs');
+let counter = 0;
 
-    addButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        counter++;
-        // Create new elements
-        let newDiv = document.createElement('div');
-        newDiv.classList.add('modal-body');
+addButton.addEventListener('click', function(event) {
+event.preventDefault();
+counter++;
 
-        // Create form group for title
-        let formGroupTitle = document.createElement('div');
-        formGroupTitle.classList.add('form-group');
+// Create new elements
+let newDiv = document.createElement('div');
+newDiv.classList.add('modal-body');
 
-        let titleLabel = document.createElement('label');
-        titleLabel.setAttribute('for', `title${counter}`);
-        titleLabel.classList.add('col-form-label');
-        titleLabel.textContent = "Pergunta";
+// Create form group for title
+let formGroupTitle = document.createElement('div');
+formGroupTitle.classList.add('form-group');
 
-        let titleInput = document.createElement('input');
-        titleInput.type = "text";
-        titleInput.classList.add('form-control');
-        titleInput.id = `title${counter}`;
-        titleInput.name = `title[${counter}]`;
+let titleLabel = document.createElement('label');
+titleLabel.setAttribute('for', `title${counter}`);
+titleLabel.classList.add('col-form-label');
+titleLabel.textContent = "Pergunta";
 
-        // Append title elements
-        formGroupTitle.appendChild(titleLabel);
-        formGroupTitle.appendChild(titleInput);
+let titleInput = document.createElement('input');
+titleInput.type = "text";
+titleInput.classList.add('form-control');
+titleInput.id = `title${counter}`;
+titleInput.name = `title[${counter}]`;
 
-        // Create form group for content
-        let formGroupContent = document.createElement('div');
-        formGroupContent.classList.add('form-group');
+// Append title elements
+formGroupTitle.appendChild(titleLabel);
+formGroupTitle.appendChild(titleInput);
 
-        let contentLabel = document.createElement('label');
-        contentLabel.setAttribute('for', `content${counter}`);
-        contentLabel.classList.add('col-form-label');
-        contentLabel.textContent = "Resposta";
+// Create form group for content
+let formGroupContent = document.createElement('div');
+formGroupContent.classList.add('form-group');
 
-        let contentTextarea = document.createElement('textarea');
-        contentTextarea.classList.add('form-control');
-        contentTextarea.id = `content${counter}`;
-        contentTextarea.name = `content[${counter}]`;
+let contentLabel = document.createElement('label');
+contentLabel.setAttribute('for', `content${counter}`);
+contentLabel.classList.add('col-form-label');
+contentLabel.textContent = "Resposta";
 
-        // Append content elements
-        formGroupContent.appendChild(contentLabel);
-        formGroupContent.appendChild(contentTextarea);
+let contentTextarea = document.createElement('textarea');
+contentTextarea.classList.add('form-control');
+contentTextarea.id = `content${counter}`;
+contentTextarea.name = `content[${counter}]`;
 
-        // Append form groups to newDiv
-        newDiv.appendChild(formGroupTitle);
-        newDiv.appendChild(formGroupContent);
+// Append content elements
+formGroupContent.appendChild(contentLabel);
+formGroupContent.appendChild(contentTextarea);
 
-        // Append to faqs
-        faqs.appendChild(newDiv);
-    });
+// Create delete button
+let deleteButton = document.createElement('button');
+deleteButton.classList.add('btn');
+deleteButton.classList.add('delete-button');
+deleteButton.classList.add('btn-danger');
+deleteButton.textContent = "Deletar FAQ";
 
-    /*Scripts referentes à adição dos participantes que contribuiram para o conteúdo da pagina da disciplina*/
+// Add event listener to delete button
+deleteButton.addEventListener('click', function() {
+    newDiv.remove();
+});
 
-    let idLinks = 0;
+// Append form groups, delete button to newDiv
+newDiv.appendChild(formGroupTitle);
+newDiv.appendChild(formGroupContent);
+newDiv.appendChild(deleteButton);
+
+// Append newDiv to faqs
+faqs.appendChild(newDiv);
+});
+
+/*Scripts referentes à adição de participantes*/
+let idLinks = 0;
     let participants = [];
     function addParticipantField(event) {
         event.preventDefault();
@@ -496,7 +510,6 @@ $classificationsJson = json_encode($classifications);
         sendParticipantsToFormInput();
     }
 
-
     function renderParticipants(idElement){
         let html =""; 
         participants.forEach(function(participant, index){
@@ -513,7 +526,7 @@ $classificationsJson = json_encode($classifications);
                     "</div>"+
                     "<div class='form-group'>"+
                         "<label>E-mail</label>"+
-                        "<input id='"+participant.index+"' class='form-control' type='email' name='participantEmail[]' placeholder='E-mail do Participante' required value='"+participant.email+"' onchange='onChangeParticipantEmail(event)'>"+
+                        "<input id='"+participant.index+"' class='form-control' type='email' name='participantEmail[]' placeholder='E-mail do Participante'  value='"+participant.email+"' onchange='onChangeParticipantEmail(event)'>"+
                     "</div>"+
                     "<hr class='hr'>"+
                     "<span>LINKS</span>"+
@@ -524,7 +537,7 @@ $classificationsJson = json_encode($classifications);
                                 "<input class='form-control' type='text' name='linkName[]' maxlength='20' placeholder='Nome da rede social' required value='"+link.name+"' onchange='onChangeLinkName(event,"+participant.index+","+index+")'>"+
                             "</div>"+
                             "<div class='form-group'>"+
-                                "<input class='form-control mb-0' type='text' name='linkUrl[] p-0' placeholder='Url do link' required value='"+link.url+"' onchange='onChangeLinkUrl(event,"+participant.index+","+index+")'>"+
+                                "<input class='form-control mb-0' type='url' name='linkUrl[] p-0' placeholder='http://' required value='"+link.url+"' onchange='onChangeLinkUrl(event,"+participant.index+","+index+")'>"+
                             "</div>"+
                             "<div class='d-flex mb-2'><small id='"+link.index+"' class='text-danger' style='cursor:pointer;line-height:0.5' onclick='removeLinkField(event,"+participant.index+","+index+")'>remover link</small></div>"+
                         "</div>";
@@ -536,13 +549,8 @@ $classificationsJson = json_encode($classifications);
 
             "</div>";
         });
-
         document.querySelector(idElement).innerHTML = html;
-           
-        
-
     }
-
     renderParticipants('#participants');
 </script>
 

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Discipline;
 use App\Models\DisciplineParticipant;
 use App\Models\ParticipantLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class DisciplineParticipantController extends Controller
 {
@@ -15,9 +17,12 @@ class DisciplineParticipantController extends Controller
         $this->middleware('admin');
     }
 
-    /*Salva os participantes que contribuiram com o material da disciplina e seu links de redes sociais, etc...*/
-    /*Se o nome do link for nulo, ou a url do link for nulo o controlador retorna para a view com erros */
-    /*Se ambos, link e url forem nulos, o link é ignorado */
+    /**
+     * Salva os participantes que contribuiram com o material da disciplina e seu links de redes sociais, etc...
+     * Se o nome do link for nulo, ou a url do link for nulo o controlador retorna para a view com erros
+     * Se ambos, link e url forem nulos, o link é ignorado
+     * @param $request Objeto que contém as informações da requisição http.
+     */
     public function store(Request $request)
     {
         DB::beginTransaction();
@@ -61,6 +66,68 @@ class DisciplineParticipantController extends Controller
         return redirect('disciplinas/'. $request->idDiscipline)->with('cadastroOK','Cadastro realizado com sucesso');
     }
 
+
+    public function storeOrUpdatePortalVideoProducers(Request $request){
+
+        
+        $contentProducers = json_decode($request->contentProducers);
+        //dd($contentProducers);
+
+        DB::beginTransaction();
+        try{
+        $participantsId = DisciplineParticipant::query()->where('worked_on','video_about')->pluck('id');
+        //Verifica se Algum Produtor de conteúdo foi removido
+        foreach($participantsId as $id){
+            $delete = true;
+            foreach($contentProducers as $producer){
+                if(isset($producer->id) && $producer->id == $id){
+                    $delete = false;
+                }   
+            }
+            if($delete == true){
+                $p = DisciplineParticipant::find($id)->delete();
+            }
+        }
+
+        foreach($contentProducers as $producer){
+            if(strlen($producer->name) < 2) {
+
+                return redirect()->back()->withInput()->withErrors(['Nome inválido']);
+            }
+
+            if(isset($producer->id) && ($producer->id !='undefined') && ($producer->id != null)){
+                $p = DisciplineParticipant::find($producer->id);
+
+            }else{
+                $p = new DisciplineParticipant();
+            }
+
+            $p->name= $producer->name;
+            $p->email = $producer->email;
+            $p->role = 'Produtor';
+            $p->worked_on = 'video_about';
+            $p->save(); 
+            
+        }
+        if(DisciplineParticipant::query()->where('worked_on','video_about')->count() >10){
+            DB::rollBack();
+            return redirect()->back()->withErrors(['Número de produtores excedido']);
+        }
+        DB::commit();
+
+        return redirect()->back()->with('message', 'Produtores cadastrado com sucesso');
+    }catch(\Exception $e){
+        dd($e);
+        DB::rollBack();
+        return redirect()->back()->withInput()->withErrors(['Erro ao cadastrar os produtores do video']);
+    }
+
+
+    }
+    /**
+     * Atualiza as informações da disciplina
+     * @param $request Objeto que contém as informações da requisição http.
+     */
     public function update(Request $request){
         DB::beginTransaction();
         $disciplineParticipant = DisciplineParticipant::find($request->idParticipant);
@@ -100,6 +167,10 @@ class DisciplineParticipantController extends Controller
         return redirect('disciplinas/'. $request->idDiscipline)->with(['AtualizacaoOK'=>'Atualizado']);
     }
 
+    /**
+     * Apaga uma disciplina no banco de dados
+     * @param $id Identificador da disciplina
+     */
     public function destroy($id){
         DisciplineParticipant::destroy($id);
         return redirect()->back();

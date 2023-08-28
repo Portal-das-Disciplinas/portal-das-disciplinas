@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\DisciplineController;
 use App\Http\Controllers\ProfessorUserController;
 use App\Http\Controllers\Chart\PassRateController;
@@ -13,8 +14,10 @@ use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\LinksController;
 use App\Http\Controllers\ParticipantLinkController;
 use App\Models\Collaborator;
+use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,6 +55,7 @@ Route::get('/discipline/filter', [DisciplineController::class, 'multiDisciplineF
 Route::get('sobre', [InformationController::class, 'index'])->name('information');
 Route::put('information/{information}',[InformationController::class,'update'])->name('information.update');
 Route::post('information/supdate',[InformationController::class,'storeOrUpdate'])->name('information.supdate');
+Route::delete('information/delete/{name}',[InformationController::class,'deleteByName'])->name('information.deleteByName');
 
 Route::get('colaborar', function () {
     return view('collaborate');
@@ -71,6 +75,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('classificacoes', ClassificationController::class)
         ->except(['show']);
+
+    Route::put('classificacoes/update/ordem', [ClassificationController::class, 'updateClassificationOrder'])->name('updateOrder');
+
+    Route::resource('configuracoes', ThemeController::class);
 });
 
 Route::resource('collaborators',CollaboratorController::class);
@@ -81,5 +89,9 @@ Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
     ->name('disciplinas.show');
 
 Route::post('participantes_disciplina/store', [DisciplineParticipantController::class,'store'])->name('participants_discipline.store');
+Route::post('produtores/videoportal/supdate',[DisciplineParticipantController::class,'storeOrUpdatePortalVideoProducers'])->name('content_producers.store_update');
 Route::put('/participantes_disciplina', [DisciplineParticipantController::class,'update'])->name('participants_discipline.update');
 Route::delete('participantes_disciplina/{id}', [DisciplineParticipantController::class,'destroy'])->name('participants_discipline.destroy');
+Route::resource('links', LinksController::class);
+Route::put('/links/update/toggleactive',[LinksController::class, 'toggleActive'])->name('links.active.toggle');
+Route::put('/links/supdate/opinion_form_link', [LinksController::class,'updateOpinionFormLink'])->name('links.supdate.opinion_form_link');

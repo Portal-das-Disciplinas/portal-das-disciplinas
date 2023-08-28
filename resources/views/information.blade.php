@@ -1,7 +1,5 @@
 @extends('layouts.app')
-@section('title')
-Sobre nós - Portal das Disciplinas IMD
-@endsection
+
 
 @section('styles-head')
 <link rel="stylesheet" href="{{asset('css/about.css')}}">
@@ -18,32 +16,32 @@ Sobre nós - Portal das Disciplinas IMD
                     @csrf
                     <div class="form-group">
                         <label class="btn btn-outline-info" for="fotoColaborador" name="foto">Adicionar Foto</label>
-                        <input class="d-none" id="fotoColaborador" name="foto" type='file' onchange="changeFileName()">
+                        <input class="d-none" id="fotoColaborador" name="foto" type='file' value="{{old('foto')}}" onchange="changeFileName()">
                         <small id="fileName">Nenhum arquivo selecionado</small>
                     </div>
                     <div class="form-group">
                         <label for="nomeColaborador">Nome</label>
-                        <input id="nomeColaborador" name="nome" type=text class="form-control" placeholder="Nome e Sobrenome" required>
+                        <input id="nomeColaborador" name="nome" type=text class="form-control" value="{{old('nome')}}" placeholder="Nome e Sobrenome" required>
                     </div>
                     <div class="form-group">
                         <label for="emailColaborador">E-mail</label>
-                        <input id="emailColaborador" name="email" type="email" class="form-control" placeholder="E-mail" required>
+                        <input id="emailColaborador" name="email" type="email" class="form-control" value="{{old('email')}}" placeholder="e-mail">
                     </div>
                     <div class="form-group">
                         <label for="vinculoColaborador">Vínculo</label>
-                        <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" placeholder="bolsista, voluntário..." required>
+                        <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" value="{{old('vinculo')}}"placeholder="bolsista, voluntário..." required>
                     </div>
                     <div class="form-group">
                         <label for="funcaoColaborador">Função</label>
-                        <input id="funcaoColaborador" name="funcao" type=text class="form-control" placeholder="Desenvolvedor, Designer, ...">
+                        <input id="funcaoColaborador" name="funcao" type=text class="form-control" value="{{old('funcao')}}"placeholder="Desenvolvedor, Designer, ...">
                     </div>
                     <div class="form-group">
                         <label for="lattesColaborador">Lattes</label>
-                        <input id="lattesColaborador" name="lattes" type="text" class="form-control" placeholder="Endereço do currículo latttes">
+                        <input id="lattesColaborador" name="lattes" type="url" class="form-control" value="{{old('lattes')}}" placeholder="https://">
                     </div>
                     <div class="form-group">
                         <label for="githubColaborador">Github</label>
-                        <input id="githubColaborador" name="github" type="text" class="form-control" placeholder="Github">
+                        <input id="githubColaborador" name="github" type="url" class="form-control" value="{{old('github')}}"placeholder="https://">
                     </div>
                     <hr class="hr">
 
@@ -84,6 +82,46 @@ Sobre nós - Portal das Disciplinas IMD
         </div>
     </div>
 
+</div>
+
+<div id="modal-section-collaborate" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edição da seção colabore</h3>
+            </div>
+            <div class="modal-body">
+                <div id="errors" class="alert alert-danger alert-dismissible fade d-none" role="alert">
+                    <strong>Ocorreram erros ao cadastrar</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="section-collaborate-form-title" class="form" action="{{route('information.supdate')}}" method="POST" onsubmit="submitCollaborateSection(event)">
+                    @csrf
+                    @method('POST')
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input name="name" type="text" hidden value="sectionCollaborateTitle">
+                        <input id="collaborateTitleInput" name="value" class="form-control" type="text" placeholder="Título para a seção" value="{{$sectionCollaborateTitle}}" required>
+                    </div>
+                </form>
+                <form id="section-collaborate-form-text" class="form" action="{{route('information.supdate')}}" method="POST">
+                    @csrf
+                    @method('POST')
+                    <div class="form-group">
+                        <label>Conteúdo para a seção</label>
+                        <input name="name" type="text" hidden value="sectionCollaborateText">
+                        <textarea id="collaborateTextInput" name="value" rows=10 class="form-control">{{$sectionCollaborateText}}</textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" data-target="#modal-section-collaborate">Fechar</button>
+                <button class="btn btn-primary" onclick="updateSectionCollaborate(event)">Salvar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div id="modal-section-managers" class="modal fade" tabindex="-1" role="dialog">
@@ -162,49 +200,157 @@ Sobre nós - Portal das Disciplinas IMD
     </div>
 </div>
 
+<div id="modal-video-producers" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+             <div class="modal-header">
+                 <h3 class="modal-title">Produtores do vídeo</h3>
+             </div>
+             <div class="modal-body">
+                 <div id="formVideoContentProducers"class="form">
+                 </div>
+                 <form id="formContentProducersJson" method="post" action="{{route('content_producers.store_update')}}">
+                    @csrf
+                    <input name="contentProducers" type='hidden'>
+                 </form>
+                 <button id="btnAddParticipant"class="btn btn-outline-primary btn-sm" onclick="addParticipantField()">Adicionar campo</button>
+             </div>
+             <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary btn-sm" for="btnAddParticipant" onclick="submitFormContentProducers()">Salvar Produtores</button>
 
-<script>
-    function changeFileName() {
-        document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
-    }
-</script>
+             </div>               
+        </div>
+    </div>
+</div>
+
+<div id="modalAlterarVideo" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Alteração de vídeo</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form" method="post" action="{{route('information.supdate')}}">
+                    @csrf
+                    <input type="hidden" name="name" value="linkVideoPortal">
+                    <input class="form-control" name="value" type="url" required placeholder="URL do link" onchange="onChangeInputLink()">
+                    <small class="d-none text-danger">* URL inválida</small>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary btn-sm" onclick="updateVideoPortal()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Styles -->
 <div class='banner text-center d-flex align-items-center justify-content-center '>
     <h1 class='text-white'>Sobre & Colabore</h1>
 </div>
 @if($errors->any())
-<h3 class="alert alert-danger text-center">
-    {{$errors->first()}}
-</h3>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div class="d-flex justify-content-center">
+        <div>
+            @foreach($errors->all() as $error)
+            <li>{{$error}}</li>
+            @endforeach
+        </div>
+    </div>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 @endif
 
 <div class='container py-5' id="top-container">
 
     <div class='row'>
         <div class="col-md-5 p-text">
-            <h2>O que é o Portal das Disciplinas</h2>
-            <div class="row justify-content">
-                <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px; margin-bottom: 8%">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qG4ATq0qJlE" allowfullscreen></iframe>
+            <h2 class="mb-5">O que é o Portal das Disciplinas</h2>
+            <div class="row-fluid">
+                @if(Auth::user() && Auth::user()->isAdmin)
+                <div class="d-flex justify-content-end">
+                    <span class="text-primary" style="cursor:pointer" onclick="$('#modalAlterarVideo').modal('show')">alterar</span>
+                    <form id="deleteVideoForm" method='post' action="{{route('information.deleteByName','linkVideoPortal')}}">
+                        @csrf
+                        @method('delete')
+                        <span class="text-danger ml-4" style="cursor:pointer" onclick="removeVideo()">remover</span>
+                    </form>
                 </div>
+                @endif
+
+                @if(isset($videoUrl))
+                <div class="embed-responsive embed-responsive-16by9" style="border-radius:5px;">
+                    <iframe class="embed-responsive-item" src="{{$videoUrl ?? null}}" allowfullscreen></iframe>
+                </div>
+                @else
+                @if(Auth::user() && Auth::user()->isAdmin)
+                <div class="d-flex justify-content-center">
+                    <h1 class="text-secondary p-5"> -NÃO HÁ VÍDEO- </h1>
+                </div>
+                @endif
+                @endif
             </div>
-            <section class='our-team'>
+            <div class="row-fluid mb-5 d-flex flex-column">
+                <div class="d-flex justify-content-between">
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                    <b class="pl-0"data-toggle="collapse" data-target="#collapseCreditos">
+                        @if(count($videoAboutProducers) >0)
+                        créditos <li class="fa fa-caret-down"></li>
+                        @else
+                        <span class='text-secondary'>Não há créditos</span>
+                        @endif
+                    </b>
+                    @endif
+                    @guest
+                    @if(count($videoAboutProducers)>0 && (isset($videoUrl)))
+                    <b class="pl-0"data-toggle="collapse" data-target="#collapseCreditos">
+                        créditos <li class="fa fa-caret-down"></li>
+                    </b>
+                    @endif
+                    @endguest
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                    <span class="text-primary" style="cursor:pointer" onclick="openModalVideoProducers()">editar</span>
+                    @endif
+                </div>
+                <div id="collapseCreditos" class="collapse pl-1">
+                    <div class="d-flex flex-column" style="line-height:1.5">
+                        @foreach($videoAboutProducers as $producer)
+                        <small class="">
+                            <a href="mailto:{{$producer->email}}" style="color:black">
+                                {{$producer->name}}
+                            </a>
+                        </small>
+                        @endforeach
+ 
+                    </div>
+                </div>
+                    
+            </div>
+            <section class='our-team p-0'>
                 <h2>Nossa equipe</h2>
                 <p class="text-justify mb-3">Veja ao lado os membros responsáveis por este portal.</p>
             </section>
 
             <div>
-                <h2>Colabore</h2>
-                <p class="text-justify mb-3">Caso tenha interesse em colaborar na adição de novas funcionalidades do site como sistema de classificações dinâmicos, refinamento de mecanismos de busca, interação com o portal de dados abertos da UFRN para recuperação de índices de aprovação de disciplinas, implementação de fóruns no portal, entre outros, por favor, entre em contato conosco.</p>
-            </div>
-
-            <div class="break-word">
-                <b>Lista de emails para contato</b>
-                <ul class="ml-3">
-                    <li>eugenio@imd.ufrn.br</li>
-                    <li>pedrogab96@gmail.com</li>
-                    <li>victor_brandao@outlook.com</li>
-                </ul>
+                <div class="d-flex align-items-baseline justify-content-between">
+                    @if($sectionCollaborateTitle != "")
+                    <h2 id="sectionCollaborateTitle">{{$sectionCollaborateTitle}}</h2>
+                    @endif
+                    @if(Auth::user() && Auth::user()->isAdmin)
+                    @if($sectionCollaborateTitle == "")
+                    <p class="text-secondary"><i>[Sem título para a seção]</i></p>
+                    @endif
+                    <label class="text-primary" style="cursor:pointer"onclick="$('#modal-section-collaborate').modal('show')">editar</label>
+                    @endif
+                </div>
+                @if(($sectionCollaborateTitle == "") && Auth::user() && Auth::user()->isAdmin)
+                <p class="text-secondary"><i>[Não há conteúdo para essa seção]</i></p>
+                @endif
+                <p style="white-space:pre-wrap;" id="sectionCollaborateText" class="text-justify mb-3">{{$sectionCollaborateText}}</p>
             </div>
         </div>
 
@@ -414,9 +560,43 @@ Sobre nós - Portal das Disciplinas IMD
     </section>
 -->
 
-
-
 </div>
+
+<script>
+    function changeFileName() {
+        document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
+    }
+
+    function updateSectionCollaborate(event) {
+        $.ajax({
+            url: "{{route('information.supdate')}}",
+            method: 'POST',
+            data: $('#section-collaborate-form-title').serialize(),
+            error: function(e) {
+                document.querySelector('#modal-section-collaborate #errors').classList.remove('d-none');
+                document.querySelector('#modal-section-collaborate #errors').classList.add('show');
+            },
+            success: function(result) {
+                $.ajax({
+                    url: "{{route('information.supdate')}}",
+                    method: 'POST',
+                    data: $('#section-collaborate-form-text').serialize(),
+                    success: function(result) {
+                        $('#modal-section-collaborate').modal('hide')
+                        window.location.href = "{{route('information')}}";
+                    },
+                    error: function(e) {
+                        document.querySelector('#modal-section-collaborate #errors').classList.remove('d-none');
+                        document.querySelector('#modal-section-collaborate #errors').classList.add('show');
+                    }
+                });
+            }
+
+        })
+
+    }
+</script>
+
 <script>
     links = [];
 
@@ -424,8 +604,8 @@ Sobre nós - Portal das Disciplinas IMD
         var html = "";
         links.forEach(function(link, i) {
             html += "<div class='mb-4'>" +
-                "<input class=' mb-1 form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' value='" + link.name + "'>" +
-                "<input class='form-control' name='linkUrl[]' type='text' placeholder='Url do link' value='" + link.url + "'>" +
+                "<input class=' mb-1 form-control' name='linkName[]' type='text' placeholder='Twitter, Instagram, Facebook, etc...' required value='" + link.name + "'>" +
+                "<input class='form-control' name='linkUrl[]' type='url' placeholder='https://' required value='" + link.url + "'>" +
                 "<label id = '" + link.id + "'class='btn btn-link text-danger' onclick='deleteLinkField(" + i + ")'>remover</label>" +
                 "</div>"
         });
@@ -469,4 +649,13 @@ Sobre nós - Portal das Disciplinas IMD
     }
 </script>
 
+<script>
+    let databaseVideoContentProducers = @json($videoAboutProducers);
+    let videoContentProducers = @json($videoAboutProducers);// usado no modal
+</script>
+
+@endsection
+
+@section('scripts-bottom')
+    <script src="{{asset('js/about.js')}}"></script>
 @endsection

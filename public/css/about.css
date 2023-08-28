@@ -21,7 +21,7 @@
 }
 
 .regular-image {
-    width: 140px;
+    width: 160px;
 }
 .smaller-image {
     width: 80px;
@@ -37,7 +37,7 @@
 
 @media only all and (max-width: 1192px) {
     .regular-image {
-        width: 120px;
+        width: 160px;
     }
     .smaller-image {
         width: 64px;

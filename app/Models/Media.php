@@ -9,17 +9,17 @@ class Media extends Model
 {
     use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'medias';
+
+    protected $table = 'medias'; /*!< Nome da tabela que representa o modelo
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
+     * Os atributos que são atribuíveis em massa.
+     *title: Título da mídia.\n
+     *type: Tipo da mídia.\n
+     *url:\n
+     *is_trailer: Identifica se a mídia é um trailer.\n
+     *discipline_id: ID da disciplina da qual a mídia faz parte.\n
+     *view_url:  
      */
     protected $fillable = [
         'title',
@@ -31,15 +31,14 @@ class Media extends Model
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     *Os atributos que são convertidos para outro tipo.
      */
     protected $casts = [
         'is_trailer' => 'boolean',
     ];
 
     /**
+     * Retorna a disciplina da qual este este objeto pertence.
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function discipline()

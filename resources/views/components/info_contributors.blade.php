@@ -1,5 +1,5 @@
 <div class='d-flex flex-column  align-items-center mx-4 mb-3' style="width:250px"><!-- mx-4 mb-3-->
-    <img class="clip-path regular-image" src="{{'/storage/'.$image}}" alt="{{ $alt_image ?? 'foto-dev' }}" onerror="loadDefault(event)">
+    <img class="clip-path regular-image" src="{{'/storage/'.$image}}" alt="{{ $alt_image ?? 'foto-dev' }}" width="160px" height="160px" style="object-fit:cover" onerror="loadDefault(event)">
     <div class="text-center">
         <h3>{{$name ?? ''}}</h3>
         @if(isset($period) && ($period!='null'))
@@ -33,6 +33,7 @@
     <script>
         function loadDefault(event){
 
+            event.target.style= "background-color: #FFFFFF00";
             event.target.src = 'img/profiles_img/user2.png';
         }
     </script>

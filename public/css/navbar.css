@@ -96,7 +96,7 @@ nav a:hover::after{
 }
 
 .user-icon:hover {
-    color: var(--secondary-color);
+    color: #1d68a7;
     cursor: pointer;
 }
 
