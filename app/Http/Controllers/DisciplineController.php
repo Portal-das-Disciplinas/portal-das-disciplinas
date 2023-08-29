@@ -88,13 +88,32 @@ class DisciplineController extends Controller
 
     public function disciplineFilter(Request $request)
     {
-        dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
 
         $emphasis_id = $request->input('emphasis');
         $discipline_name = $request->input('name_discipline');
-     
+
+        $arrayClassifications = array($request->input());
+        $arrayValues;
+
+        foreach($arrayClassifications as $arr) {
+            $arrayValues = $arr;
+        }
+        
+        foreach($arrayValues as $key => $value) {
+            if (str_contains($key, "range") == true) {
+                unset($arrayValues[$key]);
+            } else if ($key == "name_discipline") {
+                unset($arrayValues[$key]);
+            } else if ($key == "emphasis") {
+                unset($arrayValues[$key]);
+            } else if ($key == "_token") {
+                unset($arrayValues[$key]);
+            }
+        }
+
+        dd($arrayValues);
         $input;
         $disciplines = collect([]);
 
