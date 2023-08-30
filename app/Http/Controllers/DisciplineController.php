@@ -95,12 +95,19 @@ class DisciplineController extends Controller
         $discipline_name = $request->input('name_discipline');
 
         $arrayClassifications = array($request->input());
+        
+        $input;
         $arrayValues;
-
+        $disciplines = collect([]);
+        
+        // pega todos os parametros vindos do 
+        // request e salva numa variável
         foreach($arrayClassifications as $arr) {
             $arrayValues = $arr;
         }
         
+        // remove todos os parametros que tenham haver com
+        // os ranges, que seja a emphase ou o nome da disciplina
         foreach($arrayValues as $key => $value) {
             if (str_contains($key, "range") == true) {
                 unset($arrayValues[$key]);
@@ -112,10 +119,6 @@ class DisciplineController extends Controller
                 unset($arrayValues[$key]);
             }
         }
-
-        dd($arrayValues);
-        $input;
-        $disciplines = collect([]);
 
         if ($discipline_name != null && $emphasis_id != null) {
             $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")

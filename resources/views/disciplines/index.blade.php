@@ -101,7 +101,7 @@
                                                 <div class="col-6 nav-link">
                                                     <input 
                                                         type="radio" 
-                                                        value="{{ $classification->type_a }}" 
+                                                        value="{{ $classification->type_a_no_accentuation }}" 
                                                         name="{{ mb_strtolower($classification->name) }}"
                                                     >
                                                     <label for="inputA">{{ $classification->type_a }}</label>
@@ -109,7 +109,7 @@
                                                 <div class="col-6 nav-link">
                                                     <input  
                                                         type="radio" 
-                                                        value="{{ $classification->type_b }}" 
+                                                        value="{{ $classification->type_b_no_accentuation }}" 
                                                         name="{{ mb_strtolower($classification->name) }}"
                                                     >
                                                     <label for="inputB">{{ $classification->type_b }}</label>
