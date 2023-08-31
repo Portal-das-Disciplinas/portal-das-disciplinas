@@ -100,6 +100,10 @@ class DisciplineController extends Controller
         $arrayValues;
         $disciplines = collect([]);
         
+        // isRangeChosen: variável que checa se os ranges foram enviados
+        // 0 = sim / 1 = não 
+        $isRangeChosen = 1;
+
         // pega todos os parametros vindos do 
         // request e salva numa variável
         foreach($arrayClassifications as $arr) {
@@ -111,6 +115,12 @@ class DisciplineController extends Controller
         foreach($arrayValues as $key => $value) {
             if (str_contains($key, "range") == true) {
                 unset($arrayValues[$key]);
+
+                // If para checar se os ranges estão sendo enviados com -1
+                // significando que os ranges não foram enviados
+                if ($value == -1) {
+                    $isRangeChosen = 1;
+                }
             } else if ($key == "name_discipline") {
                 unset($arrayValues[$key]);
             } else if ($key == "emphasis") {
@@ -120,6 +130,31 @@ class DisciplineController extends Controller
             }
         }
 
+        dd($request);
+        // dd($arrayValues);
+
+
+        // Mecanismo pra saber se mais parâmetros fora o nome da disciplina e a ênfase foram enviados
+        if (count($arrayValues) > 0) {
+            // Mais parâmetros fora o nome, ênfase e os ranges foram enviados
+            dd("Mais parâmetros fora o nome, ênfase e os ranges foram enviados");
+        } else if ($isRangeChosen == 0) {
+            // Ranges foram enviados
+            dd("Ranges foram enviados");
+        } else {
+            // Apenas o nome ou a ênfase foram enviados
+            dd("Apenas o nome ou a ênfase foram enviados");
+        }
+
+
+
+
+
+
+
+
+
+        // Mecanismo de filtragem por nome e ênfase
         if ($discipline_name != null && $emphasis_id != null) {
             $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")
             ->where("emphasis_id",$emphasis_id)

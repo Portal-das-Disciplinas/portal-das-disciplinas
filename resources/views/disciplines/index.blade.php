@@ -118,6 +118,7 @@
 
                                         <div class="advancedSearch">
                                             <input 
+                                                class="range"
                                                 type="range" 
                                                 style="width:80%;" 
                                                 id="range" 
