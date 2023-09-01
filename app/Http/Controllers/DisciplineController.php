@@ -90,6 +90,7 @@ class DisciplineController extends Controller
     {
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
+        $classifications_all = Classification::all();
 
         $emphasis_id = $request->input('emphasis');
         $discipline_name = $request->input('name_discipline');
@@ -98,6 +99,7 @@ class DisciplineController extends Controller
         
         $input;
         $arrayValues;
+        $arrayValuesRanges;
         $disciplines = collect([]);
         
         // isRangeChosen: variável que checa se os ranges foram enviados
@@ -108,17 +110,22 @@ class DisciplineController extends Controller
         // request e salva numa variável
         foreach($arrayClassifications as $arr) {
             $arrayValues = $arr;
+            $arrayValuesRanges = $arr;
         }
-        
+
         // remove todos os parametros que tenham haver com
         // os ranges, que seja a emphase ou o nome da disciplina
         foreach($arrayValues as $key => $value) {
             if (str_contains($key, "range") == true) {
                 unset($arrayValues[$key]);
+                // array_push($arrayValuesRanges, $key => $value);
 
-                // If para checar se os ranges estão sendo enviados com -1
-                // significando que os ranges não foram enviados
-                if ($value == -1) {
+                // If para checar se os ranges estão sendo enviados
+                // com qualquer valor diferente de menos 1, significando 
+                // que os ranges foram enviados
+                if ($value != -1) {
+                    $isRangeChosen = 0;
+                } else {
                     $isRangeChosen = 1;
                 }
             } else if ($key == "name_discipline") {
@@ -130,8 +137,18 @@ class DisciplineController extends Controller
             }
         }
 
-        dd($request);
+        // foreach pra tirar qualquer parâmetro que não tenha range
+        // de dentro do arrayValuesRanges
+        foreach($arrayValuesRanges as $key => $value) {
+            if (str_contains($key, "range") == false) {
+                unset($arrayValuesRanges[$key]);
+            }
+        }
+
+        // dd($isRangeChosen);
         // dd($arrayValues);
+        // dd($arrayValuesRanges);
+        // dd($request);
 
 
         // Mecanismo pra saber se mais parâmetros fora o nome da disciplina e a ênfase foram enviados
@@ -140,10 +157,92 @@ class DisciplineController extends Controller
             dd("Mais parâmetros fora o nome, ênfase e os ranges foram enviados");
         } else if ($isRangeChosen == 0) {
             // Ranges foram enviados
-            dd("Ranges foram enviados");
+            if ($discipline_name != null && $emphasis_id != null) {
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
+                ->where("name", "like", "%" . $discipline_name . "%")
+                ->where("emphasis_id", $emphasis_id)
+                ->get(); 
+                
+                foreach($disciplines as $key => $value) {
+                    dd($value);
+                    
+                }
+                
+            } else if ($emphasis_id != null) {
+                $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
+
+                return view('disciplines.index', compact('disciplines'))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else if ($discipline_name != null) {
+                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
+
+                return view('disciplines.index', compact('disciplines'))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else if ($emphasis_id == null) {
+                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
+
+                return view('disciplines.index', compact('disciplines'))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else {
+                return redirect('/')
+                ->with('disciplines', $disciplines_all->paginate(12))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            }
         } else {
             // Apenas o nome ou a ênfase foram enviados
-            dd("Apenas o nome ou a ênfase foram enviados");
+            if ($discipline_name != null && $emphasis_id != null) {
+                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")
+                ->where("emphasis_id",$emphasis_id)
+                ->paginate(12);
+                // dd($disciplines);
+                // foreach ($disciplines as $key => $i) {
+                //     if ($i->emphasis_id != $emphasis_id) {
+                //         unset($disciplines[$key]);
+                //     }
+                // }
+                // dd($disciplines);
+                // $disciplines->paginate(12);
+                
+                return view('disciplines.index', compact('disciplines'))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else if ($emphasis_id != null) {
+                $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
+
+                return view('disciplines.index', compact('disciplines'))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else if ($discipline_name != null) {
+                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
+
+                return view('disciplines.index', compact('disciplines'))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else if ($emphasis_id == null) {
+                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
+
+                return view('disciplines.index', compact('disciplines'))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else {
+                return redirect('/')
+                ->with('disciplines', $disciplines_all->paginate(12))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            }
         }
 
 
@@ -154,47 +253,7 @@ class DisciplineController extends Controller
 
 
 
-        // Mecanismo de filtragem por nome e ênfase
-        if ($discipline_name != null && $emphasis_id != null) {
-            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")
-            ->where("emphasis_id",$emphasis_id)
-            ->paginate(12);
-            // dd($disciplines);
-            // foreach ($disciplines as $key => $i) {
-            //     if ($i->emphasis_id != $emphasis_id) {
-            //         unset($disciplines[$key]);
-            //     }
-            // }
-            // dd($disciplines);
-            // $disciplines->paginate(12);
-            
-            return view('disciplines.index', compact('disciplines'))
-            ->with('emphasis', $emphasis_all)
-            ->with('theme', $this->theme);
-        } else if ($emphasis_id != null) {
-            $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
-
-            return view('disciplines.index', compact('disciplines'))
-            ->with('emphasis', $emphasis_all)
-            ->with('theme', $this->theme);
-        } else if ($discipline_name != null) {
-            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
-            
-            return view('disciplines.index', compact('disciplines'))
-            ->with('emphasis', $emphasis_all)
-            ->with('theme', $this->theme);
-        } else if ($emphasis_id == null) {
-            $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
-
-            return view('disciplines.index', compact('disciplines'))
-            ->with('emphasis', $emphasis_all)
-            ->with('theme', $this->theme);
-        } else {
-            return redirect('/')
-            ->with('disciplines', $disciplines_all->paginate(12))
-            ->with('emphasis', $emphasis_all)
-            ->with('theme', $this->theme);
-        }
+        
     }
 
 
