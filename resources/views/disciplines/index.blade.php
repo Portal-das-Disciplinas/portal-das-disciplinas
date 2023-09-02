@@ -102,7 +102,7 @@
                                                     <input 
                                                         type="radio" 
                                                         value="menos" 
-                                                        name="{{ mb_strtolower($classification->name) }}"
+                                                        name="{{ ($classification->id) }}"
                                                     >
                                                     <label for="inputA">{{ $classification->type_a }}</label>
                                                 </div>
@@ -110,7 +110,7 @@
                                                     <input  
                                                         type="radio" 
                                                         value="mais" 
-                                                        name="{{ mb_strtolower($classification->name) }}"
+                                                        name="{{ ($classification->id) }}"
                                                     >
                                                     <label for="inputB">{{ $classification->type_b }}</label>
                                                 </div>
