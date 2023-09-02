@@ -194,18 +194,15 @@ class DisciplineController extends Controller
             } else if ($discipline_name == null && $emphasis_id == null) {
                 // pesquisa apenas por classificações
 
-                $classifications = ClassificationDiscipline::all();
+                // dd($arrayValues);
+                $classifications = ClassificationDiscipline::join("disciplines", "discipline_id", "=", "id")->get();
 
                 foreach ($classifications as $classKey => $class) {
                     // dd($classifications);
                     foreach ($arrayValues as $key => $arrValues) {
-                        // dd($arrayValues);
-                        // dd($discipline->classification_id);
-                        // dd($key);
                         if ($class->classification_id == $key) {
                             if ($arrValues == "menos") {
                                 if ($class->value >= 51) {
-                                    // dd($discipline);
                                     unset($classifications[$classKey]);
                                 }    
                             } else {
@@ -218,21 +215,26 @@ class DisciplineController extends Controller
                         }
                     }
                 }
-                // dd($classifications->unique());
-                $disciplines = Discipline::all();
 
-                foreach ($disciplines as $key => $discipline) {
+                $disciplines = collect([]);
+                $disciplinesCollection = Discipline::all();
+
+                foreach ($disciplinesCollection as $key => $discipline) {
                     foreach ($classifications as $class) {
-                        // dd($classifications);
-                        if ($discipline->id != $class->discipline_id) {
-                            unset($disciplines[$key]);
+                        if ($discipline->id == $class->discipline_id) {
+                            $disciplines->push($discipline);
+                            // dd($discipline);
+                            // unset($disciplines[$key]);
                         }
                     }
                 }
-
-                // dd($disciplines);
+                // dd($disciplinesCollection);
+                // $disciplines->paginate(2);
+                // dd($disciplines->paginate(2));
+                
+                // var_dump($disciplinesCollection);
                 return view('disciplines.index')
-                ->with("disciplines", $disciplines->unique()->paginate(4))
+                ->with('disciplines', $disciplines->paginate(2))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all);
