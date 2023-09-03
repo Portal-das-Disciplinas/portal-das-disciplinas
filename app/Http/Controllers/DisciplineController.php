@@ -195,12 +195,28 @@ class DisciplineController extends Controller
                 // pesquisa apenas por classificações
 
                 // dd($arrayValues);
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "classification_id")->get();
-                // dd($disciplines->paginate(2));
-                $disciplinesResult = collect([]);
+                $classifications = Classification::all();
+                // dd($classifications);
+                $arrayClassificationValues = array();
 
-                foreach ($disciplines as $disciplineKey => $discipline) {
-                    foreach ($arrayValues as $key => $value) {
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "classification_id")->get();
+                $disciplinesResult = collect([]);
+                
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // e trocar o "Metodologias" pelo respectivo id
+                foreach ($classifications as $key => $value) {
+                    foreach ($arrayValues as $arrKey => $arrValue) {
+                        if ($value->name == $arrKey) {
+                            $arrayClassificationValues += array($value->id => $arrValue);
+                        }
+                    }
+                }
+
+                // dd($arrayClassificationValues);
+
+
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    foreach ($arrayClassificationValues as $key => $value) {
                         if ($value == "mais") {
                             $result = $disciplines->where("classification_id", $key)
                             ->where("value", ">=", 51);
@@ -214,11 +230,19 @@ class DisciplineController extends Controller
                         }
                     } 
                 }
+                // dd($disciplinesResult->collapse()->unique());
+                $disciplinesMixed = $disciplinesResult->collapse()->unique();
+                // dd($disciplinesMixed);
+                $finalCollection = collect([]);
 
-                $testeFinal = $disciplinesResult->collapse()->unique()->paginate(2)->withQueryString();
+                foreach ($disciplinesMixed as $key => $value) {
+                    $testeFinal = Discipline::where("id", "=", $value->discipline_id)->get();
+                    $finalCollection->push($testeFinal);
+                }
 
+                // dd($finalCollection->collapse());
                 return view('disciplines.index')
-                ->with('disciplines', $testeFinal)
+                ->with('disciplines', $finalCollection->collapse()->paginate(2))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all);

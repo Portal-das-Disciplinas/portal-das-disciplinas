@@ -35,10 +35,18 @@
         <div class="row justify-content-md-center mt-5" style="margin-bottom:25px;">
             <div class="col">
                 <form id="filter" action="/discipline/filter" method="GET">
-                    @csrf
+                    <!-- @csrf -->
                     <div class="input-group search-bar">
-                        <input type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" 
-                        aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
+                        <input 
+                            id="name_discipline"
+                            type="text" 
+                            class="form-control col-9" 
+                            placeholder="Nome da disciplina" 
+                            aria-label="Caixa de pesquisa" 
+                            aria-describedby="button-addon2" 
+                            name='name_discipline' 
+                            value="{{ $name_discipline ?? '' }}" 
+                        />
                         
                         <select name="emphasis" id="emphasis" class='form-control col-3' >
                             <option selected value=""> Todas as ênfases </option>
@@ -48,7 +56,7 @@
                         </select>
 
                         <div class="input-group-append">
-                            <button class="btn btn-primary search-button" type="submit"><i class='fas fa-search search-icon'></i>Pesquisar</button>
+                            <button id="pesquisar" class="btn btn-primary search-button" type="submit"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                         </div>
                     </div>
             </div>
@@ -102,7 +110,7 @@
                                                     <input 
                                                         type="radio" 
                                                         value="menos" 
-                                                        name="{{ ($classification->id) }}"
+                                                        name="{{ ($classification->name) }}"
                                                     >
                                                     <label for="inputA">{{ $classification->type_a }}</label>
                                                 </div>
@@ -110,7 +118,7 @@
                                                     <input  
                                                         type="radio" 
                                                         value="mais" 
-                                                        name="{{ ($classification->id) }}"
+                                                        name="{{ ($classification->name) }}"
                                                     >
                                                     <label for="inputB">{{ $classification->type_b }}</label>
                                                 </div>
@@ -220,8 +228,7 @@
     @endisset
     </div>
     <div style="display:flex; justify-content:center;">
-    {{dd($disciplines->withQueryString()->links('layouts.paginationLinks'))}}
-    {{ $disciplines->withQueryString()->links('layouts.paginationLinks') }}
+    {{ $disciplines->appends(["name_discipline" => "", "emphasis" => "", [$disciplines->withQueryString()]])->links() }}
     </div>
 </section>
 </div>
