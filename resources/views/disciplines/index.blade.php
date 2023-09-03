@@ -140,12 +140,11 @@
         
     @isset($disciplines)
         
-        @if($disciplines->count() == 0)
+        @if(count($disciplines) == 0)
             <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
         @else
             <div class="row pb-5">
                 @foreach($disciplines as $discipline)
-                
                 <div class="col-12 col-sm-6 col-lg-3 mt-5 ">
                         <div class="discipline-card card shadow light-border-radius">
                             @if(!is_null($discipline['trailer']))
@@ -221,7 +220,8 @@
     @endisset
     </div>
     <div style="display:flex; justify-content:center;">
-    {{ $disciplines->appends(request()->input())->links('layouts.paginationLinks') }}
+    {{dd($disciplines->withQueryString()->links('layouts.paginationLinks'))}}
+    {{ $disciplines->withQueryString()->links('layouts.paginationLinks') }}
     </div>
 </section>
 </div>

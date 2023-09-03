@@ -195,46 +195,30 @@ class DisciplineController extends Controller
                 // pesquisa apenas por classificações
 
                 // dd($arrayValues);
-                $classifications = ClassificationDiscipline::join("disciplines", "discipline_id", "=", "id")->get();
-
-                foreach ($classifications as $classKey => $class) {
-                    // dd($classifications);
-                    foreach ($arrayValues as $key => $arrValues) {
-                        if ($class->classification_id == $key) {
-                            if ($arrValues == "menos") {
-                                if ($class->value >= 51) {
-                                    unset($classifications[$classKey]);
-                                }    
-                            } else {
-                                if ($class->value <= 50) {
-                                    unset($classifications[$classKey]);
-                                }
-                            }
-                        } else {
-                            unset($classifications[$classKey]);
-                        }
-                    }
-                }
-
-                $disciplines = collect([]);
-                $disciplinesCollection = Discipline::all();
-
-                foreach ($disciplinesCollection as $key => $discipline) {
-                    foreach ($classifications as $class) {
-                        if ($discipline->id == $class->discipline_id) {
-                            $disciplines->push($discipline);
-                            // dd($discipline);
-                            // unset($disciplines[$key]);
-                        }
-                    }
-                }
-                // dd($disciplinesCollection);
-                // $disciplines->paginate(2);
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "classification_id")->get();
                 // dd($disciplines->paginate(2));
-                
-                // var_dump($disciplinesCollection);
+                $disciplinesResult = collect([]);
+
+                foreach ($disciplines as $disciplineKey => $discipline) {
+                    foreach ($arrayValues as $key => $value) {
+                        if ($value == "mais") {
+                            $result = $disciplines->where("classification_id", $key)
+                            ->where("value", ">=", 51);
+
+                            $disciplinesResult->push($result);
+                        } else {
+                            $result = $disciplines->where("classification_id", $key)
+                            ->where("value", "<=", 50);
+
+                            $disciplinesResult->push($result);
+                        }
+                    } 
+                }
+
+                $testeFinal = $disciplinesResult->collapse()->unique()->paginate(2)->withQueryString();
+
                 return view('disciplines.index')
-                ->with('disciplines', $disciplines->paginate(2))
+                ->with('disciplines', $testeFinal)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all);
@@ -385,18 +369,11 @@ class DisciplineController extends Controller
                 ->with('classifications', $classifications_all);
             }
         }
-
-
-
-
-
-
-
-
-
-        
     }
 
+    public function paginater (Collection $coll, $perPage) {
+
+    }
 
     public function disciplineAdvancedFilter(Request $request)
     {
