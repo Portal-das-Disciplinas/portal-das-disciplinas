@@ -35,7 +35,7 @@
         <div class="row justify-content-md-center mt-5" style="margin-bottom:25px;">
             <div class="col">
                 <form id="filter" action="/discipline/filter" method="GET">
-                    <!-- @csrf -->
+                    @csrf
                     <div class="input-group search-bar">
                         <input 
                             id="name_discipline"
@@ -229,7 +229,7 @@
     </div>
     <div style="display:flex; justify-content:center;">
     @if (request()->name_discipline == null && request()->emphasis == null)
-        {{ $disciplines->appends(["name_discipline" => "", "emphasis" => "", [$disciplines->withQueryString()]])->links() }}
+        {{ $disciplines->appends(["name_discipline" => "", "emphasis" => "", [$disciplines->withQueryString()]])->links() }}    
     @else
         {{ $disciplines->withQueryString()->links() }}
     @endif
