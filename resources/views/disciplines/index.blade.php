@@ -228,7 +228,11 @@
     @endisset
     </div>
     <div style="display:flex; justify-content:center;">
-    {{ $disciplines->appends(["name_discipline" => "", "emphasis" => "", [$disciplines->withQueryString()]])->links() }}
+    @if (request()->name_discipline == null && request()->emphasis == null)
+        {{ $disciplines->appends(["name_discipline" => "", "emphasis" => "", [$disciplines->withQueryString()]])->links() }}
+    @else
+        {{ $disciplines->withQueryString()->links() }}
+    @endif
     </div>
 </section>
 </div>

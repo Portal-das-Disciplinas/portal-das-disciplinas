@@ -154,54 +154,18 @@ class DisciplineController extends Controller
         // Mecanismo pra saber se mais parâmetros fora o nome da disciplina e a ênfase foram enviados
         if (count($arrayValues) > 0) {
             // Mais parâmetros fora o nome, ênfase e os ranges foram enviados
-            
+
             if ($discipline_name != null && $emphasis_id != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where("name", "like", "%" . $discipline_name . "%")
                 ->where("emphasis_id", $emphasis_id)
                 ->get();
                 
-                foreach ($disciplines as $disciplineKey => $discipline) {
-                    // dd($disciplines);
-
-                    foreach ($arrayValues as $key => $arrValues) {
-                        // dd($arrayValues);
-                        // dd($discipline->classification_id);
-                        // dd($key);
-                        if ($discipline->classification_id == $key) {
-                            if ($arrValues == "menos") {
-                                if ($discipline->value >= 51) {
-                                    // dd($discipline);
-                                    unset($disciplines[$disciplineKey]);
-                                }    
-                            } else {
-                                if ($discipline->value <= 50) {
-                                    unset($disciplines[$disciplineKey]);
-                                }
-                            }
-                        } else {
-                            unset($disciplines[$disciplineKey]);
-                        }
-                    }
-                }
-                
-                // dd($disciplines);
-                return view('disciplines.index')
-                ->with("disciplines", $disciplines->unique()->paginate(4))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
-            } else if ($discipline_name == null && $emphasis_id == null) {
-                // pesquisa apenas por classificações
-
-                // dd($arrayValues);
                 $classifications = Classification::all();
-                // dd($classifications);
+                $disciplinesResult = collect([]);
+                $finalCollection = collect([]);
                 $arrayClassificationValues = array();
 
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "classification_id")->get();
-                $disciplinesResult = collect([]);
-                
                 // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
@@ -213,7 +177,53 @@ class DisciplineController extends Controller
                 }
 
                 // dd($arrayClassificationValues);
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    // dd($disciplineValue);
+                    foreach ($arrayClassificationValues as $key => $value) {
+                        if ($value == "mais") {
+                            $result = $disciplines->where("classification_id", $key)
+                            ->where("value", ">=", 51);
 
+                            $disciplinesResult->push($result);
+                        } else {
+                            $result = $disciplines->where("classification_id", $key)
+                            ->where("value", "<=", 50);
+
+                            $disciplinesResult->push($result);
+                        }
+                    }
+                }
+
+                $disciplinesMixed = $disciplinesResult->collapse()->unique();
+
+                foreach ($disciplinesMixed as $key => $value) {
+                    $testeFinal = Discipline::where("id", "=", $value->discipline_id)->get();
+                    $finalCollection->push($testeFinal);
+                }
+
+                return view('disciplines.index')
+                ->with("disciplines", $finalCollection->collapse()->paginate(4))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else if ($discipline_name == null && $emphasis_id == null) {
+                // pesquisa apenas por classificações
+
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "classification_id")->get();
+                $disciplinesResult = collect([]);
+
+                $classifications = Classification::all();
+                $arrayClassificationValues = array();
+
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // e trocar o "Metodologias" pelo respectivo id
+                foreach ($classifications as $key => $value) {
+                    foreach ($arrayValues as $arrKey => $arrValue) {
+                        if ($value->name == $arrKey) {
+                            $arrayClassificationValues += array($value->id => $arrValue);
+                        }
+                    }
+                }
 
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -351,15 +361,7 @@ class DisciplineController extends Controller
                 $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")
                 ->where("emphasis_id",$emphasis_id)
                 ->paginate(12);
-                // dd($disciplines);
-                // foreach ($disciplines as $key => $i) {
-                //     if ($i->emphasis_id != $emphasis_id) {
-                //         unset($disciplines[$key]);
-                //     }
-                // }
-                // dd($disciplines);
-                // $disciplines->paginate(12);
-                
+
                 return view('disciplines.index', compact('disciplines'))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
