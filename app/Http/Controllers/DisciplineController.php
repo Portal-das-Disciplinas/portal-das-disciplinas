@@ -203,8 +203,9 @@ class DisciplineController extends Controller
             } else if ($discipline_name == null && $emphasis_id == null) {
                 // pesquisa apenas por classificações
 
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "classification_id")->get();
+                // $disciplines = Discipline::join("classifications_disciplines", "id", "=", "classification_id")->get();
                 $disciplinesResult = collect([]);
+                $disciplines = ClassificationDiscipline::all();
 
                 $classifications = Classification::all();
                 $arrayClassificationValues = array();
@@ -219,36 +220,66 @@ class DisciplineController extends Controller
                     }
                 }
 
-                // dd($arrayClassificationValues);
+                // dd($disciplines);
+                $fieldsToCheck = count($arrayClassificationValues);
 
-                // foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    // dd($disciplineValue);
+                    $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
-                        if ($value == "mais") {
-                            $result = $disciplines->where("classification_id", $key)
-                            ->where("value", ">=", 51);
+                        // dd($fieldsToCheck);
+                        // dd($arrayClassificationValues);
+                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
+                        ->get();
+                        // dd($disciplineGroup);
+                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
+                            // dd($valueGroup);
+                            // dd($disciplineGroup);
+                            if ($valueGroup->classification_id == $key) {
+                                if ($value == "mais") {
+                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                    ->where("classification_id", $key)
+                                    ->where("value", ">=", 51)
+                                    ->get();
 
-                            $disciplinesResult->push($result);
-                        } else {
-                            $result = $disciplines->where("classification_id", $key)
-                            ->where("value", "<=", 50);
+                                    // dd($currentDiscipline);
+                                    if (count($currentDiscipline) > 0) {
+                                        $cont++;
+                                    }
+                                } else {
+                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                    ->where("classification_id", $key)
+                                    ->where("value", "<=", 50)
+                                    ->get();
 
-                            $disciplinesResult->push($result);
+                                    // dd($currentDiscipline);
+                                    if (count($currentDiscipline) > 0) {
+                                        $cont++;
+                                    }
+                                }
+                            }
                         }
-                    } 
-                // }
+                    }
+                    // dd($cont);
+                    if ($fieldsToCheck == $cont) {
+                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
+                        // dd($filteredDiscipline);
+                        $disciplinesResult->push($filteredDiscipline);
+                    }
+                }
 
                 // $disciplinesMixed = $disciplinesResult->collapse()->unique();
-                dd($disciplinesResult->collapse()->unique('discipline_id'));
+                // dd($disciplinesResult->collapse()->unique());
                 $finalCollection = collect([]);
 
-                foreach ($disciplinesMixed as $key => $value) {
-                    $testeFinal = Discipline::where("id", "=", $value->discipline_id)->get();
-                    $finalCollection->push($testeFinal);
-                }
+                // foreach ($disciplinesMixed as $key => $value) {
+                //     $testeFinal = Discipline::where("id", "=", $value->discipline_id)->get();
+                //     $finalCollection->push($testeFinal);
+                // }
 
                 // dd($finalCollection->collapse());
                 return view('disciplines.index')
-                ->with('disciplines', $finalCollection->collapse()->paginate(2))
+                ->with('disciplines', $disciplinesResult->collapse()->unique()->paginate(2))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all);
