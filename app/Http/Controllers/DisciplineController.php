@@ -147,6 +147,13 @@ class DisciplineController extends Controller
             }
         }
 
+        // Foreach pra remover valores nulos do $arrayValuesRanges 
+        foreach ($arrayValuesRanges as $key => $value) {
+            if ($value < 1) {
+                unset($arrayValuesRanges[$key]);
+            }
+        }
+
         // dd($arrayValues);
         // Mecanismo pra saber se mais parâmetros fora o nome da disciplina e a ênfase foram enviados
         if (count($arrayValues) > 0) {
@@ -441,95 +448,228 @@ class DisciplineController extends Controller
                 ->where("emphasis_id", $emphasis_id)
                 ->get(); 
                 
-                dd($disciplines);
-                // corre os resultados da variável disciplines
-                foreach($disciplines as $modelKey => $modelValue) {
-                    // dd($modelValue);
-                    
-                    foreach($arrayValuesRanges as $key => $arrRangevalue) {
-                        // dd($arrRanges);
-                        if ($arrRangevalue < 1) {
-                            // Faz nada
-                        } else {
-                            // Faz verificação
-                            if ($modelValue->value >= $arrRangevalue) {
-                                // model se encaixa no requisito que o usuário digitou
+                $classifications = Classification::all();
+                $disciplinesResult = collect([]);
+                $finalCollection = collect([]);
+                $arrayClassificationValues = array();
+                $arrayCollectionDisciplines = collect([]);
 
-                            } else {
-                                // model não se encaixa no requisito que o usuário digitou
-                                unset($disciplines[$modelKey]);
-                            }
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // e trocar o "Metodologias" pelo respectivo id
+                // dd($arrayValuesRanges);
+                foreach ($classifications as $key => $value) {
+                    foreach ($arrayValuesRanges as $arrKey => $arrValue) {
+                        if ($value->name == substr($arrKey, 5)) {
+                            $arrayClassificationValues += array($value->id => $arrValue);
                         }
                     }
                 }
 
-                // dd($disciplines);
+                $fieldsToCheck = count($arrayClassificationValues);
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    $cont = 0;
+                    foreach ($arrayClassificationValues as $key => $value) {
+                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
+                        ->get();
+                        
+                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
+                            if ($valueGroup->classification_id == $key) {
+                                $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                ->where("classification_id", $valueGroup->classification_id)
+                                ->where("value", ">=", $value)
+                                ->get();
+
+                                if (count($disciplineFiltered) == 1) {
+                                    $arrayCollectionDisciplines->push($disciplineFiltered);
+                                    $cont++;
+                                }
+                            }
+                        }
+                    }
+
+                    
+                    if ($fieldsToCheck == $cont) {
+                        $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
+                        $disciplinesResult->push($result);
+                    }
+                }
+
+                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
+
                 return view('disciplines.index')
-                ->with('disciplines', $disciplines->unique()->paginate(4))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
-            } else if ($emphasis_id != null) {
-                $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
-
-                return view('disciplines.index', compact('disciplines'))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
-            } else if ($discipline_name != null) {
-                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
-
-                return view('disciplines.index', compact('disciplines'))
+                ->with('disciplines', $disciplinesMixed)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all);
             } else if ($discipline_name == null && $emphasis_id == null) {
-                // caso em que apenas os ranges foram enviados
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")->get();
-                // dd($disciplines);
-
+                $disciplines = ClassificationDiscipline::all(); 
+                
                 $classifications = Classification::all();
-                $arrayClassificationValues = array();
                 $disciplinesResult = collect([]);
+                $finalCollection = collect([]);
+                $arrayClassificationValues = array();
+                $arrayCollectionDisciplines = collect([]);
 
-                // Fazer um foreach pra pegar o $arrayValues (["rangeMetodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
                 // e trocar o "Metodologias" pelo respectivo id
+                // dd($arrayValuesRanges);
                 foreach ($classifications as $key => $value) {
-                    // dd($classifications);
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
                         if ($value->name == substr($arrKey, 5)) {
-                            // dd($arrValue);
-                            if ($arrValue > 0) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
+                            $arrayClassificationValues += array($value->id => $arrValue);
                         }
                     }
                 }
 
-                // dd($arrayClassificationValues);
+                $fieldsToCheck = count($arrayClassificationValues);
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    foreach ($arrayClassificationValues as $keyArrRanges => $arrRangeValue) {
-                        // dd($arrRangeValue);
-                        // dd($disciplineValue);
-                        if ($disciplineValue->classification_id == $keyArrRanges) {
-                            if ($disciplineValue->value >= $arrRangeValue) {
-                                // Atende aos requisitos
-                                // Será adicionado na collection
-                                dd($disciplineValue);
-                                $result = Discipline::where("id", "=", $disciplineValue->id)->get();
+                    $cont = 0;
+                    foreach ($arrayClassificationValues as $key => $value) {
+                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
+                        ->get();
+                        
+                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
+                            if ($valueGroup->classification_id == $key) {
+                                $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                ->where("classification_id", $valueGroup->classification_id)
+                                ->where("value", ">=", $value)
+                                ->get();
 
-                                $disciplinesResult->push($result);
+                                if (count($disciplineFiltered) == 1) {
+                                    $arrayCollectionDisciplines->push($disciplineFiltered);
+                                    $cont++;
+                                }
                             }
                         }
+                    }
 
+                    
+                    if ($fieldsToCheck == $cont) {
+                        $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
+                        $disciplinesResult->push($result);
                     }
                 }
-                
-                $finalCollection = $disciplinesResult->collapse();
 
+                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(2);
 
                 return view('disciplines.index')
-                ->with('disciplines', $finalCollection->paginate(2))
+                ->with('disciplines', $disciplinesMixed)
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else if ($emphasis_id != null) {
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
+                ->where('emphasis_id', $emphasis_id)
+                ->get();
+
+                $classifications = Classification::all();
+                $disciplinesResult = collect([]);
+                $finalCollection = collect([]);
+                $arrayClassificationValues = array();
+                $arrayCollectionDisciplines = collect([]);
+
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // e trocar o "Metodologias" pelo respectivo id
+                // dd($arrayValuesRanges);
+                foreach ($classifications as $key => $value) {
+                    foreach ($arrayValuesRanges as $arrKey => $arrValue) {
+                        if ($value->name == substr($arrKey, 5)) {
+                            $arrayClassificationValues += array($value->id => $arrValue);
+                        }
+                    }
+                }
+
+                $fieldsToCheck = count($arrayClassificationValues);
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    $cont = 0;
+                    foreach ($arrayClassificationValues as $key => $value) {
+                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
+                        ->get();
+                        
+                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
+                            if ($valueGroup->classification_id == $key) {
+                                $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                ->where("classification_id", $valueGroup->classification_id)
+                                ->where("value", ">=", $value)
+                                ->get();
+
+                                if (count($disciplineFiltered) == 1) {
+                                    $arrayCollectionDisciplines->push($disciplineFiltered);
+                                    $cont++;
+                                }
+                            }
+                        }
+                    }
+
+                    
+                    if ($fieldsToCheck == $cont) {
+                        $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
+                        $disciplinesResult->push($result);
+                    }
+                }
+
+                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
+
+                return view('disciplines.index')
+                ->with('disciplines', $disciplinesMixed)
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all);
+            } else if ($discipline_name != null) {
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
+                ->where("name", "like", "%" . $discipline_name . "%")
+                ->get();
+
+                $classifications = Classification::all();
+                $disciplinesResult = collect([]);
+                $finalCollection = collect([]);
+                $arrayClassificationValues = array();
+                $arrayCollectionDisciplines = collect([]);
+
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // e trocar o "Metodologias" pelo respectivo id
+                // dd($arrayValuesRanges);
+                foreach ($classifications as $key => $value) {
+                    foreach ($arrayValuesRanges as $arrKey => $arrValue) {
+                        if ($value->name == substr($arrKey, 5)) {
+                            $arrayClassificationValues += array($value->id => $arrValue);
+                        }
+                    }
+                }
+
+                $fieldsToCheck = count($arrayClassificationValues);
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    $cont = 0;
+                    foreach ($arrayClassificationValues as $key => $value) {
+                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
+                        ->get();
+                        
+                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
+                            if ($valueGroup->classification_id == $key) {
+                                $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                ->where("classification_id", $valueGroup->classification_id)
+                                ->where("value", ">=", $value)
+                                ->get();
+
+                                if (count($disciplineFiltered) == 1) {
+                                    $arrayCollectionDisciplines->push($disciplineFiltered);
+                                    $cont++;
+                                }
+                            }
+                        }
+                    }
+
+                    
+                    if ($fieldsToCheck == $cont) {
+                        $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
+                        $disciplinesResult->push($result);
+                    }
+                }
+
+                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
+
+                return view('disciplines.index')
+                ->with('disciplines', $disciplinesMixed)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all);
@@ -540,12 +680,6 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all);
             }
-
-            return redirect('/')
-                ->with('disciplines', $disciplines_all->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
         } else {
             // Apenas o nome ou a ênfase foram enviados
             if ($discipline_name != null && $emphasis_id != null) {
@@ -587,130 +721,6 @@ class DisciplineController extends Controller
             }
         }
     }
-
-    public function disciplineAdvancedFilter(Request $request)
-    {
-        // dd($request);
-        $emphasis_all = Emphasis::all();
-        $disciplines_all = Discipline::all();
-        $classifications_all = Classification::all();
-
-        $emphasis_id = $request->emphasis;
-        $discipline_name = $request->name_discipline;
-
-        $metodologias = $request->metodologias;
-        $discussao = $request->discussão;
-        $abordagem = $request->abordagem;
-        $avaliacao = $request->avaliação;
-
-        $input;
-        $collection = collect([]);
-        $result = collect([]);
-        $resultFiltered = collect([]);
-
-        if($request->metodologias_range == "-1" && $request->discussao_range == "-1" && $request->abordagem_range == "-1" && $request->avaliacao_range == "-1") {
-            if($request->metodologias == null){
-                // echo 'faz nada';
-            } else if($request->metodologias == "classicas"){
-                $input = ClassificationDiscipline::where('classification_id',1)->where('value','<=',50)->get();
-                foreach($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            } else {
-                $input = ClassificationDiscipline::where('classification_id',1)->where('value','>',50)->get();
-                foreach($input as $i){
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            }
-
-            if ($request->discussao == null) {
-                // echo 'faz nada';
-            } else if ($request->discussao == "social") {
-                $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '<=', 50)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            } else {
-                $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '>', 50)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            }
-
-            if ($request->abordagem == null) {
-                // echo 'faz nada';
-            } else if ($request->abordagem == "teorica") {
-                $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '<=', 50)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            } else {
-                $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '>', 50)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            }
-
-            if ($request->avaliacao == null) {
-                // echo 'faz nada';
-            } else if ($request->avaliacao == "provas") {
-                $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '<=', 50)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            } else {
-                $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '>', 50)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            }
-        } else {
-            if ($request->metodologias_range > 0) {
-                $input = ClassificationDiscipline::where('classification_id', 1)->where('value', '<=', $request->metodologias_range)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            }
-
-            if ($request->discussao_range > 0) {
-                $input = ClassificationDiscipline::where('classification_id', 2)->where('value', '<=', $request->discussao_range)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            }
-
-            if ($request->abordagem_range > 0) {
-                $input = ClassificationDiscipline::where('classification_id', 3)->where('value', '<=', $request->abordagem_range)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            }
-
-            if ($request->avaliacao_range > 0) {
-                $input = ClassificationDiscipline::where('classification_id', 4)->where('value', '<=', $request->avaliacao_range)->get();
-                foreach ($input as $i) {
-                    $disciplines_ids->push($i->discipline_id);
-                }
-            }
-        }
-
-        foreach($disciplines_all as $d){
-            foreach($disciplines_ids as $r) {
-                if($d->id == $r) {
-                    $result->push($d);
-                }
-            }
-        }
-
-        $collection = $result->duplicates()->keys();
-
-        foreach($collection as $col) {
-            $result->pull($col);
-        }
-
-        return view('disciplines.index')->with('disciplines', $result)->with('emphasis', $emphasis_all)->with('theme', $this->theme);
-    }
-
 
     /**
      * Show the form for creating a new resource.
