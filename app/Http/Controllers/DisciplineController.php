@@ -22,6 +22,7 @@ use App\Models\Professor;
 use App\Models\Faq;
 use App\Models\Link;
 use App\Models\ParticipantLink;
+use App\Services\APISigaa\APISigaaService;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -425,6 +426,7 @@ class DisciplineController extends Controller
      */
     public function show($id)
     {
+        $service = new APISigaaService();
         $discipline = Discipline::query()
             ->with([
                 'professor',
