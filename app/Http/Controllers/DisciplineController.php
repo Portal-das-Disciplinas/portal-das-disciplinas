@@ -155,7 +155,6 @@ class DisciplineController extends Controller
             }
         }
 
-        // dd($arrayValues);
         // Mecanismo pra saber se mais parâmetros fora o nome da disciplina e a ênfase foram enviados
         if (count($arrayValues) > 0) {
             // Mais parâmetros fora o nome, ênfase e os ranges foram enviados
@@ -181,18 +180,13 @@ class DisciplineController extends Controller
                     }
                 }
 
-                // dd($arrayClassificationValues);
                 $fieldsToCheck = count($arrayClassificationValues);
-                // dd($fieldsToCheck);
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
-                    // dd($disciplineValue);
                     foreach ($arrayClassificationValues as $key => $value) {
                         $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
                         ->get();
-                        // dd($arrayClassificationValues);
                         foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            // dd($disciplineGroup);
                             if ($valueGroup->classification_id == $key) {
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
@@ -298,7 +292,6 @@ class DisciplineController extends Controller
                 ->where('emphasis_id', $emphasis_id)
                 ->get();
                 
-                // dd($disciplines);
                 $classifications = Classification::all();
                 $disciplinesResult = collect([]);
                 $finalCollection = collect([]);
@@ -314,18 +307,13 @@ class DisciplineController extends Controller
                     }
                 }
 
-                // dd($arrayClassificationValues);
                 $fieldsToCheck = count($arrayClassificationValues);
-                // dd($fieldsToCheck);
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
-                    // dd($disciplineValue);
                     foreach ($arrayClassificationValues as $key => $value) {
                         $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
                         ->get();
-                        // dd($arrayClassificationValues);
                         foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            // dd($disciplineGroup);
                             if ($valueGroup->classification_id == $key) {
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
@@ -382,19 +370,14 @@ class DisciplineController extends Controller
                         }
                     }
                 }
-                // dd($disciplines);
-                // dd($arrayClassificationValues);
+
                 $fieldsToCheck = count($arrayClassificationValues);
-                // dd($fieldsToCheck);
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
-                    // dd($disciplineValue);
                     foreach ($arrayClassificationValues as $key => $value) {
                         $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
                         ->get();
-                        // dd($arrayClassificationValues);
                         foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            // dd($disciplineGroup);
                             if ($valueGroup->classification_id == $key) {
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
@@ -441,7 +424,6 @@ class DisciplineController extends Controller
             }
         } else if ($isRangeChosen == 0) {
             // Ranges foram enviados
-            // dd($isRangeChosen);
             if ($discipline_name != null && $emphasis_id != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where("name", "like", "%" . $discipline_name . "%")
@@ -550,7 +532,7 @@ class DisciplineController extends Controller
                     }
                 }
 
-                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(2);
+                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
 
                 return view('disciplines.index')
                 ->with('disciplines', $disciplinesMixed)
