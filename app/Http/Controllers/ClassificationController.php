@@ -38,6 +38,7 @@ class ClassificationController extends Controller
             'name' => 'required|unique:classifications',
             'type_a' => 'required',
             'type_b' => 'required',
+            'system_name' => 'required'
         ]);
 
         $lastOrder = Classification::max('order');
@@ -86,6 +87,7 @@ class ClassificationController extends Controller
             'name' => 'required',
             'type_a' => 'required',
             'type_b' => 'required',
+            'system_name' => 'required'
         ]);
 
         $classification = Classification::find($id);

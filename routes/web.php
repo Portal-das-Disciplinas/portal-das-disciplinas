@@ -43,8 +43,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/', [DisciplineController::class, 'index'])->name('index');
 Route::post('/search', [DisciplineController::class, 'search'])->name('search');
 
-Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter']);
-Route::get('/discipline/filter/advanced', [DisciplineController::class, 'disciplineAdvancedFilter']);
+Route::get('/discipline/filter', [DisciplineController::class, 'multiDisciplineFilter']);
+// Route::get('/discipline/filter/advanced', [DisciplineController::class, 'disciplineAdvancedFilter']);
 //--Desativada por enquanto
 // route::get('/minhasdisciplinas', [DisciplineController::class, 'mydisciplines'])->name('mydisciplines');
 
@@ -95,3 +95,4 @@ Route::delete('participantes_disciplina/{id}', [DisciplineParticipantController:
 Route::resource('links', LinksController::class);
 Route::put('/links/update/toggleactive',[LinksController::class, 'toggleActive'])->name('links.active.toggle');
 Route::put('/links/supdate/opinion_form_link', [LinksController::class,'updateOpinionFormLink'])->name('links.supdate.opinion_form_link');
+Route::get('/disciplinas/dados/{codigo}/{ano}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
