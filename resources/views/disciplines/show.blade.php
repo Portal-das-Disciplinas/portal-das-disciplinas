@@ -126,7 +126,7 @@ mais.
                         <div class="form-group">
                             <label>Selecione o ano</label>
                             <select class="form-control" id="selectYear" onchange="onSelectYear(event)">
-                                @for($i=$actualYear; $i > ($actualYear - 20);$i--)
+                                @for($i=$actualYear; $i > ($actualYear - 50);$i--)
                                 <option value='{"idComponente": "{{$discipline->code}}", "ano": {{$i}}}'>Ano Letivo {{$i}}</option>
                                 @endfor
                             </select>
@@ -711,15 +711,11 @@ mais.
                     element.classList.remove("d-none");
                     element.innerHTML = "Não foram encontrados dados para esse ano";
                 }
-                
-                
-
             },
 
             statusCode:{
 
             },
-
             error:function(error){
                 document.querySelector("#dadosDisciplina").classList.add("d-none");
                 let element = document.querySelector("#infoPesquisaDados");
@@ -727,9 +723,13 @@ mais.
                     element.innerHTML = "Ocorreu um erro ao obter os dados";
 
             }
-        }
+        });
+    }
 
-        );
+    window.onload = function(event){
+        let eventChange = new Event("change");
+        document.querySelector("#selectYear").dispatchEvent(eventChange);
+
     }
     
 </script>

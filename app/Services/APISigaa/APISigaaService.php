@@ -2,6 +2,8 @@
 
 namespace App\Services\APISigaa;
 
+use Illuminate\Support\Facades\Log;
+
 /**
  * Classe responsável em fazer as requisições da API do Sigaa.
  */
@@ -15,7 +17,7 @@ class APISigaaService{
     private $clientSecret = "segredo";
     private $apiKey = "4VYbeRFSLYT9CZRN5q1onPSaYx4ZUtpN";
     private $grantType = "client_credentials";
-    private $token; 
+    private $token= null; 
     private $tokenType;
     private $expiresIn;
     private $scope;
@@ -107,14 +109,15 @@ class APISigaaService{
     }
 
     public function getDisciplineData($codigoComponente, $ano){
-        $this->getToken();
+        if($this->token == null){
+            $this->getToken();
+        }
         $qtdAlunos = 0;
         $qtdAlunosComMedia = 0;
         $media = 0;
         $qtdAprovados = 0;
         $qtdReprovados = 0;
         $qtdTrancados = 0;
-
         $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3&ano=" . $ano,"GET");
         foreach($turmas as $turma){
             $alunosTurma = $this->fetch("turma/v1/participantes?id-turma=" . $turma['id-turma'] . "&id-tipo-participante=4", "GET");
