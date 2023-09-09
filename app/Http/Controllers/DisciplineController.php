@@ -21,7 +21,6 @@ use \App\Models\Emphasis;
 use App\Models\Professor;
 use App\Models\Link;
 use App\Models\Faq;
-use App\Models\Link;
 use App\Models\ParticipantLink;
 use App\Services\APISigaa\APISigaaService;
 use Exception;
