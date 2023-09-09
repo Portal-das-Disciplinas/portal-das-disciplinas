@@ -17,7 +17,7 @@ class DisciplineTableSeeder extends Seeder
      */
     public function run()
     {
-        Discipline::factory()->count(50)->create();
+        // Discipline::factory()->count(50)->create();
 
         Discipline::create([
             'emphasis_id' => 1,
