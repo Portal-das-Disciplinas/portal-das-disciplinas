@@ -119,6 +119,64 @@ mais.
                         @endif
                     </div>
                 </div>
+                <div class="card p-2">
+                    <div class="d-none">{{$actualYear = date("Y")}}</div>
+                    <h1 class="mt-5">Dados do componente</h1>
+                    <div class="form">
+                        <div class="form-group">
+                            <label>Selecione o ano</label>
+                            <select class="form-control" id="selectYear" onchange="onSelectYear(event)">
+                                @for($i=$actualYear; $i > ($actualYear - 20);$i--)
+                                <option value='{"idComponente": "{{$discipline->code}}", "ano": {{$i}}}'>Ano Letivo {{$i}}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+                    <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
+                            Buscando dados...
+                    </div>
+                    <div id="dadosDisciplina" class="container mt-2 d-none">
+                        <div class="row mb-2" style="border-bottom-style:solid;border-width:1px; border-color:gray">
+                            <h2 class="col-6">Média das turmas</h2>
+                            <div class="col-6 d-flex justify-content-end">
+                                <h1 class="flex-end" id="notaMediaComponente">0</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex justify-content-between">
+                                    <span>Aprovados</span>
+                                    <span style="color:green"><b id="percentagemAprovados">0%</b></span>
+                                </div>
+                                <div class="progress">
+                                    <div id="progressAprovados"class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex justify-content-between">
+                                    <span>Reprovados</span>
+                                    <span class="text-danger"><b id="percentagemReprovados">0%</b></span>
+                                </div>
+                                <div class="progress">
+                                    <div id="progressReprovados" class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="d-flex justify-content-between">
+                                    <span>Trancados</span>
+                                    <span style="color:grey"><b id="percentagemTrancados">0%</b></span>
+                                </div>
+                                <div class="progress">
+                                    <div id="progressTrancados" class="progress-bar" role="progressbar" style="width: 0%; background-color:grey" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- PROFESSOR -->
         </div>
@@ -624,10 +682,56 @@ mais.
         });
 
         document.querySelector("#modal-edit #links").innerHTML = renderLinks('modal-edit');
-
-
-
     }
+
+    function onSelectYear(event){
+        dado = JSON.parse(event.target.value);
+        let element = document.querySelector("#infoPesquisaDados");
+        element.classList.remove("d-none");
+        element.innerHTML = "Buscando dados...";
+        $.ajax({
+            url:'dados/'+dado.idComponente + "/" + dado.ano,
+            method:'GET',
+
+            success:function(result){
+                if(result.mediaGeral){
+                    document.querySelector("#infoPesquisaDados").classList.add("d-none");
+                    document.querySelector("#dadosDisciplina").classList.remove("d-none");
+                    document.querySelector("#notaMediaComponente").innerHTML = result.mediaGeral.toFixed(1);
+                    document.querySelector("#percentagemAprovados").innerHTML = result.aprovadosPercentagem.toFixed(1) +"%";
+                    document.querySelector("#progressAprovados").style.width=result.aprovadosPercentagem+"%";
+                    document.querySelector("#percentagemReprovados").innerHTML = result.reprovadosPercentagem.toFixed(1)+"%";
+                    document.querySelector("#progressReprovados").style.width=result.reprovadosPercentagem+"%";
+                    document.querySelector("#percentagemTrancados").innerHTML = result.trancadosPercentagem.toFixed(1)+"%";
+                    document.querySelector("#progressTrancados").style.width=result.trancadosPercentagem+"%";
+                }
+                else{
+                    document.querySelector("#dadosDisciplina").classList.add("d-none");
+                    let element = document.querySelector("#infoPesquisaDados");
+                    element.classList.remove("d-none");
+                    element.innerHTML = "Não foram encontrados dados para esse ano";
+                }
+                
+                
+
+            },
+
+            statusCode:{
+
+            },
+
+            error:function(error){
+                document.querySelector("#dadosDisciplina").classList.add("d-none");
+                let element = document.querySelector("#infoPesquisaDados");
+                    element.classList.add("d-none");
+                    element.innerHTML = "Ocorreu um erro ao obter os dados";
+
+            }
+        }
+
+        );
+    }
+    
 </script>
 
 

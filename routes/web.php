@@ -95,3 +95,4 @@ Route::delete('participantes_disciplina/{id}', [DisciplineParticipantController:
 Route::resource('links', LinksController::class);
 Route::put('/links/update/toggleactive',[LinksController::class, 'toggleActive'])->name('links.active.toggle');
 Route::put('/links/supdate/opinion_form_link', [LinksController::class,'updateOpinionFormLink'])->name('links.supdate.opinion_form_link');
+Route::get('/disciplinas/dados/{codigo}/{ano}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');

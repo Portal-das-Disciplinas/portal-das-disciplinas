@@ -22,6 +22,7 @@ use App\Models\Professor;
 use App\Models\Faq;
 use App\Models\Link;
 use App\Models\ParticipantLink;
+use App\Services\APISigaa\APISigaaService;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -425,6 +426,7 @@ class DisciplineController extends Controller
      */
     public function show($id)
     {
+        $service = new APISigaaService();
         $discipline = Discipline::query()
             ->with([
                 'professor',
@@ -789,5 +791,14 @@ class DisciplineController extends Controller
         return view('my-disciplines')
             ->with('disciplines', $disciplines)
             ->with('theme', $this->theme);
+    }
+
+    /**
+     * Obtém os dados da disciplina como retenção, aprovação etc
+     */
+    function getDisciplineData(Request $request, $disciplineCode, $year){
+        $apiService = new APISigaaService();
+        $data = $apiService->getDisciplineData($disciplineCode, $year);
+        return response()->json($data);
     }
 }
