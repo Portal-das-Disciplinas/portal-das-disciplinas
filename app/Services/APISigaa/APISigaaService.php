@@ -106,7 +106,7 @@ class APISigaaService{
         return $turmas;
     }
 
-    public function getDisciplineStatiscs($codigoComponente, $ano){
+    public function getDisciplineData($codigoComponente, $ano){
         $this->getToken();
         $qtdAlunos = 0;
         $qtdAlunosComMedia = 0;
@@ -136,6 +136,7 @@ class APISigaaService{
                         else if($boletimAluno["situacao"] == "REPROVADO"){
                             $qtdReprovados++;
                         }
+                        break;
                     }
                 }
                 if(!$encontrouBoletim){
@@ -144,19 +145,34 @@ class APISigaaService{
             }
         }
 
-        $estatistica = array(
-            "mediaGeral" => $media/$qtdAlunosComMedia,
-            "aprovadosPercentagem" => ($qtdAprovados/$qtdAlunos) * 100,
-            "reprovadosPercentagem" =>($qtdReprovados/$qtdAlunos) * 100,
-            "trancados" => ($qtdTrancados/$qtdAlunos) * 100
-        );
+        $dados = null;
 
-       return $estatistica;
+        if($qtdAlunos == 0){
+            return null;
+
+        }else{
+
+            if($qtdAlunosComMedia == 0){
+                $dados = array(
+                    "mediaGeral" => 0,
+                    "aprovadosPercentagem" => ($qtdAprovados/$qtdAlunos) * 100,
+                    "reprovadosPercentagem" =>($qtdReprovados/$qtdAlunos) * 100,
+                    "trancadosPercentagem" => ($qtdTrancados/$qtdAlunos) * 100
+                );
+            }
+            else{
+                $dados = array(
+                    "mediaGeral" => $media/$qtdAlunosComMedia,
+                    "aprovadosPercentagem" => ($qtdAprovados/$qtdAlunos) * 100,
+                    "reprovadosPercentagem" =>($qtdReprovados/$qtdAlunos) * 100,
+                    "trancadosPercentagem" => ($qtdTrancados/$qtdAlunos) * 100
+                );
+            }
+        }
+       return $dados;
 
     }
 
 }
-
-
 
 ?>

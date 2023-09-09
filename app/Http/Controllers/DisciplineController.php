@@ -792,4 +792,13 @@ class DisciplineController extends Controller
             ->with('disciplines', $disciplines)
             ->with('theme', $this->theme);
     }
+
+    /**
+     * Obtém os dados da disciplina como retenção, aprovação etc
+     */
+    function getDisciplineData(Request $request, $disciplineCode, $year){
+        $apiService = new APISigaaService();
+        $data = $apiService->getDisciplineData($disciplineCode, $year);
+        return response()->json($data);
+    }
 }

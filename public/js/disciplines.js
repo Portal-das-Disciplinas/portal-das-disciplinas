@@ -129,4 +129,3 @@ function renderParticipants(idElement) {
     });
     document.querySelector(idElement).innerHTML = html;
 }
-
