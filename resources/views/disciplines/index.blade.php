@@ -70,6 +70,7 @@
                       Filtragem via Classificações
                     </button>
 
+                    <input type="reset" style="display:none" id="resetButton" value="">
                     <button 
                         id="advancedOptionButton" 
                         style="float:right;" 
@@ -101,7 +102,7 @@
                         <div class="container">
                             @foreach($classifications as $classification)
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-4">
                                         <a class="flex-sm-fill text-sm-center nav-link">{{ $classification->name }}</a>
                                     </div>
                                     <div class="col">
@@ -125,16 +126,30 @@
                                         </div>
 
                                         <div class="advancedSearch">
+                                            <div class="col">
+                                            <div class="value">
+                                                <p 
+                                                    id="{{ $classification->id }}"
+                                                    class="mostrador"
+                                                >
+                                                    0
+                                                </p>    
+                                            </div>
+                                            </div>
+                                            
+                                            <div class="col-10">
                                             <input 
                                                 class="range"
                                                 type="range" 
                                                 style="width:80%;" 
-                                                id="range" 
+                                                id="range{{ $classification->id }}" 
                                                 name="range{{ $classification->name }}"
                                                 value="-1" 
                                                 min="-1" 
                                                 max="100"
+                                                onchange="returnValue(this.id, this.value)"
                                             >
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -239,4 +254,5 @@
 </div>
 
 <script src="{{ asset('js/indexClassificationForm.js') }}"></script>
+<script src="{{ asset('js/indexSlider.js') }}"></script>
 @endsection

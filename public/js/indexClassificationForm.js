@@ -18,6 +18,11 @@ $("#AccordionButton").on("click", () => {
 });
 
 $("#advancedOptionButton").on("click", () => {
+    $("#resetButton").trigger("click");
+    $("#resetButton").on("click", () => {
+        $(".mostrador").text("0");
+        // alert("oii");
+    });
     // checa se os ranges estão escondidos
     if ($(".advancedSearch").css("display") == "none") {
         // ranges irão ativar
