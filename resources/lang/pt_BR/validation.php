@@ -187,6 +187,7 @@ return [
         'new_password' => 'nova senha',
         'type_a' => 'tipo A',
         'type_b' => 'tipo B',
+        'system_name' => 'nome sem acentuação'
     ],
 
 ];
