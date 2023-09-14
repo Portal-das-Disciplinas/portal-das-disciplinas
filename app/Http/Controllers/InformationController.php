@@ -79,7 +79,7 @@ class InformationController extends Controller
         }
         
         $videoAboutProducers = DisciplineParticipant::query()->orderBy('name','ASC')->where('worked_on','video_about')->get();
-
+        
 
         return view('information', [
             'collaborators' => $collaborators,

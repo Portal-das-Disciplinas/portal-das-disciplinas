@@ -45,4 +45,9 @@ class Collaborator extends Model
         return $this->hasMany(CollaboratorLink::class);
     }
 
+
+    public function productions(){
+        return $this->hasMany(CollaboratorProduction::class);
+    }
+
 }
