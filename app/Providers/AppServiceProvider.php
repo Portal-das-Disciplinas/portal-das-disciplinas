@@ -50,5 +50,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        $this->app->resolving(LengthAwarePaginator::class, static function (LengthAwarePaginator $paginator) {
+            return $paginator->appends(request()->query());
+        });
+        $this->app->resolving(Paginator::class, static function (Paginator $paginator) {
+            return $paginator->appends(request()->query());
+        });
     }
 }

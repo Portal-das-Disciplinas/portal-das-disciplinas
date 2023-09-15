@@ -21,8 +21,8 @@ Cadastro de Professor
                 @method('PUT')
             @endif
             <div class="form-row">
-                <div class="form-group col-12">
-                    <label for="name" class="text-black">Nome</label>
+                <div class="form-group col-6">
+                    <label for="name" class="text-black">*Nome</label>
                     <input  type="text"
                             class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}"
                             name="name"
@@ -34,10 +34,23 @@ Cadastro de Professor
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="form-group col-6">
+                    <label for="system_name" class="text-black">*NOME SEM ACENTUAÇÃO(E SEM 'Ç')</label>
+                    <input  type="text"
+                            class="form-control {{ $errors->has('system_name') ? 'is-invalid' : ''}}"
+                            name="system_name"
+                            id="system_name"
+                            placeholder="Nome sem Acentuação"
+                            autocomplete="off"
+                            value="{{ $classification->system_name ?? '' }}">
+                    @error('system_name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-6">
-                    <label for="type_a" class="text-black">Tipo A</label>
+                    <label for="type_a" class="text-black">*Tipo A</label>
                     <input  type="text"
                             class="form-control {{ $errors->has('type_a') ? 'is-invalid' : ''}}"
                             name="type_a"
@@ -50,7 +63,7 @@ Cadastro de Professor
                         @enderror
                 </div>
                 <div class="form-group col-6">
-                    <label for="type_b" class="text-black">Tipo B</label>
+                    <label for="type_b" class="text-black">*Tipo B</label>
                     <input  type="text"
                             class="form-control {{ $errors->has('type_b') ? 'is-invalid' : ''}}"
                             name="type_b"

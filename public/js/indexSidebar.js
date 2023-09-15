@@ -1,3 +1,5 @@
+$("#advancedFilter").css("display", "none");
+
 $("#filterButton").on("click", () => {
     $("#advancedFilter").css("display", "flex");
 
@@ -8,7 +10,17 @@ $("#filterButton").on("click", () => {
     }
 });
 
-$("#triggerMetodologia").on("click", () => {
+$("#advancedFilter").on("click", () => {
+    if ($(".advancedClass[class='advancedClass']").css("display") == "none") {
+        $(".advancedClass[class='advancedClass']").css("display", "flex");
+        $(".simpleClass[class='simpleClass']").css("display", "none");
+    } else {
+        $(".advancedClass[class='advancedClass']").css("display", "none");
+        $(".simpleClass[class='simpleClass']").css("display", "flex");
+    }
+});
+
+$("#triggerMetodologias").on("click", () => {
     if($("#metodologias").css("display") != "none"){
         $("#metodologias").css("display","none");
     } else {
@@ -49,9 +61,8 @@ $("#triggerHorario").on("click", () => {
 })
 
 $("#advancedFilter").on("click", () => {
-    console.log("oi");
     $("#metodologias").css("display","none");
-    $("#triggerMetodologia").prop('disabled', true);
+    $("#triggerMetodologias").prop('disabled', true);
     
     $("#range-metodologia").attr({'min': 0});
     $("#range-metodologia").attr({'value': 0});
@@ -83,8 +94,8 @@ $("#advancedFilter").on("click", () => {
     if($("#abordagem-range").css("display") != "none"){
         $("#metodologias-range").css("display","none");
         $("#metodologias-range").val('');
-        $("#triggerMetodologia").prop('checked', false);
-        $("#triggerMetodologia").prop('disabled', false);
+        $("#triggerMetodologias").prop('checked', false);
+        $("#triggerMetodologias").prop('disabled', false);
 
         $("#range-metodologia").attr({'min': -1});
         $("#range-metodologia").attr({'value': -1});
@@ -122,7 +133,7 @@ $("#advancedFilter").on("click", () => {
         $("#range-horario").attr({'value': -1});
     } else {
         $("#metodologias-range").css("display","flex");
-        $("#triggerMetodologia").prop('checked', false);
+        $("#triggerMetodologias").prop('checked', false);
 
         $("#discussao-range").css("display","flex");
         $("#triggerDiscussao").prop('checked', false);
