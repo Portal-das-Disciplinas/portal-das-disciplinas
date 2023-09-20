@@ -191,7 +191,7 @@ class DisciplineController extends Controller
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
+                                    ->where("value", "<=", 50)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -200,7 +200,7 @@ class DisciplineController extends Controller
                                 } else {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
+                                    ->where("value", ">=", 51)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -254,7 +254,7 @@ class DisciplineController extends Controller
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
+                                    ->where("value", "<=", 50)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -263,7 +263,7 @@ class DisciplineController extends Controller
                                 } else {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
+                                    ->where("value", ">=", 51)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -318,7 +318,7 @@ class DisciplineController extends Controller
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
+                                    ->where("value", "<=", 50)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -327,7 +327,7 @@ class DisciplineController extends Controller
                                 } else {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
+                                    ->where("value", ">=", 51)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -382,7 +382,7 @@ class DisciplineController extends Controller
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
+                                    ->where("value", "<=", 50)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -391,7 +391,7 @@ class DisciplineController extends Controller
                                 } else {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
+                                    ->where("value", ">=", 51)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
