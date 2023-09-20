@@ -26,6 +26,7 @@ $("#advancedOptionButton").on("click", () => {
     // checa se os ranges estão escondidos
     if ($(".advancedSearch").css("display") == "none") {
         // ranges irão ativar
+        $("#caracteristicas").css("display", "none");
         $(".advancedSearch").css("display", "flex");
 
         // Quando os ranges ativarem mudar o value de mínimo deles
@@ -36,6 +37,7 @@ $("#advancedOptionButton").on("click", () => {
         $(".simpleSearch").css("display", "none");
     } else {
         // ranges irão desativar
+        $("#caracteristicas").css("display", "flex");
         $(".advancedSearch").css("display", "none");
         
         // Quando os ranges ativarem mudar o value de mínimo deles
