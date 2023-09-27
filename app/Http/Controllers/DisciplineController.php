@@ -1243,11 +1243,20 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Obtém os dados da disciplina como retenção, aprovação etc
+     * Obtém os dados de turmas consolidadas como quantidade de aprovações, reprovações e média geral.
+     * @param \Illuminate\Http\Request $request Objeto contendo as informações de requição http.
+     * @param string $disciplineCode Código da disciplina.
+     * @param int year $ano em que a a turma foi aberta.
+     * @param int período em que a turma foi aberta.
+     * @return @return \Illuminate\Http\JsonResponse
      */
-    function getDisciplineData(Request $request, $disciplineCode, $year){
+    function getDisciplineData(Request $request){
         $apiService = new APISigaaService();
-        $data = $apiService->getDisciplineData($disciplineCode, $year);
-        return response()->json($data);
+        if($request['idTurma'] == "" || $request['idTurma'] == null){
+            //$idTurma = null;
+        }
+        $data = $apiService->getDisciplineData($request['codigo'], $request['idTurma'], $request['ano'], $request['periodo']);
+        
+        return response()->json($data,200);
     }
 }
