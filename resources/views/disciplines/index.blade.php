@@ -66,7 +66,15 @@
             <div class="card">
                 <div class="card-header" id="headingOne">
                   <h5 class="mb-0">
-                    <button type="button" id="AccordionButton" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <button 
+                        type="button" 
+                        id="AccordionButton" 
+                        class="btn btn-link" 
+                        data-toggle="collapse" 
+                        data-target="#collapseOne" 
+                        aria-expanded="false" 
+                        aria-controls="collapseOne"
+                    >
                       Filtragem via Classificações
                     </button>
 
@@ -74,35 +82,27 @@
                     <button 
                         id="advancedOptionButton" 
                         style="float:right;" 
-                        type="button" 
+                        type="button"
+                        class="btn btn-link" 
                         data-toggle="tooltip" 
                         data-placement="right" 
                         title="Pesquisa Avançada"
                     >
-                        <svg 
-                            id="i-edit" 
-                            xmlns="http://www.w3.org/2000/svg" 
-                            viewBox="0 0 32 32" 
-                            width="32" 
-                            height="32" 
-                            fill="none" 
-                            stroke="currentcolor" 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                            stroke-width="2"
-                        >
-                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z" />
-                        </svg>
+                        Filtragem Avançada
                     </button>
                   </h5>
                 </div>
 
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                        <div class="container">
+                    <div class="card-body" style="padding-left: 0; padding-right:0;">
+                        <div class="container" style="padding-left: 0; padding-right:0;">
+                            <div class="col" id="caracteristicas" style="display: flex; justify-content: center;">
+                                <h3>Característica Predominante</h3>
+                            </div>
+                            <br>
                             @foreach($classifications as $classification)
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-4" id="classificationName" style="padding-right:0;">
                                         <a class="flex-sm-fill text-sm-center nav-link">{{ $classification->name }}</a>
                                     </div>
                                     <div class="col">
@@ -127,32 +127,33 @@
 
                                         <div class="advancedSearch">
                                             <div class="col">
-                                            <div class="value">
-                                                <p 
-                                                    id="{{ $classification->id }}"
-                                                    class="mostrador"
-                                                >
-                                                    0
-                                                </p>    
-                                            </div>
+                                                <div class="value">
+                                                    <p 
+                                                        id="{{ $classification->id }}"
+                                                        class="mostrador"
+                                                    >
+                                                        > 0%
+                                                    </p>    
+                                                </div>
                                             </div>
                                             
-                                            <div class="col-10">
-                                            <input 
-                                                class="range"
-                                                type="range" 
-                                                style="width:80%;" 
-                                                id="range{{ $classification->id }}" 
-                                                name="range{{ $classification->name }}"
-                                                value="-1" 
-                                                min="-1" 
-                                                max="100"
-                                                onchange="returnValue(this.id, this.value)"
-                                            >
+                                            <div class="col-8">
+                                                <input 
+                                                    class="range"
+                                                    type="range" 
+                                                    style="width: 100%"
+                                                    id="range{{ $classification->id }}" 
+                                                    name="range{{ $classification->name }}"
+                                                    value="-1" 
+                                                    min="-1" 
+                                                    max="100"
+                                                    onchange="returnValue(this.id, this.value)"
+                                                >
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <br>
                             @endforeach
                             </form>
                         </div>  
