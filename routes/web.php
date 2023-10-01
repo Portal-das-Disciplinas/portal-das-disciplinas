@@ -106,7 +106,6 @@ Route::get('/disciplinas/dados/{codigo}/{idTurma}/{ano}/{periodo}',[DisciplineCo
 Route::get('/apisistemas/turmas',[ApiSistemasController::class,'getTurmasPorComponente'])->name("apisistemas.turmas");
 
 Route::get('/agendamento_busca_dados',[SchedulingDisciplinePerformanceUpdateController::class,'index'])->name('scheduling.index');
-Route::get('/agendamentos_busca_dados/listar',[SchedulingDisciplinePerformanceUpdateController::class,'listAll'])->name('scheduling.all');
 Route::post('/agendamentos_busca_dados/store',[SchedulingDisciplinePerformanceUpdateController::class,'store'])->name('scheduling.store');
 Route::delete('/agendamentos_busca_dados/delete',[SchedulingDisciplinePerformanceUpdateController::class,'delete'])->name('scheduling.delete');
 Route::get('/agendamentos_busca_dados/executar/{idSchedule}',[SchedulingDisciplinePerformanceUpdateController::class,'runSchedule'])->name('scheduling.execute');

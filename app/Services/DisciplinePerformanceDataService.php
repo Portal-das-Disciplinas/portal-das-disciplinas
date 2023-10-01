@@ -28,7 +28,12 @@ class DisciplinePerformanceDataService
         $schedule->save();
     }
 
-    function listAll()
+    function listSchedules($status){
+        $data = SchedulingDisciplinePerfomanceDataUpdate::where('status','=',$status)->get();
+        return $data;
+    }
+
+    function listAllSchedules()
     {
 
         return SchedulingDisciplinePerfomanceDataUpdate::all();

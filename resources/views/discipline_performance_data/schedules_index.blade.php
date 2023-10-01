@@ -3,31 +3,28 @@
 @section('title')
 Agendamentos
 @endsection
-
-
-
 @section('content')
 
 <div class='container mt-4' style='min-height:100vh'>
     <div class="col-md-12">
         <div class="d-flex justify-content-center">
-            <h1>Agendamento de pesquisa de índices de desempenho</h1>
+            <h1 style="text-align:center">Agendamento de pesquisa de índices de desempenho</h1>
         </div>
     </div>
-    <div class="row mb-3">
-        <div class="col-md-1 offset-11">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar</button>
+    <div class="row mb-3 mt-5">
+        <div class="col-md-12">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar Agendamento</button>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <div class="d-flex justify-content-start bg-primary">
-                <form id="formSearchSchedules" class="w-100" method="GET">
+                <form id="formSearchSchedules" class="w-100" method="GET" action="{{route('scheduling.index')}}">
                     <div class="form-row">
-                        <select class="form-control">
-                            <option value="PENDING"> Agendamentos PENDENTES</option>
-                            <option value="COMPLETE"> Agendamentos COMPLETOS</option>
-                            <option value="ERROR"> Agendamentos com ERROS</option>
+                        <select id="selectSearchType" name="scheduleStatus" class="form-control" onchange=onSelectStatusSchedulesChange()>
+                            <option value="PENDING" {{$searchType=='PENDENTES'? 'selected': ''}}> Agendamentos PENDENTES</option>
+                            <option value="COMPLETE" {{$searchType=='COMPLETOS'? 'selected': ''}}> Agendamentos COMPLETOS</option>
+                            <option value="ERROR" {{$searchType=='COM ERROS'? 'selected': ''}}> Agendamentos com ERROS</option>
                         </select>
                     </div>
                 </form>
@@ -37,9 +34,18 @@ Agendamentos
     </div>
     <div class="row mt-4">
         <div class="col-md-12">
-            <h2 id="SearchFilterType">Buscas Agendadas</h2>
+            <h2 id="SearchFilterType">{{$searchType}}</h2>
         </div>
     </div>
+
+    @if(count ($schedules) == 0)
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-secondary">Sem resultados</h2   >
+        </div>
+    </div>
+    @endif
+
     @foreach($schedules as $schedule)
     <div class="row">
         <div class="col-md-12 mt-3 py-3" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
@@ -134,8 +140,6 @@ Agendamentos
                         <span class="text-secondary" style="cursor:pointer" data-dismiss="modal">Fechar</span>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -145,5 +149,11 @@ Agendamentos
 @endsection
 
 @section('scripts-bottom')
+<script>
+    let form = document.querySelector("#formSearchSchedules");
 
+    function onSelectStatusSchedulesChange(event) {
+        form.submit();
+    }
+</script>
 @endsection

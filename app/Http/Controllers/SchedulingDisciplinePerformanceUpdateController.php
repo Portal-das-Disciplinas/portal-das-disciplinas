@@ -20,12 +20,33 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
 
     function index(Request $request){
 
+        $status = $request->scheduleStatus;
         $scheduleService = new DisciplinePerformanceDataService();
-        $schedules = $scheduleService->listAll();
+        $searchType = "TODOS";
+        if($status == null){
+            $schedules = $scheduleService->listSchedules('PENDING');
+            $searchType = "PENDENTES";
+        }else{
+            $schedules = $scheduleService->listSchedules($status);
+            switch($status){
+                case 'PENDING':
+                    $searchType = 'PENDENTES';
+                    break;
+                case 'COMPLETE':
+                    $searchType = 'COMPLETOS';
+                    break;
+                case 'ERROR':
+                    $searchType = 'COM ERROS';
+                    break;
+                default:
+                    $searchType = '';
+            }
+        }
 
         return view('discipline_performance_data.schedules_index')
         ->with('theme',$this->theme)
-        ->with('schedules', $schedules);
+        ->with('schedules', $schedules)
+        ->with('searchType', $searchType);
     }
 
     function store(Request $request){
