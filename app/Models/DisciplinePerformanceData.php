@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DisciplinePerfomanceData extends Model
+class DisciplinePerformanceData extends Model
 {
     use HasFactory;
+    protected $table = 'discipline_performance_datas';
 
     protected $fillable = [
-        'discipline_id',
+        'discipline_code',
         'scheduling_update_id',
         'average_grade',
+        'professors',
         'num_students',
         'num_approved_students',
         'num_failed_students',
@@ -20,8 +22,9 @@ class DisciplinePerfomanceData extends Model
         'schedule_description',
         'year',
         'period',
+        'highest_grade',
+        'lowest_grade',
         'sum_grades',
-        'exists_class',
         'last_update'
     ];
 

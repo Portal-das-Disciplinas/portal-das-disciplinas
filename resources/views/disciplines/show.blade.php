@@ -152,20 +152,22 @@ mais.
                             <select id="selectClass" class="form-control" onchange="onSelectClass(event)">
                                 <!--Conteúdo gerado por javascript -->
                             </select>
-                            <button id="searchClasses" class="btn btn-sm btn-outline-primary mt-3" onclick="onClickSearchClasses(event,'{{$discipline->code}}')">Buscar Turmas</button>
                         </div>
                         
-                        <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                        
                     </div>
                     <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
                         Buscando dados...
                     </div>
                     <div id="dadosDisciplina" class="container mt-2 d-none">
                         <div class="row mb-2" style="border-bottom-style:solid;border-width:1px; border-color:gray">
-                            <h2 class="col-6">Média das turmas</h2>
+                            <h2 class="col-6 mb-0">Nota média</h2>
                             <div class="col-6 d-flex justify-content-end">
                                 <h1 class="flex-end" id="notaMediaComponente">0</h1>
                             </div>
+                            <h4 id="infoTipoBusca"  class="col-12"></h4>
+                            <h4 id="infoNumDiscentes" class="col-12"></h4>
+                            <h4 id="infoProfessoresBusca" class="col-12"></h4>
                         </div>
                         <div class="row">
                             <div class="col">
@@ -190,6 +192,10 @@ mais.
                             </div>
                         </div>
                     </div>
+                    <div class="mt-5 ml-4">
+                        <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                    </div>
+                    
                 </div>
             </div>
             <!-- PROFESSOR -->
@@ -707,5 +713,5 @@ mais.
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
-<script src="{{asset('js/disciplinePerfomanceDataForm.js')}}">d<script>
+<script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}">d<script>
 @endsection

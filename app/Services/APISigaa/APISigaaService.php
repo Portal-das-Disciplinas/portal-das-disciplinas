@@ -2,6 +2,8 @@
 
 namespace App\Services\APISigaa;
 
+use stdClass;
+
 /**
  * Classe responsável em fazer as requisições da API do Sigaa.
  */
@@ -17,7 +19,6 @@ class APISigaaService
     //private $token = "2de62b66-6901-47f9-ace3-323a2a72a9d9";
     private $tokenData = null;
     private $qtdNewTokens = 0;
-    private $typ;
 
     /**
      * Função auxiliar para fazer as requisições para a API
@@ -134,6 +135,7 @@ class APISigaaService
 
         $lotacaoTurma = [];
         $idsTurma = [];
+        $docentes = [];
         if ($this->tokenData == null) {
             $this->getToken();
         }
@@ -154,7 +156,23 @@ class APISigaaService
             if ($idTurma == null || $turma['id-turma'] == $idTurma) {
                 $qtdTurmas++;
                 array_push($idsTurma, $turma['id-turma']);
+                $fetchDocentes = $this->fetch("turma/v1/turmas/" . $turma['id-turma'] . "/docentes","GET");
+                $docentesTurma = [];
+                foreach($fetchDocentes as $docente){
+                    $docenteClass= new stdClass();
+                    if($docente['nome-docente'])
+                    {
+                        $docenteClass->nome = $docente['nome-docente'];
+                    }else{
+                        $docenteClass->nome = "sem professor";
+                    }
+                    //$docenteClass->nome = $docente['nome-docente'];
+                    
+                    array_push($docentesTurma, json_encode($docenteClass));
+                }
+                array_push($docentes, $docentesTurma);
                 
+
                 $limit = 100;
                 $alunosTurmaFetch = $this->fetch("turma/v1/participantes?id-turma=" . $turma['id-turma'] . "&id-tipo-participante=4&limit=" . $limit, "GET");
                 if (count($alunosTurmaFetch) == $limit) {
@@ -224,6 +242,7 @@ class APISigaaService
                 "quantidade-turmas" => $qtdTurmas,
                 "ids-turma" => $idsTurma,
                 "lotacoes-turma" => $lotacaoTurma,
+                "docentes" => json_encode($docentes)
             );
         }
         return $dados;

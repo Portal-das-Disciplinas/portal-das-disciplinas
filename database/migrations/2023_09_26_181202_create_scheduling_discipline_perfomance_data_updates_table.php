@@ -18,9 +18,11 @@ class CreateSchedulingDisciplinePerfomanceDataUpdatesTable extends Migration
             $table->string('status')->default('PENDING');
             $table->date('executed_at')->nullable(true);
             $table->integer('update_time')->default(0);
-            $table->integer('num_new_datas')->default(0);
+            $table->integer('num_new_data')->default(0);
+            $table->integer('num_updated_data')->default(0);
             $table->integer('year');
             $table->integer('period');
+            $table->boolean('update_if_exists')->default(false);
             $table->text('error_description')->nullable(true);
             $table->timestamps();
         });

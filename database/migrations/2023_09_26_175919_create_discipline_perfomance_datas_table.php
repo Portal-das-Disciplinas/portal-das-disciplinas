@@ -15,8 +15,12 @@ class CreateDisciplinePerfomanceDatasTable extends Migration
     {
         Schema::create('discipline_performance_datas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('discipline_id')->constrained();
-            $table->float("average_grade")->default(0);
+            $table->string('discipline_code');
+            $table->float('sum_grades')->default(0);
+            $table->float('average_grade')->default(0);
+            $table->float('highest_grade')->default(0);
+            $table->float('lowest_grade')->default(0);
+            $table->json('professors');
             $table->integer('num_students')->default(0);
             $table->integer('num_approved_students')->default(0);
             $table->integer('num_failed_students')->default(0);
@@ -24,8 +28,6 @@ class CreateDisciplinePerfomanceDatasTable extends Migration
             $table->string('schedule_description');
             $table->integer('year');
             $table->integer('period');
-            $table->float('sum_grades')->default(0);
-            $table->boolean('exists_class')->default(false);
             $table->timestamps();
         });
     }

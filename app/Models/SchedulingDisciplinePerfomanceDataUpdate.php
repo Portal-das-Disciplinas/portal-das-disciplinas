@@ -19,15 +19,12 @@ class SchedulingDisciplinePerfomanceDataUpdate extends Model
         'status',
         'executed_at',
         'update_time',
-        'num_new_datas',
+        'num_new_data',
         'year',
         'period',
+        'update_if_exists',
         'error_description'
     ];
-
-    public function discipline(){
-        return $this->belongsTo(Discipline::class);
-    }
 
     public function disciplinePerfomanceDatas(){
         return $this->hasMany(DisciplinePerfomanceData::class);

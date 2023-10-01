@@ -14,12 +14,15 @@ use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\DisciplineParticipantController;
+use App\Http\Controllers\DisciplinePerformanceDataController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LinksController;
 use App\Http\Controllers\ParticipantLinkController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
 use App\Models\Collaborator;
+use App\Models\DisciplinePerformanceData;
 use App\Models\Link;
+use App\Services\DisciplinePerformanceDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -106,3 +109,7 @@ Route::get('/agendamento_busca_dados',[SchedulingDisciplinePerformanceUpdateCont
 Route::get('/agendamentos_busca_dados/listar',[SchedulingDisciplinePerformanceUpdateController::class,'listAll'])->name('scheduling.all');
 Route::post('/agendamentos_busca_dados/store',[SchedulingDisciplinePerformanceUpdateController::class,'store'])->name('scheduling.store');
 Route::delete('/agendamentos_busca_dados/delete',[SchedulingDisciplinePerformanceUpdateController::class,'delete'])->name('scheduling.delete');
+Route::get('/agendamentos_busca_dados/executar/{idSchedule}',[SchedulingDisciplinePerformanceUpdateController::class,'runSchedule'])->name('scheduling.execute');
+
+Route::get('api/performance/{disciplineCode}/{year}/{period}', [DisciplinePerformanceDataController::class,'getDisciplinePerformanceData'])->name('performance.get');
+

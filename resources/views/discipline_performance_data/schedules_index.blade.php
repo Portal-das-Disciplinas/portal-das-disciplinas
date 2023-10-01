@@ -9,19 +9,36 @@ Agendamentos
 @section('content')
 
 <div class='container mt-4' style='min-height:100vh'>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="d-flex justify-content-end">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar</button>
-            </div>
-
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center">
+            <h1>Agendamento de pesquisa de índices de desempenho</h1>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-1 offset-11">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar</button>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h2>Buscas Agendadas</h2>
+            <div class="d-flex justify-content-start bg-primary">
+                <form id="formSearchSchedules" class="w-100" method="GET">
+                    <div class="form-row">
+                        <select class="form-control">
+                            <option value="PENDING"> Agendamentos PENDENTES</option>
+                            <option value="COMPLETE"> Agendamentos COMPLETOS</option>
+                            <option value="ERROR"> Agendamentos com ERROS</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
         </div>
 
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2 id="SearchFilterType">Buscas Agendadas</h2>
+        </div>
     </div>
     @foreach($schedules as $schedule)
     <div class="row">
@@ -31,7 +48,7 @@ Agendamentos
                     <div class="d-flex flex-column">
                         <span><b>Ano Letivo: {{$schedule->year}}</b></span>
                         <span><b>Período {{"0". $schedule->period}}</b></span>
-                        
+
                     </div>
                     <div>
                         @if($schedule->status == 'PENDING')
@@ -39,8 +56,8 @@ Agendamentos
                         @elseif($schedule->status == 'RUNNING')
                         <strong class="text-success">status: RODANDO</strong>
                         @elseif($schedule->status == 'COMPLETE')
-                        <strong class="text-primary">status: AGENDADO</strong>
-                        @elseif($schedule->status == 'HAS_ERRORS')
+                        <strong class="text-primary">status: COMPLETO</strong>
+                        @elseif($schedule->status == 'ERROR')
                         <strong class="text-danger">status: ERRO</strong>
                         @endif
                     </div>
@@ -54,14 +71,17 @@ Agendamentos
                     <small class="text-secondary">Criado em: {{date('d-m-Y h:i:s',strtotime($schedule->created_at)) }}</small>
                 </div>
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary btn-sm">Executar</button>
+                    <form method="GET" action="{{route('scheduling.execute', $schedule->id)}}">
+                        @csrf
+                        <button class="btn btn-primary btn-sm" type="submit">Executar</button>
+                    </form>
                     <form method="post" action="{{route('scheduling.delete')}}">
                         @csrf
                         @method('delete')
                         <input type="hidden" name="idSchedule" value="{{$schedule->id}}">
                         <button class="btn btn-danger btn-sm ml-2" type="submit">Excluir</button>
                     </form>
-                   
+
                 </div>
             </div>
         </div>
@@ -78,7 +98,7 @@ Agendamentos
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="form"  action="{{route('scheduling.store')}}" method='POST'>
+                    <form class="form" action="{{route('scheduling.store')}}" method='POST'>
                         @csrf
 
                         <div class="form-group">
@@ -98,6 +118,10 @@ Agendamentos
                                 <option>4</option>
                                 <option>5</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <input id="updateIfExists" type="checkbox" name="updateIfExists">
+                            <label for="updateIfExists" style="cursor:pointer">Atualizar dados existentes</label>
                         </div>
                         <div class="d-flex justify-content-end">
                             <input type="submit" class="btn btn-primary" value="cadastrar">

@@ -31,7 +31,7 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
     function store(Request $request){
 
         $service = new DisciplinePerformanceDataService();
-        $data = $request->only('disciplineCode', 'year', 'period');
+        $data = $request->only('disciplineCode', 'year', 'period','updateIfExists');
         $service->save($data);
 
         return redirect()->route('scheduling.index');
@@ -40,6 +40,13 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
     function delete(Request $request){
         $service = new DisciplinePerformanceDataService();
         $service->delete($request['idSchedule']);
+        return redirect()->route('scheduling.index');
+
+    }
+
+    function runSchedule(Request $request){
+        $service = new DisciplinePerformanceDataService();
+        $service->runSchedule($request->idSchedule);
         return redirect()->route('scheduling.index');
 
     }
