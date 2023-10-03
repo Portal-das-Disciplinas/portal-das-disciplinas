@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use stdClass;
+
 /**
  * Controlador responsável por realizar as tarefas relacionadas com as disciplinas.
  */
@@ -1252,11 +1254,28 @@ class DisciplineController extends Controller
      */
     function getDisciplineData(Request $request){
         $apiService = new APISigaaService();
-        if($request['idTurma'] == "" || $request['idTurma'] == null){
-            //$idTurma = null;
-        }
+
         $data = $apiService->getDisciplineData($request['codigo'], $request['idTurma'], $request['ano'], $request['periodo']);
         
         return response()->json($data,200);
     }
+
+    function getCodesAndNames(Request $request){
+        if($request->ajax()){
+            $disciplineCodesAndNames = [];
+            $disciplines = Discipline::where("name","like",'%' . $request->disciplineName . '%')->get();
+            foreach($disciplines as $discipline){
+                $disciplineCodeAndName= new stdClass();
+                $disciplineCodeAndName->code = $discipline->code;
+                $disciplineCodeAndName->name = $discipline->name;
+                if(in_array($disciplineCodeAndName, $disciplineCodesAndNames) == false){
+                    array_push($disciplineCodesAndNames, $disciplineCodeAndName);
+                }
+                
+            }
+            return response()->json($disciplineCodesAndNames);
+        }
+    }
+
+
 }

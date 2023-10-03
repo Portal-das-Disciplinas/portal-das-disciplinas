@@ -49,6 +49,7 @@ Route::get('/', [DisciplineController::class, 'index'])->name('index');
 Route::post('/search', [DisciplineController::class, 'search'])->name('search');
 
 Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter']);
+Route::get('/discipline/code/name',[DisciplineController::class,'getCodesAndNames'])->name('disciplines.codes_and_names');
 
 //--Desativada por enquanto
 // route::get('/minhasdisciplinas', [DisciplineController::class, 'mydisciplines'])->name('mydisciplines');
@@ -111,4 +112,5 @@ Route::delete('/agendamentos_busca_dados/delete',[SchedulingDisciplinePerformanc
 Route::get('/agendamentos_busca_dados/executar/{idSchedule}',[SchedulingDisciplinePerformanceUpdateController::class,'runSchedule'])->name('scheduling.execute');
 
 Route::get('api/performance/{disciplineCode}/{year}/{period}', [DisciplinePerformanceDataController::class,'getDisciplinePerformanceData'])->name('performance.get');
+Route::get('/performance',[DisciplinePerformanceDataController::class,'index'])->name('performance.index');
 

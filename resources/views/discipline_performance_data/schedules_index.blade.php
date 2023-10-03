@@ -6,6 +6,7 @@ Agendamentos
 @section('content')
 
 <div class='container mt-4' style='min-height:100vh'>
+    
     <div class="col-md-12">
         <div class="d-flex justify-content-center">
             <h1 style="text-align:center">Agendamento de pesquisa de índices de desempenho</h1>
@@ -14,7 +15,9 @@ Agendamentos
     <div class="row mb-3 mt-5">
         <div class="col-md-12">
             <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar Agendamento</button>
+            <a class="btn btn-primary" href="{{route('performance.index')}}">Ver dados obtidos</a>
         </div>
+        
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -41,7 +44,7 @@ Agendamentos
     @if(count ($schedules) == 0)
     <div class="row">
         <div class="col-md-12">
-            <h2 class="text-secondary">Sem resultados</h2   >
+            <h2 class="text-secondary">Sem resultados</h2>
         </div>
     </div>
     @endif
