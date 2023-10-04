@@ -9,6 +9,7 @@ use App\Services\APISigaa\APISigaaService;
 use Exception;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Throwable;
 
 class DisciplinePerformanceDataService
@@ -141,6 +142,23 @@ class DisciplinePerformanceDataService
 
         return $datas;
     }
+
+    function deletePerformanceData($id){
+        $performanceData = DisciplinePerformanceData::find($id); 
+        $schedule = SchedulingDisciplinePerfomanceDataUpdate::where('id','=',$performanceData->{'scheduling_update_id'})->first();
+        DB::beginTransaction();
+        try{
+            $schedule->{'num_new_data'}--;
+            $schedule->save();
+            $performanceData->delete();
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollBack();
+            throw $e;
+        }
+
+    }
+
 
 
 }

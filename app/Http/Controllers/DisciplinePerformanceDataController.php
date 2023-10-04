@@ -39,5 +39,13 @@ class DisciplinePerformanceDataController extends Controller
 
     }
 
+    function deletePerformanceData(Request $request){
+
+        $service = new DisciplinePerformanceDataService();
+        $idData = $request->idData;
+        $service->deletePerformanceData($idData);
+        return redirect()->back();
+    }
+
 
 }

@@ -81,11 +81,39 @@ Dados de desempenho das disciplinas
             <h3>{{$data['average_grade']}}</h3>
         </div>
         <div class="col-md-2 py-2 d-flex justify-content-center align-items-center">
-            <button class="btn btn-sm btn-outline-danger">Excluir dado</button>
+            <button id="{{'idData-'.$data['id']}}" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modalConfirmOneData" onclick="onClickDeleteData(event)">Excluir dado</button>
         </div>
     </div>
     @endforeach
     @endif
+</div>
+<div id="modalConfirmOneData" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">CONFIRMAÇÃO</h3>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja apagar este dado?</p>
+                <p class="text-secondary">A remoção deste dado pode resultar em alterações em pesquisas multi turmas</p>
+                <form class="form" id="formDeleteOneData" action="{{route('performance.delete')}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <input id="idData" name="idData" type="hidden">
+                    <input id="inputSubmitDeleteOneData" type="submit" hidden>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end p-2">
+                    <label for="inputSubmitDeleteOneData" class="btn btn-danger" type="submit">Confirmar</button>
+                </div>
+                <div class="d-flex justify-content-end p-2">
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 @endsection
 
@@ -135,6 +163,19 @@ Dados de desempenho das disciplinas
         document.querySelector("#liveSearch").innerHTML = html;
         document.querySelector("#liveSearch").classList.remove("d-none");
 
+    }
+    let idToDeleteData = null;
+
+    function onClickDeleteData(event) {
+        idToDeleteData = event.target.id.split("-")[1];
+        document.querySelector("#idData").value = idToDeleteData;
+        console.log(idToDeleteData);
+    }
+
+
+    function onClickCancelDelete(event){
+        idToDeleteData = null;
+        document.querySelector("#idData").value=null;
     }
 </script>
 
