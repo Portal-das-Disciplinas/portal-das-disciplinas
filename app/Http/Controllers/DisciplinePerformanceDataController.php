@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DisciplinePerformanceData;
 use App\Services\DisciplinePerformanceDataService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class DisciplinePerformanceDataController extends Controller
 {
+    protected $performanceDataService;
     protected $theme;
     function __construct(){
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
+        $this->performanceDataService = new DisciplinePerformanceDataService();
     }
 
     /**
@@ -46,6 +50,20 @@ class DisciplinePerformanceDataController extends Controller
         $service->deletePerformanceData($idData);
         return redirect()->back();
     }
+
+    function deletePerformanceDataByCodeYearPeriod(Request $request){
+        try{
+            $this->performanceDataService->deletePerformanceDataByCodeYearPeriod($request->disciplineCode, $request->year, $request->period);
+            return redirect()->back();
+        }catch(Exception $e){
+           return redirect()->back()->withErrors(['delete'=>'Erro ao deletar']);
+        }
+        
+
+    }
+
+
+
 
 
 }

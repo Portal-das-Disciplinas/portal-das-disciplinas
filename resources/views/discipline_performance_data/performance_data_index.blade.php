@@ -46,6 +46,24 @@ Dados de desempenho das disciplinas
             </form>
         </div>
     </div>
+    @if($errors->any())
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span>Ocorreram erros</span>
+                @foreach($errors as $error)
+                <ul>
+                    <li class="list-item">{{$error}}</li>
+                </ul>
+                @endforeach
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+    @endif
     @if(count ($performanceData) == 0)
     <div class="row">
         <div class="col-12">
@@ -55,6 +73,16 @@ Dados de desempenho das disciplinas
         </div>
     </div>
     @else
+    <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-between">
+            <div>
+                <span>Resultados para&nbsp;</span>
+                <strong>{{$disciplineCode}}</strong>
+                <strong class="text-secondary">&nbsp;semestre: {{$year . '.' . $period}}</strong>
+            </div>
+            <button class="btn btn-danger" data-toggle="modal" data-target="#modalConfirmAllData">Apagar dados da disciplina</button>
+        </div>
+    </div>
     @foreach($performanceData as $data)
     <div class="row mb-3" style="box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
         <div class="col-sm-2 py-3" style="border-bottom-style:solid; border-width:1px; border-color:rgba(0,0,0,0.2)">
@@ -87,7 +115,7 @@ Dados de desempenho das disciplinas
     @endforeach
     @endif
 </div>
-<div id="modalConfirmOneData" class="modal">
+<div id="modalConfirmOneData" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -95,7 +123,7 @@ Dados de desempenho das disciplinas
             </div>
             <div class="modal-body">
                 <p>Tem certeza que deseja apagar este dado?</p>
-                <p class="text-secondary">A remoção deste dado pode resultar em alterações em pesquisas multi turmas</p>
+                <p class="text-secondary">A remoção deste dado pode resultar em alterações em pesquisas multi-turmas</p>
                 <form class="form" id="formDeleteOneData" action="{{route('performance.delete')}}" method="POST">
                     @csrf
                     @method('DELETE')
@@ -106,6 +134,36 @@ Dados de desempenho das disciplinas
             <div class="modal-footer">
                 <div class="d-flex justify-content-end p-2">
                     <label for="inputSubmitDeleteOneData" class="btn btn-danger" type="submit">Confirmar</button>
+                </div>
+                <div class="d-flex justify-content-end p-2">
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalConfirmAllData" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">CONFIRMAÇÃO</h3>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja apagar os <strong>TODOS</strong> dados de desempenho da disciplina {{$disciplineCode}} do semestre {{$year}}.{{$period}}?</p>
+                <form class="form" id="formDeleteOneData" action="{{route('performance.delete_by_code_year_period')}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <input name="disciplineCode" type="hidden" value="{{$disciplineCode}}">
+                    <input name="year" type="hidden" value="{{$year}}">
+                    <input name="period" type="hidden" value="{{$period}}">
+                    <input id="inputSubmitDeleteAllData" type="submit" hidden>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end p-2">
+                    <label for="inputSubmitDeleteAllData" class="btn btn-danger" type="submit">Confirmar</button>
                 </div>
                 <div class="d-flex justify-content-end p-2">
                     <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -169,13 +227,12 @@ Dados de desempenho das disciplinas
     function onClickDeleteData(event) {
         idToDeleteData = event.target.id.split("-")[1];
         document.querySelector("#idData").value = idToDeleteData;
-        console.log(idToDeleteData);
     }
 
 
-    function onClickCancelDelete(event){
+    function onClickCancelDelete(event) {
         idToDeleteData = null;
-        document.querySelector("#idData").value=null;
+        document.querySelector("#idData").value = null;
     }
 </script>
 

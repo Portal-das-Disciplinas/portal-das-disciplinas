@@ -114,4 +114,5 @@ Route::get('/agendamentos_busca_dados/executar/{idSchedule}',[SchedulingDiscipli
 Route::get('api/performance/{disciplineCode}/{year}/{period}', [DisciplinePerformanceDataController::class,'getDisciplinePerformanceData'])->name('performance.get');
 Route::get('/performance',[DisciplinePerformanceDataController::class,'index'])->name('performance.index');
 Route::delete('/performance/data/delete',[DisciplinePerformanceDataController::class, 'deletePerformanceData'])->name('performance.delete');
+Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataController::class, 'deletePerformanceDataByCodeYearPeriod'])->name('performance.delete_by_code_year_period');
 

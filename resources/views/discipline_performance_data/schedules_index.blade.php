@@ -15,7 +15,7 @@ Agendamentos
     <div class="row mb-3 mt-5">
         <div class="col-md-12">
             <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar Agendamento</button>
-            <a class="btn btn-primary" href="{{route('performance.index')}}">Ver dados obtidos</a>
+            <a class="btn btn-success" href="{{route('performance.index')}}">Ver dados de performance obtidos</a>
         </div>
         
     </div>

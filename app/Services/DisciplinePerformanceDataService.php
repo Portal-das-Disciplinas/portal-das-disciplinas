@@ -29,8 +29,9 @@ class DisciplinePerformanceDataService
         $schedule->save();
     }
 
-    function listSchedules($status){
-        $data = SchedulingDisciplinePerfomanceDataUpdate::where('status','=',$status)->get();
+    function listSchedules($status)
+    {
+        $data = SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)->get();
         return $data;
     }
 
@@ -143,22 +144,39 @@ class DisciplinePerformanceDataService
         return $datas;
     }
 
-    function deletePerformanceData($id){
-        $performanceData = DisciplinePerformanceData::find($id); 
-        $schedule = SchedulingDisciplinePerfomanceDataUpdate::where('id','=',$performanceData->{'scheduling_update_id'})->first();
+    function deletePerformanceData($id)
+    {
+        $performanceData = DisciplinePerformanceData::find($id);
+        $schedule = SchedulingDisciplinePerfomanceDataUpdate::where('id', '=', $performanceData->{'scheduling_update_id'})->first();
         DB::beginTransaction();
-        try{
+        try {
             $schedule->{'num_new_data'}--;
             $schedule->save();
             $performanceData->delete();
             DB::commit();
-        }catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             throw $e;
         }
-
     }
 
-
-
+    function deletePerformanceDataByCodeYearPeriod($code, $year, $period)
+    {
+        $query = DisciplinePerformanceData::where('discipline_code', '=', $code)
+            ->where('year', '=', $year)
+            ->where('period', '=', $period);
+        DB::beginTransaction();
+        try {
+            foreach ($query->get() as $data) {
+                $schedule = SchedulingDisciplinePerfomanceDataUpdate::where('id', '=', $data->{'scheduling_update_id'})->first();
+                $schedule->{'num_new_data'}--;
+                $schedule->save();
+                $data->delete();
+            }
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
 }
