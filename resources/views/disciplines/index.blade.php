@@ -64,7 +64,8 @@
 
         <div id="accordion">
             <div class="card">
-                <div class="card-header" id="headingOne">
+                <div class="card-header row" id="headingOne">
+                  <div class="col">
                   <h5 class="mb-0">
                     <button 
                         type="button" 
@@ -77,8 +78,11 @@
                     >
                       Filtragem via Classificações
                     </button>
+                  </h5>
+                  </div>
 
-                    <input type="reset" style="display:none" id="resetButton" value="">
+                  <input type="reset" style="display:none" id="resetButton" value="">
+                    <div class="col">
                     <button 
                         id="advancedOptionButton" 
                         style="float:right;" 
@@ -90,7 +94,18 @@
                     >
                         Filtragem Avançada
                     </button>
-                  </h5>
+                    <button  
+                        id="unmarkAll"
+                        style="float:right;" 
+                        type="button"
+                        class="btn btn-link" 
+                        data-toggle="tooltip" 
+                        data-placement="right" 
+                        title="Pesquisa Avançada"
+                    >
+                        Desmarcar tudo
+                    </button>
+                    </div>
                 </div>
 
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
