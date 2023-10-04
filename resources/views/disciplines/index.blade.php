@@ -152,7 +152,7 @@
                                                     min="-1" 
                                                     max="100"
                                                     step="5"
-                                                    onchange="returnValue(this.id, this.value)"
+                                                    oninput="handleInput(this.id, this.value)"
                                                 >
                                             </div>
                                         </div>
