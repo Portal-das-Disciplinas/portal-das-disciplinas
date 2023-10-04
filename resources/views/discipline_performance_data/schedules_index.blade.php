@@ -6,7 +6,7 @@ Agendamentos
 @section('content')
 
 <div class='container mt-4' style='min-height:100vh'>
-    
+
     <div class="col-md-12">
         <div class="d-flex justify-content-center">
             <h1 style="text-align:center">Agendamento de pesquisa de índices de desempenho</h1>
@@ -17,10 +17,10 @@ Agendamentos
             <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar Agendamento</button>
             <a class="btn btn-success" href="{{route('performance.index')}}">Ver dados de performance obtidos</a>
         </div>
-        
+
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-sm-12">
             <div class="d-flex justify-content-start bg-primary">
                 <form id="formSearchSchedules" class="w-100" method="GET" action="{{route('scheduling.index')}}">
                     <div class="form-row">
@@ -50,47 +50,45 @@ Agendamentos
     @endif
 
     @foreach($schedules as $schedule)
-    <div class="row">
-        <div class="col-md-12 mt-3 py-3" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
-            <div class="d-flex flex-column">
-                <div class="d-flex justify-content-between">
-                    <div class="d-flex flex-column">
-                        <span><b>Ano Letivo: {{$schedule->year}}</b></span>
-                        <span><b>Período {{"0". $schedule->period}}</b></span>
-
-                    </div>
-                    <div>
-                        @if($schedule->status == 'PENDING')
-                        <strong class="text-info">status: AGENDADO</strong>
-                        @elseif($schedule->status == 'RUNNING')
-                        <strong class="text-success">status: RODANDO</strong>
-                        @elseif($schedule->status == 'COMPLETE')
-                        <strong class="text-primary">status: COMPLETO</strong>
-                        @elseif($schedule->status == 'ERROR')
-                        <strong class="text-danger">status: ERRO</strong>
-                        @endif
-                    </div>
-                </div>
-                <div>
-                    @if($schedule->{'error_description'})
-                    <p class="text-secondary">{{$schedule->error_description}}</p>
-                    @endif
-                </div>
-                <div>
+    <div class="row" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
+        <div class="col-md-12">
+            <div class="row">
+                <div class=" col-md-4 d-flex flex-column">
+                    <span><b>Semestre: {{$schedule->year . '.' . $schedule->period}}</b></span>
                     <small class="text-secondary">Criado em: {{date('d-m-Y h:i:s',strtotime($schedule->created_at)) }}</small>
                 </div>
-                <div class="d-flex justify-content-end">
-                    <form method="GET" action="{{route('scheduling.execute', $schedule->id)}}">
-                        @csrf
-                        <button class="btn btn-primary btn-sm" type="submit">Executar</button>
-                    </form>
+                <div class="col-md-6">
+                    <span class="text-primary">{{$schedule->{'num_new_data'} }} dado(s) criado(s)</span>
+                </div>
+                <div class="col-sm-2">
+                    @if($schedule->status == 'PENDING')
+                    <strong class="text-info">status: AGENDADO</strong>
+                    @elseif($schedule->status == 'RUNNING')
+                    <strong class="text-success">status: RODANDO</strong>
+                    @elseif($schedule->status == 'COMPLETE')
+                    <strong class="text-primary">status: COMPLETO</strong>
+                    @elseif($schedule->status == 'ERROR')
+                    <strong class="text-danger">status: ERRO</strong>
+                    @endif
+                </div>
+            </div>
+            @if($schedule->{'error_description'})
+            <div class="row">
+                <div class="col-md-12 alert-danger">
+                    <span>{{$schedule->error_description}}</span>
+                </div>
+            </div>
+            @endif
+            <div class="row">
+                <div class="col-md-12 py-2">
                     <form method="post" action="{{route('scheduling.delete')}}">
                         @csrf
                         @method('delete')
                         <input type="hidden" name="idSchedule" value="{{$schedule->id}}">
-                        <button class="btn btn-danger btn-sm ml-2" type="submit">Excluir</button>
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-danger btn-sm" type="submit">Excluir</button>
+                        </div>
                     </form>
-
                 </div>
             </div>
         </div>
