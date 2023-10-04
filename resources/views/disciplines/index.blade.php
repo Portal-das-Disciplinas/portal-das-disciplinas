@@ -94,17 +94,6 @@
                     >
                         Filtragem Avançada
                     </button>
-                    <button  
-                        id="unmarkAll"
-                        style="float:right;" 
-                        type="button"
-                        class="btn btn-link" 
-                        data-toggle="tooltip" 
-                        data-placement="right" 
-                        title="Pesquisa Avançada"
-                    >
-                        Desmarcar tudo
-                    </button>
                     </div>
                 </div>
 
@@ -171,6 +160,19 @@
                                 </div>
                                 <br>
                             @endforeach
+                            <div class="container">
+                            <button  
+                                id="unmarkAll"
+                                style="float:right; padding: 15px; margin: 5px;" 
+                                type="button"
+                                class="btn btn-link" 
+                                data-toggle="tooltip" 
+                                data-placement="right" 
+                                title="Pesquisa Avançada"
+                            >
+                                Desmarcar tudo
+                            </button>
+                            </div>
                             </form>
                         </div>  
                     </div>
