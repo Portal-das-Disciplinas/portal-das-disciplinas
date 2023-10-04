@@ -7,6 +7,7 @@ use App\Services\DisciplinePerformanceDataService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class DisciplinePerformanceDataController extends Controller
 {
@@ -16,6 +17,7 @@ class DisciplinePerformanceDataController extends Controller
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
         $this->performanceDataService = new DisciplinePerformanceDataService();
+        $this->middleware('admin')->except(['getDisciplinePerformanceData']);
     }
 
     /**
@@ -23,10 +25,16 @@ class DisciplinePerformanceDataController extends Controller
      * 
      */
     function getDisciplinePerformanceData(Request $request){
-
-        $service = new DisciplinePerformanceDataService();
-        $datas = $service->getPerformanceData($request['disciplineCode'], $request['year'], $request['period']);
-        return response()->json($datas);
+        try{
+            $service = new DisciplinePerformanceDataService();
+            $datas = $service->getPerformanceData($request['disciplineCode'], $request['year'], $request['period']);
+            return response()->json($datas);
+        }catch(Exception $e){
+            $error = new stdClass();
+            $error->error = "Erro";
+            return response()->json(json_encode($error));
+        }
+        
     }
 
     function index(Request $request){

@@ -16,6 +16,7 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
     function __construct(){
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
+        $this->middleware('admin');
     }
 
     function index(Request $request){

@@ -37,10 +37,6 @@ let lastPeriodSelectedIndex = 0;
 let checkedAllClasses = true;
 
 function onChangeCheckAllClasses(event) {
-    /*if (classPerformanceDatas.length == 0) {
-        // document.querySelector("")
-        return;
-    }*/
     checkedAllClasses = event.target.checked;
     updateInfos();
 }
@@ -147,6 +143,16 @@ function searchDisciplineData(disciplineCode) {
         success: function (result) {
             resetValues();
             classPerformanceDatas = result;
+            if(!Array.isArray(result)){
+                document.querySelector("#dadosDisciplina").classList.add("d-none");
+                let element = document.querySelector("#infoPesquisaDados");
+                element.classList.remove("d-none");
+                element.innerHTML = "Ocorreu um erro ao obter os dados";
+                document.querySelector("#btnSearchDisciplineData").disabled = false;
+                return;
+                
+
+            }
             let html = "";
             classPerformanceDatas.forEach(function (data, index) {
                 let docentes = JSON.parse(data['professors']);
