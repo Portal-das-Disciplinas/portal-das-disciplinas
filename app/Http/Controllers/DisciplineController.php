@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use stdClass;
+
 /**
  * Controlador responsável por realizar as tarefas relacionadas com as disciplinas.
  */
@@ -1391,11 +1393,37 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Obtém os dados da disciplina como retenção, aprovação etc
+     * Obtém os dados de turmas consolidadas como quantidade de aprovações, reprovações e média geral.
+     * @param \Illuminate\Http\Request $request Objeto contendo as informações de requição http.
+     * @param string $disciplineCode Código da disciplina.
+     * @param int year $ano em que a a turma foi aberta.
+     * @param int período em que a turma foi aberta.
+     * @return @return \Illuminate\Http\JsonResponse
      */
-    function getDisciplineData(Request $request, $disciplineCode, $year){
+    function getDisciplineData(Request $request){
         $apiService = new APISigaaService();
-        $data = $apiService->getDisciplineData($disciplineCode, $year);
-        return response()->json($data);
+
+        $data = $apiService->getDisciplineData($request['codigo'], $request['idTurma'], $request['ano'], $request['periodo']);
+        
+        return response()->json($data,200);
     }
+
+    function getCodesAndNames(Request $request){
+        if($request->ajax()){
+            $disciplineCodesAndNames = [];
+            $disciplines = Discipline::where("name","like",'%' . $request->disciplineName . '%')->get();
+            foreach($disciplines as $discipline){
+                $disciplineCodeAndName= new stdClass();
+                $disciplineCodeAndName->code = $discipline->code;
+                $disciplineCodeAndName->name = $discipline->name;
+                if(in_array($disciplineCodeAndName, $disciplineCodesAndNames) == false){
+                    array_push($disciplineCodesAndNames, $disciplineCodeAndName);
+                }
+                
+            }
+            return response()->json($disciplineCodesAndNames);
+        }
+    }
+
+
 }

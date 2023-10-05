@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiSistemasController;
 use App\Models\Classification;
 use Illuminate\Support\Facades\Route;
 
@@ -13,11 +14,15 @@ use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\DisciplineParticipantController;
+use App\Http\Controllers\DisciplinePerformanceDataController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LinksController;
 use App\Http\Controllers\ParticipantLinkController;
+use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
 use App\Models\Collaborator;
+use App\Models\DisciplinePerformanceData;
 use App\Models\Link;
+use App\Services\DisciplinePerformanceDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,6 +49,7 @@ Route::get('/', [DisciplineController::class, 'index'])->name('index');
 Route::post('/search', [DisciplineController::class, 'search'])->name('search');
 
 Route::get('/discipline/filter', [DisciplineController::class, 'disciplineFilter']);
+Route::get('/discipline/code/name',[DisciplineController::class,'getCodesAndNames'])->name('disciplines.codes_and_names');
 
 //--Desativada por enquanto
 // route::get('/minhasdisciplinas', [DisciplineController::class, 'mydisciplines'])->name('mydisciplines');
@@ -95,4 +101,18 @@ Route::delete('participantes_disciplina/{id}', [DisciplineParticipantController:
 Route::resource('links', LinksController::class);
 Route::put('/links/update/toggleactive',[LinksController::class, 'toggleActive'])->name('links.active.toggle');
 Route::put('/links/supdate/opinion_form_link', [LinksController::class,'updateOpinionFormLink'])->name('links.supdate.opinion_form_link');
-Route::get('/disciplinas/dados/{codigo}/{ano}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
+
+Route::get('/disciplinas/dados/{codigo}/{ano}/{periodo}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
+Route::get('/disciplinas/dados/{codigo}/{idTurma}/{ano}/{periodo}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
+Route::get('/apisistemas/turmas',[ApiSistemasController::class,'getTurmasPorComponente'])->name("apisistemas.turmas");
+
+Route::get('/agendamento_busca_dados',[SchedulingDisciplinePerformanceUpdateController::class,'index'])->name('scheduling.index');
+Route::post('/agendamentos_busca_dados/store',[SchedulingDisciplinePerformanceUpdateController::class,'store'])->name('scheduling.store');
+Route::delete('/agendamentos_busca_dados/delete',[SchedulingDisciplinePerformanceUpdateController::class,'delete'])->name('scheduling.delete');
+Route::get('/agendamentos_busca_dados/executar/{idSchedule}',[SchedulingDisciplinePerformanceUpdateController::class,'runSchedule'])->name('scheduling.execute');
+
+Route::get('api/performance/{disciplineCode}/{year}/{period}', [DisciplinePerformanceDataController::class,'getDisciplinePerformanceData'])->name('performance.get');
+Route::get('/performance',[DisciplinePerformanceDataController::class,'index'])->name('performance.index');
+Route::delete('/performance/data/delete',[DisciplinePerformanceDataController::class, 'deletePerformanceData'])->name('performance.delete');
+Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataController::class, 'deletePerformanceDataByCodeYearPeriod'])->name('performance.delete_by_code_year_period');
+
