@@ -64,7 +64,8 @@
 
         <div id="accordion">
             <div class="card">
-                <div class="card-header" id="headingOne">
+                <div class="card-header row" id="headingOne">
+                  <div class="col">
                   <h5 class="mb-0">
                     <button 
                         type="button" 
@@ -77,8 +78,11 @@
                     >
                       Filtragem via Classificações
                     </button>
+                  </h5>
+                  </div>
 
-                    <input type="reset" style="display:none" id="resetButton" value="">
+                  <input type="reset" style="display:none" id="resetButton" value="">
+                    <div class="col">
                     <button 
                         id="advancedOptionButton" 
                         style="float:right;" 
@@ -90,7 +94,7 @@
                     >
                         Filtragem Avançada
                     </button>
-                  </h5>
+                    </div>
                 </div>
 
                 <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
@@ -147,7 +151,8 @@
                                                     value="-1" 
                                                     min="-1" 
                                                     max="100"
-                                                    onchange="returnValue(this.id, this.value)"
+                                                    step="5"
+                                                    oninput="handleInput(this.id, this.value)"
                                                 >
                                             </div>
                                         </div>
@@ -155,6 +160,19 @@
                                 </div>
                                 <br>
                             @endforeach
+                            <div class="container">
+                            <button  
+                                id="unmarkAll"
+                                style="float:right; padding: 15px; margin: 5px;" 
+                                type="button"
+                                class="btn btn-link" 
+                                data-toggle="tooltip" 
+                                data-placement="right" 
+                                title="Pesquisa Avançada"
+                            >
+                                Desmarcar tudo
+                            </button>
+                            </div>
                             </form>
                         </div>  
                     </div>
