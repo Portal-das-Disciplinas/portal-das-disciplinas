@@ -70,7 +70,6 @@ function searchDisciplineData(code) {
         idTurma = '/' + document.querySelector('#selectClass').value;
     }
 
-    console.log("Turma - ID: " + idTurma);
     let year = document.querySelector("#selectYear").value;
     let period = document.querySelector("#selectPeriod").value;
     let element = document.querySelector("#infoPesquisaDados");
@@ -82,7 +81,6 @@ function searchDisciplineData(code) {
         method: 'GET',
 
         success: function(result) {
-            console.log(result);
             if (result['soma-medias']) {
                 let mediaGeral = (result['soma-medias'] / result['quantidade-discentes']).toFixed(2);
                 let percentagemAprovados = ((result['quantidade-aprovados'] / result['quantidade-discentes']) * 100).toFixed(1);
@@ -115,7 +113,6 @@ function searchDisciplineData(code) {
             let element = document.querySelector("#infoPesquisaDados");
             element.classList.add("d-none");
             element.innerHTML = "Ocorreu um erro ao obter os dados";
-            console.log(xhr.responseText);
             document.querySelector("#btnSearchDisciplineData").disabled = false;
 
         }

@@ -1,17 +1,17 @@
 function onSelectYear(event) {
     yearSelectedIndex = event.target.selectedIndex;
-    if( classPerformanceDatas.length == 0 || lastYearSelectedIndex != yearSelectedIndex || lastPeriodSelectedIndex != periodSelectedIndex){
+    if( classPerformanceDatas.length == 0 || (lastYearSelectedIndex != yearSelectedIndex || lastPeriodSelectedIndex != periodSelectedIndex)){
         document.querySelector("#btnSearchDisciplineData").disabled = false;
-    }else{
+    }else if(classPerformanceDatas.length > 0){
         document.querySelector("#btnSearchDisciplineData").disabled = true;
     }
 }
 
 function onSelectPeriod(event) {
     periodSelectedIndex = event.target.selectedIndex;
-    if(classPerformanceDatas.length == 0 || lastYearSelectedIndex != yearSelectedIndex || lastPeriodSelectedIndex != periodSelectedIndex){
+    if(classPerformanceDatas.length == 0 || (lastYearSelectedIndex != yearSelectedIndex || lastPeriodSelectedIndex != periodSelectedIndex)){
         document.querySelector("#btnSearchDisciplineData").disabled = false;
-    }else{
+    }else if(classPerformanceDatas.length > 0){
         document.querySelector("#btnSearchDisciplineData").disabled = true;
     }
 
@@ -176,8 +176,7 @@ function searchDisciplineData(disciplineCode) {
 
 
             generalPerformanceData.averageGrade = generalPerformanceData.averageGrade / generalPerformanceData.numStudents;
-            console.log(result);
-            console.log(generalPerformanceData);
+
 
             if (result.length > 0) {
                 updateInfos();
@@ -197,8 +196,7 @@ function searchDisciplineData(disciplineCode) {
 
         statusCode: {
             500: function (e) {
-                // console.log("erro aconteceu " + JSON.stringify(e));
-                alert("ocorreu um erro: ");
+                
             }
         },
         error: function (xhr, status, error) {
@@ -206,7 +204,6 @@ function searchDisciplineData(disciplineCode) {
             let element = document.querySelector("#infoPesquisaDados");
             element.classList.add("d-none");
             element.innerHTML = "Ocorreu um erro ao obter os dados";
-            console.log(xhr.responseText);
             document.querySelector("#btnSearchDisciplineData").disabled = false;
 
 

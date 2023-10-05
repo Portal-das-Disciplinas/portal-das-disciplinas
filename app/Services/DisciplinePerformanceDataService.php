@@ -41,14 +41,17 @@ class DisciplinePerformanceDataService
         return SchedulingDisciplinePerfomanceDataUpdate::all();
     }
 
-    function delete($id)
+    public function delete($id)
     {
         SchedulingDisciplinePerfomanceDataUpdate::where('id', $id)->delete();
     }
 
-    function updateDisciplinePerfomanceData()
+    function runSchedules()
     {
-        return "Não implementado ainda";
+        $schedules = SchedulingDisciplinePerfomanceDataUpdate::where('status','=','PENDING')->get();
+        foreach($schedules as $schedule){
+            $this->runSchedule($schedule->id);
+        }
     }
 
     function runSchedule($idSchedule)
