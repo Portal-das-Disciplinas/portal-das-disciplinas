@@ -101,6 +101,12 @@
                                           <a href="{{ route("configuracoes.index") }}">
                                               <div class="dropdown-item py-3"> <i class="fas fa-cogs mr-2"></i>Configurações</div>
                                           </a>
+                                          <a href="{{ route('scheduling.index') }}">
+                                              <div class="dropdown-item py-3"> 
+                                                <i class="fas fa-cogs mr-2"></i>
+                                                Dados de desempenho das disciplinas
+                                            </div>
+                                          </a>
                                       @endif
 
                                       <a href="{{ route('logout') }}" onclick="event.preventDefault();
