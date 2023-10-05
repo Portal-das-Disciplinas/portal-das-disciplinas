@@ -713,5 +713,5 @@ mais.
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
-<script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}">d<script>
+<script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
 @endsection
