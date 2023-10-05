@@ -7,13 +7,19 @@
 $(".advancedSearch").css("display", "none");
 $(".simpleSearch").css("display", "flex");
 $("#advancedOptionButton").css("display", "none");
+$("#unmarkAll").css("display", "none");
 
+$("#unmarkAll").on("click", () => {
+    $("#resetButton").trigger("click");
+});
 
 $("#AccordionButton").on("click", () => {
     if ($("#AccordionButton").attr("aria-expanded") == "false") {
         $("#advancedOptionButton").css("display", "flex");
+        $("#unmarkAll").css("display", "flex");
     } else {
         $("#advancedOptionButton").css("display", "none");
+        $("#unmarkAll").css("display", "none");
     }
 });
 
@@ -21,11 +27,12 @@ $("#advancedOptionButton").on("click", () => {
     $("#resetButton").trigger("click");
     $("#resetButton").on("click", () => {
         $(".mostrador").text("0");
-        // alert("oii");
     });
     // checa se os ranges estão escondidos
     if ($(".advancedSearch").css("display") == "none") {
         // ranges irão ativar
+        $("#unmarkAll").css("display", "none");
+        $("#caracteristicas").css("display", "none");
         $(".advancedSearch").css("display", "flex");
 
         // Quando os ranges ativarem mudar o value de mínimo deles
@@ -36,6 +43,8 @@ $("#advancedOptionButton").on("click", () => {
         $(".simpleSearch").css("display", "none");
     } else {
         // ranges irão desativar
+        $("#unmarkAll").css("display", "flex");
+        $("#caracteristicas").css("display", "flex");
         $(".advancedSearch").css("display", "none");
         
         // Quando os ranges ativarem mudar o value de mínimo deles

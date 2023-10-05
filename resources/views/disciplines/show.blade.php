@@ -126,21 +126,48 @@ mais.
                         <div class="form-group">
                             <label>Selecione o ano</label>
                             <select class="form-control" id="selectYear" onchange="onSelectYear(event)">
-                                @for($i=$actualYear; $i > ($actualYear - 20);$i--)
-                                <option value='{"idComponente": "{{$discipline->code}}", "ano": {{$i}}}'>Ano Letivo {{$i}}</option>
+                                @for($i=$actualYear; $i > ($actualYear - 10);$i--)
+                                <option value='{{$i}}'>Ano Letivo {{$i}}</option>
                                 @endfor
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label>Período</label>
+                            <select id="selectPeriod" class="form-control" onchange="onSelectPeriod(event)">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                            </select>
+
+                        </div>
+                        
+                        <div>
+                            <input id="checkAllClasses" type="checkbox" checked onchange="onChangeCheckAllClasses(event)">
+                            <label for="checkAllClasses">Todas as turmas</label>
+                        </div>
+                        
+                        <div id="form-group-select-class" class="form-group d-none">
+                            <label>Turma</label>
+                            <select id="selectClass" class="form-control" onchange="onSelectClass(event)">
+                                <!--Conteúdo gerado por javascript -->
+                            </select>
+                        </div>
+                        
+                        
                     </div>
                     <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
-                            Buscando dados...
+                        Buscando dados...
                     </div>
                     <div id="dadosDisciplina" class="container mt-2 d-none">
                         <div class="row mb-2" style="border-bottom-style:solid;border-width:1px; border-color:gray">
-                            <h2 class="col-6">Média das turmas</h2>
+                            <h2 class="col-6 mb-0">Nota média</h2>
                             <div class="col-6 d-flex justify-content-end">
                                 <h1 class="flex-end" id="notaMediaComponente">0</h1>
                             </div>
+                            <h4 id="infoTipoBusca"  class="col-12"></h4>
+                            <h4 id="infoNumDiscentes" class="col-12"></h4>
+                            <h4 id="infoProfessoresBusca" class="col-12"></h4>
                         </div>
                         <div class="row">
                             <div class="col">
@@ -149,7 +176,7 @@ mais.
                                     <span style="color:green"><b id="percentagemAprovados">0%</b></span>
                                 </div>
                                 <div class="progress">
-                                    <div id="progressAprovados"class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div id="progressAprovados" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         </div>
@@ -164,18 +191,11 @@ mais.
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="d-flex justify-content-between">
-                                    <span>Trancados</span>
-                                    <span style="color:grey"><b id="percentagemTrancados">0%</b></span>
-                                </div>
-                                <div class="progress">
-                                    <div id="progressTrancados" class="progress-bar" role="progressbar" style="width: 0%; background-color:grey" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                    <div class="mt-5 ml-4">
+                        <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                    </div>
+                    
                 </div>
             </div>
             <!-- PROFESSOR -->
@@ -296,9 +316,6 @@ mais.
 
         </div>
     </div>
-
-
-
 </div>
 
 </div>
@@ -382,10 +399,10 @@ mais.
 @endif
 @if($errors->has('link'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>{{$errors->first('link')}}</strong>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true" style="font-size:25px">&times;</span>
-  </button>
+    <strong>{{$errors->first('link')}}</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true" style="font-size:25px">&times;</span>
+    </button>
 </div>
 @endif
 <div class="container mt-5"><!-- seção professor e créditos -->
@@ -429,7 +446,7 @@ mais.
                         </div>
                     </div>
                 </div>
-        
+
             </div><!-- seção professor -->
         </div>
         @endif
@@ -477,7 +494,7 @@ mais.
                                 <span class="text-primary">&nbsp;|</span>
                                 @endif
                                 @endif
-                                
+
                                 @foreach($participant->links as $link)
                                 <a href="{{$link->url}}" rel="noopener" target="_blank" class="ml-2">{{$link->name}}</a>
                                 @if(!$loop->last)
@@ -578,7 +595,7 @@ mais.
     </div>
 </div><!--modal-edit -->
 
-<div id="modalAlertLinks" class="modal show fade" >
+<div id="modalAlertLinks" class="modal show fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-secondary">
@@ -608,8 +625,8 @@ mais.
                 "<input class='form-control mt-1' name='link-url[]' type='text' placeholder='Url do link' " +
                 " value='" + links[i].linkUrl + "' required >" +
                 /* label id=i servirá para armazenar o índice do elemento no array links */
-                "<label id='" + i + "' class='btn btn-link mb-4 mt-0 p-0' " + "onclick='deleteFieldLink(event,\"" + idModal + "\")'" + "> remover </label>"+
-            "</div>";
+                "<label id='" + i + "' class='btn btn-link mb-4 mt-0 p-0' " + "onclick='deleteFieldLink(event,\"" + idModal + "\")'" + "> remover </label>" +
+                "</div>";
         }
 
         return html;
@@ -617,8 +634,8 @@ mais.
 
     function addLinkField(modalId) {
 
-        let linkFields = document.querySelectorAll("#"+ modalId + " #links .form-group" );
-        if(linkFields.length > 2 ){
+        let linkFields = document.querySelectorAll("#" + modalId + " #links .form-group");
+        if (linkFields.length > 2) {
             $('#modalAlertLinks').modal('show');
             return;
         }
@@ -684,53 +701,7 @@ mais.
         document.querySelector("#modal-edit #links").innerHTML = renderLinks('modal-edit');
     }
 
-    function onSelectYear(event){
-        dado = JSON.parse(event.target.value);
-        let element = document.querySelector("#infoPesquisaDados");
-        element.classList.remove("d-none");
-        element.innerHTML = "Buscando dados...";
-        $.ajax({
-            url:'dados/'+dado.idComponente + "/" + dado.ano,
-            method:'GET',
 
-            success:function(result){
-                if(result.mediaGeral){
-                    document.querySelector("#infoPesquisaDados").classList.add("d-none");
-                    document.querySelector("#dadosDisciplina").classList.remove("d-none");
-                    document.querySelector("#notaMediaComponente").innerHTML = result.mediaGeral.toFixed(1);
-                    document.querySelector("#percentagemAprovados").innerHTML = result.aprovadosPercentagem.toFixed(1) +"%";
-                    document.querySelector("#progressAprovados").style.width=result.aprovadosPercentagem+"%";
-                    document.querySelector("#percentagemReprovados").innerHTML = result.reprovadosPercentagem.toFixed(1)+"%";
-                    document.querySelector("#progressReprovados").style.width=result.reprovadosPercentagem+"%";
-                    document.querySelector("#percentagemTrancados").innerHTML = result.trancadosPercentagem.toFixed(1)+"%";
-                    document.querySelector("#progressTrancados").style.width=result.trancadosPercentagem+"%";
-                }
-                else{
-                    document.querySelector("#dadosDisciplina").classList.add("d-none");
-                    let element = document.querySelector("#infoPesquisaDados");
-                    element.classList.remove("d-none");
-                    element.innerHTML = "Não foram encontrados dados para esse ano";
-                }
-                
-                
-
-            },
-
-            statusCode:{
-
-            },
-
-            error:function(error){
-                document.querySelector("#dadosDisciplina").classList.add("d-none");
-                let element = document.querySelector("#infoPesquisaDados");
-                    element.classList.add("d-none");
-                    element.innerHTML = "Ocorreu um erro ao obter os dados";
-
-            }
-        }
-
-        );
-    }
     
 </script>
 
@@ -742,4 +713,5 @@ mais.
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+<script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
 @endsection

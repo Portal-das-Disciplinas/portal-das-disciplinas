@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use stdClass;
+
 /**
  * Controlador responsável por realizar as tarefas relacionadas com as disciplinas.
  */
@@ -89,6 +91,7 @@ class DisciplineController extends Controller
 
     public function disciplineFilter(Request $request)
     {
+        // dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
         $classifications_all = Classification::all();
@@ -174,13 +177,32 @@ class DisciplineController extends Controller
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValues as $arrKey => $arrValue) {
-                        if ($value->name == $arrKey) {
-                            $arrayClassificationValues += array($value->id => $arrValue);
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == $noUnderlineString) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == $arrKey) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
                         }
                     }
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
+                
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -191,7 +213,7 @@ class DisciplineController extends Controller
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
+                                    ->where("value", "<=", 50)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -200,7 +222,7 @@ class DisciplineController extends Controller
                                 } else {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
+                                    ->where("value", ">=", 51)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -235,8 +257,26 @@ class DisciplineController extends Controller
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValues as $arrKey => $arrValue) {
-                        if ($value->name == $arrKey) {
-                            $arrayClassificationValues += array($value->id => $arrValue);
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == $noUnderlineString) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == $arrKey) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
                         }
                     }
                 }
@@ -254,7 +294,7 @@ class DisciplineController extends Controller
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
+                                    ->where("value", "<=", 50)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -263,7 +303,7 @@ class DisciplineController extends Controller
                                 } else {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
+                                    ->where("value", ">=", 51)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -301,13 +341,32 @@ class DisciplineController extends Controller
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValues as $arrKey => $arrValue) {
-                        if ($value->name == $arrKey) {
-                            $arrayClassificationValues += array($value->id => $arrValue);
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == $noUnderlineString) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == $arrKey) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
                         }
                     }
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
+                
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -318,7 +377,7 @@ class DisciplineController extends Controller
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
+                                    ->where("value", "<=", 50)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -327,7 +386,7 @@ class DisciplineController extends Controller
                                 } else {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
+                                    ->where("value", ">=", 51)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -365,13 +424,32 @@ class DisciplineController extends Controller
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValues as $arrKey => $arrValue) {
-                        if ($value->name == $arrKey) {
-                            $arrayClassificationValues += array($value->id => $arrValue);
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == $noUnderlineString) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == $arrKey) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
                         }
                     }
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
+                
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -382,7 +460,7 @@ class DisciplineController extends Controller
                                 if ($value == "mais") {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
+                                    ->where("value", "<=", 50)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -391,7 +469,7 @@ class DisciplineController extends Controller
                                 } else {
                                     $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
                                     ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
+                                    ->where("value", ">=", 51)
                                     ->get();
 
                                     if (count($currentDiscipline) > 0) {
@@ -438,16 +516,34 @@ class DisciplineController extends Controller
 
                 // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
                 // e trocar o "Metodologias" pelo respectivo id
-                // dd($arrayValuesRanges);
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
-                        if ($value->name == substr($arrKey, 5)) {
-                            $arrayClassificationValues += array($value->id => $arrValue);
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == substr($noUnderlineString, 5)) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == substr($arrKey, 5)) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
                         }
                     }
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
+                
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -485,25 +581,44 @@ class DisciplineController extends Controller
                 ->with('classifications', $classifications_all);
             } else if ($discipline_name == null && $emphasis_id == null) {
                 $disciplines = ClassificationDiscipline::all(); 
-                
+                // dd("oi");
                 $classifications = Classification::all();
                 $disciplinesResult = collect([]);
                 $finalCollection = collect([]);
                 $arrayClassificationValues = array();
                 $arrayCollectionDisciplines = collect([]);
 
+                // dd($arrayValuesRanges);
                 // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
                 // e trocar o "Metodologias" pelo respectivo id
-                // dd($arrayValuesRanges);
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
-                        if ($value->name == substr($arrKey, 5)) {
-                            $arrayClassificationValues += array($value->id => $arrValue);
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == substr($noUnderlineString, 5)) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == substr($arrKey, 5)) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
                         }
                     }
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
+                
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -531,7 +646,7 @@ class DisciplineController extends Controller
                         $disciplinesResult->push($result);
                     }
                 }
-
+                
                 $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
 
                 return view('disciplines.index')
@@ -552,16 +667,34 @@ class DisciplineController extends Controller
 
                 // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
                 // e trocar o "Metodologias" pelo respectivo id
-                // dd($arrayValuesRanges);
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
-                        if ($value->name == substr($arrKey, 5)) {
-                            $arrayClassificationValues += array($value->id => $arrValue);
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == substr($noUnderlineString, 5)) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == substr($arrKey, 5)) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
                         }
                     }
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
+                
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -610,16 +743,34 @@ class DisciplineController extends Controller
 
                 // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
                 // e trocar o "Metodologias" pelo respectivo id
-                // dd($arrayValuesRanges);
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
-                        if ($value->name == substr($arrKey, 5)) {
-                            $arrayClassificationValues += array($value->id => $arrValue);
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == substr($noUnderlineString, 5)) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == substr($arrKey, 5)) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
                         }
                     }
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
+                
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -640,7 +791,6 @@ class DisciplineController extends Controller
                             }
                         }
                     }
-
                     
                     if ($fieldsToCheck == $cont) {
                         $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
@@ -1243,11 +1393,37 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Obtém os dados da disciplina como retenção, aprovação etc
+     * Obtém os dados de turmas consolidadas como quantidade de aprovações, reprovações e média geral.
+     * @param \Illuminate\Http\Request $request Objeto contendo as informações de requição http.
+     * @param string $disciplineCode Código da disciplina.
+     * @param int year $ano em que a a turma foi aberta.
+     * @param int período em que a turma foi aberta.
+     * @return @return \Illuminate\Http\JsonResponse
      */
-    function getDisciplineData(Request $request, $disciplineCode, $year){
+    function getDisciplineData(Request $request){
         $apiService = new APISigaaService();
-        $data = $apiService->getDisciplineData($disciplineCode, $year);
-        return response()->json($data);
+
+        $data = $apiService->getDisciplineData($request['codigo'], $request['idTurma'], $request['ano'], $request['periodo']);
+        
+        return response()->json($data,200);
     }
+
+    function getCodesAndNames(Request $request){
+        if($request->ajax()){
+            $disciplineCodesAndNames = [];
+            $disciplines = Discipline::where("name","like",'%' . $request->disciplineName . '%')->get();
+            foreach($disciplines as $discipline){
+                $disciplineCodeAndName= new stdClass();
+                $disciplineCodeAndName->code = $discipline->code;
+                $disciplineCodeAndName->name = $discipline->name;
+                if(in_array($disciplineCodeAndName, $disciplineCodesAndNames) == false){
+                    array_push($disciplineCodesAndNames, $disciplineCodeAndName);
+                }
+                
+            }
+            return response()->json($disciplineCodesAndNames);
+        }
+    }
+
+
 }
