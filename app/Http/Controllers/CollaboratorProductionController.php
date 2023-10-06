@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CollaboratorProductionController extends Controller
 {
+
+    public function index(){
+        
+    }
+
     public function storeListJson(Request $request){
 
         return $request->jsonData;

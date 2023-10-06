@@ -247,26 +247,18 @@
     </div>
 </div>
 
-<div id="modalCreateCollaboratorProductions" class="modal fade">
-    <div class="modal-dialog modal-lg">
+<div id="modalCollaboratorProduction" class="modal fade">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Produções do desenvolvedor no portal</h3>
-
+                <h3>Produção do desenvolvedor no portal</h3>
             </div>
-            <div class="modal-body" style="overflow-y:scroll; height:80vh">
-                <form id='form-edit-productions' class='form'>
-                    <!--Conteúdo interno gerado por javascript -->
-
-                </form>
-                <div class="d-flex justify-content-end mt-1">
-                    <button class="btn btn-primary btn-sm" onclick="addField()">Adicionar campo</button>
-                </div>
-
+            <div class="modal-body">
+               <p><strong id="productionBrief"></strong></p>
+               <p id="productionDetails" class="text-secondary"></p> 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary btn-sm">Salvar alterações</button>
-                <button class="btn btn-secondary btn-sm" data-dismiss="modal">Fechar</button>
+                <button class="btn btn-primary btn-sm" data-dismiss="modal">Fechar</button>
             </div>
 
         </div>
@@ -466,7 +458,7 @@
                         <span class="material-symbols-outlined text-secondary">expand_more</span>
                         @endif
                         @if(Auth::user() && Auth::user()->isAdmin)
-                        <button class="btn btn-success btn-sm mb-3 mt-1" onclick="showModalEdit(event,1)">
+                        <button class="btn btn-success btn-sm mb-3 mt-1" onclick="alert('Cadastrar novo')">
                             @if(count($collaborator->productions) > 0)
                             &nbsp;+&nbsp;
                             @else
@@ -480,7 +472,7 @@
                             <tbody>
                                 @foreach($collaborator->productions as $production)
                                 <tr>
-                                    <td style="cursor:pointer">
+                                    <td  onclick = "showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
                                         <small>{{$production->brief}}</small>
                                     </td>
                                 </tr>

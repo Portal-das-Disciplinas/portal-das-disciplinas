@@ -1,9 +1,10 @@
 let productions = [];
 
-function showModalEdit(event, id) {
+function showModalCollaboratorProduction(brief, details) {
     productions = [];
-    renderInputFields("#form-edit-productions");
-    $('#modalCreateCollaboratorProductions').modal('show');
+    document.querySelector("#productionBrief").innerHTML = brief;
+    document.querySelector("#productionDetails").innerHTML = details;
+    $('#modalCollaboratorProduction').modal('show');
 }
 
 function renderInputFields(element) {
