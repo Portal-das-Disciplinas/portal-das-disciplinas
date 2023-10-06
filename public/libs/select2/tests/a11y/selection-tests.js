@@ -18,7 +18,7 @@ test("title is carried over from original element", function (assert) {
   assert.equal(
     $selection.attr("title"),
     $select.attr("title"),
-    "The title should have been copied over from the original element"
+    "The title should have been copied over from the original element",
   );
 });
 
@@ -35,7 +35,7 @@ test("aria-expanded reflects the state of the container", function (assert) {
   assert.equal(
     $selection.attr("aria-expanded"),
     "false",
-    "The container should not be expanded when it is closed"
+    "The container should not be expanded when it is closed",
   );
 
   container.trigger("open");
@@ -43,7 +43,7 @@ test("aria-expanded reflects the state of the container", function (assert) {
   assert.equal(
     $selection.attr("aria-expanded"),
     "true",
-    "The container should be expanded when it is opened"
+    "The container should be expanded when it is opened",
   );
 });
 
@@ -56,13 +56,13 @@ test("static aria attributes are present", function (assert) {
   assert.equal(
     $selection.attr("role"),
     "combobox",
-    "The container should identify as a combobox"
+    "The container should identify as a combobox",
   );
 
   assert.equal(
     $selection.attr("aria-haspopup"),
     "true",
-    "The dropdown is considered a popup of the container"
+    "The dropdown is considered a popup of the container",
   );
 });
 
@@ -78,7 +78,7 @@ test("the container should be in the tab order", function (assert) {
   assert.equal(
     $selection.attr("tabindex"),
     "0",
-    "The tab index should allow it to fit in the natural tab order"
+    "The tab index should allow it to fit in the natural tab order",
   );
 
   container.trigger("disable");
@@ -86,7 +86,7 @@ test("the container should be in the tab order", function (assert) {
   assert.equal(
     $selection.attr("tabindex"),
     "-1",
-    "The selection should be dropped out of the tab order when disabled"
+    "The selection should be dropped out of the tab order when disabled",
   );
 
   container.trigger("enable");
@@ -94,7 +94,7 @@ test("the container should be in the tab order", function (assert) {
   assert.equal(
     $selection.attr("tabindex"),
     "0",
-    "The tab index should be restored when re-enabled"
+    "The tab index should be restored when re-enabled",
   );
 });
 
@@ -111,7 +111,7 @@ test("a custom tabindex is copied", function (assert) {
   assert.equal(
     $selection.attr("tabindex"),
     "999",
-    "The tab index should match the original tab index"
+    "The tab index should match the original tab index",
   );
 
   container.trigger("disable");
@@ -119,7 +119,7 @@ test("a custom tabindex is copied", function (assert) {
   assert.equal(
     $selection.attr("tabindex"),
     "-1",
-    "The selection should be dropped out of the tab order when disabled"
+    "The selection should be dropped out of the tab order when disabled",
   );
 
   container.trigger("enable");
@@ -127,7 +127,7 @@ test("a custom tabindex is copied", function (assert) {
   assert.equal(
     $selection.attr("tabindex"),
     "999",
-    "The tab index should be restored when re-enabled"
+    "The tab index should be restored when re-enabled",
   );
 });
 
@@ -143,7 +143,7 @@ test("aria-disabled should reflected disabled state", function (assert) {
   assert.equal(
     $selection.attr("aria-disabled"),
     "false",
-    "The tab index should match the original tab index"
+    "The tab index should match the original tab index",
   );
 
   container.trigger("disable");
@@ -151,7 +151,7 @@ test("aria-disabled should reflected disabled state", function (assert) {
   assert.equal(
     $selection.attr("aria-disabled"),
     "true",
-    "The selection should be dropped out of the tab order when disabled"
+    "The selection should be dropped out of the tab order when disabled",
   );
 
   container.trigger("enable");
@@ -159,7 +159,7 @@ test("aria-disabled should reflected disabled state", function (assert) {
   assert.equal(
     $selection.attr("aria-disabled"),
     "false",
-    "The tab index should be restored when re-enabled"
+    "The tab index should be restored when re-enabled",
   );
 });
 
@@ -179,7 +179,7 @@ test("aria-labelledby should match the rendered container", function (assert) {
   assert.equal(
     $selection.attr("aria-labelledby"),
     $rendered.attr("id"),
-    "The rendered selection should label the container"
+    "The rendered selection should label the container",
   );
 });
 

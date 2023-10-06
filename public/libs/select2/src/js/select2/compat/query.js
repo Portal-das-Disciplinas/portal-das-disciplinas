@@ -5,7 +5,7 @@ define([], function () {
         "Select2: The `query` option has been deprecated in favor of a " +
           "custom data adapter that overrides the `query` method. Support " +
           "will be removed for the `query` option in future versions of " +
-          "Select2."
+          "Select2.",
       );
     }
 

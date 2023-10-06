@@ -19,13 +19,13 @@ test("options are merged recursively with default options", function (assert) {
   assert.equal(
     mergedOptions.ajax.delay,
     ajaxDelay,
-    "Ajax default options are present on the merged options"
+    "Ajax default options are present on the merged options",
   );
 
   assert.equal(
     mergedOptions.ajax.url,
     ajaxUrl,
-    "Ajax provided options are present on the merged options"
+    "Ajax provided options are present on the merged options",
   );
 
   defaults.reset();
@@ -41,12 +41,12 @@ test("more than one default option can be changed via set()", function (assert) 
   assert.equal(
     defaults.defaults.ajax.delay,
     ajaxDelay,
-    "Both ajax.delay and ajax.dataType present in defaults"
+    "Both ajax.delay and ajax.dataType present in defaults",
   );
   assert.equal(
     defaults.defaults.ajax.dataType,
     dataDataType,
-    "Both ajax.delay and ajax.dataType present in defaults"
+    "Both ajax.delay and ajax.dataType present in defaults",
   );
   defaults.reset();
 });

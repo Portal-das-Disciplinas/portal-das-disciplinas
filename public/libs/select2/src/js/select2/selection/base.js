@@ -12,7 +12,7 @@ define(["jquery", "../utils", "../keys"], function ($, Utils, KEYS) {
     var $selection = $(
       '<span class="select2-selection" role="combobox" ' +
         ' aria-haspopup="true" aria-expanded="false">' +
-        "</span>"
+        "</span>",
     );
 
     this._tabindex = 0;

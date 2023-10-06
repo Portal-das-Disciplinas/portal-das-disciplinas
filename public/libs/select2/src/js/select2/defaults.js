@@ -69,7 +69,7 @@ define([
   SelectOnClose,
   CloseOnSelect,
 
-  EnglishTranslation
+  EnglishTranslation,
 ) {
   function Defaults() {
     this.reset();
@@ -90,21 +90,21 @@ define([
       if (options.minimumInputLength > 0) {
         options.dataAdapter = Utils.Decorate(
           options.dataAdapter,
-          MinimumInputLength
+          MinimumInputLength,
         );
       }
 
       if (options.maximumInputLength > 0) {
         options.dataAdapter = Utils.Decorate(
           options.dataAdapter,
-          MaximumInputLength
+          MaximumInputLength,
         );
       }
 
       if (options.maximumSelectionLength > 0) {
         options.dataAdapter = Utils.Decorate(
           options.dataAdapter,
-          MaximumSelectionLength
+          MaximumSelectionLength,
         );
       }
 
@@ -127,7 +127,7 @@ define([
 
         options.dataAdapter = Utils.Decorate(
           options.dataAdapter,
-          InitSelection
+          InitSelection,
         );
       }
     }
@@ -138,21 +138,21 @@ define([
       if (options.ajax != null) {
         options.resultsAdapter = Utils.Decorate(
           options.resultsAdapter,
-          InfiniteScroll
+          InfiniteScroll,
         );
       }
 
       if (options.placeholder != null) {
         options.resultsAdapter = Utils.Decorate(
           options.resultsAdapter,
-          HidePlaceholder
+          HidePlaceholder,
         );
       }
 
       if (options.selectOnClose) {
         options.resultsAdapter = Utils.Decorate(
           options.resultsAdapter,
-          SelectOnClose
+          SelectOnClose,
         );
       }
     }
@@ -169,14 +169,14 @@ define([
       if (options.minimumResultsForSearch !== 0) {
         options.dropdownAdapter = Utils.Decorate(
           options.dropdownAdapter,
-          MinimumResultsForSearch
+          MinimumResultsForSearch,
         );
       }
 
       if (options.closeOnSelect) {
         options.dropdownAdapter = Utils.Decorate(
           options.dropdownAdapter,
-          CloseOnSelect
+          CloseOnSelect,
         );
       }
 
@@ -189,13 +189,13 @@ define([
 
         options.dropdownAdapter = Utils.Decorate(
           options.dropdownAdapter,
-          DropdownCSS
+          DropdownCSS,
         );
       }
 
       options.dropdownAdapter = Utils.Decorate(
         options.dropdownAdapter,
-        AttachBody
+        AttachBody,
       );
     }
 
@@ -210,21 +210,21 @@ define([
       if (options.placeholder != null) {
         options.selectionAdapter = Utils.Decorate(
           options.selectionAdapter,
-          Placeholder
+          Placeholder,
         );
       }
 
       if (options.allowClear) {
         options.selectionAdapter = Utils.Decorate(
           options.selectionAdapter,
-          AllowClear
+          AllowClear,
         );
       }
 
       if (options.multiple) {
         options.selectionAdapter = Utils.Decorate(
           options.selectionAdapter,
-          SelectionSearch
+          SelectionSearch,
         );
       }
 
@@ -237,13 +237,13 @@ define([
 
         options.selectionAdapter = Utils.Decorate(
           options.selectionAdapter,
-          ContainerCSS
+          ContainerCSS,
         );
       }
 
       options.selectionAdapter = Utils.Decorate(
         options.selectionAdapter,
-        EventRelay
+        EventRelay,
       );
     }
 
@@ -268,7 +268,7 @@ define([
 
     options.translations = this._processTranslations(
       options.language,
-      options.debug
+      options.debug,
     );
 
     return options;
@@ -368,7 +368,7 @@ define([
       this._resolveLanguage(elementLanguage),
       this._resolveLanguage(optionLanguage),
       this._resolveLanguage(defaultLanguage),
-      this._resolveLanguage(parentLanguage)
+      this._resolveLanguage(parentLanguage),
     );
 
     options.language = languages;
@@ -440,7 +440,7 @@ define([
                 'Select2: The language file for "' +
                   language +
                   '" could ' +
-                  "not be automatically loaded. A fallback will be used instead."
+                  "not be automatically loaded. A fallback will be used instead.",
               );
             }
           }

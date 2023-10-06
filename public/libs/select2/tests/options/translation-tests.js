@@ -20,7 +20,7 @@ test("partial dictonaries are reset when default reset", function (assert) {
 
   assert.ok(
     !Defaults.defaults.language.test,
-    "The partial dictionary should have been reset"
+    "The partial dictionary should have been reset",
   );
 });
 
@@ -60,7 +60,7 @@ test("partial dictionaries can be passed", function (assert) {
         },
       },
     },
-    $element
+    $element,
   );
 
   var translations = options.get("translations");
@@ -68,13 +68,13 @@ test("partial dictionaries can be passed", function (assert) {
   assert.equal(
     translations.get("searching")(),
     "Something",
-    "The partial dictionary still overrides translations"
+    "The partial dictionary still overrides translations",
   );
 
   assert.equal(
     translations.get("noResults")(),
     "No results found",
-    "You can still get English translations for keys not passed in"
+    "You can still get English translations for keys not passed in",
   );
 });
 
@@ -95,7 +95,7 @@ test("partial dictionaries can be combined with defaults", function (assert) {
         },
       },
     },
-    $element
+    $element,
   );
 
   var translations = options.get("translations");
@@ -103,19 +103,19 @@ test("partial dictionaries can be combined with defaults", function (assert) {
   assert.equal(
     translations.get("searching")(),
     "Something",
-    "The partial dictionary still overrides translations"
+    "The partial dictionary still overrides translations",
   );
 
   assert.equal(
     translations.get("test")(),
     "Testing",
-    "The defaults were included in the fallback chain"
+    "The defaults were included in the fallback chain",
   );
 
   assert.equal(
     translations.get("noResults")(),
     "No results found",
-    "You can still get English translations for keys not passed in"
+    "You can still get English translations for keys not passed in",
   );
 });
 
@@ -137,7 +137,7 @@ test("partial dictionaries can used in fallback chains", function (assert) {
         },
       ],
     },
-    $element
+    $element,
   );
 
   var translations = options.get("translations");
@@ -145,19 +145,19 @@ test("partial dictionaries can used in fallback chains", function (assert) {
   assert.equal(
     translations.get("searching")(),
     "Something",
-    "The partial dictionary still overrides translations"
+    "The partial dictionary still overrides translations",
   );
 
   assert.equal(
     translations.get("test")(),
     "Testing",
-    "The defaults were included in the fallback chain"
+    "The defaults were included in the fallback chain",
   );
 
   assert.equal(
     translations.get("noResults")(),
     "No results found",
-    "You can still get English translations for keys not passed in"
+    "You can still get English translations for keys not passed in",
   );
 });
 
@@ -168,7 +168,7 @@ test("language can be set via the options", function (assert) {
     {
       language: "es",
     },
-    $element
+    $element,
   );
 
   assert.deepEqual(options.get("language"), ["es", "en"]);
@@ -181,7 +181,7 @@ test("multi-part language is broken out", function (assert) {
     {
       language: "pt-BR",
     },
-    $element
+    $element,
   );
 
   assert.deepEqual(options.get("language"), ["pt-BR", "pt", "en"]);
@@ -206,7 +206,7 @@ test("lanugage set via options adds to default chain", function (assert) {
     {
       language: "it",
     },
-    $element
+    $element,
   );
 
   assert.deepEqual(options.get("language"), ["it", "es", "en"]);

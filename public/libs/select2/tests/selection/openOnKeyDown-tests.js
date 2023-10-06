@@ -37,7 +37,10 @@ function buildKeyDownEvent(keyCode, eventProps) {
 function testAbled(isEnabled, testName, keyCode, eventProps, fn) {
   test(testName, function (assert) {
     var $element = $(
-      "<select>" + "<option>one</option>" + "<option>two</option>" + "</select>"
+      "<select>" +
+        "<option>one</option>" +
+        "<option>two</option>" +
+        "</select>",
     );
     $("#qunit-fixture").append($element);
     $element.select2({ disabled: !isEnabled });
@@ -106,7 +109,7 @@ testEnabled(
   "enabled element will open on ALT+DOWN",
   KEYS.DOWN,
   { altKey: true },
-  assertOpened
+  assertOpened,
 );
 
 /**
@@ -116,25 +119,25 @@ testEnabled(
   "enabled element will not open on UP",
   KEYS.UP,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 testEnabled(
   "enabled element will not open on DOWN",
   KEYS.UP,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 testEnabled(
   "enabled element will not open on LEFT",
   KEYS.UP,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 testEnabled(
   "enabled element will not open on RIGHT",
   KEYS.UP,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 
 /*
@@ -145,19 +148,19 @@ testDisabled(
   "disabled element will not open on ENTER",
   KEYS.ENTER,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 testDisabled(
   "disabled element will not open on SPACE",
   KEYS.SPACE,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 testDisabled(
   "disabled element will not open on ALT+DOWN",
   KEYS.DOWN,
   { altKey: true },
-  assertNotOpened
+  assertNotOpened,
 );
 
 /**
@@ -167,23 +170,23 @@ testDisabled(
   "disabled element will not open on UP",
   KEYS.UP,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 testDisabled(
   "disabled element will not open on DOWN",
   KEYS.UP,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 testDisabled(
   "disabled element will not open on LEFT",
   KEYS.UP,
   {},
-  assertNotOpened
+  assertNotOpened,
 );
 testDisabled(
   "disabled element will not open on RIGHT",
   KEYS.UP,
   {},
-  assertNotOpened
+  assertNotOpened,
 );

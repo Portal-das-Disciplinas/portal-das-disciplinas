@@ -27,7 +27,7 @@ test("close sets the focus to the selection", function (assert) {
   assert.notEqual(
     document.activeElement,
     $selection[0],
-    "The selection had focus originally"
+    "The selection had focus originally",
   );
 
   container.trigger("close");
@@ -35,6 +35,6 @@ test("close sets the focus to the selection", function (assert) {
   assert.equal(
     document.activeElement,
     $selection[0],
-    "After close, focus must be set to selection"
+    "After close, focus must be set to selection",
   );
 });

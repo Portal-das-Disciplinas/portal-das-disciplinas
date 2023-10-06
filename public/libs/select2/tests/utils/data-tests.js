@@ -11,7 +11,7 @@ test("The data-select2-id attribute is removed", function (assert) {
   assert.notEqual(
     $element.attr("data-select2-id"),
     "test",
-    "The internal attribute was not removed when the data was cleared"
+    "The internal attribute was not removed when the data was cleared",
   );
 });
 

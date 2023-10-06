@@ -6,7 +6,7 @@ define(["jquery"], function ($) {
           " of a custom data adapter that overrides the `current` method. " +
           "This method is now called multiple times instead of a single " +
           "time when the instance is initialized. Support will be removed " +
-          "for the `initSelection` option in future versions of Select2"
+          "for the `initSelection` option in future versions of Select2",
       );
     }
 

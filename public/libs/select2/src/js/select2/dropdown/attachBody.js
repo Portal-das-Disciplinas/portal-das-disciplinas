@@ -66,7 +66,7 @@ define(["jquery", "../utils"], function ($, Utils) {
 
   AttachBody.prototype._bindContainerResultHandlers = function (
     decorated,
-    container
+    container,
   ) {
     // These should only be bound once
     if (this._containerResultsHandlersBound) {
@@ -105,7 +105,7 @@ define(["jquery", "../utils"], function ($, Utils) {
 
   AttachBody.prototype._attachPositioningHandler = function (
     decorated,
-    container
+    container,
   ) {
     var self = this;
 
@@ -131,13 +131,13 @@ define(["jquery", "../utils"], function ($, Utils) {
       function (e) {
         self._positionDropdown();
         self._resizeDropdown();
-      }
+      },
     );
   };
 
   AttachBody.prototype._detachPositioningHandler = function (
     decorated,
-    container
+    container,
   ) {
     var scrollEvent = "scroll.select2." + container.id;
     var resizeEvent = "resize.select2." + container.id;

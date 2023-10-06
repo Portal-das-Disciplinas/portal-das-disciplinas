@@ -66,7 +66,7 @@
             <div class="card">
                 <div class="card-header row" id="headingOne">
                   <div class="col">
-                  <h5 class="mb-0">
+                    <h5 class="mb-0">
                     <button 
                         type="button" 
                         id="AccordionButton" 
@@ -78,22 +78,26 @@
                     >
                       Filtragem via Classificações
                     </button>
-                  </h5>
+                    </h5>
                   </div>
 
                   <input type="reset" style="display:none" id="resetButton" value="">
-                    <div class="col">
+
+                    <div class="col" style="display: flex; justify-content: flex-end;">
+                    <h5 class="mb-0">
                     <button 
-                        id="advancedOptionButton" 
-                        style="float:right;" 
-                        type="button"
+                    
+                        type="button" 
+                        id="aprovationsButton" 
                         class="btn btn-link" 
-                        data-toggle="tooltip" 
-                        data-placement="right" 
-                        title="Pesquisa Avançada"
+                        data-toggle="collapse" 
+                        data-target="#collapseTwo" 
+                        aria-expanded="false" 
+                        aria-controls="collapseTwo"
                     >
-                        Filtragem Avançada
+                      Filtragem via Aprovações
                     </button>
+                  </h5>
                     </div>
                 </div>
 
@@ -161,20 +165,53 @@
                                 <br>
                             @endforeach
                             <div class="container">
-                            <button  
-                                id="unmarkAll"
-                                style="float:right; padding: 15px; margin: 5px;" 
-                                type="button"
-                                class="btn btn-link" 
-                                data-toggle="tooltip" 
-                                data-placement="right" 
-                                title="Pesquisa Avançada"
-                            >
-                                Desmarcar tudo
-                            </button>
+                                <div class="row">
+                                    <div class="col">
+                                    </div>
+
+                                    <div class="col">
+                                        <button 
+                                            id="advancedOptionButton" 
+                                            style="float:right; padding: 15px; margin: 5px;" 
+                                            type="button"
+                                            class="btn btn-link" 
+                                            data-toggle="tooltip" 
+                                            data-placement="right" 
+                                            title="Pesquisa Avançada"
+                                        >
+                                            Filtragem Avançada
+                                        </button>
+
+                                        <button  
+                                            id="unmarkAll"
+                                            style="float:right; padding: 15px; margin: 5px;" 
+                                            type="button"
+                                            class="btn btn-link" 
+                                            data-toggle="tooltip" 
+                                            data-placement="right" 
+                                            title="Pesquisa Avançada"
+                                        >
+                                            Desmarcar tudo
+                                        </button>
+                                    </div>
+                                </div>
+                            
+
+
                             </div>
                             </form>
                         </div>  
+                    </div>
+                </div>
+
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card card-body">    
+                    @if (empty($studentsData))
+                        @foreach ($studentsData as $data)
+                        @endforeach
+                    @else
+                        <p class="response-search mt-4"> Nenhum dado encontrado </p>
+                    @endif
                     </div>
                 </div>
             </div>

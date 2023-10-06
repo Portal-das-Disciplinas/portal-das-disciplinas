@@ -10,6 +10,7 @@ use App\Http\Requests\Discipline\CreateRequest;
 use App\Http\Requests\Discipline\StoreRequest;
 use App\Http\Requests\Discipline\UpdateRequest;
 use App\Models\Classification;
+use App\Models\DisciplinePerformanceData;
 use App\Models\ClassificationDiscipline;
 use App\Services\Urls\GoogleDriveService;
 use App\Services\Urls\YoutubeService;
@@ -62,6 +63,7 @@ class DisciplineController extends Controller
 
         $emphasis = Emphasis::all();
         $classifications = Classification::all();
+        $studentsData = DisciplinePerformanceData::all();
         // $disciplines = Discipline::query()
         //     ->with([
         //         'professor',
@@ -86,7 +88,8 @@ class DisciplineController extends Controller
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
             ->with('opinionLinkForm',$opinionLinkForm)
-            ->with('classifications', $classifications);
+            ->with('classifications', $classifications)
+            ->with('studentsData', $studentsData);
     }
 
     public function disciplineFilter(Request $request)

@@ -22,13 +22,13 @@ test("can be a selector string", function (assert) {
     $select,
     new Options({
       dropdownParent: "#parent",
-    })
+    }),
   );
 
   assert.equal(
     dropdown.$dropdownParent[0],
     $parent[0],
-    "Should be parsed using the selector as a jQuery object"
+    "Should be parsed using the selector as a jQuery object",
   );
 });
 
@@ -54,13 +54,13 @@ test("can be a jQuery object", function (assert) {
     $select,
     new Options({
       dropdownParent: $parent,
-    })
+    }),
   );
 
   assert.equal(
     dropdown.$dropdownParent[0],
     $parent[0],
-    "Should just take the passed in jQuery object"
+    "Should just take the passed in jQuery object",
   );
 });
 
@@ -84,6 +84,6 @@ test("defaults to the document body", function (assert) {
   assert.equal(
     dropdown.$dropdownParent[0],
     document.body,
-    "Should default to wrapping document.body"
+    "Should default to wrapping document.body",
   );
 });

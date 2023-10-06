@@ -573,7 +573,8 @@ input[type="time"]:focus,
 input[type="week"]:focus,
 select[multiple="multiple"]:focus {
     border-color: #1bb3e9;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06),
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.06),
         0 0 5px rgba(21, 163, 214, 0.7);
 }
 

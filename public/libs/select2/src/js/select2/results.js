@@ -11,7 +11,7 @@ define(["jquery", "./utils"], function ($, Utils) {
 
   Results.prototype.render = function () {
     var $results = $(
-      '<ul class="select2-results__options" role="listbox"></ul>'
+      '<ul class="select2-results__options" role="listbox"></ul>',
     );
 
     if (this.options.get("multiple")) {
@@ -35,7 +35,7 @@ define(["jquery", "./utils"], function ($, Utils) {
 
     var $message = $(
       '<li role="alert" aria-live="assertive"' +
-        ' class="select2-results__option"></li>'
+        ' class="select2-results__option"></li>',
     );
 
     var message = this.options.get("translations").get(params.message);
@@ -92,7 +92,7 @@ define(["jquery", "./utils"], function ($, Utils) {
 
   Results.prototype.highlightFirstItem = function () {
     var $options = this.$results.find(
-      ".select2-results__option[aria-selected]"
+      ".select2-results__option[aria-selected]",
     );
 
     var $selected = $options.filter("[aria-selected=true]");
@@ -119,7 +119,7 @@ define(["jquery", "./utils"], function ($, Utils) {
       });
 
       var $options = self.$results.find(
-        ".select2-results__option[aria-selected]"
+        ".select2-results__option[aria-selected]",
       );
 
       $options.each(function () {
@@ -431,7 +431,7 @@ define(["jquery", "./utils"], function ($, Utils) {
           e.stopPropagation();
         } else if (isAtBottom) {
           self.$results.scrollTop(
-            self.$results.get(0).scrollHeight - self.$results.height()
+            self.$results.get(0).scrollHeight - self.$results.height(),
           );
 
           e.preventDefault();
@@ -465,7 +465,7 @@ define(["jquery", "./utils"], function ($, Utils) {
           originalEvent: evt,
           data: data,
         });
-      }
+      },
     );
 
     this.$results.on(
@@ -482,13 +482,13 @@ define(["jquery", "./utils"], function ($, Utils) {
           data: data,
           element: $(this),
         });
-      }
+      },
     );
   };
 
   Results.prototype.getHighlightedResults = function () {
     var $highlighted = this.$results.find(
-      ".select2-results__option--highlighted"
+      ".select2-results__option--highlighted",
     );
 
     return $highlighted;

@@ -44,7 +44,7 @@ define(["jquery", "./base", "../utils"], function ($, BaseSelection, Utils) {
           originalEvent: evt,
           data: data,
         });
-      }
+      },
     );
   };
 
@@ -67,7 +67,7 @@ define(["jquery", "./base", "../utils"], function ($, BaseSelection, Utils) {
         '<span class="select2-selection__choice__remove" role="presentation">' +
         "&times;" +
         "</span>" +
-        "</li>"
+        "</li>",
     );
 
     return $container;

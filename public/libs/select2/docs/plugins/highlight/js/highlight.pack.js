@@ -249,7 +249,7 @@
       }
       if (c(t, L))
         throw new Error(
-          'Illegal lexeme "' + t + '" for mode "' + (L.cN || "<unnamed>") + '"'
+          'Illegal lexeme "' + t + '" for mode "' + (L.cN || "<unnamed>") + '"',
         );
       return (M += t), t.length || 1;
     }
@@ -319,7 +319,7 @@
       x.useBR
         ? ((t = document.createElementNS(
             "http://www.w3.org/1999/xhtml",
-            "div"
+            "div",
           )),
           (t.innerHTML = e.innerHTML
             .replace(/\n/g, "")

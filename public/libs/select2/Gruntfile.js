@@ -33,7 +33,7 @@ module.exports = function (grunt) {
     {
       cwd: "src/js",
     },
-    "select2/i18n/*.js"
+    "select2/i18n/*.js",
   );
 
   var testFiles = grunt.file.expand("tests/**/*.html");

@@ -10,7 +10,7 @@ define(["jquery", "../keys", "../utils"], function ($, KEYS, Utils) {
       if (this.options.get("debug") && window.console && console.error) {
         console.error(
           "Select2: The `allowClear` option should be used in combination " +
-            "with the `placeholder` option."
+            "with the `placeholder` option.",
         );
       }
     }
@@ -20,7 +20,7 @@ define(["jquery", "../keys", "../utils"], function ($, KEYS, Utils) {
       ".select2-selection__clear",
       function (evt) {
         self._handleClear(evt);
-      }
+      },
     );
 
     container.on("keypress", function (evt) {
@@ -105,7 +105,7 @@ define(["jquery", "../keys", "../utils"], function ($, KEYS, Utils) {
         removeAll() +
         '">' +
         "&times;" +
-        "</span>"
+        "</span>",
     );
     Utils.StoreData($remove[0], "data", data);
 

@@ -170,7 +170,7 @@ test("inherited - three levels", function (assert) {
 
   var DecoratedClass = Utils.Decorate(
     Utils.Decorate(BaseClass, MiddleClass),
-    DecoratorClass
+    DecoratorClass,
   );
 
   var inst = new DecoratedClass("test");

@@ -2,7 +2,7 @@ define(["require", "jquery", "./defaults", "./utils"], function (
   require,
   $,
   Defaults,
-  Utils
+  Utils,
 ) {
   function Options(options, $element) {
     this.options = options;
@@ -22,7 +22,7 @@ define(["require", "jquery", "./defaults", "./utils"], function (
 
       this.options.dataAdapter = Utils.Decorate(
         this.options.dataAdapter,
-        InputCompat
+        InputCompat,
       );
     }
   }
@@ -56,7 +56,7 @@ define(["require", "jquery", "./defaults", "./utils"], function (
         console.warn(
           "Select2: The `data-select2-tags` attribute has been changed to " +
             'use the `data-data` and `data-tags="true"` attributes and will be ' +
-            "removed in future versions of Select2."
+            "removed in future versions of Select2.",
         );
       }
 
@@ -69,7 +69,7 @@ define(["require", "jquery", "./defaults", "./utils"], function (
         console.warn(
           "Select2: The `data-ajax-url` attribute has been changed to " +
             "`data-ajax--url` and support for the old attribute will be removed" +
-            " in future versions of Select2."
+            " in future versions of Select2.",
         );
       }
 

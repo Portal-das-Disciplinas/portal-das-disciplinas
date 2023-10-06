@@ -37,7 +37,7 @@ $("#advancedOptionButton").on("click", () => {
 
         // Quando os ranges ativarem mudar o value de mínimo deles
         // de -1 para 0
-        $(".range").attr("min", 0); 
+        $(".range").attr("min", 0);
         $(".range").attr("value", 0);
 
         $(".simpleSearch").css("display", "none");
@@ -46,7 +46,7 @@ $("#advancedOptionButton").on("click", () => {
         $("#unmarkAll").css("display", "flex");
         $("#caracteristicas").css("display", "flex");
         $(".advancedSearch").css("display", "none");
-        
+
         // Quando os ranges ativarem mudar o value de mínimo deles
         // de 0 para -1
         $(".range").attr("min", -1);
