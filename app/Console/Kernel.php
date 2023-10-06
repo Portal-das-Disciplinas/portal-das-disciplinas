@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
             $service->runSchedules();
         })->name("updateScheduling")
             ->withoutOverlapping()
-            ->daylyAt('03:00')
+            ->dailyAt('03:00')
             ->timezone('America/Sao_Paulo');
     }
 
