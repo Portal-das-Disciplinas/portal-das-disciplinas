@@ -262,7 +262,32 @@
             </div>
 
         </div>
+    </div>
+</div>
 
+<div id="modalCreateCollaboratorProductions" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Produção do desenvolvedor no portal</h3>
+            </div>
+            <div class="modal-body">
+               <form id ="formCollaboratorProductionsCreate" action="{{route('colalborators_productions.store_list_json')}}" method="POST">
+                    @csrf
+                    <div id="fields"></div>
+                    <input id="productionCollaboratorId" name="productionCollaboratorId" hidden>
+                    <input id="collaboratorProductionsJSON" name="collaboratorProductionsJSON" hidden>
+                    <div class="d-flex justify-content-end">
+                        <button id="btnSubmitProductions" type="submit" class="btn btn-success" onclick="btnSaveProductions()">Salvar</button>
+                    </div>
+               </form> 
+               <button class="btn btn-outline-primary btn-sm" onclick="addField('formCollaboratorProductionsCreate')">Adicionar Campo</button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+
+        </div>
     </div>
 </div>
 
@@ -458,7 +483,7 @@
                         <span class="material-symbols-outlined text-secondary">expand_more</span>
                         @endif
                         @if(Auth::user() && Auth::user()->isAdmin)
-                        <button class="btn btn-success btn-sm mb-3 mt-1" onclick="alert('Cadastrar novo')">
+                        <button class="btn btn-success btn-sm mb-3 mt-1" onclick="showModalCreateCollaboratorProductions('{{$collaborator->id}}')">
                             @if(count($collaborator->productions) > 0)
                             &nbsp;+&nbsp;
                             @else
@@ -467,16 +492,23 @@
                         </button>
                         @endif
                     </div>
-                    <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
+                    <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start mx-1" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
                         <table class="table table-striped">
                             <tbody>
-                                @foreach($collaborator->productions as $production)
+                                @foreach($collaborator->productions->sortByDesc('created_at')->take(5) as $production)
                                 <tr>
-                                    <td  onclick = "showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
-                                        <small>{{$production->brief}}</small>
+                                    <td class="py-3" onclick = "showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
+                                        <small><p style="line-height:1.1; text-align:center">{{$production->brief}}</p></small>
                                     </td>
                                 </tr>
                                 @endforeach
+                                @if((count($collaborator->productions))> 5)
+                                <tr>
+                                    <td class="py-3" style="cursor:pointer">
+                                        <a href="#" class="nav-link">Ver mais</a>
+                                    </td>
+                                </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -542,7 +574,7 @@
                         <span class="material-symbols-outlined text-secondary">expand_more</span>
                         @endif
                         @if(Auth::user() && Auth::user()->isAdmin)
-                        <button class="btn btn-success btn-sm mb-3 mt-1" onclick="showModalEdit(event,1)">
+                        <button class="btn btn-success btn-sm mb-3 mt-1" onclick="showModalCreateCollaboratorProductions('{{$collaborator->id}}')">
                             @if(count($collaborator->productions) > 0)
                             &nbsp;+&nbsp;
                             @else
@@ -551,16 +583,23 @@
                         </button>
                         @endif
                     </div>
-                    <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
+                    <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start mx-1" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
                         <table class="table table-striped">
                             <tbody>
-                                @foreach($collaborator->productions as $production)
+                                @foreach($collaborator->productions->sortByDesc('created_at')->take(5) as $production)
                                 <tr>
-                                    <td style="cursor:pointer">
-                                        <small>{{$production->brief}}</small>
+                                    <td class="py-3" onclick = "showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
+                                        <small><p style="line-height:1.1; text-align:center">{{$production->brief}}</p></small>
                                     </td>
                                 </tr>
                                 @endforeach
+                                @if((count($collaborator->productions))> 5)
+                                <tr>
+                                    <td class="py-3" style="cursor:pointer">
+                                        <a href="#" class="nav-link">Ver mais</a>
+                                    </td>
+                                </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>

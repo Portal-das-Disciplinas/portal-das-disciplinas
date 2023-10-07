@@ -11,8 +11,9 @@ class CollaboratorProduction extends Model
     use HasFactory;
 
     protected $fillable = [
+        "collaborator_id",
         "brief",
-        "detail"
+        "details"
     ];
 
     function collaborator(){
