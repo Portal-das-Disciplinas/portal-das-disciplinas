@@ -480,7 +480,7 @@
                         <small id="toggleCollapse-{{$collaborator->id}}" class="text-secondary" aria-expanded="true" onclick="expandCollapseProductions(event)" data-toggle="collapse" data-target="#collapse{{$collaborator->id}}" role="button">
                             Produções no portal
                         </small>
-                        <span class="material-symbols-outlined text-secondary">expand_more</span>
+                        <span class="material-symbols-outlined text-secondary" style="cursor:default">expand_more</span>
                         @endif
                         @if(Auth::user() && Auth::user()->isAdmin)
                         <button class="btn btn-success btn-sm mb-3 mt-1" onclick="showModalCreateCollaboratorProductions('{{$collaborator->id}}')">
@@ -505,7 +505,7 @@
                                 @if((count($collaborator->productions))> 5)
                                 <tr>
                                     <td class="py-3" style="cursor:pointer">
-                                        <a href="#" class="nav-link">Ver mais</a>
+                                        <a href="{{route('collaborator_productions.show',$collaborator->id)}}" class="nav-link">Ver mais</a>
                                     </td>
                                 </tr>
                                 @endif
@@ -571,7 +571,7 @@
                         <small id="toggleCollapse-{{$collaborator->id}}" class="text-secondary" aria-expanded="true" onclick="expandCollapseProductions(event)" data-toggle="collapse" data-target="#collapse{{$collaborator->id}}" role="button">
                             Produções no portal
                         </small>
-                        <span class="material-symbols-outlined text-secondary">expand_more</span>
+                        <span class="material-symbols-outlined text-secondary" style="cursor: default">expand_more</span>
                         @endif
                         @if(Auth::user() && Auth::user()->isAdmin)
                         <button class="btn btn-success btn-sm mb-3 mt-1" onclick="showModalCreateCollaboratorProductions('{{$collaborator->id}}')">
@@ -596,7 +596,7 @@
                                 @if((count($collaborator->productions))> 5)
                                 <tr>
                                     <td class="py-3" style="cursor:pointer">
-                                        <a href="#" class="nav-link">Ver mais</a>
+                                        <a href="{{route('collaborator_productions.show',$collaborator->id)}}" class="nav-link">Ver mais</a>
                                     </td>
                                 </tr>
                                 @endif

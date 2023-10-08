@@ -4,14 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Collaborator;
 use App\Models\CollaboratorProduction;
+use App\Models\Link;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class CollaboratorProductionController extends Controller
 {
+    protected $theme;
 
-    public function index()
+    public function __construct()
     {
+        $contents = Storage::get('theme/theme.json');
+        $this->theme = json_decode($contents, true);
+        $this->middleware('admin')->except('show');
+    }
+
+    public function show(Request $request)
+    {
+
+        $collaborator = Collaborator::find($request->idCollaborator);
+        $collaboratorName = $collaborator->name;
+        $fullName = explode(" ",$collaboratorName);
+        if(count($fullName) > 1){
+            $collaboratorName = $fullName[0] . " " . $fullName[count($fullName) - 1]; 
+        }
+
+        $collaboratorProductions = CollaboratorProduction::where('collaborator_id','=',$collaborator->id)->orderBy('created_at','desc')->get();
+        $opinionLinkForm = Link::where('name','opinionForm')->first();
+
+        return view('collaborator_production.show')->with('theme',$this->theme)
+            ->with('collaborator', $collaborator)
+            ->with('collaboratorName', $collaboratorName)
+            ->with('collaboratorProductions', $collaboratorProductions)
+            ->with('opinionLinkForm',$opinionLinkForm);
     }
 
     public function storeListJson(Request $request)
