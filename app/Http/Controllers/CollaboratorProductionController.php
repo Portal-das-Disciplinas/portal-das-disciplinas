@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Collaborator;
 use App\Models\CollaboratorProduction;
 use App\Models\Link;
+use Exception;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -77,5 +79,32 @@ class CollaboratorProductionController extends Controller
         }
 
         return redirect()->route('information');
+    }
+
+    public function update(Request $request){
+        
+        $inputValidator = Validator::make($request->all(),[
+            'productionId' => 'required',
+            'productionBrief' => 'required | min:5'
+        ], [
+            'required' => 'O campo Breve descrição não pode ser nulo',
+            'min' => 'O campo Breve descrição tem que ter pelo menos 5 caracteres'
+        ]);
+
+        if($inputValidator->fails()){
+      
+            return redirect()->back()->withErrors($inputValidator);
+        }
+
+        try{
+        $production = CollaboratorProduction::find($request->productionId);
+        $production->brief = $request->productionBrief;
+        $production->details = $request->productionDetails;
+        $production->update();
+        }catch(Exception $e){
+
+            return redirect()->back()->withErrors(['update_error' => 'Erro ao atualizar no banco de dados']);
+        }
+        return redirect()->back()->with('feedback', 'Atualizado com sucesso');
     }
 }

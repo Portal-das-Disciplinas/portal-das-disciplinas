@@ -403,7 +403,7 @@
         <div id="devsGrid" class="d-flex col-md-7 flex-column align-items-center">
 
             @if(Auth::user() && Auth::user()->isAdmin)
-            <button id="showb" class="btn btn-success btn-sm mt-4 mb-4" data-toggle="modal" data-target="#modal-information" onclick="showModsal('modal-information')">Adicionar Colaborador</button>
+            <button id="showb" class="btn btn-success btn-sm mt-4 mb-4" data-toggle="modal" data-target="#modal-information">Adicionar Colaborador</button>
             @endif
             <div class="info-collaborators-container mt-4">
 
