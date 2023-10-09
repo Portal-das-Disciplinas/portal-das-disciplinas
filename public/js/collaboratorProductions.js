@@ -11,7 +11,7 @@ let idCollaboratorToSave = null;
 function showModalCreateCollaboratorProductions(idCollaborator){
     idCollaboratorToSave = idCollaborator;
     productions = [];
-    renderInputFields("fields   ");
+    renderInputFields("fields");
     $('#modalCreateCollaboratorProductions').modal('show');
 
 }

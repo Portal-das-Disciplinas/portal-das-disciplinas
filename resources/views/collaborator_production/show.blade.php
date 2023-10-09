@@ -56,6 +56,11 @@
                     <h3 class="text-secondary" style="text-align:center">Produções do Colaborador no Portal das Disciplinas</h3>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-end">
+                    <button class="btn btn-primary btn-sm mb-3" onclick="showModalCreateCollaboratorProductions('{{$collaborator->id}}')">Cadastrar produções</button>
+                </div>
+            </div>
             @foreach($collaboratorProductions as $production)
             <div class="card p-2 mb-3" style="box-shadow: 2px 2px 5px rgba(0,0,0,0.1)">
 
@@ -143,9 +148,36 @@
         </div>
     </div>
 </div>
+
+<div id="modalCreateCollaboratorProductions" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Produção do desenvolvedor no portal</h3>
+            </div>
+            <div class="modal-body">
+               <form id ="formCollaboratorProductionsCreate" action="{{route('colalborators_productions.store_list_json')}}" method="POST">
+                    @csrf
+                    <div id="fields"></div>
+                    <input id="productionCollaboratorId" name="productionCollaboratorId" hidden>
+                    <input id="collaboratorProductionsJSON" name="collaboratorProductionsJSON" hidden>
+                    <div class="d-flex justify-content-end">
+                        <button id="btnSubmitProductions" type="submit" class="btn btn-success" onclick="btnSaveProductions()">Salvar</button>
+                    </div>
+               </form> 
+               <button class="btn btn-outline-primary btn-sm" onclick="addField('formCollaboratorProductionsCreate')">Adicionar Campo</button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts-bottom')
+<script src="{{asset('js/collaboratorProductions.js')}}"></script>
 <script>
     inputProductionId = document.querySelector('#productionId');
     inputProductionBrief = document.querySelector('#productionBrief');
