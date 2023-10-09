@@ -1,4 +1,4 @@
-<div class="d-flex flex-column justify-content-center align-items-center mb-3"><!-- mx-4 mb-3-->
+<div class="d-flex flex-column justify-content-center align-items-center mb-3">
     <img class="clip-path regular-image" src="{{'/storage/'.$image}}" alt="{{ $alt_image ?? 'foto-dev' }}" width="160px" height="160px" style="object-fit:cover" onerror="loadDefault(event)">
     <div class="text-center">
         <h3>{{$name ?? ''}}</h3>
@@ -27,11 +27,11 @@
                 Github
             </a>
         </p>
-        <!--foreach -->
+        @endif
+        @if(isset($productions) && $productions != '[]')
         <p>
-        {{$productions}}
+            {{$productions}}
         </p>
-        <!--foreach -->
         @endif
 
     </div>

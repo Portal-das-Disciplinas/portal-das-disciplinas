@@ -254,8 +254,8 @@
                 <h3>Produção do desenvolvedor no portal</h3>
             </div>
             <div class="modal-body">
-               <p><strong id="productionBrief"></strong></p>
-               <p id="productionDetails" class="text-secondary"></p> 
+                <p><strong id="productionBrief"></strong></p>
+                <p id="productionDetails" class="text-secondary"></p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary btn-sm" data-dismiss="modal">Fechar</button>
@@ -272,7 +272,7 @@
                 <h3>Produção do desenvolvedor no portal</h3>
             </div>
             <div class="modal-body">
-               <form id ="formCollaboratorProductionsCreate" action="{{route('colalborators_productions.store_list_json')}}" method="POST">
+                <form id="formCollaboratorProductionsCreate" action="{{route('colalborators_productions.store_list_json')}}" method="POST">
                     @csrf
                     <div id="fields"></div>
                     <input id="productionCollaboratorId" name="productionCollaboratorId" hidden>
@@ -280,8 +280,8 @@
                     <div class="d-flex justify-content-end">
                         <button id="btnSubmitProductions" type="submit" class="btn btn-success" onclick="btnSaveProductions()">Salvar</button>
                     </div>
-               </form> 
-               <button class="btn btn-outline-primary btn-sm" onclick="addField('formCollaboratorProductionsCreate')">Adicionar Campo</button>
+                </form>
+                <button class="btn btn-outline-primary btn-sm" onclick="addField('formCollaboratorProductionsCreate')">Adicionar Campo</button>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -497,8 +497,10 @@
                             <tbody>
                                 @foreach($collaborator->productions->sortByDesc('created_at')->take(5) as $production)
                                 <tr>
-                                    <td class="py-3" onclick = "showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
-                                        <small><p style="line-height:1.1; text-align:center">{{$production->brief}}</p></small>
+                                    <td class="py-3" onclick="showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
+                                        <small>
+                                            <p style="line-height:1.1; text-align:center">{{$production->brief}}</p>
+                                        </small>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -588,8 +590,10 @@
                             <tbody>
                                 @foreach($collaborator->productions->sortByDesc('created_at')->take(5) as $production)
                                 <tr>
-                                    <td class="py-3" onclick = "showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
-                                        <small><p style="line-height:1.1; text-align:center">{{$production->brief}}</p></small>
+                                    <td class="py-3" onclick="showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
+                                        <small>
+                                            <p style="line-height:1.1; text-align:center">{{$production->brief}}</p>
+                                        </small>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -646,7 +650,9 @@
 
 
 </div>
+@endsection
 
+@section('scripts-bottom')
 <script>
     function changeFileName() {
         document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
@@ -680,9 +686,7 @@
         })
 
     }
-</script>
 
-<script>
     links = [];
 
     function renderLinks() {
@@ -743,16 +747,11 @@
 
 
     }
-</script>
 
-<script>
     let databaseVideoContentProducers = @json($videoAboutProducers);
     let videoContentProducers = @json($videoAboutProducers); // usado no modal
 </script>
 
-@endsection
-
-@section('scripts-bottom')
 <script src="{{asset('js/about.js')}}"></script>
 <script src="{{asset('js/collaboratorProductions.js')}}"></script>
 @endsection
