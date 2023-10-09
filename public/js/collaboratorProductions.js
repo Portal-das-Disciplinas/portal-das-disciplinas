@@ -27,7 +27,7 @@ function renderInputFields(idElement) {
                 "</div>" +
                 "<div class='form-group'>" +
                 "<label>Detalhes</label>" +
-                "<textarea class='form-control' maxlength='256' onchange='changeDetailsText(event," + index + ")'>" + production.details + "</textarea>" +
+                "<textarea class='form-control' maxlength='256' onchange='changeDetailsText(event," + index + ")' placeholder='Opcional'>" + production.details + "</textarea>" +
                 "</div>" +
                 "<div>" +
                 "<label class='text-danger' style='cursor:pointer' onclick='removeField(event," + index + ")'><small>remover</small></label>" +

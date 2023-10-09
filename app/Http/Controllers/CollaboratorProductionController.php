@@ -78,7 +78,7 @@ class CollaboratorProductionController extends Controller
             ]);
         }
 
-        return redirect()->route('information');
+        return redirect()->back()->with('feedback_ok','Dados salvos com sucesso!');
     }
 
     public function update(Request $request){
