@@ -56,11 +56,13 @@
                     <h3 class="text-secondary" style="text-align:center">Produções do Colaborador no Portal das Disciplinas</h3>
                 </div>
             </div>
+            @if(Auth::user() && Auth::user()->isAdmin)
             <div class="row">
                 <div class="col-md-12 d-flex justify-content-end">
                     <button class="btn btn-primary btn-sm mb-3" onclick="showModalCreateCollaboratorProductions('{{$collaborator->id}}')">Cadastrar produções</button>
                 </div>
             </div>
+            @endif
             @foreach($collaboratorProductions as $production)
             <div class="card p-2 mb-3" style="box-shadow: 2px 2px 5px rgba(0,0,0,0.1)">
 

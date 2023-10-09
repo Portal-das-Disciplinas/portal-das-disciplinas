@@ -504,10 +504,16 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                                @if((count($collaborator->productions))> 5)
+                                @if((count($collaborator->productions))> 5 || (Auth::user() && Auth::user()->isAdmin && (count($collaborator->productions) > 0)))
                                 <tr>
                                     <td class="py-3" style="cursor:pointer">
-                                        <a href="{{route('collaborator_productions.show',$collaborator->id)}}" class="nav-link">Ver mais</a>
+                                        <a href="{{route('collaborator_productions.show',$collaborator->id)}}" class="nav-link">
+                                            @if((Auth::user() && Auth::user()->isAdmin))
+                                            Ver mais ou Editar
+                                            @else
+                                            Ver mais
+                                            @endif
+                                        </a>
                                     </td>
                                 </tr>
                                 @endif
@@ -597,10 +603,16 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                                @if((count($collaborator->productions))> 5)
+                                @if((count($collaborator->productions))> 5 || (Auth::user() && Auth::user()->isAdmin && (count($collaborator->productions) > 0)))
                                 <tr>
                                     <td class="py-3" style="cursor:pointer">
-                                        <a href="{{route('collaborator_productions.show',$collaborator->id)}}" class="nav-link">Ver mais</a>
+                                    <a href="{{route('collaborator_productions.show',$collaborator->id)}}" class="nav-link">
+                                            @if((Auth::user() && Auth::user()->isAdmin))
+                                            Ver mais ou Editar
+                                            @else
+                                            Ver mais
+                                            @endif
+                                        </a>
                                     </td>
                                 </tr>
                                 @endif
