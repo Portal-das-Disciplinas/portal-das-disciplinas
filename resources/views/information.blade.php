@@ -3,6 +3,7 @@
 
 @section('styles-head')
 <link rel="stylesheet" href="{{asset('css/about.css')}}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 @endsection
 @section('content')
 <div id="modal-information" class="modal fade" tabindex="-1" role='dialog'>
@@ -29,11 +30,11 @@
                     </div>
                     <div class="form-group">
                         <label for="vinculoColaborador">Vínculo</label>
-                        <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" value="{{old('vinculo')}}"placeholder="bolsista, voluntário..." required>
+                        <input id="vinculoColaborador" name="vinculo" type="text" class="form-control" value="{{old('vinculo')}}" placeholder="bolsista, voluntário..." required>
                     </div>
                     <div class="form-group">
                         <label for="funcaoColaborador">Função</label>
-                        <input id="funcaoColaborador" name="funcao" type=text class="form-control" value="{{old('funcao')}}"placeholder="Desenvolvedor, Designer, ...">
+                        <input id="funcaoColaborador" name="funcao" type=text class="form-control" value="{{old('funcao')}}" placeholder="Desenvolvedor, Designer, ...">
                     </div>
                     <div class="form-group">
                         <label for="lattesColaborador">Lattes</label>
@@ -41,7 +42,7 @@
                     </div>
                     <div class="form-group">
                         <label for="githubColaborador">Github</label>
-                        <input id="githubColaborador" name="github" type="url" class="form-control" value="{{old('github')}}"placeholder="https://">
+                        <input id="githubColaborador" name="github" type="url" class="form-control" value="{{old('github')}}" placeholder="https://">
                     </div>
                     <hr class="hr">
 
@@ -203,23 +204,23 @@
 <div id="modal-video-producers" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-             <div class="modal-header">
-                 <h3 class="modal-title">Produtores do vídeo</h3>
-             </div>
-             <div class="modal-body">
-                 <div id="formVideoContentProducers"class="form">
-                 </div>
-                 <form id="formContentProducersJson" method="post" action="{{route('content_producers.store_update')}}">
+            <div class="modal-header">
+                <h3 class="modal-title">Produtores do vídeo</h3>
+            </div>
+            <div class="modal-body">
+                <div id="formVideoContentProducers" class="form">
+                </div>
+                <form id="formContentProducersJson" method="post" action="{{route('content_producers.store_update')}}">
                     @csrf
                     <input name="contentProducers" type='hidden'>
-                 </form>
-                 <button id="btnAddParticipant"class="btn btn-outline-primary btn-sm" onclick="addParticipantField()">Adicionar campo</button>
-             </div>
-             <div class="modal-footer">
+                </form>
+                <button id="btnAddParticipant" class="btn btn-outline-primary btn-sm" onclick="addParticipantField()">Adicionar campo</button>
+            </div>
+            <div class="modal-footer">
                 <button class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
                 <button class="btn btn-primary btn-sm" for="btnAddParticipant" onclick="submitFormContentProducers()">Salvar Produtores</button>
 
-             </div>               
+            </div>
         </div>
     </div>
 </div>
@@ -246,6 +247,50 @@
     </div>
 </div>
 
+<div id="modalCollaboratorProduction" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Produção do desenvolvedor no portal</h3>
+            </div>
+            <div class="modal-body">
+                <p><strong id="productionBrief"></strong></p>
+                <p id="productionDetails" class="text-secondary"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-sm" data-dismiss="modal">Fechar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="modalCreateCollaboratorProductions" class="modal fade">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Produção do desenvolvedor no portal</h3>
+            </div>
+            <div class="modal-body">
+                <form id="formCollaboratorProductionsCreate" action="{{route('colalborators_productions.store_list_json')}}" method="POST">
+                    @csrf
+                    <div id="fields"></div>
+                    <input id="productionCollaboratorId" name="productionCollaboratorId" hidden>
+                    <input id="collaboratorProductionsJSON" name="collaboratorProductionsJSON" hidden>
+                    <div class="d-flex justify-content-end">
+                        <button id="btnSubmitProductions" type="submit" class="btn btn-success" onclick="btnSaveProductions()">Salvar</button>
+                    </div>
+                </form>
+                <button class="btn btn-outline-primary btn-sm" onclick="addField('formCollaboratorProductionsCreate')">Adicionar Campo</button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- Styles -->
 <div class='banner text-center d-flex align-items-center justify-content-center '>
     <h1 class='text-white'>Sobre & Colabore</h1>
@@ -259,9 +304,9 @@
             @endforeach
         </div>
     </div>
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
 @endif
 
@@ -297,7 +342,7 @@
             <div class="row-fluid mb-5 d-flex flex-column">
                 <div class="d-flex justify-content-between">
                     @if(Auth::user() && Auth::user()->isAdmin)
-                    <b class="pl-0"data-toggle="collapse" data-target="#collapseCreditos">
+                    <b class="pl-0" data-toggle="collapse" data-target="#collapseCreditos">
                         @if(count($videoAboutProducers) >0)
                         créditos <li class="fa fa-caret-down"></li>
                         @else
@@ -307,7 +352,7 @@
                     @endif
                     @guest
                     @if(count($videoAboutProducers)>0 && (isset($videoUrl)))
-                    <b class="pl-0"data-toggle="collapse" data-target="#collapseCreditos">
+                    <b class="pl-0" data-toggle="collapse" data-target="#collapseCreditos">
                         créditos <li class="fa fa-caret-down"></li>
                     </b>
                     @endif
@@ -325,10 +370,10 @@
                             </a>
                         </small>
                         @endforeach
- 
+
                     </div>
                 </div>
-                    
+
             </div>
             <section class='our-team p-0'>
                 <h2>Nossa equipe</h2>
@@ -344,7 +389,7 @@
                     @if($sectionCollaborateTitle == "")
                     <p class="text-secondary"><i>[Sem título para a seção]</i></p>
                     @endif
-                    <label class="text-primary" style="cursor:pointer"onclick="$('#modal-section-collaborate').modal('show')">editar</label>
+                    <label class="text-primary" style="cursor:pointer" onclick="$('#modal-section-collaborate').modal('show')">editar</label>
                     @endif
                 </div>
                 @if(($sectionCollaborateTitle == "") && Auth::user() && Auth::user()->isAdmin)
@@ -355,10 +400,10 @@
         </div>
 
 
-        <div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
+        <div id="devsGrid" class="d-flex col-md-7 flex-column align-items-center">
 
             @if(Auth::user() && Auth::user()->isAdmin)
-            <button id="showb" class="btn btn-success btn-sm mt-4 mb-4" data-toggle="modal" data-target="#modal-information" onclick="showModsal('modal-information')">Adicionar Colaborador</button>
+            <button id="showb" class="btn btn-success btn-sm mt-4 mb-4" data-toggle="modal" data-target="#modal-information">Adicionar Colaborador</button>
             @endif
             <div class="info-collaborators-container mt-4">
 
@@ -374,8 +419,10 @@
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($collaborators as $collaborator)
                 @if($collaborator->active && $collaborator->isManager)
-                <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
+                <div class="d-flex flex-column  align-items-center justify-content-between mt-4 mx-4">
                     @component('components.info_contributors')
+                    @slot('id') {{$collaborator->id}} @endslot
+                    @slot('productions') {{$collaborator->productions}} @endslot
                     @slot('name') {{$collaborator->name}} @endslot
                     @slot('profession') {{$collaborator->role}} @endslot
                     @slot('occupation') {{$collaborator->bond}} @endslot
@@ -420,11 +467,60 @@
                 @endif
             </div>
 
-            <div class="d-flex flex-wrap justify-content-around mt-4">
+            <div class="d-flex flex-wrap justify-content-around mt-4 w-100">
                 @foreach($collaborators as $collaborator)
+
                 @if(!$collaborator->isManager && $collaborator->active)
-                <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
+                <div class="d-flex flex-column  align-items-center justify-content-between mt-4 mx-0" style="width:300px">
                     @component('components.info_contributors')
+                    @slot('id') {{$collaborator->id}} @endslot
+                    @slot('productions')
+                    <div class="d-flex flex-row align-items-center justify-content-center" style="cursor:pointer">
+                        @if(count($collaborator->productions) > 0)
+                        <small id="toggleCollapse-{{$collaborator->id}}" class="text-secondary" aria-expanded="true" onclick="expandCollapseProductions(event)" data-toggle="collapse" data-target="#collapse{{$collaborator->id}}" role="button">
+                            Produções no portal
+                        </small>
+                        <span class="material-symbols-outlined text-secondary" style="cursor:default">expand_more</span>
+                        @endif
+                        @if(Auth::user() && Auth::user()->isAdmin)
+                        <button class="btn btn-success btn-sm mb-3 mt-1" onclick="showModalCreateCollaboratorProductions('{{$collaborator->id}}')">
+                            @if(count($collaborator->productions) > 0)
+                            &nbsp;+&nbsp;
+                            @else
+                            Adicionar produção
+                            @endif
+                        </button>
+                        @endif
+                    </div>
+                    <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start mx-1" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
+                        <table class="table table-striped">
+                            <tbody>
+                                @foreach($collaborator->productions->sortByDesc('created_at')->take(5) as $production)
+                                <tr>
+                                    <td class="py-3" onclick="showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
+                                        <small>
+                                            <p style="line-height:1.1; text-align:center">{{$production->brief}}</p>
+                                        </small>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                @if((count($collaborator->productions))> 5 || (Auth::user() && Auth::user()->isAdmin && (count($collaborator->productions) > 0)))
+                                <tr>
+                                    <td class="py-3" style="cursor:pointer">
+                                        <a href="{{route('collaborator_productions.show',$collaborator->id)}}" class="nav-link">
+                                            @if((Auth::user() && Auth::user()->isAdmin))
+                                            Ver mais ou Editar
+                                            @else
+                                            Ver mais
+                                            @endif
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    @endslot
                     @slot('name') {{$collaborator->name}} @endslot
                     @slot('profession') {{$collaborator->role}} @endslot
                     @slot('occupation') {{$collaborator->bond}} @endslot
@@ -470,12 +566,60 @@
                 @endif
                 @endif
             </div>
-            @if(true)
+
             <div class="d-flex flex-wrap justify-content-around mt-4">
                 @foreach($collaborators as $collaborator)
                 @if(!$collaborator->active )
-                <div class="d-flex flex-column  align-items-center justify-content-between mt-4">
+                <div class="d-flex flex-column  align-items-center justify-content-between mt-4" style="width:300px">
                     @component('components.info_contributors')
+                    @slot('id') {{$collaborator->id}} @endslot
+                    @slot('productions')
+                    <div class="d-flex flex-row align-items-center justify-content-center" style="cursor:pointer">
+                        @if(count($collaborator->productions) > 0)
+                        <small id="toggleCollapse-{{$collaborator->id}}" class="text-secondary" aria-expanded="true" onclick="expandCollapseProductions(event)" data-toggle="collapse" data-target="#collapse{{$collaborator->id}}" role="button">
+                            Produções no portal
+                        </small>
+                        <span class="material-symbols-outlined text-secondary" style="cursor: default">expand_more</span>
+                        @endif
+                        @if(Auth::user() && Auth::user()->isAdmin)
+                        <button class="btn btn-success btn-sm mb-3 mt-1" onclick="showModalCreateCollaboratorProductions('{{$collaborator->id}}')">
+                            @if(count($collaborator->productions) > 0)
+                            &nbsp;+&nbsp;
+                            @else
+                            Adicionar produção
+                            @endif
+                        </button>
+                        @endif
+                    </div>
+                    <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start mx-1" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
+                        <table class="table table-striped">
+                            <tbody>
+                                @foreach($collaborator->productions->sortByDesc('created_at')->take(5) as $production)
+                                <tr>
+                                    <td class="py-3" onclick="showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
+                                        <small>
+                                            <p style="line-height:1.1; text-align:center">{{$production->brief}}</p>
+                                        </small>
+                                    </td>
+                                </tr>
+                                @endforeach
+                                @if((count($collaborator->productions))> 5 || (Auth::user() && Auth::user()->isAdmin && (count($collaborator->productions) > 0)))
+                                <tr>
+                                    <td class="py-3" style="cursor:pointer">
+                                    <a href="{{route('collaborator_productions.show',$collaborator->id)}}" class="nav-link">
+                                            @if((Auth::user() && Auth::user()->isAdmin))
+                                            Ver mais ou Editar
+                                            @else
+                                            Ver mais
+                                            @endif
+                                        </a>
+                                    </td>
+                                </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    @endslot
                     @slot('name') {{$collaborator->name}} @endslot
                     @slot('period')
                     @if($collaborator->joinDate && $collaborator->leaveDate)
@@ -508,60 +652,19 @@
                             <input type="submit" class="btn btn-outline-danger btn-sm align-text-bottom ml-2" value="remover">
                         </form>
                     </div>
-
                     @endif
                 </div>
                 @endif
                 @endforeach
             </div>
-            @endif
         </div>
-        <!--<div id="devsGrid" class="col-md-7 d-flex flex-column align-items-center">
-
-
-
-        </div> -->
     </div>
 
-    <!--
-    <section>
-        <h3 class='mb-3'>Colaboradores Anteriores</h3>
-        <hr>
-        <div class="row mt-5">
-            <div class="col-md-3 d-flex flex-column align-items-center">
-
-                <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
-                <p><strong> Nome do colaborador </strong></p>
-                <p> Descrição </p>
-                <p> 12/12/2021 - 12/12/2021</p>
-            </div>
-            <div class="col-md-3 d-flex flex-column align-items-center">
-
-                <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
-                <p><strong> Nome do colaborador </strong></p>
-                <p> Descrição </p>
-                <p> 12/12/2021 - 12/12/2021</p>
-            </div>
-            <div class="col-md-3 d-flex flex-column align-items-center">
-
-                <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
-                <p><strong> Nome do colaborador </strong></p>
-                <p> Descrição </p>
-                <p> 12/12/2021 - 12/12/2021</p>
-            </div>
-            <div class="col-md-3 d-flex flex-column align-items-center">
-
-                <img class="fluid clip-path smaller-image" src="img/user2.png" alt="foto-dev">
-                <p><strong> Nome do colaborador </strong></p>
-                <p> Descrição </p>
-                <p> 12/12/2021 - 12/12/2021</p>
-            </div>
-        </div>
-    </section>
--->
 
 </div>
+@endsection
 
+@section('scripts-bottom')
 <script>
     function changeFileName() {
         document.querySelector("#fileName").innerHTML = document.querySelector("#fotoColaborador").value;
@@ -595,9 +698,7 @@
         })
 
     }
-</script>
 
-<script>
     links = [];
 
     function renderLinks() {
@@ -647,15 +748,22 @@
 
         document.querySelector('#links').innerHTML = renderLinks();
     }
-</script>
 
-<script>
+    function expandCollapseProductions(event) {
+        let expandIcon = document.querySelector("#" + event.target.id).nextElementSibling;
+        if (expandIcon.innerHTML == "expand_less") {
+            expandIcon.innerHTML = "expand_more";
+        } else if (expandIcon.innerHTML == "expand_more") {
+            expandIcon.innerHTML = "expand_less";
+        }
+
+
+    }
+
     let databaseVideoContentProducers = @json($videoAboutProducers);
-    let videoContentProducers = @json($videoAboutProducers);// usado no modal
+    let videoContentProducers = @json($videoAboutProducers); // usado no modal
 </script>
 
-@endsection
-
-@section('scripts-bottom')
-    <script src="{{asset('js/about.js')}}"></script>
+<script src="{{asset('js/about.js')}}"></script>
+<script src="{{asset('js/collaboratorProductions.js')}}"></script>
 @endsection
