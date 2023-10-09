@@ -13,6 +13,7 @@ use App\Http\Controllers\ProfessorUserController;
 use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
+use App\Http\Controllers\CollaboratorProductionController;
 use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\DisciplinePerformanceDataController;
 use App\Http\Controllers\InformationController;
@@ -101,6 +102,11 @@ Route::delete('participantes_disciplina/{id}', [DisciplineParticipantController:
 Route::resource('links', LinksController::class);
 Route::put('/links/update/toggleactive',[LinksController::class, 'toggleActive'])->name('links.active.toggle');
 Route::put('/links/supdate/opinion_form_link', [LinksController::class,'updateOpinionFormLink'])->name('links.supdate.opinion_form_link');
+
+Route::post('/collaboratorProductions/store/listjson',[CollaboratorProductionController::class,"storeListJson"])->name('colalborators_productions.store_list_json');
+Route::get('/collaborator/productions/show/{idCollaborator}',[CollaboratorProductionController::class,"show"])->name('collaborator_productions.show');
+Route::put('/collaborator/productions/update',[CollaboratorProductionController::class,"update"])->name('collaborator_production.update');
+Route::delete('collaborator/productions/delete',[CollaboratorProductionController::class,'delete'])->name('collaborator_production.delete');
 
 Route::get('/disciplinas/dados/{codigo}/{ano}/{periodo}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
 Route::get('/disciplinas/dados/{codigo}/{idTurma}/{ano}/{periodo}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
