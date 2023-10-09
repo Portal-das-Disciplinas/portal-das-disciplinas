@@ -5,5 +5,7 @@
 
 function handleInput(object, value) {
     let p = object.slice(5);
-    $("#"+p).html(" > " + value + "%");
+    let aux = 100 - parseInt(value);
+    $("#"+p).html(value + "% ou +");
+    $("#"+"-"+p).html(aux + "% ou -");
 }

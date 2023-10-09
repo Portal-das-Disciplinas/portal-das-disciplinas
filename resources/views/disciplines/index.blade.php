@@ -131,21 +131,36 @@
 
                                         <div class="advancedSearch">
                                             <div class="col">
-                                                <div class="value">
-                                                    <p 
+                                                <div class="value" style="justify-content: space-between">
+
+                                                    <div style="display: inline-block; margin-right: 20px;">
+                                                        <label 
                                                         id="{{ $classification->id }}"
                                                         class="mostrador"
-                                                    >
-                                                        > 0%
-                                                    </p>    
+                                                        style="color:var(--primary); font-weight: bold; display: block; font-size: 15px;"
+                                                         >0%</label> 
+                                                        <label>{{ $classification->type_a }}</label>
+                                                    </div>
+                                                    
+                                                    <div style="display: inline-block;">
+                                                        <label 
+                                                        id="-{{ $classification->id }}" 
+                                                        class="mostrador"
+                                                        style="color:var(--primary); font-weight: bold; display: block; font-size: 15px;"
+                                                        >0%</label> 
+                                                        <label>{{ $classification->type_b }}</label>
+                                                    </div>
+                                                    
+                                                    
+                                                
                                                 </div>
                                             </div>
                                             
-                                            <div class="col-8">
+                                            <div class="col-6">
                                                 <input 
                                                     class="range"
                                                     type="range" 
-                                                    style="width: 100%"
+                                                    style="width: 100%;"
                                                     id="range{{ $classification->id }}" 
                                                     name="range{{ $classification->name }}"
                                                     value="-1" 
