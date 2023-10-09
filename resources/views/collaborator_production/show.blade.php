@@ -21,17 +21,17 @@
         </div>
     </div>
     @endif
-    @if(session('feedback'))
+    @if(session('feedback_ok'))
     <div class="row">
         <div class="col-md-12 alert alert-success">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-            <p style="text-align:center">{{session('feedback')}}</p>  
+            <p style="text-align:center">{{session('feedback_ok')}}</p>
         </div>
     </div>
     @endif
-    
+
     <div class="row">
         <div class="col-md-3">
             <div class="d-flex flex-column align-items-center mb-3">
@@ -70,8 +70,9 @@
                     @if(!$production->details)
                     <small class="text-secondary">sem detalhes</small>
                     @endif
-                    <div class="d-flex justify-content-between">
-                        <button class="btn btn-outline-primary btn-sm mb-1" data-toggle="modal" data-target="#modal-update" onclick="onClickOpenModal('{{$production->id}}','{{$production->brief}}','{{$production->details}}')">Atualizar</button>
+                    <div class="d-flex justify-content-between mb-1">
+                        <button class="btn btn-outline-primary btn-sm " data-toggle="modal" data-target="#modal-update" onclick="onClickOpenModal('{{$production->id}}','{{$production->brief}}','{{$production->details}}')">Atualizar</button>
+                        <button class="btn btn-outline-danger btn-sm ml-3" onclick="openConfirmDeleteModal('{{$production->id}}')">Deletar</button>
                     </div>
                     @endif
                 </div>
@@ -117,6 +118,31 @@
         </div>
     </div>
 </div>
+
+<div id="modal-confirm-delete" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmação</h3>
+            </div>
+            <div class="modal-body">
+                <h3>Tem certeza que deseja apagar esse dado?</h3>
+                <form class="form" method="post" action="{{route('collaborator_production.delete')}}">
+                    @csrf
+                    @method('DELETE')
+                    <input id="productionId" name="productionId" hidden>
+                    <input id="submitDelete" type="submit" hidden>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="d-flex justify-content-end">
+                    <label for="submitDelete" class="btn btn-danger btn-sm">Confirmar</label>
+                    <label class="btn btn-secondary btn-sm ml-4" data-dismiss="modal">Cancelar</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts-bottom')
@@ -129,6 +155,11 @@
         inputProductionId.value = productionId;
         inputProductionBrief.value = productionBrief;
         inputProductionDetails.innerHTML = productionDetails;
+    }
+
+    function openConfirmDeleteModal(productionId) {
+        document.querySelector('#modal-confirm-delete #productionId').value=productionId;
+        $('#modal-confirm-delete').modal('show');
     }
 </script>
 

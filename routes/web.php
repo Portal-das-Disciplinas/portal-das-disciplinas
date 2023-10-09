@@ -106,6 +106,8 @@ Route::put('/links/supdate/opinion_form_link', [LinksController::class,'updateOp
 Route::post('/collaboratorProductions/store/listjson',[CollaboratorProductionController::class,"storeListJson"])->name('colalborators_productions.store_list_json');
 Route::get('/collaborator/productions/show/{idCollaborator}',[CollaboratorProductionController::class,"show"])->name('collaborator_productions.show');
 Route::put('/collaborator/productions/update',[CollaboratorProductionController::class,"update"])->name('collaborator_production.update');
+Route::delete('collaborator/productions/delete',[CollaboratorProductionController::class,'delete'])->name('collaborator_production.delete');
+
 Route::get('/disciplinas/dados/{codigo}/{ano}/{periodo}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
 Route::get('/disciplinas/dados/{codigo}/{idTurma}/{ano}/{periodo}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
 Route::get('/apisistemas/turmas',[ApiSistemasController::class,'getTurmasPorComponente'])->name("apisistemas.turmas");

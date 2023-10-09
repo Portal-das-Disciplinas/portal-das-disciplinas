@@ -82,7 +82,6 @@ class CollaboratorProductionController extends Controller
     }
 
     public function update(Request $request){
-        
         $inputValidator = Validator::make($request->all(),[
             'productionId' => 'required',
             'productionBrief' => 'required | min:5'
@@ -105,6 +104,16 @@ class CollaboratorProductionController extends Controller
 
             return redirect()->back()->withErrors(['update_error' => 'Erro ao atualizar no banco de dados']);
         }
-        return redirect()->back()->with('feedback', 'Atualizado com sucesso');
+        return redirect()->back()->with('feedback_ok', 'Atualizado com sucesso');
+    }
+
+    public function delete(Request $request){
+        try{
+        $collaboratorProduction = CollaboratorProduction::find($request->productionId);
+        $collaboratorProduction->delete();
+        }catch(Exception $e){
+            return redirect()->back()->withErrors(["delete_error" =>"Não foi possível efetuar a remoção no banco de dados"]);
+        }
+        return redirect()->back()->with('feedback_ok','Deletado com sucesso');
     }
 }
