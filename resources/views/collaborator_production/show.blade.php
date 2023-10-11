@@ -46,7 +46,6 @@
                 <a href="{{$collaborator->github}}" target="_blank" class="d-flex align-items-center"><img src="/img/github-mark.svg" width="20px">Github</a>
                 @endif
             </div>
-
         </div>
 
         <div class="col-md-9">
@@ -64,34 +63,41 @@
             </div>
             @endif
             @foreach($collaboratorProductions as $production)
-            <div class="card p-2 mb-3" style="box-shadow: 2px 2px 5px rgba(0,0,0,0.1)">
+            <div class="row">
+                <div class="col-md-12 card p-2 mb-3" style="box-shadow: 2px 2px 5px rgba(0,0,0,0.1)">
 
-                <p class="smaller-p"><b>{{$production->brief}}</b></p>
-                <div class="d-flex justify-content-between">
-                    @if($production->details)
-                    <a class="smaller-p" data-toggle="collapse" href="{{'#collapseDetails' . $production->id}}" role="button" aria-expanded="false" aria-controls="{{'collapseDetails' . $production->id}}">
-                        Detalhes
-                    </a>
-                    @endif
-                    @if(Auth::user() && Auth::user()->isAdmin)
-                    @if(!$production->details)
-                    <small class="text-secondary">sem detalhes</small>
-                    @endif
-                    <div class="d-flex justify-content-between mb-1">
-                        <button class="btn btn-outline-primary btn-sm " data-toggle="modal" data-target="#modal-update" onclick="onClickOpenModal('{{$production->id}}','{{$production->brief}}','{{$production->details}}')">Atualizar</button>
-                        <button class="btn btn-outline-danger btn-sm ml-3" onclick="openConfirmDeleteModal('{{$production->id}}')">Deletar</button>
+                    <p class="smaller-p"><b>{{$production->brief}}</b></p>
+                    <div class="d-flex justify-content-between">
+                        @if($production->details)
+                        <a class="smaller-p" data-toggle="collapse" href="{{'#collapseDetails' . $production->id}}" role="button" aria-expanded="false" aria-controls="{{'collapseDetails' . $production->id}}">
+                            Detalhes
+                        </a>
+                        @endif
+                        @if(Auth::user() && Auth::user()->isAdmin)
+                        @if(!$production->details)
+                        <small class="text-secondary">sem detalhes</small>
+                        @endif
+                        <div class="d-flex justify-content-between mb-1">
+                            <button class="btn btn-outline-primary btn-sm " data-toggle="modal" data-target="#modal-update" onclick="onClickOpenModal('{{$production->id}}','{{$production->brief}}','{{$production->details}}')">Atualizar</button>
+                            <button class="btn btn-outline-danger btn-sm ml-3" onclick="openConfirmDeleteModal('{{$production->id}}')">Deletar</button>
+                        </div>
+                        @endif
                     </div>
-                    @endif
-                </div>
 
-                <div class="collapse" id="{{'collapseDetails' . $production->id}}">
-                    <div class="card card-body">
-                        <p class="smaller-p text-secondary">{{$production->details}}</p>
+                    <div class="collapse" id="{{'collapseDetails' . $production->id}}">
+                        <div class="card card-body">
+                            <p class="smaller-p text-secondary">{{$production->details}}</p>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
             @endforeach
+            <div class="row mt-5">
+                <div class="col-md-12 d-flex justify-content-center">
+                    {{$collaboratorProductions->links()}}
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -158,7 +164,7 @@
                 <h3>Produção do desenvolvedor no portal</h3>
             </div>
             <div class="modal-body">
-               <form id ="formCollaboratorProductionsCreate" action="{{route('colalborators_productions.store_list_json')}}" method="POST">
+                <form id="formCollaboratorProductionsCreate" action="{{route('colalborators_productions.store_list_json')}}" method="POST">
                     @csrf
                     <div id="fields"></div>
                     <input id="productionCollaboratorId" name="productionCollaboratorId" hidden>
@@ -166,8 +172,8 @@
                     <div class="d-flex justify-content-end">
                         <button id="btnSubmitProductions" type="submit" class="btn btn-success" onclick="btnSaveProductions()">Salvar</button>
                     </div>
-               </form> 
-               <button class="btn btn-outline-primary btn-sm" onclick="addField('formCollaboratorProductionsCreate')">Adicionar Campo</button>
+                </form>
+                <button class="btn btn-outline-primary btn-sm" onclick="addField('formCollaboratorProductionsCreate')">Adicionar Campo</button>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -192,7 +198,7 @@
     }
 
     function openConfirmDeleteModal(productionId) {
-        document.querySelector('#modal-confirm-delete #productionId').value=productionId;
+        document.querySelector('#modal-confirm-delete #productionId').value = productionId;
         $('#modal-confirm-delete').modal('show');
     }
 </script>
