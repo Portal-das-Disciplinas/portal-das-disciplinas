@@ -495,7 +495,7 @@
                     <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start mx-1" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
                         <table class="table table-striped">
                             <tbody>
-                                @foreach($collaborator->productions->sortByDesc('created_at')->take(5) as $production)
+                                @foreach($collaborator->productions->sortBy([['created_at','desc'],['id','asc']])->take(5) as $production)
                                 <tr>
                                     <td class="py-3" onclick="showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
                                         <small>
@@ -594,7 +594,7 @@
                     <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start mx-1" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
                         <table class="table table-striped">
                             <tbody>
-                                @foreach($collaborator->productions->sortByDesc('created_at')->take(5) as $production)
+                                @foreach($collaborator->productions->sortBy([['created_at','desc'],['id','asc']])->take(5) as $production)
                                 <tr>
                                     <td class="py-3" onclick="showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
                                         <small>
