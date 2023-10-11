@@ -32,7 +32,11 @@ class CollaboratorProductionController extends Controller
             $collaboratorName = $fullName[0] . " " . $fullName[count($fullName) - 1]; 
         }
 
-        $collaboratorProductions = CollaboratorProduction::where('collaborator_id','=',$collaborator->id)->orderBy('created_at','desc')->get();
+        $collaboratorProductions = CollaboratorProduction::where('collaborator_id','=',$collaborator->id)
+            ->orderBy('created_at','desc')
+            ->orderBy('id','asc')
+            ->paginate(10);
+            
         $opinionLinkForm = Link::where('name','opinionForm')->first();
 
         return view('collaborator_production.show')->with('theme',$this->theme)
