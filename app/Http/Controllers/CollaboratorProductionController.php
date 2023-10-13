@@ -35,7 +35,7 @@ class CollaboratorProductionController extends Controller
         $collaboratorProductions = CollaboratorProduction::where('collaborator_id','=',$collaborator->id)
             ->orderBy('created_at','desc')
             ->orderBy('id','asc')
-            ->paginate(10);
+            ->paginate(20);
             
         $opinionLinkForm = Link::where('name','opinionForm')->first();
 
