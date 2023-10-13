@@ -109,3 +109,9 @@ function onChangeInputLink(){
     document.querySelector("#modalAlterarVideo small").classList.add('d-none');
 }
 
+function openModalEditSectionName(idModal, sectionName){
+    $('#' + idModal + ' #section-name').val(sectionName);
+    $('#' + idModal).modal('show');
+}
+
+
