@@ -62,6 +62,11 @@
                 </div>
             </div>
             @endif
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-center">
+                    {{$collaboratorProductions->links()}}
+                </div>
+            </div>
             @foreach($collaboratorProductions as $production)
             <div class="row">
                 <div class="col-md-12 card p-2 mb-3" style="box-shadow: 2px 2px 5px rgba(0,0,0,0.1)">
