@@ -136,7 +136,7 @@
                     @method('POST')
                     @csrf
                     <div class="form-group">
-                        <input id="section-name" name="value" type="text" class="form-control" placeholder="Título da seção" required>
+                        <input id="section-name" name="value" type="text" class="form-control" placeholder="Título da seção" maxlength="74" required>
                     </div>
                     <input name="name" type="hidden" value="sectionNameManagers">
                     <input id="btn-modal-section-managers" class="btn btn-success" type="submit" hidden>
@@ -408,11 +408,11 @@
             <div class="info-collaborators-container mt-4">
 
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <h2>{{$sectionNameManagers ?? "[Coordenadores]"}}</h2>
+                <h2 style="text-align:center">{{$sectionNameManagers ?? "[Coordenadores]"}}</h2>
                 <span onclick="openModalEditSectionName('modal-section-managers', '{{$sectionNameManagers}}')">editar</span>
                 @else
                 @if($hasManagers)
-                <h2>{{$sectionNameManagers ?? ""}}</h2>
+                <h2 style="text-align:center">{{$sectionNameManagers ?? ""}}</h2>
                 @endif
                 @endif
             </div>
@@ -458,11 +458,11 @@
 
             <div class="info-collaborators-container mt-4">
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <h2>{{$sectionNameCurrentCollaborators ?? "[Colaboradores Atuais]"}}</h2>
+                <h2 style="text-align:center">{{$sectionNameCurrentCollaborators ?? "[Colaboradores Atuais]"}}</h2>
                 <span onclick="openModalEditSectionName('modal-section-current','{{$sectionNameCurrentCollaborators}}')">editar</span>
                 @else
                 @if($hasCurrentCollaborators)
-                <h2>{{$sectionNameCurrentCollaborators ?? ""}}</h2>
+                <h2 style="text-align:center">{{$sectionNameCurrentCollaborators ?? ""}}</h2>
                 @endif
                 @endif
             </div>
@@ -558,11 +558,11 @@
 
             <div class="info-collaborators-container mt-4">
                 @if(Auth::user() && Auth::user()->isAdmin)
-                <h2>{{$sectionNameFormerCollaborators ?? "[Antigos Colaboradores]"}} </h2>
+                <h2 style="text-align:center">{{$sectionNameFormerCollaborators ?? "[Antigos Colaboradores]"}} </h2>
                 <span onclick="openModalEditSectionName('modal-section-formers','{{$sectionNameFormerCollaborators}}')">editar</span>
                 @else
                 @if($hasFormerCollaborators)
-                <h2>{{$sectionNameFormerCollaborators ?? ""}} </h2>
+                <h2 style="text-align:center">{{$sectionNameFormerCollaborators ?? ""}} </h2>
                 @endif
                 @endif
             </div>
