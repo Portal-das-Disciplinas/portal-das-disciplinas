@@ -136,7 +136,7 @@
                     @method('POST')
                     @csrf
                     <div class="form-group">
-                        <input id="section-name" name="value" type="text" class="form-control" placeholder="Título da seção" required>
+                        <input id="section-name" name="value" type="text" class="form-control" placeholder="Título da seção" maxlength="74" required>
                     </div>
                     <input name="name" type="hidden" value="sectionNameManagers">
                     <input id="btn-modal-section-managers" class="btn btn-success" type="submit" hidden>
