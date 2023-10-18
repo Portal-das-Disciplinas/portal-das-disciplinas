@@ -33,6 +33,9 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
                 case 'PENDING':
                     $searchType = 'PENDENTES';
                     break;
+                case 'RUNNING':
+                    $searchType = 'EXECUTANDO';
+                    break;
                 case 'COMPLETE':
                     $searchType = 'COMPLETOS';
                     break;
