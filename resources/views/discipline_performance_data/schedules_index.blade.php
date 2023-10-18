@@ -27,6 +27,7 @@ Agendamentos
                         <select id="selectSearchType" name="scheduleStatus" class="form-control" onchange=onSelectStatusSchedulesChange()>
                             <option value="PENDING" {{$searchType=='PENDENTES'? 'selected': ''}}> Agendamentos PENDENTES</option>
                             <option value="COMPLETE" {{$searchType=='COMPLETOS'? 'selected': ''}}> Agendamentos COMPLETOS</option>
+                            <option value="RUNNING" {{$searchType=='EXECUTANDO'? 'selected': ''}}> Agendamentos EXECUTANDO</option>
                             <option value="ERROR" {{$searchType=='COM ERROS'? 'selected': ''}}> Agendamentos com ERROS</option>
                         </select>
                     </div>
