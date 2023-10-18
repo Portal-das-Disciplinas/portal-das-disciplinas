@@ -57,6 +57,9 @@ Agendamentos
                 <div class=" col-md-4 d-flex flex-column">
                     <span><b>Semestre: {{$schedule->year . '.' . $schedule->period}}</b></span>
                     <small class="text-secondary">Criado em: {{date('d-m-Y h:i:s',strtotime($schedule->created_at)) }}</small>
+                    @if($schedule->status == 'COMPLETE')
+                    <small class="text-info">executado em: <b> {{(floor($schedule->{'update_time'}/3600)) }} </b> horas <b> {{(floor(($schedule->{'update_time'}%3600)/60))}} </b> minutos e  <b>{{((($schedule->{'update_time'}%3600)%60))}} </b> segundos</small>
+                    @endif
                 </div>
                 <div class="col-md-6">
                     <span class="text-primary">{{$schedule->{'num_new_data'} }} dado(s) criado(s)</span>
