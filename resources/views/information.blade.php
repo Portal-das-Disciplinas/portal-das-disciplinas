@@ -162,7 +162,7 @@
                     @method('POST')
                     @csrf
                     <div class="form-group">
-                        <input id="section-name" name="value" type="text" class="form-control" placeholder="Título da seção" required>
+                        <input id="section-name" name="value" type="text" class="form-control" placeholder="Título da seção" maxlength="74" required>
                     </div>
                     <input name="name" type="hidden" value="sectionNameCurrentCollaborators">
                     <input id="btn-modal-section-current" type="submit" hidden>
@@ -187,7 +187,7 @@
                     @method('POST')
                     @csrf
                     <div class="form-group">
-                        <input id="section-name" name="value" type="text" class="form-control" placeholder="Título da seção" required>
+                        <input id="section-name" name="value" type="text" class="form-control" placeholder="Título da seção" maxlength="74" required>
                     </div>
                     <input name="name" type="hidden" value="sectionNameFormerCollaborators">
                     <input id="btn-modal-section-formers" type="submit" hidden>
