@@ -2,13 +2,19 @@
 
 namespace App\Services;
 
+use App\Exceptions\APISistemasIncorrectRequestExceception;
+use App\Exceptions\APISistemasRequestLimitException;
+use App\Exceptions\APISistemasServerErrorException;
+use App\Exceptions\APISistemasUnavailableException;
 use App\Models\Discipline;
 use App\Models\DisciplinePerformanceData;
 use App\Models\SchedulingDisciplinePerfomanceDataUpdate;
 use App\Services\APISigaa\APISigaaService;
+use DateTime;
 use Exception;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Throwable;
 
@@ -48,22 +54,69 @@ class DisciplinePerformanceDataService
 
     function runSchedules()
     {
-        $schedules = SchedulingDisciplinePerfomanceDataUpdate::where('status','=','PENDING')->get();
-        foreach($schedules as $schedule){
+        $schedules = SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')->get();
+        foreach ($schedules as $key=>$schedule) {
+            try{
             $this->runSchedule($schedule->id);
+            }catch(APISistemasRequestLimitException $e1){
+                $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $s->status = "ERROR";
+                $s->{'error_description'} .= " Limite de requisições alcançado";
+                $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
+                $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $s->save();
+                Log::error("Limite de requisições à API alcançado.");
+                break;
+            }catch(APISistemasServerErrorException $e2){
+                $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $s->status = "ERROR";
+                $s->{'error_description'} .= " Erro no servidor da API Sistemas";
+                $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
+                $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $s->save();
+                Log::error("Erro no servidor da API Sistemas.");
+                break;
+            }catch(APISistemasIncorrectRequestExceception $e3){
+                $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $s->status = "ERROR";
+                $s->{'error_description'} .= " Erro nos parâmetros de requisição para a API";
+                $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
+                $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $s->save();
+                Log::error("Erro nos parâmetros de requisição para a API.");
+                break;
+            }catch(APISistemasUnavailableException $e4){
+                $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $s->status = "ERROR";
+                $s->{'error_description'} .= " Não foi possível acessar a API";
+                $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
+                $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $s->save();
+                Log::error("Não foi possível acessar a API Sistemas.");
+                break;
+            }catch(Exception $e5){
+                $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $s->status = "ERROR";
+                $s->{'error_description'} .= " Erro desconhecido";
+                $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
+                $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $s->save();
+                Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage());
+                break;
+            }
         }
     }
 
     function runSchedule($idSchedule)
     {
-
+        Log::info('Executando o schedule: ' . $idSchedule);
         $schedule = SchedulingDisciplinePerfomanceDataUpdate::find($idSchedule);
         $updateIfExists = $schedule->{'update_if_exists'};
         $apiService = new APISigaaService();
         $initialTime = microtime(true);
         $schedule->status = 'RUNNING';
+        $schedule->{'executed_at'} = date('Y-m-d H:i:s');
         $schedule->save();
-        $schedule->{'executed_at'} = date('Y-m-d h:i:s');
         $disciplineCodes = [];
         $disciplines = Discipline::all();
 
@@ -99,7 +152,7 @@ class DisciplinePerformanceDataService
                         } catch (Exception $e) {
                             DB::rollBack();
                             $schedule->status = "ERROR";
-                            $schedule->{'error_description'} = "Erro ao criar dados de desempenho de turma";
+                            $schedule->{'error_description'} = "Erro ao criar dados de desempenho de turma: " . $turma['codigo-turma'];
                         }
                     } else if ($dataFromDatabase != null && $updateIfExists) {
                         $apiPerfomanceClassData = $apiService->getDisciplineData($discipline->code, $turma['id-turma'], $schedule->year, $schedule->period);
@@ -126,7 +179,7 @@ class DisciplinePerformanceDataService
                         } catch (Exception $e) {
                             DB::rollBack();
                             $schedule->status = "ERROR";
-                            $schedule->{'error_description'} = "Erro ao atualizar dados de desempenho de turma";
+                            $schedule->{'error_description'} = "Erro ao atualizar dados de desempenho de turma: " . $turma['codigo-turma'];
                         }
                     }
                 }
@@ -140,12 +193,24 @@ class DisciplinePerformanceDataService
         $schedule->save();
     }
 
+    /**
+     * Retorna uma lista de dados de performance de uma turma
+     * @param string $disciplineCode Codigo da disciplina (opcional)
+     * @param string $year ano do semestre
+     * @param int $year período do semestre
+     */
     function getPerformanceData($disciplineCode, $year, $period)
     {
-        $datas = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $year)->where('period', '=', $period)->get();
+        if ($disciplineCode != null && $disciplineCode != "") {
+            $datas = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $year)->where('period', '=', $period)->get();
+        } else {
+            $datas = DisciplinePerformanceData::where('year', '=', $year)->where('period', '=', $period)->get();
+        }
+
 
         return $datas;
     }
+
 
     function deletePerformanceData($id)
     {
