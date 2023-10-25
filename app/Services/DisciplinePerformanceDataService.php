@@ -64,6 +64,7 @@ class DisciplinePerformanceDataService
                 $s->{'error_description'} .= " Limite de requisições alcançado";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
                 $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $schedule->{'finished_at'} = date('Y-m-d H:i:s');
                 $s->save();
                 Log::error("Limite de requisições à API alcançado.");
                 break;
@@ -73,6 +74,7 @@ class DisciplinePerformanceDataService
                 $s->{'error_description'} .= " Erro no servidor da API Sistemas";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
                 $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $schedule->{'finished_at'} = date('Y-m-d H:i:s');
                 $s->save();
                 Log::error("Erro no servidor da API Sistemas.");
                 break;
@@ -82,6 +84,7 @@ class DisciplinePerformanceDataService
                 $s->{'error_description'} .= " Erro nos parâmetros de requisição para a API";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
                 $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $schedule->{'finished_at'} = date('Y-m-d H:i:s');
                 $s->save();
                 Log::error("Erro nos parâmetros de requisição para a API.");
                 break;
@@ -91,6 +94,7 @@ class DisciplinePerformanceDataService
                 $s->{'error_description'} .= " Não foi possível acessar a API";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
                 $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $schedule->{'finished_at'} = date('Y-m-d H:i:s');
                 $s->save();
                 Log::error("Não foi possível acessar a API Sistemas.");
                 break;
@@ -100,6 +104,7 @@ class DisciplinePerformanceDataService
                 $s->{'error_description'} .= " Erro desconhecido";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s',$s->{'executed_at'}), date_create('now'));
                 $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
+                $schedule->{'finished_at'} = date('Y-m-d H:i:s');
                 $s->save();
                 Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage());
                 break;
@@ -185,11 +190,14 @@ class DisciplinePerformanceDataService
                 }
             }
         }
-        $schedule->{'update_time'} = microtime(true) - $initialTime;
+       
+
         if ($schedule->status != "ERROR") {
             $schedule->status = "COMPLETE";
             $schedule->{'error_description'} = null;
         }
+        $schedule->{'finished_at'} = date('Y-m-d H:i:s');
+        $schedule->{'update_time'} = microtime(true) - $initialTime;
         $schedule->save();
     }
 
