@@ -16,6 +16,7 @@ Agendamentos
         <div class="col-md-12">
             <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar Agendamento</button>
             <a class="btn btn-success" href="{{route('performance.index')}}">Ver dados de performance obtidos</a>
+            <a class="btn btn-primary" href="{{route('semester_performance_data')}}">Ver semestres pesquisados</a>
         </div>
 
     </div>

@@ -20,6 +20,7 @@ use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LinksController;
 use App\Http\Controllers\ParticipantLinkController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
+use App\Http\Controllers\SemesterPerformanceDataController;
 use App\Models\Collaborator;
 use App\Models\DisciplinePerformanceData;
 use App\Models\Link;
@@ -121,4 +122,6 @@ Route::get('api/performance/{disciplineCode}/{year}/{period}', [DisciplinePerfor
 Route::get('/performance',[DisciplinePerformanceDataController::class,'index'])->name('performance.index');
 Route::delete('/performance/data/delete',[DisciplinePerformanceDataController::class, 'deletePerformanceData'])->name('performance.delete');
 Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataController::class, 'deletePerformanceDataByCodeYearPeriod'])->name('performance.delete_by_code_year_period');
+
+Route::get('/semester/performance/data', [SemesterPerformanceDataController::class,'index'])->name('semester_performance_data');
 
