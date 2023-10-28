@@ -24,6 +24,7 @@ use App\Http\Controllers\SemesterPerformanceDataController;
 use App\Models\Collaborator;
 use App\Models\DisciplinePerformanceData;
 use App\Models\Link;
+use App\Models\SemesterPerformanceData;
 use App\Services\DisciplinePerformanceDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -124,4 +125,5 @@ Route::delete('/performance/data/delete',[DisciplinePerformanceDataController::c
 Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataController::class, 'deletePerformanceDataByCodeYearPeriod'])->name('performance.delete_by_code_year_period');
 
 Route::get('/semester/performance/data', [SemesterPerformanceDataController::class,'index'])->name('semester_performance_data');
+Route::delete('/semester/performance/data/delete/{id}',[SemesterPerformanceDataController::class,'destroy'])->name('semester_performance_data.destroy');
 
