@@ -22,7 +22,6 @@ class APISigaaService
     private $clientSecret = "t3etHuCHo4a4r7N8histunaPEdrIb3pH";
     private $apiKey = "mX5ZV9wY8p1RahQkZ8viPwOB9XlBVxGt";
     private $grantType = "client_credentials";
-    //private $token = "2de62b66-6901-47f9-ace3-323a2a72a9d9";
     private $tokenData = null;
     private $qtdNewTokens = 0;
 
@@ -145,7 +144,7 @@ class APISigaaService
         if ($this->tokenData == null) {
             $this->getToken();
         }
-        $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . $strPeriodo, "GET");
+        $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . $strPeriodo . "&sigla-nivel=G", "GET");
         return $turmas;
     }
 
@@ -179,7 +178,7 @@ class APISigaaService
         $qtdDesconhecidos = 0;
         $qtdOutros = 0;
         $situacaoDesconhecida = "";
-        $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . "" . $strPeriodo, "GET");
+        $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . "" . $strPeriodo . "&sigla-nivel=G", "GET");
         $alunosTurma = [];
         foreach ($turmas as $turma) {
             if ($idTurma == null || $turma['id-turma'] == $idTurma) {
