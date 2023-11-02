@@ -32,11 +32,15 @@ class Kernel extends ConsoleKernel
             $service = new DisciplinePerformanceDataService();
             Log::info("Rodando as tarefas agendadas");
             $service->runSchedules();
-            Log::info("Terminou de rodar as tarefas agendadas");
         })->name("updateScheduling")
             ->withoutOverlapping()
-            ->dailyAt('03:00')
-            ->timezone('America/Sao_Paulo');
+            ->everyMinute()
+            ->timezone('America/Sao_Paulo')
+            ->onSuccess(function(){
+                Log::info("Todas as tarefas foram realizadas");
+            })->onFailure(function(){
+                Log::error("Ocorreu um erro ao executar as tarefas");
+            });
     }
 
     /**

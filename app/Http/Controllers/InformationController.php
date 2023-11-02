@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class InformationController extends Controller
 {
@@ -80,7 +81,6 @@ class InformationController extends Controller
         
         $videoAboutProducers = DisciplineParticipant::query()->orderBy('name','ASC')->where('worked_on','video_about')->get();
         
-
         return view('information', [
             'collaborators' => $collaborators,
             'hasManagers' => $hasManagers,
