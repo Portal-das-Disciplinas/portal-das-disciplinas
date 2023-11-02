@@ -118,7 +118,7 @@ class DisciplinePerformanceDataService
                 $this->updateSemesterPerformanceDataOnError($s->year, $s->period);
                 break;
             } catch (Exception $e5) {
-                Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage());
+                Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage() + " " + $e5);
                 $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
                 $s->status = "ERROR";
                 $s->{'error_description'} .= " Erro desconhecido";
@@ -143,7 +143,6 @@ class DisciplinePerformanceDataService
             SemesterPerformanceData::create([
                 'year' => $schedule->year,
                 'period' => $schedule->period,
-                'data_amount'
             ]);
         }
         $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)
@@ -236,6 +235,11 @@ class DisciplinePerformanceDataService
             $schedule->{'error_description'} = null;
             $semesterPerformanceData->{'has_errors'} = false;
         }
+
+        if($semesterPerformanceData->{'data_amount'} == 0){
+            $semesterPerformanceData->{'last_data_created_at'} = date('Y-m-d H:i:s');
+        }
+
         $semesterPerformanceData->save();
         $schedule->{'finished_at'} = date('Y-m-d H:i:s');
         $schedule->{'update_time'} = microtime(true) - $initialTime;
