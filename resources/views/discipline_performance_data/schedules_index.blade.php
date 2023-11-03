@@ -1,26 +1,15 @@
-@extends('layouts.app')
+@extends('discipline_performance_data.layout')
 
 @section('title')
 Agendamentos
 @endsection
-@section('content')
-
-<div class='container mt-4' style='min-height:100vh'>
-
-    <div class="col-md-12">
-        <div class="d-flex justify-content-center">
-            <h1 style="text-align:center">Agendamento de pesquisa de índices de desempenho</h1>
-        </div>
-    </div>
-    <div class="row mb-3 mt-5">
+@section('content2')
+    <div class="row mt-5">
         <div class="col-md-12">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar Agendamento</button>
-            <a class="btn btn-success" href="{{route('performance.index')}}">Ver dados de performance obtidos</a>
-            <a class="btn btn-primary" href="{{route('semester_performance_data')}}">Ver semestres pesquisados</a>
+            <h2 style="text-align:center">Buscas agendadas de dados de desempenho na API</h2>
         </div>
-
     </div>
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-sm-12">
             <div class="d-flex justify-content-start bg-primary">
                 <form id="formSearchSchedules" class="w-100" method="GET" action="{{route('scheduling.index')}}">
@@ -35,8 +24,8 @@ Agendamentos
                 </form>
             </div>
         </div>
-
     </div>
+    
     <div class="row mt-4">
         <div class="col-md-12">
             <h2 id="SearchFilterType">{{$searchType}}</h2>
@@ -59,7 +48,7 @@ Agendamentos
                     <span><b>Semestre: {{$schedule->year . '.' . $schedule->period}}</b></span>
                     <small class="text-secondary">Criado em: {{date('d-m-Y h:i:s',strtotime($schedule->created_at)) }}</small>
                     @if($schedule->status == 'COMPLETE')
-                    <small class="text-info">executado em: <b> {{(floor($schedule->{'update_time'}/3600)) }} </b> horas <b> {{(floor(($schedule->{'update_time'}%3600)/60))}} </b> minutos e  <b>{{((($schedule->{'update_time'}%3600)%60))}} </b> segundos</small>
+                    <small class="text-info">executado em: <b> {{(floor($schedule->{'update_time'}/3600)) }} </b> horas <b> {{(floor(($schedule->{'update_time'}%3600)/60))}} </b> minutos e <b>{{((($schedule->{'update_time'}%3600)%60))}} </b> segundos</small>
                     @endif
                 </div>
                 <div class="col-md-6">
@@ -149,8 +138,6 @@ Agendamentos
             </div>
         </div>
     </div>
-
-</div>
 
 @endsection
 
