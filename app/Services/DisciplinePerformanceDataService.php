@@ -169,7 +169,6 @@ class DisciplinePerformanceDataService
                         try {
                             $newData = DisciplinePerformanceData::create([
                                 'discipline_code' => $discipline->code,
-                                'scheduling_update_id' => $schedule->id,
                                 'class_code' => $turma['codigo-turma'],
                                 'schedule_description' => $turma['descricao-horario'],
                                 'sum_grades' => $apiPerfomanceClassData['soma-medias'],
@@ -201,7 +200,6 @@ class DisciplinePerformanceDataService
                         DB::beginTransaction();
                         try {
                             $dataFromDatabase->{'discipline_code'} = $discipline->code;
-                            $dataFromDatabase->{'scheduling_update_id'} = $schedule->id;
                             $dataFromDatabase->{'class_code'} = $turma['codigo-turma'];
                             $dataFromDatabase->{'schedule_description'} = $turma['descricao-horario'];
                             $dataFromDatabase->{'sum_grades'} = $apiPerfomanceClassData['soma-medias'];
@@ -254,14 +252,21 @@ class DisciplinePerformanceDataService
      */
     function getPerformanceData($disciplineCode, $year, $period)
     {
-        if ($disciplineCode != null && $disciplineCode != "") {
-            $datas = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $year)->where('period', '=', $period)->get();
-        } else {
-            $datas = DisciplinePerformanceData::where('year', '=', $year)->where('period', '=', $period)->get();
+        $data = DisciplinePerformanceData::query();
+
+        if(isset($discipline)){
+            $data = $data->where('discipline_code','=',$disciplineCode);
+
+        }
+        if(isset($year)){
+            $data = $data->where('year','=',$year);
+        }
+        if(isset($period)){
+            $data = $data->where('period','=',$period);
         }
 
+        return $data->get();
 
-        return $datas;
     }
 
 

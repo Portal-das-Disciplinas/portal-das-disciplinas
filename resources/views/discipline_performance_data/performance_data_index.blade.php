@@ -14,7 +14,7 @@ Dados de desempenho das disciplinas
             <div class="form-row">
                 <div class="col-md-2">
                     <label>Código</label>
-                    <input id="disciplineCode" name="disciplineCode" class="form-control" type="text" value="{{$disciplineCode}}" required>
+                    <input id="disciplineCode" name="disciplineCode" class="form-control" type="text" value="{{$disciplineCode}}">
                 </div>
                 <div class="col-md-5" style="position:relative">
                     <label for="disciplineName">Pesquisar código pelo nome</label>
@@ -26,6 +26,7 @@ Dados de desempenho das disciplinas
                 <div class="col-md-2">
                     <label>Ano</label>
                     <select name="year" class="form-control">
+                        <option value="">TODOS</option>
                         @for($i = Date('Y'); $i > Date('Y')-20; $i--)
                         <option value="{{$i}}">{{$i}}</option>
                         @endfor
@@ -34,6 +35,7 @@ Dados de desempenho das disciplinas
                 <div class="col-md-2">
                     <label>Período</label>
                     <select name="period" class="form-control">
+                        <option value="">TODOS</option>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>

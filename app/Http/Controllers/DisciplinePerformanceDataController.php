@@ -39,7 +39,7 @@ class DisciplinePerformanceDataController extends Controller
 
     function index(Request $request){
         
-        $service = new DisciplinePerformanceDataService(); $service = new DisciplinePerformanceDataService();
+        $service = new DisciplinePerformanceDataService(); 
         $data =  $service->getPerformanceData($request['disciplineCode'], $request['year'], $request['period']);
         return view('discipline_performance_data.performance_data_index')
             ->with('theme', $this->theme)
