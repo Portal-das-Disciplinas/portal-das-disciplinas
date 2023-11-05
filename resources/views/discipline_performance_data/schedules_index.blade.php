@@ -41,7 +41,7 @@ Agendamentos
     @endif
 
     @foreach($schedules as $schedule)
-    <div class="row" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
+    <div class="row mt-2" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
         <div class="col-md-12">
             <div class="row">
                 <div class=" col-md-4 d-flex flex-column">
@@ -88,6 +88,11 @@ Agendamentos
         </div>
     </div>
     @endforeach
+    <div class="row mt-3">
+        <div class="col-md-12 d-flex justify-content-center">
+            {{$schedules->links()}}
+        </div>
+    </div>
 
     <div id="modal-cadastro-agendamento" class="modal fade">
         <div class="modal-dialog">

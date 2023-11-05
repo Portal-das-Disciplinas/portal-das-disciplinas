@@ -64,11 +64,11 @@ Semestre com dados de índices de rendimento
                 <td style="text-align:center">
                     @if(isset($data->{'last_data_created_at'}))
                     <small>
-                        {{(date_parse($data->{'last_data_created_at'})['day']) 
-                        .'/'.(date_parse($data->{'last_data_created_at'})['month'])
+                        {{(sprintf('%02d',date_parse($data->{'last_data_created_at'})['day'])) 
+                        .'/'.(sprintf('%02d',date_parse($data->{'last_data_created_at'})['month']))
                         .'/'.(date_parse($data->{'last_data_created_at'})['year'])
-                        .' '.(date_parse($data->{'last_data_created_at'})['hour'])
-                        .':'.(date_parse($data->{'last_data_created_at'})['minute']) }}
+                        .' '.(sprintf('%02d',date_parse($data->{'last_data_created_at'})['hour']))
+                        .':'.(sprintf('%02d',date_parse($data->{'last_data_created_at'})['minute'])) }}
                     </small>
                     @else
                     <small> - </small>
@@ -78,11 +78,11 @@ Semestre com dados de índices de rendimento
                 <td style="text-align:center">
                     @if($data->{'data_search_complete'})
                     <small>
-                        {{(date_parse($data->{'data_researched_at'})['day']) 
-                        .'/'.(date_parse($data->{'data_researched_at'})['month'])
+                        {{(sprintf('%02d',date_parse($data->{'data_researched_at'})['day'])) 
+                        .'/'.(sprintf('%02d',date_parse($data->{'data_researched_at'})['month']))
                         .'/'.(date_parse($data->{'data_researched_at'})['year'])
-                        .' '.(date_parse($data->{'data_researched_at'})['hour'])
-                        .':'.(date_parse($data->{'data_researched_at'})['minute']) }}
+                        .' '.(sprintf('%02d',date_parse($data->{'data_researched_at'})['hour']))
+                        .':'.(sprintf('%02d',date_parse($data->{'data_researched_at'})['minute'])) }}
                     </small>
                     @else
                     <small class="text-success"> executando ainda </small>
