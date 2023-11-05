@@ -36,10 +36,12 @@ class DisciplinePerformanceDataService
         $schedule->save();
     }
 
-    function listSchedules($status)
+    function listSchedules($status, $paginate=null)
     {
-        $data = SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)->get();
-        return $data;
+        if(isset($paginate)){
+            return  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)->paginate($paginate);
+        }
+        return SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)->get();
     }
 
     function listAllSchedules()
@@ -269,11 +271,11 @@ class DisciplinePerformanceDataService
      * @param string $year ano do semestre
      * @param int $year período do semestre
      */
-    function getPerformanceData($disciplineCode, $year, $period)
+    function getPerformanceData($disciplineCode, $year, $period, $paginate=null)
     {
         $data = DisciplinePerformanceData::query();
 
-        if (isset($discipline)) {
+        if (isset($disciplineCode)) {
             $data = $data->where('discipline_code', '=', $disciplineCode);
         }
         if (isset($year)) {
@@ -282,7 +284,9 @@ class DisciplinePerformanceDataService
         if (isset($period)) {
             $data = $data->where('period', '=', $period);
         }
-
+        if(isset($paginate)){
+            return $data->paginate($paginate);
+        }
         return $data->get();
     }
 
