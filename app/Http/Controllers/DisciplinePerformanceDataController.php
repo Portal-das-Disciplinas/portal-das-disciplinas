@@ -6,6 +6,7 @@ use App\Models\DisciplinePerformanceData;
 use App\Services\DisciplinePerformanceDataService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use stdClass;
 
@@ -38,9 +39,13 @@ class DisciplinePerformanceDataController extends Controller
     }
 
     function index(Request $request){
-        
-        $service = new DisciplinePerformanceDataService(); $service = new DisciplinePerformanceDataService();
-        $data =  $service->getPerformanceData($request['disciplineCode'], $request['year'], $request['period']);
+        return view('discipline_performance_data.performance_data_index')->with('theme', $this->theme); 
+
+    }
+
+    function listData(Request $request){
+        $service = new DisciplinePerformanceDataService(); 
+        $data =  $service->getPerformanceData($request['disciplineCode'], $request['year'], $request['period'],10);
         return view('discipline_performance_data.performance_data_index')
             ->with('theme', $this->theme)
             ->with('performanceData', $data)
@@ -48,8 +53,8 @@ class DisciplinePerformanceDataController extends Controller
             ->with('disciplineName', $request->disciplineName)
             ->with('year', $request->year)
             ->with('period', $request->period);
-
     }
+
 
     function deletePerformanceData(Request $request){
 
