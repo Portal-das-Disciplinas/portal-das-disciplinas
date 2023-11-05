@@ -39,14 +39,24 @@ Semestre com dados de índices de rendimento
                     <th scope="col" style="text-align:center">Semestre</th>
                     <th scope="col" style="text-align:center">Quantidade de turmas</th>
                     <th scope="col" style="text-align:center">Contem erros</th>
-                    <th scope="col" style="text-align:center">Último dado obtido em</th>
+                    <th scope="col" style="text-align:center">Último dado obtido em:</th>
+                    <th scope="col" style="text-align:center">Pesquisa realizada em:</th>
                 </tr>
             </thead>
             @foreach($semesterPerformanceData as $data)
-            <tr class="{{$data->{'has_errors'} ? 'table-danger' : ''}}">
+            <tr @if($data->{'data_search_complete'} && $data->{'has_errors'})
+                class='table-danger'
+                @elseif($data->{'data_search_complete'})
+                class=""
+                @else
+                class='table-info' 
+                @endif
+                >
                 <td scope="row" style="text-align:center"><b>{{$data->year}}</b>.<b class="text-secondary">{{$data->period}}</b></td>
                 <td scope="row" style="text-align:center">{{$data->{'data_amount'} }} {{$data->{'data_amount'}==1? 'turma':'turmas'}}</td>
-                @if($data->{'has_errors'})
+                @if(!$data->{'data_search_complete'})
+                <td scope="row" style="text-align:center"> - </td>
+                @elseif($data->{'has_errors'})
                 <td scope="row" style="text-align:center">SIM</td>
                 @else
                 <td scope="row" style="text-align:center">NAO</td>
@@ -58,10 +68,24 @@ Semestre com dados de índices de rendimento
                         .'/'.(date_parse($data->{'last_data_created_at'})['month'])
                         .'/'.(date_parse($data->{'last_data_created_at'})['year'])
                         .' '.(date_parse($data->{'last_data_created_at'})['hour'])
-                        .':'.(date_parse($data->{'last_data_created_at'})['minute'])  }}
+                        .':'.(date_parse($data->{'last_data_created_at'})['minute']) }}
                     </small>
                     @else
                     <small> - </small>
+                    @endif
+
+                </td>
+                <td style="text-align:center">
+                    @if($data->{'data_search_complete'})
+                    <small>
+                        {{(date_parse($data->{'data_researched_at'})['day']) 
+                        .'/'.(date_parse($data->{'data_researched_at'})['month'])
+                        .'/'.(date_parse($data->{'data_researched_at'})['year'])
+                        .' '.(date_parse($data->{'data_researched_at'})['hour'])
+                        .':'.(date_parse($data->{'data_researched_at'})['minute']) }}
+                    </small>
+                    @else
+                    <small class="text-success"> executando ainda </small>
                     @endif
 
                 </td>

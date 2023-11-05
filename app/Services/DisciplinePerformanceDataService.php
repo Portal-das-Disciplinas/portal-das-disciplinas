@@ -58,10 +58,10 @@ class DisciplinePerformanceDataService
         $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $year)->where('period', '=', $period)->first();
         if ($semesterPerformanceData) {
             $semesterPerformanceData->{'has_errors'} = true;
-            $dataAmount = DisciplinePerformanceData::where('year','=', $year)->where('period','=',$period)->count();
-            if($dataAmount != $semesterPerformanceData->{'data_amount'}){
+            $dataAmount = DisciplinePerformanceData::where('year', '=', $year)->where('period', '=', $period)->count();
+            if ($dataAmount != $semesterPerformanceData->{'data_amount'}) {
                 $semesterPerformanceData->{'data_amount'} = $dataAmount;
-                $semesterPerformanceData->{'last_data_created_at'} = date('Y-m-d H:i:s');  
+                $semesterPerformanceData->{'last_data_created_at'} = date('Y-m-d H:i:s');
             }
             $semesterPerformanceData->save();
         }
@@ -76,6 +76,10 @@ class DisciplinePerformanceDataService
             } catch (APISistemasRequestLimitException $e1) {
                 Log::error("Limite de requisições à API alcançado.");
                 $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)->where('period', '=', $schedule->period)->first();
+                $semesterPerformanceData->{'data_researched_at'} = date('Y-m-d H:i:s');
+                $semesterPerformanceData->{'data_search_complete'} = true;
+                $semesterPerformanceData->save();
                 $s->status = "ERROR";
                 $s->{'error_description'} .= " Limite de requisições alcançado";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s', $s->{'executed_at'}), date_create('now'));
@@ -87,6 +91,10 @@ class DisciplinePerformanceDataService
             } catch (APISistemasServerErrorException $e2) {
                 Log::error("Erro no servidor da API Sistemas.");
                 $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)->where('period', '=', $schedule->period)->first();
+                $semesterPerformanceData->{'data_researched_at'} = date('Y-m-d H:i:s');
+                $semesterPerformanceData->{'data_search_complete'} = true;
+                $semesterPerformanceData->save();
                 $s->status = "ERROR";
                 $s->{'error_description'} .= " Erro no servidor da API Sistemas";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s', $s->{'executed_at'}), date_create('now'));
@@ -98,6 +106,10 @@ class DisciplinePerformanceDataService
             } catch (APISistemasIncorrectRequestExceception $e3) {
                 Log::error("Erro nos parâmetros de requisição para a API.");
                 $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)->where('period', '=', $schedule->period)->first();
+                $semesterPerformanceData->{'data_researched_at'} = date('Y-m-d H:i:s');
+                $semesterPerformanceData->{'data_search_complete'} = true;
+                $semesterPerformanceData->save();
                 $s->status = "ERROR";
                 $s->{'error_description'} .= " Erro nos parâmetros de requisição para a API";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s', $s->{'executed_at'}), date_create('now'));
@@ -109,6 +121,10 @@ class DisciplinePerformanceDataService
             } catch (APISistemasUnavailableException $e4) {
                 Log::error("Não foi possível acessar a API Sistemas.");
                 $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)->where('period', '=', $schedule->period)->first();
+                $semesterPerformanceData->{'data_researched_at'} = date('Y-m-d H:i:s');
+                $semesterPerformanceData->{'data_search_complete'} = true;
+                $semesterPerformanceData->save();
                 $s->status = "ERROR";
                 $s->{'error_description'} .= " Não foi possível acessar a API";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s', $s->{'executed_at'}), date_create('now'));
@@ -120,6 +136,10 @@ class DisciplinePerformanceDataService
             } catch (Exception $e5) {
                 Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage() + " " + $e5);
                 $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
+                $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)->where('period', '=', $schedule->period)->first();
+                $semesterPerformanceData->{'data_researched_at'} = date('Y-m-d H:i:s');
+                $semesterPerformanceData->{'data_search_complete'} = true;
+                $semesterPerformanceData->save();
                 $s->status = "ERROR";
                 $s->{'error_description'} .= " Erro desconhecido";
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s', $s->{'executed_at'}), date_create('now'));
@@ -147,7 +167,8 @@ class DisciplinePerformanceDataService
         }
         $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)
             ->where('period', '=', $schedule->period)->first();
-
+        $semesterPerformanceData->{'data_search_complete'} = false;
+        $semesterPerformanceData->save();
         $apiService = new APISigaaService();
         $initialTime = microtime(true);
         $schedule->status = 'RUNNING';
@@ -233,10 +254,8 @@ class DisciplinePerformanceDataService
             $schedule->{'error_description'} = null;
             $semesterPerformanceData->{'has_errors'} = false;
         }
-
-        if($semesterPerformanceData->{'data_amount'} == 0){
-            $semesterPerformanceData->{'last_data_created_at'} = date('Y-m-d H:i:s');
-        }
+        $semesterPerformanceData->{'data_researched_at'} = date('Y-m-d H:i:s');
+        $semesterPerformanceData->{'data_search_complete'} = true;
 
         $semesterPerformanceData->save();
         $schedule->{'finished_at'} = date('Y-m-d H:i:s');
@@ -254,19 +273,17 @@ class DisciplinePerformanceDataService
     {
         $data = DisciplinePerformanceData::query();
 
-        if(isset($discipline)){
-            $data = $data->where('discipline_code','=',$disciplineCode);
-
+        if (isset($discipline)) {
+            $data = $data->where('discipline_code', '=', $disciplineCode);
         }
-        if(isset($year)){
-            $data = $data->where('year','=',$year);
+        if (isset($year)) {
+            $data = $data->where('year', '=', $year);
         }
-        if(isset($period)){
-            $data = $data->where('period','=',$period);
+        if (isset($period)) {
+            $data = $data->where('period', '=', $period);
         }
 
         return $data->get();
-
     }
 
 
