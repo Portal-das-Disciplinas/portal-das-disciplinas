@@ -4,7 +4,7 @@
 Agendamentos
 @endsection
 @section('content')
-<div class="container">
+<div class="container" style="min-height:70vh">
     <div class="row mb-3 mt-5 py-3" style="border-radius:5px;box-shadow:2px 2px 10px rgba(0,0,0,0.2)">
         <div class="col-md-9">
             <a class="nav-link d-inline-block mr-2" href="{{route('scheduling.index')}}">Agendamentos</a>
