@@ -1,25 +1,15 @@
-@extends('layouts.app')
+@extends('discipline_performance_data.layout')
 
 @section('title')
 Agendamentos
 @endsection
-@section('content')
-
-<div class='container mt-4' style='min-height:100vh'>
-
-    <div class="col-md-12">
-        <div class="d-flex justify-content-center">
-            <h1 style="text-align:center">Agendamento de pesquisa de índices de desempenho</h1>
-        </div>
-    </div>
-    <div class="row mb-3 mt-5">
+@section('content2')
+    <div class="row mt-5">
         <div class="col-md-12">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-cadastro-agendamento">Cadastrar Agendamento</button>
-            <a class="btn btn-success" href="{{route('performance.index')}}">Ver dados de performance obtidos</a>
+            <h2 style="text-align:center">Buscas agendadas de dados de desempenho na API</h2>
         </div>
-
     </div>
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-sm-12">
             <div class="d-flex justify-content-start bg-primary">
                 <form id="formSearchSchedules" class="w-100" method="GET" action="{{route('scheduling.index')}}">
@@ -27,14 +17,15 @@ Agendamentos
                         <select id="selectSearchType" name="scheduleStatus" class="form-control" onchange=onSelectStatusSchedulesChange()>
                             <option value="PENDING" {{$searchType=='PENDENTES'? 'selected': ''}}> Agendamentos PENDENTES</option>
                             <option value="COMPLETE" {{$searchType=='COMPLETOS'? 'selected': ''}}> Agendamentos COMPLETOS</option>
+                            <option value="RUNNING" {{$searchType=='EXECUTANDO'? 'selected': ''}}> Agendamentos EXECUTANDO</option>
                             <option value="ERROR" {{$searchType=='COM ERROS'? 'selected': ''}}> Agendamentos com ERROS</option>
                         </select>
                     </div>
                 </form>
             </div>
         </div>
-
     </div>
+    
     <div class="row mt-4">
         <div class="col-md-12">
             <h2 id="SearchFilterType">{{$searchType}}</h2>
@@ -50,12 +41,15 @@ Agendamentos
     @endif
 
     @foreach($schedules as $schedule)
-    <div class="row" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
+    <div class="row mt-2" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
         <div class="col-md-12">
             <div class="row">
                 <div class=" col-md-4 d-flex flex-column">
                     <span><b>Semestre: {{$schedule->year . '.' . $schedule->period}}</b></span>
                     <small class="text-secondary">Criado em: {{date('d-m-Y h:i:s',strtotime($schedule->created_at)) }}</small>
+                    @if($schedule->status == 'COMPLETE')
+                    <small class="text-info">executado em: <b> {{(floor($schedule->{'update_time'}/3600)) }} </b> horas <b> {{(floor(($schedule->{'update_time'}%3600)/60))}} </b> minutos e <b>{{((($schedule->{'update_time'}%3600)%60))}} </b> segundos</small>
+                    @endif
                 </div>
                 <div class="col-md-6">
                     <span class="text-primary">{{$schedule->{'num_new_data'} }} dado(s) criado(s)</span>
@@ -94,6 +88,11 @@ Agendamentos
         </div>
     </div>
     @endforeach
+    <div class="row mt-3">
+        <div class="col-md-12 d-flex justify-content-center">
+            {{$schedules->links()}}
+        </div>
+    </div>
 
     <div id="modal-cadastro-agendamento" class="modal fade">
         <div class="modal-dialog">
@@ -144,8 +143,6 @@ Agendamentos
             </div>
         </div>
     </div>
-
-</div>
 
 @endsection
 

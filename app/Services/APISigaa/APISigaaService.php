@@ -2,6 +2,13 @@
 
 namespace App\Services\APISigaa;
 
+use App\Exceptions\APISistemasIncorrectRequestExceception;
+use App\Exceptions\APISistemasRequestLimitException;
+use App\Exceptions\APISistemasServerErrorException;
+use App\Exceptions\APISistemasUnavailableException;
+use Exception;
+use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\Log;
 use stdClass;
 
 /**
@@ -9,14 +16,12 @@ use stdClass;
  */
 class APISigaaService
 {
-
     private $baseUrlAuth = "https://autenticacao.ufrn.br/";
     private $baseUrl = "https://api.ufrn.br/";
     private $clientId = "portal-disciplinas-id-m3brevIfR75Tudlw";
     private $clientSecret = "t3etHuCHo4a4r7N8histunaPEdrIb3pH";
     private $apiKey = "mX5ZV9wY8p1RahQkZ8viPwOB9XlBVxGt";
     private $grantType = "client_credentials";
-    //private $token = "2de62b66-6901-47f9-ace3-323a2a72a9d9";
     private $tokenData = null;
     private $qtdNewTokens = 0;
 
@@ -45,10 +50,22 @@ class APISigaaService
         ));
 
         $response = curl_exec($curl);
+        $statusCode = curl_getinfo($curl)['http_code'];
+        
+        if($statusCode == 429){
+            throw new APISistemasRequestLimitException();
+
+        }else if($statusCode >=400 && $statusCode < 500){
+            throw new APISistemasIncorrectRequestExceception();
+
+        }else if($statusCode >= 500 && $statusCode < 600){
+            throw new APISistemasServerErrorException();
+
+        }
         $errors = curl_error($curl);
         curl_close($curl);
         if ($errors) {
-            dd("Contem erros: " . $errors);
+            throw new APISistemasUnavailableException();
         } else {
             $decodedJson = json_decode($response, true);
             return $decodedJson;
@@ -70,9 +87,20 @@ class APISigaaService
         ));
 
         $response = curl_exec($curl);
+        $statusCode = curl_getinfo($curl)['http_code'];
+        if($statusCode == 429){
+            throw new APISistemasRequestLimitException();
+
+        }else if($statusCode >= 400 && $statusCode < 500){
+            throw new APISistemasIncorrectRequestExceception();
+
+        }else if($statusCode >= 500 && $statusCode < 600){
+            throw new APISistemasServerErrorException();
+
+        }
         $errors = curl_error($curl);
         if ($errors) {
-            dd("Contem errors . " . $errors);
+            throw new APISistemasUnavailableException();
         } else {
             $this->tokenData = json_decode($response, true);
             $this->qtdNewTokens++;
@@ -116,14 +144,14 @@ class APISigaaService
         if ($this->tokenData == null) {
             $this->getToken();
         }
-        $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . $strPeriodo, "GET");
+        $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . $strPeriodo . "&sigla-nivel=G", "GET");
         return $turmas;
     }
 
     public function getDisciplineData($codigoComponente, $idTurma, $ano, $periodo)
     {
         $tempoInicio = microtime(true);
-        ini_set('max_execution_time', 3600);
+        //ini_set('max_execution_time', 3600);
         $strAno = "";
         $strPeriodo = "";
         if ($ano != null) {
@@ -150,7 +178,7 @@ class APISigaaService
         $qtdDesconhecidos = 0;
         $qtdOutros = 0;
         $situacaoDesconhecida = "";
-        $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . "" . $strPeriodo, "GET");
+        $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . "" . $strPeriodo . "&sigla-nivel=G", "GET");
         $alunosTurma = [];
         foreach ($turmas as $turma) {
             if ($idTurma == null || $turma['id-turma'] == $idTurma) {
