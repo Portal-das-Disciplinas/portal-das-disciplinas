@@ -12,6 +12,7 @@ class DisciplinePerformanceData extends Model
 
     protected $fillable = [
         'discipline_code',
+        'discipline_name',
         'average_grade',
         'professors',
         'num_students',

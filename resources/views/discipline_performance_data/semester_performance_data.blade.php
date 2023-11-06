@@ -85,7 +85,7 @@ Semestre com dados de índices de rendimento
                         .':'.(sprintf('%02d',date_parse($data->{'data_researched_at'})['minute'])) }}
                     </small>
                     @else
-                    <small class="text-success"> executando ainda </small>
+                    <small class="text-success"> em andamento... </small>
                     @endif
 
                 </td>
