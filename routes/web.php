@@ -13,15 +13,18 @@ use App\Http\Controllers\ProfessorUserController;
 use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
+use App\Http\Controllers\CollaboratorProductionController;
 use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\DisciplinePerformanceDataController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LinksController;
 use App\Http\Controllers\ParticipantLinkController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
+use App\Http\Controllers\SemesterPerformanceDataController;
 use App\Models\Collaborator;
 use App\Models\DisciplinePerformanceData;
 use App\Models\Link;
+use App\Models\SemesterPerformanceData;
 use App\Services\DisciplinePerformanceDataService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -102,6 +105,11 @@ Route::resource('links', LinksController::class);
 Route::put('/links/update/toggleactive',[LinksController::class, 'toggleActive'])->name('links.active.toggle');
 Route::put('/links/supdate/opinion_form_link', [LinksController::class,'updateOpinionFormLink'])->name('links.supdate.opinion_form_link');
 
+Route::post('/collaboratorProductions/store/listjson',[CollaboratorProductionController::class,"storeListJson"])->name('colalborators_productions.store_list_json');
+Route::get('/collaborator/productions/show/{idCollaborator}',[CollaboratorProductionController::class,"show"])->name('collaborator_productions.show');
+Route::put('/collaborator/productions/update',[CollaboratorProductionController::class,"update"])->name('collaborator_production.update');
+Route::delete('collaborator/productions/delete',[CollaboratorProductionController::class,'delete'])->name('collaborator_production.delete');
+
 Route::get('/disciplinas/dados/{codigo}/{ano}/{periodo}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
 Route::get('/disciplinas/dados/{codigo}/{idTurma}/{ano}/{periodo}',[DisciplineController::class,"getDisciplineData"])->name('disciplinas.dados');
 Route::get('/apisistemas/turmas',[ApiSistemasController::class,'getTurmasPorComponente'])->name("apisistemas.turmas");
@@ -113,6 +121,10 @@ Route::get('/agendamentos_busca_dados/executar/{idSchedule}',[SchedulingDiscipli
 
 Route::get('api/performance/{disciplineCode}/{year}/{period}', [DisciplinePerformanceDataController::class,'getDisciplinePerformanceData'])->name('performance.get');
 Route::get('/performance',[DisciplinePerformanceDataController::class,'index'])->name('performance.index');
+Route::get('/performance/list',[DisciplinePerformanceDataController::class,'listData'])->name('performance.list');
 Route::delete('/performance/data/delete',[DisciplinePerformanceDataController::class, 'deletePerformanceData'])->name('performance.delete');
 Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataController::class, 'deletePerformanceDataByCodeYearPeriod'])->name('performance.delete_by_code_year_period');
+
+Route::get('/semester/performance/data', [SemesterPerformanceDataController::class,'index'])->name('semester_performance_data');
+Route::delete('/semester/performance/data/delete/{id}',[SemesterPerformanceDataController::class,'destroy'])->name('semester_performance_data.destroy');
 

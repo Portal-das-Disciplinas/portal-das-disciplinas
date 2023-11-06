@@ -20,18 +20,21 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
     }
 
     function index(Request $request){
-
+        $paginateValue = 10;
         $status = $request->scheduleStatus;
         $scheduleService = new DisciplinePerformanceDataService();
         $searchType = "TODOS";
         if($status == null){
-            $schedules = $scheduleService->listSchedules('PENDING');
+            $schedules = $scheduleService->listSchedules('PENDING',$paginateValue);
             $searchType = "PENDENTES";
         }else{
-            $schedules = $scheduleService->listSchedules($status);
+            $schedules = $scheduleService->listSchedules($status,$paginateValue);
             switch($status){
                 case 'PENDING':
                     $searchType = 'PENDENTES';
+                    break;
+                case 'RUNNING':
+                    $searchType = 'EXECUTANDO';
                     break;
                 case 'COMPLETE':
                     $searchType = 'COMPLETOS';

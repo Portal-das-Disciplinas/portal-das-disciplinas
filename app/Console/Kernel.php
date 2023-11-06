@@ -6,6 +6,7 @@ use App\Services\DisciplinePerformanceDataService;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -29,11 +30,17 @@ class Kernel extends ConsoleKernel
         //$schedule->command('inspire')->everyMinute();
         $schedule->call(function(){
             $service = new DisciplinePerformanceDataService();
+            Log::info("Rodando as tarefas agendadas");
             $service->runSchedules();
         })->name("updateScheduling")
             ->withoutOverlapping()
-            ->daylyAt('03:00')
-            ->timezone('America/Sao_Paulo');
+            ->everyMinute()
+            ->timezone('America/Sao_Paulo')
+            ->onSuccess(function(){
+                Log::info("Todas as tarefas foram realizadas");
+            })->onFailure(function(){
+                Log::error("Ocorreu um erro ao executar as tarefas");
+            });
     }
 
     /**

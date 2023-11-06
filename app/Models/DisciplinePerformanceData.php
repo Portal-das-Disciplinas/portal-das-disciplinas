@@ -12,7 +12,7 @@ class DisciplinePerformanceData extends Model
 
     protected $fillable = [
         'discipline_code',
-        'scheduling_update_id',
+        'discipline_name',
         'average_grade',
         'professors',
         'num_students',
@@ -25,15 +25,12 @@ class DisciplinePerformanceData extends Model
         'highest_grade',
         'lowest_grade',
         'sum_grades',
-        'last_update'
+        'last_update',
+        'semester_performance_id'
     ];
 
     public function discipline(){
         return $this->belongsTo(Discipline::class);
     }
 
-    public function schedulingDisciplineDataUpdate(){
-
-        return $this->belongsTo(SchedulingDisciplineDataUpdate::class);
-    }
 }
