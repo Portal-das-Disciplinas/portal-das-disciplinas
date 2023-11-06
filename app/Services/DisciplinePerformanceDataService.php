@@ -192,6 +192,7 @@ class DisciplinePerformanceDataService
                         try {
                             $newData = DisciplinePerformanceData::create([
                                 'discipline_code' => $discipline->code,
+                                'discipline_name' => $turma['nome-componente'],
                                 'class_code' => $turma['codigo-turma'],
                                 'schedule_description' => $turma['descricao-horario'],
                                 'sum_grades' => $apiPerfomanceClassData['soma-medias'],
@@ -223,6 +224,7 @@ class DisciplinePerformanceDataService
                         DB::beginTransaction();
                         try {
                             $dataFromDatabase->{'discipline_code'} = $discipline->code;
+                            $dataFromDatabase->{'discipline_name'} = $turma['nome-componente'];
                             $dataFromDatabase->{'class_code'} = $turma['codigo-turma'];
                             $dataFromDatabase->{'schedule_description'} = $turma['descricao-horario'];
                             $dataFromDatabase->{'sum_grades'} = $apiPerfomanceClassData['soma-medias'];

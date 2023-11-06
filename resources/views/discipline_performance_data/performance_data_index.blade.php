@@ -103,6 +103,7 @@ Dados de desempenho das disciplinas
 <div class="row mb-3" style="box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
     <div class="col-sm-3 py-3" style="border-bottom-style:solid; border-width:1px; border-color:rgba(0,0,0,0.2)">
         <div class="d-flex flex-column mr-3">
+            <h4 class="text-primary">{{$data->{'discipline_name'} }}</h4>
             <h4 class="text-secondary">{{$data['discipline_code']}}</h4>
             <h4>Turma: {{$data['class_code']}}</h4>
         </div>
