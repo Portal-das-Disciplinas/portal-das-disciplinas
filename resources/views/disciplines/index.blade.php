@@ -195,9 +195,6 @@
                                         </button>
                                     </div>
                                 </div>
-                            
-
-
                             </div>
                             </form>
                         </div>  
@@ -206,9 +203,59 @@
 
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                     <div class="card card-body">    
-                    @if (empty($studentsData))
-                        @foreach ($studentsData as $data)
-                        @endforeach
+                    @if (count($studentsData) > 0)
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="col" style="display: flex; justify-content: center;">
+                                    <h3>Escolha as opções de Filtragem</h3>
+                                </div>
+                                <br>
+                                <div class="col" style="display: flex; justify-content: center;">
+                                    <form action="porFazer" method="get">
+                                        <div>
+                                        <select name="metodo" id="metodo">
+                                            <option value="aprovacao">Aprovação</option>
+                                            <option value="reprovacao">Reprovação</option>
+                                        </select>
+                                        <select name="maiorMenor" id="">
+                                            <option value="maior">Maior que</option>
+                                            <option value="menor">Menor que</option>
+                                        </select>
+                                        <input 
+                                            type="number" 
+                                            name="porcentagem" 
+                                            id="porcentagem" 
+                                            min="1" 
+                                            max="100"
+                                            style="width:20%;"
+                                        />
+                                        <label for="">%</label>
+                                        </div>
+
+                                        <br>
+                                        <br>
+
+                                        <div>
+                                        <label for="ano">Ano:</label>
+                                        <select name="ano" id="ano">
+                                            <option value="vazio" selected>Vazio</option>
+                                            @for ($i = 0; $i < count($studentsData); $i++)
+                                                <option value="{{ $studentsData[$i]->year }}" >{{ $studentsData[$i]->year }}</option>
+                                            @endfor
+                                        </select>
+                                        <br>
+                                        <label for="periodo">Período</label>
+                                        <select name="periodo" id="periodo">
+                                            <option value="vazio">Vazio</option>
+                                            @for ($i = 0; $i < count($studentsData); $i++)
+                                                <option value="{{ $studentsData[$i]->period }}" >{{ $studentsData[$i]->period }}</option>
+                                            @endfor
+                                        </select>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @else
                         <p class="response-search mt-4"> Nenhum dado encontrado </p>
                     @endif
