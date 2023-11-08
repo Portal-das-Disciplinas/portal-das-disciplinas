@@ -131,29 +131,21 @@
 
                                         <div class="advancedSearch">
                                             <div class="col">
-                                                <div class="value">
-                                                    <p 
-                                                        id="{{ $classification->id }}"
-                                                        class="mostrador"
-                                                    >
-                                                        > 0%
-                                                    </p>    
+                                                <div class="value" style="justify-content: space-between">
+                                                    <div style="margin-right: 20px;" id="{{ $classification->type_a }}">
+                                                        <label id="{{ $classification->id }}" class="mostrador" style="color: var(--primary); font-weight: bold; display: block; font-size: 15px;">> 0%</label>
+                                                        <label>{{ $classification->type_a }}</label>
+                                                        <input type="checkbox" id="checkbox{{ $classification->type_a }}" onchange="toggleCheckboxes(this, '{{ $classification->type_b }}', 'range{{ $classification->id }}')">
+                                                    </div>
+                                                    <div  id="{{ $classification->type_b }}">
+                                                        <label id="-{{ $classification->id }}" class="mostrador" style="color: var(--primary); font-weight: bold; display: block; font-size: 15px;">> 0%</label>
+                                                        <label>{{ $classification->type_b }}</label>
+                                                        <input type="checkbox" id="checkbox{{ $classification->type_b }}" onchange="toggleCheckboxes(this, '{{ $classification->type_a }}', 'range{{ $classification->id }}')">
+                                                    </div>
                                                 </div>
                                             </div>
-                                            
-                                            <div class="col-8">
-                                                <input 
-                                                    class="range"
-                                                    type="range" 
-                                                    style="width: 100%"
-                                                    id="range{{ $classification->id }}" 
-                                                    name="range{{ $classification->name }}"
-                                                    value="-1" 
-                                                    min="-1" 
-                                                    max="100"
-                                                    step="5"
-                                                    oninput="handleInput(this.id, this.value)"
-                                                >
+                                            <div class="col-6">
+                                                <input class="range" type="range" style="width: 100%; display: none;" id="range{{ $classification->id }}" name="range{{ $classification->name }}" value="-1" min="-1" max="100" step="5" oninput="handleInput(this.id, this.value)">
                                             </div>
                                         </div>
                                     </div>
