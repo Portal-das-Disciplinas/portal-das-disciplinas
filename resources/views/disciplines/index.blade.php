@@ -196,7 +196,7 @@
                                     </div>
                                 </div>
                             </div>
-                            </form>
+                            
                         </div>  
                     </div>
                 </div>
@@ -211,7 +211,7 @@
                                 </div>
                                 <br>
                                 <div class="col" style="display: flex; justify-content: center;">
-                                    <form action="porFazer" method="get">
+                                    
                                         <div>
                                         <select name="metodo" id="metodo">
                                             <option value="aprovacao">Aprovação</option>
@@ -236,20 +236,12 @@
                                         <br>
 
                                         <div>
-                                        <label for="ano">Ano:</label>
-                                        <select name="ano" id="ano">
-                                            <option value="vazio" selected>Vazio</option>
-                                            @for ($i = 0; $i < count($studentsData); $i++)
-                                                <option value="{{ $studentsData[$i]->year }}" >{{ $studentsData[$i]->year }}</option>
-                                            @endfor
-                                        </select>
-                                        <br>
-                                        <label for="periodo">Período</label>
+                                        <label for="periodo">Ano e período:</label>
                                         <select name="periodo" id="periodo">
-                                            <option value="vazio">Vazio</option>
-                                            @for ($i = 0; $i < count($studentsData); $i++)
-                                                <option value="{{ $studentsData[$i]->period }}" >{{ $studentsData[$i]->period }}</option>
-                                            @endfor
+                                            <option value="vazio" selected>Vazio</option>
+                                            @foreach($periodsColection as $periods)
+                                                <option value="{{ $periods }}" >{{ $periods }}</option>
+                                            @endforeach
                                         </select>
                                         </div>
                                     </form>

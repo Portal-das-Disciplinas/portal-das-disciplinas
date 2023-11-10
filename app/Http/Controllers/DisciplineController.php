@@ -59,11 +59,21 @@ class DisciplineController extends Controller
     {
         
         $name_discipline = $request->name_discipline ?? null;
-        // $emphasis = $request->emphasis ?? null;
 
         $emphasis = Emphasis::all();
         $classifications = Classification::all();
         $studentsData = DisciplinePerformanceData::all();
+
+        $disciplinesPeriods = collect([]);
+
+        //foreach para juntar todos os anos e periodos numa collection
+        foreach($studentsData as $student) {
+            $disciplinesPeriods->push("$student->year.$student->period");
+        }
+
+        //Collection com todos os anos.periodo disponíveis
+        $periodsColection = $disciplinesPeriods->unique();
+
         // $disciplines = Discipline::query()
         //     ->with([
         //         'professor',
@@ -89,12 +99,13 @@ class DisciplineController extends Controller
             ->with('showOpinionForm', true)
             ->with('opinionLinkForm',$opinionLinkForm)
             ->with('classifications', $classifications)
-            ->with('studentsData', $studentsData);
+            ->with('studentsData', $studentsData)
+            ->with('periodsColection', $periodsColection);
     }
 
     public function disciplineFilter(Request $request)
     {
-        // dd($request);
+        dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
         $classifications_all = Classification::all();
