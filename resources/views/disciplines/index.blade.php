@@ -108,6 +108,12 @@
                                 <h3>Característica Predominante</h3>
                             </div>
                             <br>
+
+                            <!-- input que indica qual o filtro que está sendo enviado -->
+                            <div style="display:none">
+                            <input type="text" name="filtro" id="filtro" value="">
+                            </div>
+
                             @foreach($classifications as $classification)
                                 <div class="row">
                                     <div class="col-4" id="classificationName" style="padding-right:0;">
@@ -211,7 +217,6 @@
                                 </div>
                                 <br>
                                 <div class="col" style="display: flex; justify-content: center;">
-                                    
                                         <div>
                                         <select name="metodo" id="metodo">
                                             <option value="aprovacao">Aprovação</option>

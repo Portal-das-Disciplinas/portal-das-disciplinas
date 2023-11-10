@@ -105,10 +105,21 @@ class DisciplineController extends Controller
 
     public function disciplineFilter(Request $request)
     {
-        dd($request);
+        // dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
         $classifications_all = Classification::all();
+        $studentsData = DisciplinePerformanceData::all();
+
+        $disciplinesPeriods = collect([]);
+
+        //foreach para juntar todos os anos e periodos numa collection
+        foreach($studentsData as $student) {
+            $disciplinesPeriods->push("$student->year.$student->period");
+        }
+
+        //Collection com todos os anos.periodo disponíveis
+        $periodsColection = $disciplinesPeriods->unique();
 
         $emphasis_id = $request->input('emphasis');
         $discipline_name = $request->input('name_discipline');
@@ -130,6 +141,8 @@ class DisciplineController extends Controller
             $arrayValues = $arr;
             $arrayValuesRanges = $arr;
         }
+
+        // dd($arrayValues);
 
         // remove todos os parametros que tenham haver com
         // os ranges, que seja a emphase ou o nome da disciplina
@@ -173,9 +186,8 @@ class DisciplineController extends Controller
         }
 
         // Mecanismo pra saber se mais parâmetros fora o nome da disciplina e a ênfase foram enviados
-        if (count($arrayValues) > 0) {
+        if (count($arrayValues) > 0 && $request->input('filtro') === "classificacao") {
             // Mais parâmetros fora o nome, ênfase e os ranges foram enviados
-
             if ($discipline_name != null && $emphasis_id != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where("name", "like", "%" . $discipline_name . "%")
@@ -259,7 +271,9 @@ class DisciplineController extends Controller
                 ->with("disciplines", $disciplinesMixed)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($discipline_name == null && $emphasis_id == null) {
                 // pesquisa apenas por classificações
                 $disciplines = ClassificationDiscipline::all();
@@ -340,7 +354,9 @@ class DisciplineController extends Controller
                 ->with('disciplines', $finalCollection)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($emphasis_id != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where('emphasis_id', $emphasis_id)
@@ -423,7 +439,9 @@ class DisciplineController extends Controller
                 ->with('disciplines', $finalCollection)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($discipline_name != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where("name", "like", "%" . $discipline_name . "%")
@@ -506,13 +524,321 @@ class DisciplineController extends Controller
                 ->with('disciplines', $finalCollection)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else {
                 return redirect('/')
                 ->with('disciplines', $disciplines_all->paginate(12))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
+            }
+        } else if (count($arrayValues) > 0 && $request->input('filtro') === "aprovacao") {
+            if ($discipline_name != null && $emphasis_id != null) {
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
+                ->where("name", "like", "%" . $discipline_name . "%")
+                ->where("emphasis_id", $emphasis_id)
+                ->get();
+                
+                $collection = collect([]);
+                $filteredCollection = collect([]);
+
+                // dd($request);
+                if ($request->input('porcentagem') !== null && $request->input('periodo') !== null) {
+                    // pesquisa por porcentagem e por período
+                    if ($request->input('maiorMenor') === "maior") {
+                        foreach ($studentsData as $student) {
+                            $dis = $student->where("year", substr($request->input('periodo'), 0,4))
+                            ->where("period", substr($request->input('periodo'), 5));
+                            
+                            // if ($student->calculatePercentage() > $request->input('porcentagem')) {
+                                $filteredCollection->push($dis);
+                            // }
+                        }
+                    } else {
+                        foreach ($studentsData as $student) {
+                            $dis = $student->where("year", substr($request->input('periodo'), 0,4))
+                            ->where("period", substr($request->input('periodo'), 5));
+                            
+                            if ($student->calculatePercentage() < $request->input('porcentagem')) {
+                                $filteredCollection->push($dis);
+                            }
+                        }
+                    }
+                }
+
+                dd($dis->get());
+                return view('disciplines.index')
+                ->with("disciplines", $disciplinesMixed)
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
+            } else if ($discipline_name == null && $emphasis_id == null) {
+                // pesquisa apenas por classificações
+                $disciplines = ClassificationDiscipline::all();
+                $classifications = Classification::all();
+                $arrayClassificationValues = array();
+                $disciplinesResult = collect([]);
+
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // e trocar o "Metodologias" pelo respectivo id
+                foreach ($classifications as $key => $value) {
+                    foreach ($arrayValues as $arrKey => $arrValue) {
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == $noUnderlineString) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == $arrKey) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        }
+                    }
+                }
+
+                $fieldsToCheck = count($arrayClassificationValues);
+
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    $cont = 0;
+                    foreach ($arrayClassificationValues as $key => $value) {
+                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
+                        ->get();
+
+                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
+                            if ($valueGroup->classification_id == $key) {
+                                if ($value == "mais") {
+                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                    ->where("classification_id", $key)
+                                    ->where("value", "<=", 50)
+                                    ->get();
+
+                                    if (count($currentDiscipline) > 0) {
+                                        $cont++;
+                                    }
+                                } else {
+                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                    ->where("classification_id", $key)
+                                    ->where("value", ">=", 51)
+                                    ->get();
+
+                                    if (count($currentDiscipline) > 0) {
+                                        $cont++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ($fieldsToCheck == $cont) {
+                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
+                        $disciplinesResult->push($filteredDiscipline);
+                    }
+                }
+
+                $finalCollection = $disciplinesResult->collapse()->unique()->paginate(12);
+
+                return view('disciplines.index')
+                ->with('disciplines', $finalCollection)
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
+            } else if ($emphasis_id != null) {
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
+                ->where('emphasis_id', $emphasis_id)
+                ->get();
+                
+                $classifications = Classification::all();
+                $disciplinesResult = collect([]);
+                $finalCollection = collect([]);
+                $arrayClassificationValues = array();
+
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // e trocar o "Metodologias" pelo respectivo id
+                foreach ($classifications as $key => $value) {
+                    foreach ($arrayValues as $arrKey => $arrValue) {
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == $noUnderlineString) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == $arrKey) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        }
+                    }
+                }
+
+                $fieldsToCheck = count($arrayClassificationValues);
+                
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    $cont = 0;
+                    foreach ($arrayClassificationValues as $key => $value) {
+                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
+                        ->get();
+                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
+                            if ($valueGroup->classification_id == $key) {
+                                if ($value == "mais") {
+                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                    ->where("classification_id", $key)
+                                    ->where("value", "<=", 50)
+                                    ->get();
+
+                                    if (count($currentDiscipline) > 0) {
+                                        $cont++;
+                                    }
+                                } else {
+                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                    ->where("classification_id", $key)
+                                    ->where("value", ">=", 51)
+                                    ->get();
+
+                                    if (count($currentDiscipline) > 0) {
+                                        $cont++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ($fieldsToCheck == $cont) {
+                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
+                        $disciplinesResult->push($filteredDiscipline);
+                    }
+                }
+
+                $finalCollection = $disciplinesResult->collapse()->unique()->paginate(12);
+
+                return view('disciplines.index')
+                ->with('disciplines', $finalCollection)
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
+            } else if ($discipline_name != null) {
+                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
+                ->where("name", "like", "%" . $discipline_name . "%")
+                ->get();
+
+                $classifications = Classification::all();
+                $disciplinesResult = collect([]);
+                $finalCollection = collect([]);
+                $arrayClassificationValues = array();
+
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // e trocar o "Metodologias" pelo respectivo id
+                foreach ($classifications as $key => $value) {
+                    foreach ($arrayValues as $arrKey => $arrValue) {
+                        if (str_contains($arrKey, "_") == true) {
+                            $charToBeRemoved;
+
+                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
+                                // Capturar qual a posição da string que tem o undeline
+                                // que vai ser removido
+                                if ($arrKey[$i] === '_') {
+                                    $charToBeRemoved = $i;
+                                }
+                            }
+
+                            $noUnderlineString = str_replace("_", " ", $arrKey);
+
+                            if ($value->name == $noUnderlineString) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        } else {
+                            if ($value->name == $arrKey) {
+                                $arrayClassificationValues += array($value->id => $arrValue);
+                            }
+                        }
+                    }
+                }
+
+                $fieldsToCheck = count($arrayClassificationValues);
+                
+                foreach ($disciplines as $disciplineKey => $disciplineValue) {
+                    $cont = 0;
+                    foreach ($arrayClassificationValues as $key => $value) {
+                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
+                        ->get();
+                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
+                            if ($valueGroup->classification_id == $key) {
+                                if ($value == "mais") {
+                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                    ->where("classification_id", $key)
+                                    ->where("value", "<=", 50)
+                                    ->get();
+
+                                    if (count($currentDiscipline) > 0) {
+                                        $cont++;
+                                    }
+                                } else {
+                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
+                                    ->where("classification_id", $key)
+                                    ->where("value", ">=", 51)
+                                    ->get();
+
+                                    if (count($currentDiscipline) > 0) {
+                                        $cont++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ($fieldsToCheck == $cont) {
+                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
+                        $disciplinesResult->push($filteredDiscipline);
+                    }
+                }
+
+                $finalCollection = $disciplinesResult->collapse()->unique()->paginate(12);
+                
+                return view('disciplines.index')
+                ->with('disciplines', $finalCollection)
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
+            } else {
+                return redirect('/')
+                ->with('disciplines', $disciplines_all->paginate(12))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             }
         } else if ($isRangeChosen == 0) {
             // Ranges foram enviados
@@ -592,17 +918,17 @@ class DisciplineController extends Controller
                 ->with('disciplines', $disciplinesMixed)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($discipline_name == null && $emphasis_id == null) {
                 $disciplines = ClassificationDiscipline::all(); 
-                // dd("oi");
                 $classifications = Classification::all();
                 $disciplinesResult = collect([]);
                 $finalCollection = collect([]);
                 $arrayClassificationValues = array();
                 $arrayCollectionDisciplines = collect([]);
 
-                // dd($arrayValuesRanges);
                 // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
@@ -667,7 +993,9 @@ class DisciplineController extends Controller
                 ->with('disciplines', $disciplinesMixed)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($emphasis_id != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where('emphasis_id', $emphasis_id)
@@ -743,7 +1071,9 @@ class DisciplineController extends Controller
                 ->with('disciplines', $disciplinesMixed)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($discipline_name != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where("name", "like", "%" . $discipline_name . "%")
@@ -818,13 +1148,17 @@ class DisciplineController extends Controller
                 ->with('disciplines', $disciplinesMixed)
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else {
                 return redirect('/')
                 ->with('disciplines', $disciplines_all->paginate(12))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             }
         } else {
             // Apenas o nome ou a ênfase foram enviados
@@ -836,34 +1170,44 @@ class DisciplineController extends Controller
                 return view('disciplines.index', compact('disciplines'))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($emphasis_id != null) {
                 $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
 
                 return view('disciplines.index', compact('disciplines'))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($discipline_name != null) {
                 $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
 
                 return view('disciplines.index', compact('disciplines'))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else if ($emphasis_id == null) {
                 $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
 
                 return view('disciplines.index', compact('disciplines'))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             } else {
                 return redirect('/')
                 ->with('disciplines', $disciplines_all->paginate(12))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all);
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection);
             }
         }
     }

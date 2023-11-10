@@ -33,4 +33,9 @@ class DisciplinePerformanceData extends Model
         return $this->belongsTo(Discipline::class);
     }
 
+    public function calculatePercentage () {
+        $percentage = round(($this->num_approved_students*100) / $this->num_students);
+
+        return $percentage;
+    }
 }
