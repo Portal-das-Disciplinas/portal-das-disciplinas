@@ -291,7 +291,29 @@ class DisciplinePerformanceDataService
         }
         return $data->get();
     }
+    
+    function getPerformanceDataByInterval($disciplineCode, $yearStart, $periodStart, $yearEnd, $periodEnd,$paginate=null){
 
+        Log::info($disciplineCode . " " . $yearStart . " " . $periodStart . " " . $yearEnd . " " . $periodEnd);
+        if($yearStart == $yearEnd){
+
+            $data = DisciplinePerformanceData::where('discipline_code','=',$disciplineCode)->where('year','=',$yearStart)->where('period','>=',$periodStart)->where('period','<=',$periodEnd);
+            if(isset($paginate)){
+                return $data->paginate($paginate);
+            }
+            return $data->get();
+        }
+        else{
+            $data1 = DisciplinePerformanceData::where('discipline_code','=',$disciplineCode)->where('year','>=',$yearStart)->where('period','>=',$periodStart)->where('year','<=',$yearEnd - 1)->get();
+            $data2 = DisciplinePerformanceData::where('discipline_code','=',$disciplineCode)->where('year','=',$yearEnd)->where('period','<=',$periodEnd)->get();
+            $data = $data1->merge($data2)->all();
+            if(isset($paginate)){
+                return $data->paginate($paginate);
+            }
+            return $data;
+        }
+
+    }
 
     function deletePerformanceData($id)
     {
