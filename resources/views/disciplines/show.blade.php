@@ -124,37 +124,67 @@ mais.
                     <h1 class="mt-5">Dados do componente</h1>
                     <div class="form">
                         <div class="form-group">
-                            <label>Selecione o ano</label>
-                            <select class="form-control" id="selectYear" onchange="onSelectYear(event)">
-                                @for($i=$actualYear; $i > ($actualYear - 10);$i--)
-                                <option value='{{$i}}'>Ano Letivo {{$i}}</option>
-                                @endfor
-                            </select>
+                            <div class="row d-flex align-items-end">
+                                <div class="col-md-3">
+                                    <label>Ano Inicial</label>
+                                    <select class="form-control" id="yearStart" name="yearStart" onchange="onChangeSelect(event)">
+                                        @for($i=$actualYear; $i > ($actualYear - 10);$i--)
+                                        <option value='{{$i}}'>{{$i}}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Período Inicial</label>
+                                    <select id="periodStart" name="periodStart" class="form-control" onchange="onChangeSelect(event)">
+                                        <option value=1>1</option>
+                                        <option value=2>2</option>
+                                        <option value=3>3</option>
+                                        <option value=4>4</option>
+                                        <option value=5>5</option>
+                                        <option value=6>6</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Ano Final</label>
+                                    <select class="form-control" id="yearEnd" name="yearEnd" onchange="onChangeSelect(event)">
+                                        @for($i=$actualYear; $i > ($actualYear - 10);$i--)
+                                        <option value='{{$i}}'>{{$i}}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Período Final</label>
+                                    <select id="periodEnd" name="periodEnd" class="form-control" onchange="onChangeSelect(event)">
+                                        <option value=1>1</option>
+                                        <option value=2>2</option>
+                                        <option value=3>3</option>
+                                        <option value=4>4</option>
+                                        <option value=5>5</option>
+                                        <option value=6>6</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <small class="text-danger" id="intervalErrorMessage"></small>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Período</label>
-                            <select id="selectPeriod" class="form-control" onchange="onSelectPeriod(event)">
-                                <option value=1>1</option>
-                                <option value=2>2</option>
-                                <option value=3>3</option>
-                                <option value=4>4</option>
-                            </select>
 
-                        </div>
-                        
+
                         <div>
-                            <input id="checkAllClasses" type="checkbox" checked onchange="onChangeCheckAllClasses(event)">
+                            <input id="checkAllClasses" type="checkbox" checked  onchange="onChangeCheckAllClasses(event)">
                             <label for="checkAllClasses">Todas as turmas</label>
                         </div>
-                        
+
                         <div id="form-group-select-class" class="form-group d-none">
                             <label>Turma</label>
                             <select id="selectClass" class="form-control" onchange="onSelectClass(event)">
                                 <!--Conteúdo gerado por javascript -->
                             </select>
                         </div>
-                        
-                        
+
+
                     </div>
                     <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
                         Buscando dados...
@@ -165,7 +195,7 @@ mais.
                             <div class="col-6 d-flex justify-content-end">
                                 <h1 class="flex-end" id="notaMediaComponente">0</h1>
                             </div>
-                            <h4 id="infoTipoBusca"  class="col-12"></h4>
+                            <h4 id="infoTipoBusca" class="col-12"></h4>
                             <h4 id="infoNumDiscentes" class="col-12"></h4>
                             <h4 id="infoProfessoresBusca" class="col-12"></h4>
                         </div>
@@ -195,7 +225,7 @@ mais.
                     <div class="mt-5 ml-4">
                         <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
                     </div>
-                    
+
                 </div>
             </div>
             <!-- PROFESSOR -->
@@ -367,7 +397,7 @@ mais.
     <div class="container col-md-5">
         <div class="section">
             <h1 class="container-fluid  text-center mt-5">Faça uma pergunta!</h1>
-            <!-- É necessário autenticaro  email do professor anteriormente -->
+            <!-- É necessário autenticar o  email do professor anteriormente -->
 
             <form id="formDuvida" action="https://formsubmit.co/eugenio@imd.ufrn.br" method="POST">
                 <input type="hidden" name="_cc" value="{{ $discipline->professor->public_email }}" />
@@ -700,9 +730,6 @@ mais.
 
         document.querySelector("#modal-edit #links").innerHTML = renderLinks('modal-edit');
     }
-
-
-    
 </script>
 
 

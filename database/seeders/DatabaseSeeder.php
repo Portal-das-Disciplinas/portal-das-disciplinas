@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\RoleName;
 use App\Models\Discipline;
+use App\Models\DisciplinePerformanceData;
 use App\Models\Professor;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(EmphasisSeeder::class);
         //$this->call(CollaboratorSeeder::class);
         //$this->call(InformationSeeder::class);
+        $this->call(DisciplinePerformanceDataSeeder::class);
 
         if (app()->isLocal()) {
             // $this->call(DisciplineTableSeeder::class);
