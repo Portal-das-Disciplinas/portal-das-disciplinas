@@ -12,9 +12,9 @@ Semestre com dados de índices de rendimento
 </div>
 @if(session('status'))
 <div class="row">
-    <div class="col-md-6 offset-md-3">
+    <div class="col-md-12">
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <h3>{{session('status')}}</h3>
+            <h3 style="text-align: center;">{{session('status')}}</h3>
         </div>
     </div>
 </div>
