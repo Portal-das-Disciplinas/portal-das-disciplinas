@@ -24,15 +24,24 @@ class DisciplinePerformanceDataService
 {
 
 
-    public function saveSchedules($data){
+    public function saveSchedules($data)
+    {
 
         if (($data['yearStart'] > $data['yearEnd']) ||
-            ($data['yearStart'] == $data['yearEnd'] && $data['periodStart'] > $data['periodEnd'])){
-                throw new InvalidIntervalException("Intervalo inválido");
+            ($data['yearStart'] == $data['yearEnd'] && $data['periodStart'] > $data['periodEnd'])
+        ) {
+            throw new InvalidIntervalException("Intervalo inválido");
         }
 
         if ($data['yearStart'] == $data['yearEnd']) {
             for ($i = $data['periodStart']; $i <= $data['periodEnd']; $i++) {
+                $scheduleInDatabase =  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')
+                    ->where('year', '=', $data['yearStart'])
+                    ->where('period', '=', $i)
+                    ->first();
+                if ($scheduleInDatabase) {
+                    continue;
+                }
                 $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
                 $schedule->status = 'PENDING';
                 $schedule->year = $data['yearStart'];
@@ -47,6 +56,13 @@ class DisciplinePerformanceDataService
             for ($i = $data['yearStart']; $i <= $data['yearEnd']; $i++) {
                 if ($i == $data['yearStart']) {
                     for ($j = $data['periodStart']; $j <= $numPeriods; $j++) {
+                        $scheduleInDatabase =  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')
+                            ->where('year', '=', $i)
+                            ->where('period', '=', $j)
+                            ->first();
+                        if ($scheduleInDatabase) {
+                            continue;
+                        }
                         $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
                         $schedule->status = 'PENDING';
                         $schedule->year = $i;
@@ -58,6 +74,13 @@ class DisciplinePerformanceDataService
                     }
                 } else if ($i == $data['yearEnd']) {
                     for ($j = 1; $j <= $data['periodEnd']; $j++) {
+                        $scheduleInDatabase =  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')
+                            ->where('year', '=', $i)
+                            ->where('period', '=', $j)
+                            ->first();
+                        if ($scheduleInDatabase) {
+                            continue;
+                        }
                         $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
                         $schedule->status = 'PENDING';
                         $schedule->year = $i;
@@ -69,6 +92,13 @@ class DisciplinePerformanceDataService
                     }
                 } else {
                     for ($j = 1; $j <= $numPeriods; $j++) {
+                        $scheduleInDatabase =  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')
+                            ->where('year', '=', $i)
+                            ->where('period', '=', $j)
+                            ->first();
+                        if ($scheduleInDatabase) {
+                            continue;
+                        }
                         $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
                         $schedule->status = 'PENDING';
                         $schedule->year = $i;

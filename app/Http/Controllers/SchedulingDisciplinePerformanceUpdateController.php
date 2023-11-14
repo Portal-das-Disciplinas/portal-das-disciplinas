@@ -8,6 +8,7 @@ use App\Models\DisciplinePerfomanceData;
 use App\Services\DisciplinePerformanceDataService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class SchedulingDisciplinePerformanceUpdateController extends Controller
@@ -65,8 +66,10 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
             $service->saveSchedules($data);
             return redirect()->route('scheduling.index');
         } catch (InvalidIntervalException $e1) {
+            Log::error($e1->getMessage());
             return redirect()->back()->withErrors(["interval_error" => $e1->getMessage()]);
         } catch (Exception $e) {
+            Log::error($e->getMessage());
             return redirect()->back()->withErrors(["schedule_error" => "Não foi possível cadastrar o agendamento"]);
         }
     }
