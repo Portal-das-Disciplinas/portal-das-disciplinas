@@ -543,7 +543,7 @@ class DisciplineController extends Controller
                 ->where("emphasis_id", $emphasis_id)
                 ->get();
                 
-                $collection = collect([]);
+                $collect = collect([]);
                 $filteredCollection = collect([]);
 
                 // dd($request);
@@ -552,27 +552,32 @@ class DisciplineController extends Controller
                     if ($request->input('maiorMenor') === "maior") {
                         foreach ($studentsData as $student) {
                             $dis = $student->where("year", substr($request->input('periodo'), 0,4))
-                            ->where("period", substr($request->input('periodo'), 5));
+                            ->where("period", substr($request->input('periodo'), 5))
+                            ->where("percentage",">",$request->input('porcentagem'))
+                            ->get();
                             
-                            // if ($student->calculatePercentage() > $request->input('porcentagem')) {
-                                $filteredCollection->push($dis);
-                            // }
+                            $collect->push($dis->where("percentage",">",$request->input('porcentagem')));
                         }
                     } else {
                         foreach ($studentsData as $student) {
                             $dis = $student->where("year", substr($request->input('periodo'), 0,4))
-                            ->where("period", substr($request->input('periodo'), 5));
+                            ->where("period", substr($request->input('periodo'), 5))
+                            ->where("percentage","<",$request->input('porcentagem'))
+                            ->get();
                             
-                            if ($student->calculatePercentage() < $request->input('porcentagem')) {
-                                $filteredCollection->push($dis);
-                            }
+                            $collect->push($dis->where("percentage","<",$request->input('porcentagem')));
                         }
                     }
                 }
+                
+                foreach($collect->collapse()->unique() as $col) {   
+                    $filteredCollection->push($disciplines_all->where("code", $col->discipline_code));
+                }
 
-                dd($dis->get());
+                dd($collect->collapse()->unique());
+                dd($filteredCollection->collapse()->unique());
                 return view('disciplines.index')
-                ->with("disciplines", $disciplinesMixed)
+                ->with("disciplines", $filteredCollection->collapse()->unique()->paginate(4))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
