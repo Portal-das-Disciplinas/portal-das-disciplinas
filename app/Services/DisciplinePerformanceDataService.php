@@ -281,7 +281,7 @@ class DisciplinePerformanceDataService
                                 'num_failed_students' => $apiPerfomanceClassData['quantidade-reprovados'],
                                 'year' => $turma['ano'],
                                 'period' => $turma['periodo'],
-                                'professors' => $apiPerfomanceClassData['docentes'],
+                                'professors' => json_encode(json_decode($apiPerfomanceClassData['docentes'])[0]),
                                 'semester_performance_id' => $semesterPerformanceData->id
                             ]);
                             DB::commit();
@@ -313,7 +313,7 @@ class DisciplinePerformanceDataService
                             $dataFromDatabase->{'num_failed_students'} = $apiPerfomanceClassData['quantidade-reprovados'];
                             $dataFromDatabase->{'year'} = $turma['ano'];
                             $dataFromDatabase->{'period'} = $turma['periodo'];
-                            $dataFromDatabase->{'professors'} = $apiPerfomanceClassData['docentes'];
+                            $dataFromDatabase->{'professors'} = json_encode(json_decode($apiPerfomanceClassData['docentes'])[0]);
                             $dataFromDatabase->{'semester_performance_id'} = $semesterPerformanceData->id;
                             $dataFromDatabase->save();
                             DB::commit();

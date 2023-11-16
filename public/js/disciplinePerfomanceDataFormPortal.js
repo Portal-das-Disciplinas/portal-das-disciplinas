@@ -171,9 +171,10 @@ function searchDisciplineData(disciplineCode) {
                 let nomeDocentes = "";
                 try {
                     let docentes = JSON.parse(data['professors']);
-                    for (i = 0; i < docentes[0].length; i++) {
-                        nomeDocentes += JSON.parse(docentes[0][i]).nome;
-                        if (i != docentes[0].length - 1) {
+                    console.log(docentes);
+                    for (i = 0; i < docentes.length; i++) {
+                        nomeDocentes += docentes[i];
+                        if (i != docentes.length - 1) {
                             nomeDocentes += ", ";
                         }
                     }
