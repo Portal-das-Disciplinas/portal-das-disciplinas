@@ -213,7 +213,7 @@ class DisciplinePerformanceDataService
                 $this->updateSemesterPerformanceDataOnError($s->year, $s->period);
                 break;
             } catch (Exception $e5) {
-                Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage() + " " + $e5);
+                Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage() . " " + $e5);
                 $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
                 $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)->where('period', '=', $schedule->period)->first();
                 $semesterPerformanceData->{'data_researched_at'} = date('Y-m-d H:i:s');
@@ -372,7 +372,6 @@ class DisciplinePerformanceDataService
     function getPerformanceDataByInterval($disciplineCode, $yearStart, $periodStart, $yearEnd, $periodEnd, $paginate = null)
     {
 
-        Log::info($disciplineCode . " " . $yearStart . " " . $periodStart . " " . $yearEnd . " " . $periodEnd);
         if ($yearStart == $yearEnd) {
 
             $data = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearStart)->where('period', '>=', $periodStart)->where('period', '<=', $periodEnd);
