@@ -6,6 +6,7 @@ use App\Exceptions\APISistemasIncorrectRequestExceception;
 use App\Exceptions\APISistemasRequestLimitException;
 use App\Exceptions\APISistemasServerErrorException;
 use App\Exceptions\APISistemasUnavailableException;
+use App\Exceptions\InvalidIntervalException;
 use App\Models\Discipline;
 use App\Models\DisciplinePerformanceData;
 use App\Models\SchedulingDisciplinePerfomanceDataUpdate;
@@ -23,22 +24,98 @@ class DisciplinePerformanceDataService
 {
 
 
-    public function save($data)
+    public function saveSchedules($data)
     {
 
-        $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
-        $schedule->status = 'PENDING';
-        $schedule->year = $data['year'];
-        $schedule->period = $data['period'];
-        if (isset($data['updateIfExists']) && $data['updateIfExists'] == 'on') {
-            $schedule->{'update_if_exists'} = true;
+        if (($data['yearStart'] > $data['yearEnd']) ||
+            ($data['yearStart'] == $data['yearEnd'] && $data['periodStart'] > $data['periodEnd'])
+        ) {
+            throw new InvalidIntervalException("Intervalo inválido");
         }
-        $schedule->save();
+
+        if ($data['yearStart'] == $data['yearEnd']) {
+            for ($i = $data['periodStart']; $i <= $data['periodEnd']; $i++) {
+                $scheduleInDatabase =  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')
+                    ->where('year', '=', $data['yearStart'])
+                    ->where('period', '=', $i)
+                    ->first();
+                if ($scheduleInDatabase) {
+                    continue;
+                }
+                $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
+                $schedule->status = 'PENDING';
+                $schedule->year = $data['yearStart'];
+                $schedule->period = $i;
+                if (isset($data['updateIfExists']) && $data['updateIfExists'] == 'on') {
+                    $schedule->{'update_if_exists'} = true;
+                }
+                $schedule->save();
+            }
+        } else {
+            $numPeriods = 6;
+            for ($i = $data['yearStart']; $i <= $data['yearEnd']; $i++) {
+                if ($i == $data['yearStart']) {
+                    for ($j = $data['periodStart']; $j <= $numPeriods; $j++) {
+                        $scheduleInDatabase =  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')
+                            ->where('year', '=', $i)
+                            ->where('period', '=', $j)
+                            ->first();
+                        if ($scheduleInDatabase) {
+                            continue;
+                        }
+                        $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
+                        $schedule->status = 'PENDING';
+                        $schedule->year = $i;
+                        $schedule->period = $j;
+                        if (isset($data['updateIfExists']) && $data['updateIfExists'] == 'on') {
+                            $schedule->{'update_if_exists'} = true;
+                        }
+                        $schedule->save();
+                    }
+                } else if ($i == $data['yearEnd']) {
+                    for ($j = 1; $j <= $data['periodEnd']; $j++) {
+                        $scheduleInDatabase =  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')
+                            ->where('year', '=', $i)
+                            ->where('period', '=', $j)
+                            ->first();
+                        if ($scheduleInDatabase) {
+                            continue;
+                        }
+                        $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
+                        $schedule->status = 'PENDING';
+                        $schedule->year = $i;
+                        $schedule->period = $j;
+                        if (isset($data['updateIfExists']) && $data['updateIfExists'] == 'on') {
+                            $schedule->{'update_if_exists'} = true;
+                        }
+                        $schedule->save();
+                    }
+                } else {
+                    for ($j = 1; $j <= $numPeriods; $j++) {
+                        $scheduleInDatabase =  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')
+                            ->where('year', '=', $i)
+                            ->where('period', '=', $j)
+                            ->first();
+                        if ($scheduleInDatabase) {
+                            continue;
+                        }
+                        $schedule = new SchedulingDisciplinePerfomanceDataUpdate();
+                        $schedule->status = 'PENDING';
+                        $schedule->year = $i;
+                        $schedule->period = $j;
+                        if (isset($data['updateIfExists']) && $data['updateIfExists'] == 'on') {
+                            $schedule->{'update_if_exists'} = true;
+                        }
+                        $schedule->save();
+                    }
+                }
+            }
+        }
     }
 
-    function listSchedules($status, $paginate=null)
+    function listSchedules($status, $paginate = null)
     {
-        if(isset($paginate)){
+        if (isset($paginate)) {
             return  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)->paginate($paginate);
         }
         return SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)->get();
@@ -204,7 +281,7 @@ class DisciplinePerformanceDataService
                                 'num_failed_students' => $apiPerfomanceClassData['quantidade-reprovados'],
                                 'year' => $turma['ano'],
                                 'period' => $turma['periodo'],
-                                'professors' => $apiPerfomanceClassData['docentes'],
+                                'professors' => json_encode(json_decode($apiPerfomanceClassData['docentes'])[0]),
                                 'semester_performance_id' => $semesterPerformanceData->id
                             ]);
                             DB::commit();
@@ -236,7 +313,7 @@ class DisciplinePerformanceDataService
                             $dataFromDatabase->{'num_failed_students'} = $apiPerfomanceClassData['quantidade-reprovados'];
                             $dataFromDatabase->{'year'} = $turma['ano'];
                             $dataFromDatabase->{'period'} = $turma['periodo'];
-                            $dataFromDatabase->{'professors'} = $apiPerfomanceClassData['docentes'];
+                            $dataFromDatabase->{'professors'} = json_encode(json_decode($apiPerfomanceClassData['docentes'])[0]);
                             $dataFromDatabase->{'semester_performance_id'} = $semesterPerformanceData->id;
                             $dataFromDatabase->save();
                             DB::commit();
@@ -273,7 +350,7 @@ class DisciplinePerformanceDataService
      * @param string $year ano do semestre
      * @param int $year período do semestre
      */
-    function getPerformanceData($disciplineCode, $year, $period, $paginate=null)
+    function getPerformanceData($disciplineCode, $year, $period, $paginate = null)
     {
         $data = DisciplinePerformanceData::query();
 
@@ -286,12 +363,33 @@ class DisciplinePerformanceDataService
         if (isset($period)) {
             $data = $data->where('period', '=', $period);
         }
-        if(isset($paginate)){
+        if (isset($paginate)) {
             return $data->paginate($paginate);
         }
         return $data->get();
     }
 
+    function getPerformanceDataByInterval($disciplineCode, $yearStart, $periodStart, $yearEnd, $periodEnd, $paginate = null)
+    {
+
+        Log::info($disciplineCode . " " . $yearStart . " " . $periodStart . " " . $yearEnd . " " . $periodEnd);
+        if ($yearStart == $yearEnd) {
+
+            $data = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearStart)->where('period', '>=', $periodStart)->where('period', '<=', $periodEnd);
+            if (isset($paginate)) {
+                return $data->paginate($paginate);
+            }
+            return $data->get();
+        } else {
+            $data1 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '>=', $yearStart)->where('period', '>=', $periodStart)->where('year', '<=', $yearEnd - 1)->get();
+            $data2 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearEnd)->where('period', '<=', $periodEnd)->get();
+            $data = $data1->merge($data2)->all();
+            if (isset($paginate)) {
+                return $data->paginate($paginate);
+            }
+            return $data;
+        }
+    }
 
     function deletePerformanceData($id)
     {

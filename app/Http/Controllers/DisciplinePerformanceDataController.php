@@ -18,7 +18,7 @@ class DisciplinePerformanceDataController extends Controller
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
         $this->performanceDataService = new DisciplinePerformanceDataService();
-        $this->middleware('admin')->except(['getDisciplinePerformanceData']);
+        $this->middleware('admin')->except(['getDisciplinePerformanceData','getDisciplinePerformanceDataByInterval']);
     }
 
     /**
@@ -36,6 +36,22 @@ class DisciplinePerformanceDataController extends Controller
             return response()->json(json_encode($error));
         }
         
+    }
+
+    function getDisciplinePerformanceDataByInterval(Request $request){
+        Log::info('year start ' . $request['yearStart']);
+        $service = new DisciplinePerformanceDataService();
+        try{
+            $datas = $service->getPerformanceDataByInterval($request['disciplineCode'], $request['yearStart'],
+                                $request['periodStart'],$request['yearEnd'],$request['periodEnd']);
+            Log::info(count($datas));
+            return response()->json($datas);
+        }catch(Exception $e){
+            $error = new stdClass();
+            $error->error = "Erro";
+            Log::error("error" . $e->getMessage());
+            return response()->json(json_encode($error));
+        }
     }
 
     function index(Request $request){
