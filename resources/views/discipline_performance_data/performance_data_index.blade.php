@@ -111,8 +111,8 @@ Dados de desempenho das disciplinas
     <div class="col-md-3 py-3" style="border-bottom-style:solid; border-width:1px; border-color:rgba(0,0,0,0.2)">
         <div class="d-flex flex-column mr-3">
             <h5>docente(s)</h5>
-            @foreach(json_decode($data['professors'])[0] as $professorNameJson)
-            <h5>{{(json_decode($professorNameJson))->nome}}</h5>
+            @foreach(json_decode($data['professors']) as $professorName)
+            <h5>{{$professorName}}</h5>
             @endforeach
         </div>
     </div>

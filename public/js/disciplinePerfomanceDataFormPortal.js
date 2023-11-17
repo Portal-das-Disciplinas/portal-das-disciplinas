@@ -1,28 +1,20 @@
-function onSelectYear(event) {
+function onChangeSelect(event) {
     yearSelectedIndex = event.target.selectedIndex;
-    if (
-        classPerformanceDatas.length == 0 ||
-        lastYearSelectedIndex != yearSelectedIndex ||
-        lastPeriodSelectedIndex != periodSelectedIndex
-    ) {
-        document.querySelector("#btnSearchDisciplineData").disabled = false;
-    } else if (classPerformanceDatas.length > 0) {
+    let yearStart = document.querySelector('#yearStart').value;
+    let periodStart = document.querySelector('#periodStart').value;
+    let yearEnd = document.querySelector('#yearEnd').value;
+    let periodEnd = document.querySelector('#periodEnd').value;
+    let errorMessageElement = document.querySelector('#intervalErrorMessage');
+    if((yearStart > yearEnd) || (yearStart == yearEnd && periodStart > periodEnd)){
+        errorMessageElement.innerHTML = "* Intervalo inválido";
         document.querySelector("#btnSearchDisciplineData").disabled = true;
+    }
+    else{
+        document.querySelector("#btnSearchDisciplineData").disabled = false;
+        errorMessageElement.innerHTML = "";
     }
 }
 
-function onSelectPeriod(event) {
-    periodSelectedIndex = event.target.selectedIndex;
-    if (
-        classPerformanceDatas.length == 0 ||
-        lastYearSelectedIndex != yearSelectedIndex ||
-        lastPeriodSelectedIndex != periodSelectedIndex
-    ) {
-        document.querySelector("#btnSearchDisciplineData").disabled = false;
-    } else if (classPerformanceDatas.length > 0) {
-        document.querySelector("#btnSearchDisciplineData").disabled = true;
-    }
-}
 let classSelectedIndex = -1000;
 
 function onSelectClass(event) {
@@ -31,14 +23,16 @@ function onSelectClass(event) {
 }
 
 function onSearchDisciplineDataClick(code) {
+    document.querySelector('#checkAllClasses').checked = true;
+    checkedAllClasses = true;
     searchDisciplineData(code);
     document.querySelector("#btnSearchDisciplineData").disabled = true;
 }
 
-let yearSelectedIndex = 0;
+/*let yearSelectedIndex = 0;
 let lastYearSelectedIndex = 0;
 let periodSelectedIndex = 0;
-let lastPeriodSelectedIndex = 0;
+let lastPeriodSelectedIndex = 0; */
 let checkedAllClasses = true;
 
 function onChangeCheckAllClasses(event) {
@@ -143,12 +137,17 @@ function updateInfos() {
                 "professor(a): " + JSON.parse(professores[0][0]).nome;
         } else {
             let nomes = "PROFESSORES: ";
-            for (i = 0; i < professores[0].length; i++) {
-                let professor = JSON.parse(professores[0][i]).nome;
-                nomes += professor;
-                if (i < professores[0].length - 1) {
-                    nomes += ", ";
+            try {
+                for (i = 0; i < professores[0].length; i++) {
+                    let professor = JSON.parse(professores[0][i]).nome;
+                    nomes += professor;
+                    if (i < professores[0].length - 1) {
+                        nomes += ", "
+                    }
                 }
+            } catch (e) {
+                console.log("Erro ao fazer o parse dos professores");
+                nomes = "PROFESSORES: ";
             }
             document.querySelector("#infoProfessoresBusca").innerHTML = nomes;
         }
@@ -161,23 +160,27 @@ function searchDisciplineData(disciplineCode) {
         idTurma = "/" + document.querySelector("#selectClass").value;
     }
 
-    let year = document.querySelector("#selectYear").value;
-    let period = document.querySelector("#selectPeriod").value;
+    //let year = document.querySelector("#selectYear").value;
+    //let period = document.querySelector("#selectPeriod").value;
+    let yearS = document.querySelector("#yearStart").value;
+    let periodS = document.querySelector("#periodStart").value;
+    let yearE= document.querySelector("#yearEnd").value;
+    let periodE = document.querySelector("#periodEnd").value;
     let element = document.querySelector("#infoPesquisaDados");
     element.classList.remove("d-none");
     element.innerHTML = "Buscando dados...";
     document.querySelector("#dadosDisciplina").classList.add("d-none");
     $.ajax({
-        url: "/api/performance/" + disciplineCode + "/" + year + "/" + period,
-        method: "GET",
+        url: '/api/performance/data/interval',
+        method: 'GET',
+        data:{disciplineCode : disciplineCode, yearStart : yearS, periodStart: periodS, yearEnd : yearE, periodEnd : periodE},
+        dataType: 'json',
 
         success: function (result) {
             resetValues();
             classPerformanceDatas = result;
             if (!Array.isArray(result)) {
-                document
-                    .querySelector("#dadosDisciplina")
-                    .classList.add("d-none");
+                document.querySelector("#dadosDisciplina").classList.add("d-none");
                 let element = document.querySelector("#infoPesquisaDados");
                 element.classList.remove("d-none");
                 element.innerHTML = "Ocorreu um erro ao obter os dados";
@@ -185,40 +188,33 @@ function searchDisciplineData(disciplineCode) {
                     "#btnSearchDisciplineData",
                 ).disabled = false;
                 return;
+
+
             }
             let html = "";
             classPerformanceDatas.forEach(function (data, index) {
-                let docentes = JSON.parse(data["professors"]);
                 let nomeDocentes = "";
-                for (i = 0; i < docentes[0].length; i++) {
-                    nomeDocentes += JSON.parse(docentes[0][i]).nome;
-                    if (i != docentes[0].length - 1) {
-                        nomeDocentes += ", ";
+                try {
+                    let docentes = JSON.parse(data['professors']);
+                    console.log(docentes);
+                    for (i = 0; i < docentes.length; i++) {
+                        nomeDocentes += docentes[i];
+                        if (i != docentes.length - 1) {
+                            nomeDocentes += ", ";
+                        }
                     }
+                }catch(e){
+                    console.log("Erro ao fazer o parse dos professores");
+                    nomeDocentes = "Professor ";
                 }
 
-                html +=
-                    "<option value='" +
-                    index +
-                    "'> Turma " +
-                    data["class_code"] +
-                    " - " +
-                    nomeDocentes +
-                    " </option>";
-                generalPerformanceData.averageGrade += data["sum_grades"];
-                generalPerformanceData.numStudents += data["num_students"];
-                generalPerformanceData.numApprovedStudents +=
-                    data["num_approved_students"];
-                generalPerformanceData.numFailedStudents +=
-                    data["num_failed_students"];
-                generalPerformanceData.highestGrade = Math.max(
-                    generalPerformanceData.highestGrade,
-                    data["highest_grade"],
-                );
-                generalPerformanceData.lowestGrade = Math.min(
-                    generalPerformanceData.lowestGrade,
-                    data["lowest_grade"],
-                );
+                html += "<option value='" + index + "'>"+data['year']+"." + data['period']+" - turma " + data['class_code'] + " - " + nomeDocentes + " </option>"
+                generalPerformanceData.averageGrade += data['sum_grades'];
+                generalPerformanceData.numStudents += data['num_students'];
+                generalPerformanceData.numApprovedStudents += data['num_approved_students'];
+                generalPerformanceData.numFailedStudents += data['num_failed_students'];
+                generalPerformanceData.highestGrade = Math.max(generalPerformanceData.highestGrade, data['highest_grade']);
+                generalPerformanceData.lowestGrade = Math.min(generalPerformanceData.lowestGrade, data['lowest_grade']);
             });
             document.querySelector("#selectClass").innerHTML = html;
 
@@ -241,10 +237,14 @@ function searchDisciplineData(disciplineCode) {
                 element.innerHTML = "Não foram encontrados dados para esse ano";
                 updateInfos();
             }
+            document.querySelector("#btnSearchDisciplineData").disabled = false;
+
         },
 
         statusCode: {
-            500: function (e) {},
+            500: function (e) {
+
+            }
         },
         error: function (xhr, status, error) {
             document.querySelector("#dadosDisciplina").classList.add("d-none");
