@@ -59,7 +59,7 @@ $("#advancedOptionButton").on("click", () => {
 
 $("#aprovationsButton").on("click", () => {
     //Reseta qualquer valor que tenha ficado no form
-    $("#resetButton").trigger("click");
+    //$("#resetButton").trigger("click");
 
     /*Ao clicar no filtro por aprovação
     altera a propriedade filtro para aprovacao,

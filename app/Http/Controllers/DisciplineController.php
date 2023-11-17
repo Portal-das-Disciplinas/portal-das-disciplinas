@@ -574,8 +574,38 @@ class DisciplineController extends Controller
                     $filteredCollection->push($disciplines_all->where("code", $col->discipline_code));
                 }
 
-                dd($collect->collapse()->unique());
-                dd($filteredCollection->collapse()->unique());
+                // dd($collect->collapse()->unique());
+                // dd($filteredCollection->collapse()->unique());
+
+                // dd($studentsData[63]->professors);
+                $collectionToExtractProfessorsNames = $collect->collapse()->unique();
+                // dd($collectionToExtractProfessorsNames);
+                $arr = [];
+                //Mecanismo pra extrair um array com o nome dos professores
+                for ($j = 0; $j < count($collectionToExtractProfessorsNames); $j++) {
+                    // dd($collectionToExtractProfessorsNames[$j]);
+                    if (str_contains($collectionToExtractProfessorsNames[$j]->professors, ",")) {
+                        $str = explode(",", $collectionToExtractProfessorsNames[$j]->professors);
+                        // dd(count($str));
+                        
+                        for($i = 0; $i < count($str); $i++) {
+                            
+                            // dd(substr($str[$i],15,-4));
+                            if ($i === 0) {
+                                $arr[$i] = substr($str[$i],15,-4);
+                            } else if ($i !== 0 && $i !== (count($str)-1)) {
+                                $arr[$i] = substr($str[$i],14,-4);
+                            } else {
+                                $arr[$i] = substr($str[$i],14,-6);
+                            }
+                        }
+                        
+                    } else {
+                        $arr[$j] = substr($collectionToExtractProfessorsNames[$j]->professors,15,-6);
+                    }
+                } 
+                dd($arr);
+                // dd(substr($studentsData[0]->professors,15,-6));
                 return view('disciplines.index')
                 ->with("disciplines", $filteredCollection->collapse()->unique()->paginate(4))
                 ->with('emphasis', $emphasis_all)
