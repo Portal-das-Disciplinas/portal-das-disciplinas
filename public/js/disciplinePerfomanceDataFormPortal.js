@@ -216,10 +216,12 @@ function searchDisciplineData(disciplineCode) {
 
         statusCode: {
             500: function (e) {
-
+                console.log(e);
             }
         },
         error: function (xhr, status, error) {
+            console.log(error);
+            console.log(xhr.responseText);
             document.querySelector("#dadosDisciplina").classList.add("d-none");
             let element = document.querySelector("#infoPesquisaDados");
             element.classList.add("d-none");
