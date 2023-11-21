@@ -569,18 +569,20 @@ class DisciplineController extends Controller
                         }
                     }
                 }
+                    /* Compilação de disciplinas que vem da api do sigaa
+                     e que passam nos requisitos do usuário*/
                     $sigaaApiData = $collect->collapse()->unique();
+                    
+                    /* Váriavel com todas as disciplinas do bd do portal junto com os professores para
+                    poder ser feita a filtragem mais tarde usando o nome dos professores */
                     $disciplinesJoinedWithProfessor = Discipline::join("professors", "disciplines.id", "=", "professor_id")
                     ->get();                
-                    // dd($sigaaApiData[0]);
-                    // dd($disciplinesJoinedWithProfessor[0]);
-                // foreach($collect->collapse()->unique() as $col) {
-                    
-                //     $filteredCollection->push($disciplinesJoinedWithProfessor->where("code","=","IMD1001"));
-                // }
+
                 for ($i = 0; $i < count($sigaaApiData); $i++) {
                     $arr = [];
-                    
+                    $col = collect([]);
+                    /*Mecanismo que constrói um array com os ids dos nomes dos 
+                    professores da matéria da vez que vem da api do sigaa*/
                     if (str_contains($sigaaApiData[$i]->professors, ",")) {
                         $splittedProfessorsNamesString = explode(",", $sigaaApiData[$i]->professors);
 
@@ -588,45 +590,47 @@ class DisciplineController extends Controller
                             if ($j === 0) {
                                 $arr[$j] = substr($splittedProfessorsNamesString[$j],15,-4);
                             } else if ($j !== 0 && $j !== (count($splittedProfessorsNamesString)-1)) {
-                                $arr[$j] = substr($splittedProfessorsNamesString,14,-4);
+                                $arr[$j] = substr($splittedProfessorsNamesString[$j],14,-4);
                             } else {
-                                $arr[$j] = substr($splittedProfessorsNamesString,14,-6);
+                                $arr[$j] = substr($splittedProfessorsNamesString[$j],14,-6);
+                            }
+                        }
+
+                        for ($l = 0; $l < count($arr); $l++) {
+                            $col->push(Professor::where("name",$arr[$l])->get());
+                        }
+                        $professorsArray = $col->collapse()->unique();
+
+                        // dd($professorsArray);
+
+                        // $filteredCollection->push($disciplinesJoinedWithProfessor[$i]
+                        // ->where("code",$sigaaApiData[$i]->discipline_code)
+                        // ->where("professor_id",)
+                        // ->get());
+
+                        foreach ($disciplines_all as $dis) {
+                            for ($s = 0; $s < count($sigaaApiData); $s++) {
+                                foreach ($professorsArray as $prof) {
+                                    $filteredCollection->push($disciplines_all
+                                        ->where("code", $sigaaApiData[$s]->discipline_code)
+                                        ->where("professor_id", $prof->id)
+                                        // ->get()
+                                    );
+                                }
                             }
                         }
                     } else {
                         $arr[$i] = substr($sigaaApiData[$i]->professors,15,-6);
-                    }
 
-                    dd($disciplinesJoinedWithProfessor[$i]
-                    ->where("code",$sigaaApiData[$i]->discipline_code));
-                    
-                    // dd($arr);
+                        // for ($l = 0; $l < count($arr); $l++) {
+                        //     $col->push(Professor::where("name",$arr[$l])->get());
+                        // }
+
+                        // $professorsArray = $col->collapse()->unique();
+                    }
                 }
 
                 dd($filteredCollection->collapse()->unique());
-
-                $collectionToExtractProfessorsNames = $collect->collapse()->unique();
-                $arr = [];
-                //Mecanismo pra extrair um array com o nome dos professores
-                for ($j = 0; $j < count($collectionToExtractProfessorsNames); $j++) {                    
-                    if (str_contains($collectionToExtractProfessorsNames[$j]->professors, ",")) {
-                        $str = explode(",", $collectionToExtractProfessorsNames[$j]->professors);
-
-                        for($i = 0; $i < count($str); $i++) {
-                            if ($i === 0) {
-                                $arr[$i] = substr($str[$i],15,-4);
-                            } else if ($i !== 0 && $i !== (count($str)-1)) {
-                                $arr[$i] = substr($str[$i],14,-4);
-                            } else {
-                                $arr[$i] = substr($str[$i],14,-6);
-                            }
-                        }
-                        
-                    } else {
-                        $arr[$j] = substr($collectionToExtractProfessorsNames[$j]->professors,15,-6);
-                    }
-                } 
-                dd($arr);
 
                 return view('disciplines.index')
                 ->with("disciplines", $filteredCollection->collapse()->unique()->paginate(4))
