@@ -437,7 +437,7 @@ class DisciplinePerformanceDataService
         DB::beginTransaction();
         $disciplines = null;
         if(isset($disciplineCode)){
-            $disciplines = Discipline::where('discipline_code','=',$disciplineCode)->get();
+            $disciplines = Discipline::where('code','=',$disciplineCode)->get();
             if(count($disciplines) == 0){
                 return;
             }
