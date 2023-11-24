@@ -553,18 +553,35 @@ class DisciplineController extends Controller
                     // pesquisa por porcentagem e por período
                     if ($request->input('maiorMenor') === "maior") {
                         foreach ($studentsData as $student) {
-                            $dis = $student->where("year", substr($request->input('periodo'), 0,4))
-                            ->where("period", substr($request->input('periodo'), 5))
-                            ->where("percentage",">",$request->input('porcentagem'))
-                            ->get();
+
+                            if ($request->input('maiorMenor') === 'maior' && $request->input('metodo') === 'aprovacao') {
+                                $dis = $student->where("year", substr($request->input('periodo'), 0,4))
+                                ->where("period", substr($request->input('periodo'), 5))
+                                ->where("approved_students_percentage",">",$request->input('porcentagem'))
+                                ->get();
+                            } else if ($request->input('maiorMenor') === 'maior' && $request->input('metodo') === 'reprovacao') {
+                                $dis = $student->where("year", substr($request->input('periodo'), 0,4))
+                                ->where("period", substr($request->input('periodo'), 5))
+                                ->where("failed_students_percentage",">",$request->input('porcentagem'))
+                                ->get();
+                            } else if ($request->input('maiorMenor') === 'menor' && $request->input('metodo') === 'aprovacao') {
+                                $dis = $student->where("year", substr($request->input('periodo'), 0,4))
+                                ->where("period", substr($request->input('periodo'), 5))
+                                ->where("approved_students_percentage","<",$request->input('porcentagem'))
+                                ->get();
+                            } else if ($request->input('maiorMenor') === 'menor' && $request->input('metodo') === 'reprovacao') {
+                                $dis = $student->where("year", substr($request->input('periodo'), 0,4))
+                                ->where("period", substr($request->input('periodo'), 5))
+                                ->where("failed_students_percentage","<",$request->input('porcentagem'))
+                                ->get();
+                            }
                             
-                            $collect->push($dis->where("percentage",">",$request->input('porcentagem')));
                         }
                     } else {
                         foreach ($studentsData as $student) {
                             $dis = $student->where("year", substr($request->input('periodo'), 0,4))
                             ->where("period", substr($request->input('periodo'), 5))
-                            ->where("percentage","<",$request->input('porcentagem'))
+                            ->where("failed_students_percentage",">",$request->input('porcentagem'))
                             ->get();
                             
                             $collect->push($dis->where("percentage","<",$request->input('porcentagem')));
