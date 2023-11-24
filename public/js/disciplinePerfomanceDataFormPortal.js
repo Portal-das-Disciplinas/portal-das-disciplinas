@@ -75,16 +75,8 @@ function updateInfos() {
 
     if (document.querySelector("#checkAllClasses").checked) {
         let mediaGeral = generalPerformanceData.averageGrade.toFixed(2);
-        let percentagemAprovados = (
-            (generalPerformanceData.numApprovedStudents /
-                generalPerformanceData.numStudents) *
-            100
-        ).toFixed(1);
-        let percentagemReprovados = (
-            (generalPerformanceData.numFailedStudents /
-                generalPerformanceData.numStudents) *
-            100
-        ).toFixed(1);
+        let percentagemAprovados = ((generalPerformanceData.numApprovedStudents / generalPerformanceData.numStudents) * 100).toFixed(2);
+        let percentagemReprovados = ((generalPerformanceData.numFailedStudents / generalPerformanceData.numStudents) * 100).toFixed(2);
         document.querySelector("#infoPesquisaDados").classList.add("d-none");
         document.querySelector("#dadosDisciplina").classList.remove("d-none");
         document.querySelector("#notaMediaComponente").innerHTML = mediaGeral;
@@ -104,15 +96,9 @@ function updateInfos() {
     } else {
         let index = document.querySelector("#selectClass").selectedIndex;
         let data = classPerformanceDatas[index];
-        let mediaGeral = data["average_grade"].toFixed(2);
-        let percentagemAprovados = (
-            (data["num_approved_students"] / data["num_students"]) *
-            100
-        ).toFixed(1);
-        let percentagemReprovados = (
-            (data["num_failed_students"] / data["num_students"]) *
-            100
-        ).toFixed(1);
+        let mediaGeral = data['average_grade'].toFixed(2);
+        let percentagemAprovados = ((data['num_approved_students'] / data['num_students']) * 100).toFixed(2);
+        let percentagemReprovados = ((data['num_failed_students'] / data['num_students']) * 100).toFixed(2);
         document.querySelector("#infoPesquisaDados").classList.add("d-none");
         document.querySelector("#dadosDisciplina").classList.remove("d-none");
         document.querySelector("#notaMediaComponente").innerHTML = mediaGeral;
@@ -146,7 +132,6 @@ function updateInfos() {
                     }
                 }
             } catch (e) {
-                console.log("Erro ao fazer o parse dos professores");
                 nomes = "PROFESSORES: ";
             }
             document.querySelector("#infoProfessoresBusca").innerHTML = nomes;
@@ -196,7 +181,6 @@ function searchDisciplineData(disciplineCode) {
                 let nomeDocentes = "";
                 try {
                     let docentes = JSON.parse(data['professors']);
-                    console.log(docentes);
                     for (i = 0; i < docentes.length; i++) {
                         nomeDocentes += docentes[i];
                         if (i != docentes.length - 1) {
@@ -243,10 +227,11 @@ function searchDisciplineData(disciplineCode) {
 
         statusCode: {
             500: function (e) {
-
+                console.log("Erro no servidor");
             }
         },
         error: function (xhr, status, error) {
+            console.log("Ocorreu um erro");
             document.querySelector("#dadosDisciplina").classList.add("d-none");
             let element = document.querySelector("#infoPesquisaDados");
             element.classList.add("d-none");

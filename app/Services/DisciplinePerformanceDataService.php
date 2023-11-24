@@ -149,8 +149,12 @@ class DisciplinePerformanceDataService
     public function runSchedules()
     {
         $schedules = SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')->get();
+        if(count($schedules) > 0){
+            Log::info("Execução dos agendamentos iniciado");
+        }
         foreach ($schedules as $key => $schedule) {
             try {
+                Log::info("Executando o schedule: " . $schedule->id);
                 $this->runSchedule($schedule->id);
             } catch (APISistemasRequestLimitException $e1) {
                 Log::error("Limite de requisições à API alcançado.");
@@ -213,14 +217,14 @@ class DisciplinePerformanceDataService
                 $this->updateSemesterPerformanceDataOnError($s->year, $s->period);
                 break;
             } catch (Exception $e5) {
-                Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage() + " " + $e5);
+                Log::error("Erro desconhecido ao executar a busca de dados da API: " . $e5->getMessage() . " " . $e5);
                 $s = SchedulingDisciplinePerfomanceDataUpdate::find($schedule->id);
                 $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)->where('period', '=', $schedule->period)->first();
                 $semesterPerformanceData->{'data_researched_at'} = date('Y-m-d H:i:s');
                 $semesterPerformanceData->{'data_search_complete'} = true;
                 $semesterPerformanceData->save();
                 $s->status = "ERROR";
-                $s->{'error_description'} .= " Erro desconhecido";
+                $s->{'error_description'} .= " Erro desconhecido: " . $e5->getMessage();
                 $diff = date_diff(DateTime::createFromFormat('Y-m-d H:i:s', $s->{'executed_at'}), date_create('now'));
                 $s->{'update_time'} = $diff->h * 3600 + $diff->i * 60 + $diff->s;
                 $schedule->{'finished_at'} = date('Y-m-d H:i:s');
@@ -229,11 +233,12 @@ class DisciplinePerformanceDataService
                 break;
             }
         }
+        Log::info("Fim da execução dos agendamentos.");
+        $this->updateDisciplinePerformanceDataValues();
     }
 
     function runSchedule($idSchedule)
     {
-        Log::info('Executando o schedule: ' . $idSchedule);
         $schedule = SchedulingDisciplinePerfomanceDataUpdate::find($idSchedule);
         $updateIfExists = $schedule->{'update_if_exists'};
         $semesterPerformanceData = SemesterPerformanceData::where('year', '=', $schedule->year)
@@ -372,7 +377,6 @@ class DisciplinePerformanceDataService
     function getPerformanceDataByInterval($disciplineCode, $yearStart, $periodStart, $yearEnd, $periodEnd, $paginate = null)
     {
 
-        Log::info($disciplineCode . " " . $yearStart . " " . $periodStart . " " . $yearEnd . " " . $periodEnd);
         if ($yearStart == $yearEnd) {
 
             $data = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearStart)->where('period', '>=', $periodStart)->where('period', '<=', $periodEnd);
@@ -424,6 +428,45 @@ class DisciplinePerformanceDataService
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
+        }
+    }
+
+
+    function updateDisciplinePerformanceDataValues($disciplineCode=null)
+    {
+        DB::beginTransaction();
+        $disciplines = null;
+        if(isset($disciplineCode)){
+            $disciplines = Discipline::where('code','=',$disciplineCode)->get();
+            if(count($disciplines) == 0){
+                return;
+            }
+        }
+        else{
+            $disciplines = Discipline::all();
+        }
+        try {
+            foreach ($disciplines as $discipline) {
+                $sumGrades = 0;
+                $numStudents = 0;
+                $numApprovedStudents = 0;
+                $numFailedStudents = 0;
+                $performanceData = DisciplinePerformanceData::where('discipline_code', '=', $discipline->code)->get();
+                foreach ($performanceData as $data) {
+                    $sumGrades += $data['sum_grades'];
+                    $numStudents += $data['num_students'];
+                    $numApprovedStudents += $data['num_approved_students'];
+                    $numFailedStudents += $data['num_failed_students'];
+                }
+                $discipline->{'approved_students_percentage'} = ($numApprovedStudents/$numStudents) * 100.0;
+                $discipline->{'failed_students_percentage'} = ($numFailedStudents/$numStudents) * 100.0;
+                $discipline->{'average_grade'} = $sumGrades/$numStudents;
+                $discipline->save();
+                DB::commit();
+            }
+        } catch (Exception $e) {
+            Log::error($e);
+            DB::rollBack();
         }
     }
 }
