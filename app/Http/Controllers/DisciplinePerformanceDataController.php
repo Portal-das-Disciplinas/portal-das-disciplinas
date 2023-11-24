@@ -39,12 +39,10 @@ class DisciplinePerformanceDataController extends Controller
     }
 
     function getDisciplinePerformanceDataByInterval(Request $request){
-        Log::info('year start ' . $request['yearStart']);
         $service = new DisciplinePerformanceDataService();
         try{
             $datas = $service->getPerformanceDataByInterval($request['disciplineCode'], $request['yearStart'],
                                 $request['periodStart'],$request['yearEnd'],$request['periodEnd']);
-            Log::info(count($datas));
             return response()->json($datas);
         }catch(Exception $e){
             $error = new stdClass();

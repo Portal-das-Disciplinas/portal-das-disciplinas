@@ -23,6 +23,7 @@ use App\Models\Link;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
 use App\Services\APISigaa\APISigaaService;
+use App\Services\DisciplinePerformanceDataService;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 use stdClass;
 
 /**
@@ -1007,11 +1009,14 @@ class DisciplineController extends Controller
                     }
                 }
             }
-
+           
 
             DB::commit();
+            $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
+            $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
+            Log::error($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.create")
                 ->withInput();
@@ -1328,6 +1333,8 @@ class DisciplineController extends Controller
 
             $discipline->save();
             DB::commit();
+            $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
+            $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             dd($exception);

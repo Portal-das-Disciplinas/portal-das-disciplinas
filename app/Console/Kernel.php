@@ -30,14 +30,12 @@ class Kernel extends ConsoleKernel
         //$schedule->command('inspire')->everyMinute();
         $schedule->call(function(){
             $service = new DisciplinePerformanceDataService();
-            Log::info("Rodando as tarefas agendadas");
             $service->runSchedules();
         })->name("updateScheduling")
             ->withoutOverlapping()
             ->everyMinute()
             ->timezone('America/Sao_Paulo')
             ->onSuccess(function(){
-                Log::info("Todas as tarefas foram realizadas");
             })->onFailure(function(){
                 Log::error("Ocorreu um erro ao executar as tarefas");
             });
