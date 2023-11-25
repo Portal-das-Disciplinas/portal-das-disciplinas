@@ -51,16 +51,13 @@ class APISigaaService
 
         $response = curl_exec($curl);
         $statusCode = curl_getinfo($curl)['http_code'];
-        
-        if($statusCode == 429){
+
+        if ($statusCode == 429) {
             throw new APISistemasRequestLimitException();
-
-        }else if($statusCode >=400 && $statusCode < 500){
+        } else if ($statusCode >= 400 && $statusCode < 500) {
             throw new APISistemasIncorrectRequestExceception();
-
-        }else if($statusCode >= 500 && $statusCode < 600){
+        } else if ($statusCode >= 500 && $statusCode < 600) {
             throw new APISistemasServerErrorException();
-
         }
         $errors = curl_error($curl);
         curl_close($curl);
@@ -88,15 +85,12 @@ class APISigaaService
 
         $response = curl_exec($curl);
         $statusCode = curl_getinfo($curl)['http_code'];
-        if($statusCode == 429){
+        if ($statusCode == 429) {
             throw new APISistemasRequestLimitException();
-
-        }else if($statusCode >= 400 && $statusCode < 500){
+        } else if ($statusCode >= 400 && $statusCode < 500) {
             throw new APISistemasIncorrectRequestExceception();
-
-        }else if($statusCode >= 500 && $statusCode < 600){
+        } else if ($statusCode >= 500 && $statusCode < 600) {
             throw new APISistemasServerErrorException();
-
         }
         $errors = curl_error($curl);
         if ($errors) {
@@ -151,7 +145,6 @@ class APISigaaService
     public function getDisciplineData($codigoComponente, $idTurma, $ano, $periodo)
     {
         $tempoInicio = microtime(true);
-        //ini_set('max_execution_time', 3600);
         $strAno = "";
         $strPeriodo = "";
         if ($ano != null) {
@@ -171,8 +164,8 @@ class APISigaaService
         $qtdAlunos = 0;
         $qtdAlunosComMedia = 0;
         $somaMedias = 0;
-        $maiorMedia=0;
-        $menorMedia=10;
+        $maiorMedia = 0;
+        $menorMedia = 10;
         $qtdAprovados = 0;
         $qtdReprovados = 0;
         $qtdDesconhecidos = 0;
@@ -184,19 +177,18 @@ class APISigaaService
             if ($idTurma == null || $turma['id-turma'] == $idTurma) {
                 $qtdTurmas++;
                 array_push($idsTurma, $turma['id-turma']);
-                $fetchDocentes = $this->fetch("turma/v1/turmas/" . $turma['id-turma'] . "/docentes","GET");
+                $fetchDocentes = $this->fetch("turma/v1/turmas/" . $turma['id-turma'] . "/docentes", "GET");
                 $docentesTurma = [];
-                foreach($fetchDocentes as $docente){
-                    $docenteClass= "sem professor";
-                    if($docente['nome-docente'])
-                    {
+                foreach ($fetchDocentes as $docente) {
+                    $docenteClass = "sem professor";
+                    if ($docente['nome-docente']) {
                         $docenteClass = $docente['nome-docente'];
                     }
-                    
+
                     array_push($docentesTurma, $docenteClass);
                 }
                 array_push($docentes, $docentesTurma);
-                
+
 
                 $limit = 100;
                 $alunosTurmaFetch = $this->fetch("turma/v1/participantes?id-turma=" . $turma['id-turma'] . "&id-tipo-participante=4&limit=" . $limit, "GET");
@@ -205,9 +197,9 @@ class APISigaaService
                     $alunosTurmaFetch = array_merge($alunosTurmaFetch, $alunosTurmaFetch2);
                 }
                 array_push($lotacaoTurma, count($alunosTurmaFetch));
-                
+
                 $alunosTurma = array_merge($alunosTurma, $alunosTurmaFetch);
-               
+
                 if ($idTurma != null) {
                     break;
                 }
@@ -248,28 +240,22 @@ class APISigaaService
                 $situacaoDesconhecida .= $aluno["id-participante"] . " ";
             }
         }
-        
-        $dados = null;
 
-        if ($qtdAlunos == 0) {
-            return null;
-        } else {
-            $dados = array(
-                "soma-medias" => $somaMedias,
-                "maior-media" => $maiorMedia,
-                "menor-media" => $menorMedia,
-                "quantidade-discentes" => $qtdAlunos,
-                "quantidade-aprovados" => $qtdAprovados,
-                "quantidade-reprovados" => $qtdReprovados,
-                "diferente-aprov-reprov" => $qtdOutros,
-                "situacao-desconhecida" => $situacaoDesconhecida,
-                "tempo-total" => (microtime(true) - $tempoInicio),
-                "quantidade-turmas" => $qtdTurmas,
-                "ids-turma" => $idsTurma,
-                "lotacoes-turma" => $lotacaoTurma,
-                "docentes" => json_encode($docentes)
-            );
-        }
+        $dados = array(
+            "soma-medias" => $somaMedias,
+            "maior-media" => $maiorMedia,
+            "menor-media" => $menorMedia,
+            "quantidade-discentes" => $qtdAlunos,
+            "quantidade-aprovados" => $qtdAprovados,
+            "quantidade-reprovados" => $qtdReprovados,
+            "diferente-aprov-reprov" => $qtdOutros,
+            "situacao-desconhecida" => $situacaoDesconhecida,
+            "tempo-total" => (microtime(true) - $tempoInicio),
+            "quantidade-turmas" => $qtdTurmas,
+            "ids-turma" => $idsTurma,
+            "lotacoes-turma" => $lotacaoTurma,
+            "docentes" => json_encode($docentes)
+        );
         return $dados;
     }
 }
