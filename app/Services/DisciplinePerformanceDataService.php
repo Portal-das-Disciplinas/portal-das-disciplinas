@@ -149,7 +149,7 @@ class DisciplinePerformanceDataService
     public function runSchedules()
     {
         $schedules = SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', 'PENDING')->get();
-        if(count($schedules) > 0){
+        if (count($schedules) > 0) {
             Log::info("Execução dos agendamentos iniciado");
         }
         foreach ($schedules as $key => $schedule) {
@@ -269,7 +269,10 @@ class DisciplinePerformanceDataService
                     $dataFromDatabase = DisciplinePerformanceData::where('discipline_code', '=', $discipline->code)->where('class_code', $turma['codigo-turma'])->where('year', '=', $schedule->year)->where('period', '=', $schedule->period)->first();
                     if ($dataFromDatabase == null) {
                         $apiPerfomanceClassData = $apiService->getDisciplineData($discipline->code, $turma['id-turma'], $schedule->year, $schedule->period);
-                        $averageGrade = $apiPerfomanceClassData['soma-medias'] / $apiPerfomanceClassData['quantidade-discentes'];
+                        $averageGrade = 0;
+                        if($apiPerfomanceClassData['quantidade-discentes'] != 0){
+                            $averageGrade = $apiPerfomanceClassData['soma-medias'] / $apiPerfomanceClassData['quantidade-discentes'];
+                        }
                         DB::beginTransaction();
                         try {
                             $newData = DisciplinePerformanceData::create([
@@ -302,7 +305,10 @@ class DisciplinePerformanceDataService
                         }
                     } else if ($dataFromDatabase != null && $updateIfExists) {
                         $apiPerfomanceClassData = $apiService->getDisciplineData($discipline->code, $turma['id-turma'], $schedule->year, $schedule->period);
-                        $averageGrade = $apiPerfomanceClassData['soma-medias'] / $apiPerfomanceClassData['quantidade-discentes'];
+                        $averageGrade = 0;
+                        if($apiPerfomanceClassData['quantidade-discentes'] != 0){
+                            $averageGrade = $apiPerfomanceClassData['soma-medias'] / $apiPerfomanceClassData['quantidade-discentes'];
+                        }
                         DB::beginTransaction();
                         try {
                             $dataFromDatabase->{'discipline_code'} = $discipline->code;
@@ -432,17 +438,16 @@ class DisciplinePerformanceDataService
     }
 
 
-    function updateDisciplinePerformanceDataValues($disciplineCode=null)
+    function updateDisciplinePerformanceDataValues($disciplineCode = null)
     {
         DB::beginTransaction();
         $disciplines = null;
-        if(isset($disciplineCode)){
-            $disciplines = Discipline::where('code','=',$disciplineCode)->get();
-            if(count($disciplines) == 0){
+        if (isset($disciplineCode)) {
+            $disciplines = Discipline::where('code', '=', $disciplineCode)->get();
+            if (count($disciplines) == 0) {
                 return;
             }
-        }
-        else{
+        } else {
             $disciplines = Discipline::all();
         }
         try {
@@ -452,16 +457,18 @@ class DisciplinePerformanceDataService
                 $numApprovedStudents = 0;
                 $numFailedStudents = 0;
                 $performanceData = DisciplinePerformanceData::where('discipline_code', '=', $discipline->code)->get();
-                foreach ($performanceData as $data) {
-                    $sumGrades += $data['sum_grades'];
-                    $numStudents += $data['num_students'];
-                    $numApprovedStudents += $data['num_approved_students'];
-                    $numFailedStudents += $data['num_failed_students'];
+                if (count($performanceData) > 0) {
+                    foreach ($performanceData as $data) {
+                        $sumGrades += $data['sum_grades'];
+                        $numStudents += $data['num_students'];
+                        $numApprovedStudents += $data['num_approved_students'];
+                        $numFailedStudents += $data['num_failed_students'];
+                    }
+                    $discipline->{'approved_students_percentage'} = ($numApprovedStudents / $numStudents) * 100.0;
+                    $discipline->{'failed_students_percentage'} = ($numFailedStudents / $numStudents) * 100.0;
+                    $discipline->{'average_grade'} = $sumGrades / $numStudents;
+                    $discipline->save(); 
                 }
-                $discipline->{'approved_students_percentage'} = ($numApprovedStudents/$numStudents) * 100.0;
-                $discipline->{'failed_students_percentage'} = ($numFailedStudents/$numStudents) * 100.0;
-                $discipline->{'average_grade'} = $sumGrades/$numStudents;
-                $discipline->save();
                 DB::commit();
             }
         } catch (Exception $e) {
