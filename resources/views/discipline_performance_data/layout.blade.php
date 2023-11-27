@@ -33,22 +33,52 @@ Agendamentos
                     @csrf
 
                     <div class="form-group">
-                        <label>Ano</label>
-                        <select name="year" class="form-control">
-                            @for($i= date('Y'); $i > date('Y')-10;$i--)
-                            <option>{{$i}}</option>
-                            @endfor
-                        </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Ano inicial</label>
+                                <select name="yearStart" class="form-control">
+                                    @for($i= date('Y'); $i > date('Y')-10;$i--)
+                                    <option>{{$i}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Período inicial</label>
+                                <select name="periodStart" class="form-control" style="text-align: end;">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="form-group">
-                        <label>Período</label>
-                        <select name="period" class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Ano final</label>
+                                <select name="yearEnd" class="form-control">
+                                    @for($i= date('Y'); $i > date('Y')-10;$i--)
+                                    <option>{{$i}}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Período final</label>
+                                <select name="periodEnd" class="form-control" style="text-align: end;">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="form-group">
                         <input id="updateIfExists" type="checkbox" name="updateIfExists">
