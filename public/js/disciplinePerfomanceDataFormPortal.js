@@ -5,11 +5,11 @@ function onChangeSelect(event) {
     let yearEnd = document.querySelector('#yearEnd').value;
     let periodEnd = document.querySelector('#periodEnd').value;
     let errorMessageElement = document.querySelector('#intervalErrorMessage');
-    if((yearStart > yearEnd) || (yearStart == yearEnd && periodStart > periodEnd)){
+    if ((yearStart > yearEnd) || (yearStart == yearEnd && periodStart > periodEnd)) {
         errorMessageElement.innerHTML = "* Intervalo inválido";
         document.querySelector("#btnSearchDisciplineData").disabled = true;
     }
-    else{
+    else {
         document.querySelector("#btnSearchDisciplineData").disabled = false;
         errorMessageElement.innerHTML = "";
     }
@@ -107,25 +107,19 @@ function updateInfos() {
         document.querySelector("#infoNumDiscentes").innerHTML = classPerformanceDatas[index]['num_students'] + " discentes";
         let professores = JSON.parse(classPerformanceDatas[index]['professors']);
 
-        if (professores[0].length == 1) {
-            document.querySelector("#infoProfessoresBusca").innerHTML = "professor(a): " + JSON.parse(professores[0][0]).nome
-        } else {
-            let nomes = "PROFESSORES: ";
-            try {
-                for (i = 0; i < professores[0].length; i++) {
-                    let professor = JSON.parse(professores[0][i]).nome;
-                    nomes += professor;
-                    if (i < professores[0].length - 1) {
-                        nomes += ", "
-                    }
-                }
-            } catch (e) {
-                nomes = "PROFESSORES: ";
-            }
-            document.querySelector("#infoProfessoresBusca").innerHTML = nomes;
+        if(professores.length == 0){
+            document.querySelector("#infoProfessoresBusca").innerHTML = "sem professor";
         }
-
-
+        else {
+            document.querySelector("#infoProfessoresBusca").innerHTML = professores.length==1 ? 'Professor(a): ':'professores(as): ';
+            for(i = 0; i < professores.length;i++){
+                document.querySelector("#infoProfessoresBusca").innerHTML += professores[i];
+                if(i != professores.length-1){
+                    document.querySelector("#infoProfessoresBusca").innerHTML += ', '
+                }
+            }
+            
+        }
     }
 }
 
@@ -140,7 +134,7 @@ function searchDisciplineData(disciplineCode) {
     //let period = document.querySelector("#selectPeriod").value;
     let yearS = document.querySelector("#yearStart").value;
     let periodS = document.querySelector("#periodStart").value;
-    let yearE= document.querySelector("#yearEnd").value;
+    let yearE = document.querySelector("#yearEnd").value;
     let periodE = document.querySelector("#periodEnd").value;
     let element = document.querySelector("#infoPesquisaDados");
     element.classList.remove("d-none");
@@ -149,7 +143,7 @@ function searchDisciplineData(disciplineCode) {
     $.ajax({
         url: '/api/performance/data/interval',
         method: 'GET',
-        data:{disciplineCode : disciplineCode, yearStart : yearS, periodStart: periodS, yearEnd : yearE, periodEnd : periodE},
+        data: { disciplineCode: disciplineCode, yearStart: yearS, periodStart: periodS, yearEnd: yearE, periodEnd: periodE },
         dataType: 'json',
 
         success: function (result) {
@@ -176,12 +170,12 @@ function searchDisciplineData(disciplineCode) {
                             nomeDocentes += ", ";
                         }
                     }
-                }catch(e){
+                } catch (e) {
                     console.log("Erro ao fazer o parse dos professores");
                     nomeDocentes = "Professor ";
                 }
 
-                html += "<option value='" + index + "'>"+data['year']+"." + data['period']+" - turma " + data['class_code'] + " - " + nomeDocentes + " </option>"
+                html += "<option value='" + index + "'>" + data['year'] + "." + data['period'] + " - turma " + data['class_code'] + " - " + nomeDocentes + " </option>"
                 generalPerformanceData.averageGrade += data['sum_grades'];
                 generalPerformanceData.numStudents += data['num_students'];
                 generalPerformanceData.numApprovedStudents += data['num_approved_students'];
