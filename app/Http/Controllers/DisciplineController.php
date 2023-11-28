@@ -639,98 +639,90 @@ class DisciplineController extends Controller
                 ->with('studentsData', $studentsData)
                 ->with('periodsColection', $periodsColection);
             } else if ($discipline_name === null && $emphasis_id === null) {
-                // pesquisa apenas pelo filtro de aprovações classificações
-                
+                // pesquisa apenas pelo filtro de aprovações
+
                 if ($request->input('periodo') !== null && $request->input('porcentagem') === null) {
-
+                    // Pesquisa por periodo
+                    $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                    ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                    ->where("year",substr($request->input('periodo'),0,-2))
+                    ->where("period",substr($request->input('periodo'),-1))
+                    ->get();
+                    
                 } else if ($request->input('periodo') === null && $request->input('porcentagem') !== null) {
+                    // Pesquisa por porcentagem
+                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
+                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
+                        ->get();
 
+                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
+                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
+                        ->get();
+
+                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
+                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
+                        ->get();
+
+                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
+                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
+                        ->get();
+
+                    }
                 } else if ($request->input('periodo') !== null && $request->input('porcentagem') !== null) {
                     // Pesquisa por periodo e porcentagem
-                    
-                    // Disciplinas por periodo
-                    $listaSigaa = $studentsData->where("year",substr($request->input('periodo'),0,-2))
-                    ->where("period",substr($request->input('periodo'),-1));
+                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
+                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                        ->where("year",substr($request->input('periodo'),0,-2))
+                        ->where("period",substr($request->input('periodo'),-1))
+                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
+                        ->get();
 
-                    // dd($disciplinesJoinedWithProfessor);
+                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
+                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                        ->where("year",substr($request->input('periodo'),0,-2))
+                        ->where("period",substr($request->input('periodo'),-1))
+                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
+                        ->get();
 
-                    /*Pegar da tabela disciplines as disciplinas com codigo e professor igual
-                    as do $listaSigaa*/
-                    foreach ($listaSigaa as $sigaa) {
-                        if (str_contains($sigaa->professors, ",")) {
-                            $arr = [];
-                            $splittedProfessorsNamesString = explode(",", $sigaa->professors);
+                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
+                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                        ->where("year",substr($request->input('periodo'),0,-2))
+                        ->where("period",substr($request->input('periodo'),-1))
+                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
+                        ->get();
 
-                            for ($j = 0; $j < count($splittedProfessorsNamesString); $j++) {
-                                if ($j === 0) {
-                                    $arr[$j] = substr($splittedProfessorsNamesString[$j],2,-1);
-                                } else if ($j !== 0 && $j !== (count($splittedProfessorsNamesString)-1)) {
-                                    $arr[$j] = substr($splittedProfessorsNamesString[$j],2,-1);
-                                } else {
-                                    $arr[$j] = substr($splittedProfessorsNamesString[$j],2,-2);
-                                }
-                            }
+                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
+                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
+                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
+                        ->where("year",substr($request->input('periodo'),0,-2))
+                        ->where("period",substr($request->input('periodo'),-1))
+                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
+                        ->get();
 
-                            $professorId = collect([]);
-
-                            foreach ($arr as $prof) {
-                                $professorId->push(Professor::where("name",$prof)->get());
-                            }
-                            
-                            $professors = $professorId->collapse();
-
-                            foreach ($professors as $professor) {
-                                $filterDisciplinesByCode = $disciplinesJoinedWithProfessor->where("code",$sigaa->discipline_code);
-
-                                
-                                $filterDisciplines = $filterDisciplinesByCode
-                                ->where('professors', 'like', '%'.$professor->name.'%');
-                                
-                                $filteredDisciplines->push($filterDisciplines);
-                            }
-                            // dd($filteredDisciplines->collapse());
-                        } else {
-                            $professorId = Professor::where("name",substr($sigaa->professors,2,-2))->get();
-                        
-                            foreach ($professorId as $professor) {
-                                $filterDisciplines = $disciplinesJoinedWithProfessor->where("code",$sigaa->discipline_code)
-                                ->where("name", $professor->name);
-                                
-                                $filteredDisciplines->push($filterDisciplines);
-                            }    
-                        }
                     }
                 }
 
-                // dd("oi");
-                $disciplinesMixedWithProfessor = $filteredDisciplines->collapse()->unique();
+                $disciplinesMixedWithProfessor = $disciplinesCombo->unique();
                 $finalCollection = collect([]);
 
+                // Faz a busca final apenas na tabela de disciplina pelo código e o professor
                 foreach ($disciplinesMixedWithProfessor as $professor) {
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $finalCollection->push(Discipline::where("professor_id",$professor->id)
-                        ->where("code",$professor->code)
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->get());
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $finalCollection->push(Discipline::where("professor_id",$professor->id)
-                        ->where("code",$professor->code)
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->get());
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $finalCollection->push(Discipline::where("professor_id",$professor->id)
-                        ->where("code",$professor->code)
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->get());
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $finalCollection->push(Discipline::where("professor_id",$professor->id)
-                        ->where("code",$professor->code)
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->get());
-                    }
+                    $finalCollection->push(Discipline::where("professor_id",$professor->id)
+                    ->where("code",$professor->code)
+                    ->get());
                 }
 
-                // dd($finalCollection->collapse()->unique());
                 return view('disciplines.index')
                 ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
                 ->with('emphasis', $emphasis_all)
