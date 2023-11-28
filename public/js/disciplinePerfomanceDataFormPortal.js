@@ -118,7 +118,6 @@ function updateInfos() {
                     document.querySelector("#infoProfessoresBusca").innerHTML += ', '
                 }
             }
-            
         }
     }
 }
