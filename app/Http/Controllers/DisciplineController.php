@@ -539,12 +539,15 @@ class DisciplineController extends Controller
                 ->with('periodsColection', $periodsColection);
             }
         } else if (count($arrayValues) > 0 && $request->input('filtro') === "aprovacao") {
+            $disciplinesJoinedWithProfessor = Discipline::join("professors","professor_id","=","professors.id")->get();
+            $filteredDisciplines = collect([]);
+            
             if ($discipline_name != null && $emphasis_id != null) {
                 $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")
                 ->where("emphasis_id", $emphasis_id)
                 ->get();
                 
-                $filteredDisciplinesCodes = collect([]);
+                
                 // dd(substr($request->input('periodo'),-1));
                 if ($request->input('periodo') !== null && $request->input('porcentagem') === null) {
                     //Pega as disciplinas com período especificado. ex: 2023.1
@@ -575,10 +578,10 @@ class DisciplineController extends Controller
                             
                             $professors = $professorId->collapse();
 
-                            $filteredDisciplinesCodes->push([$sigaa->discipline_code,$professorId,"$sigaa->year.$sigaa->period"]);
+                            $filteredDisciplines->push([$sigaa->discipline_code,$professorId,"$sigaa->year.$sigaa->period"]);
                         } else {
                             $professorId = Professor::where("name",substr($sigaa->professors,2,-2))->get();
-                            $filteredDisciplinesCodes->push([$sigaa->discipline_code,$professorId,"$sigaa->year.$sigaa->period"]);
+                            $filteredDisciplines->push([$sigaa->discipline_code,$professorId,"$sigaa->year.$sigaa->period"]);
                         }
                     }
                 } else if ($request->input('periodo') === null && $request->input('porcentagem') !== null) {
@@ -610,15 +613,15 @@ class DisciplineController extends Controller
                             
                             $professors = $professorId->collapse();
 
-                            $filteredDisciplinesCodes->push([$sigaa->discipline_code,$professorId,"$sigaa->year.$sigaa->period"]);
+                            $filteredDisciplines->push([$sigaa->discipline_code,$professorId,"$sigaa->year.$sigaa->period"]);
                         } else {
                             $professorId = Professor::where("name",substr($sigaa->professors,2,-2))->get();
-                            $filteredDisciplinesCodes->push([$sigaa->discipline_code,$professorId,"$sigaa->year.$sigaa->period"]);
+                            $filteredDisciplines->push([$sigaa->discipline_code,$professorId,"$sigaa->year.$sigaa->period"]);
                         }
                     }
                 }                
                 
-                $arrayFilteredDisciplines = $filteredDisciplinesCodes->unique();
+                $arrayFilteredDisciplines = $filteredDisciplines->unique();
 
                 $disciplinesCollection = collect([]);
                 // dd(($arrayFilteredDisciplines[0][1][0]->id));
@@ -635,84 +638,101 @@ class DisciplineController extends Controller
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
                 ->with('periodsColection', $periodsColection);
-            } else if ($discipline_name == null && $emphasis_id == null) {
-                // pesquisa apenas por classificações
-                $disciplines = ClassificationDiscipline::all();
-                $classifications = Classification::all();
-                $arrayClassificationValues = array();
-                $disciplinesResult = collect([]);
+            } else if ($discipline_name === null && $emphasis_id === null) {
+                // pesquisa apenas pelo filtro de aprovações classificações
+                
+                if ($request->input('periodo') !== null && $request->input('porcentagem') === null) {
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValues as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
+                } else if ($request->input('periodo') === null && $request->input('porcentagem') !== null) {
 
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
+                } else if ($request->input('periodo') !== null && $request->input('porcentagem') !== null) {
+                    // Pesquisa por periodo e porcentagem
+                    
+                    // Disciplinas por periodo
+                    $listaSigaa = $studentsData->where("year",substr($request->input('periodo'),0,-2))
+                    ->where("period",substr($request->input('periodo'),-1));
 
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
+                    // dd($disciplinesJoinedWithProfessor);
 
-                            if ($value->name == $noUnderlineString) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == $arrKey) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
+                    /*Pegar da tabela disciplines as disciplinas com codigo e professor igual
+                    as do $listaSigaa*/
+                    foreach ($listaSigaa as $sigaa) {
+                        if (str_contains($sigaa->professors, ",")) {
+                            $arr = [];
+                            $splittedProfessorsNamesString = explode(",", $sigaa->professors);
 
-                $fieldsToCheck = count($arrayClassificationValues);
-
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                if ($value == "mais") {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
+                            for ($j = 0; $j < count($splittedProfessorsNamesString); $j++) {
+                                if ($j === 0) {
+                                    $arr[$j] = substr($splittedProfessorsNamesString[$j],2,-1);
+                                } else if ($j !== 0 && $j !== (count($splittedProfessorsNamesString)-1)) {
+                                    $arr[$j] = substr($splittedProfessorsNamesString[$j],2,-1);
                                 } else {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
+                                    $arr[$j] = substr($splittedProfessorsNamesString[$j],2,-2);
                                 }
                             }
-                        }
-                    }
 
-                    if ($fieldsToCheck == $cont) {
-                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($filteredDiscipline);
+                            $professorId = collect([]);
+
+                            foreach ($arr as $prof) {
+                                $professorId->push(Professor::where("name",$prof)->get());
+                            }
+                            
+                            $professors = $professorId->collapse();
+
+                            foreach ($professors as $professor) {
+                                $filterDisciplinesByCode = $disciplinesJoinedWithProfessor->where("code",$sigaa->discipline_code);
+
+                                
+                                $filterDisciplines = $filterDisciplinesByCode
+                                ->where('professors', 'like', '%'.$professor->name.'%');
+                                
+                                $filteredDisciplines->push($filterDisciplines);
+                            }
+                            // dd($filteredDisciplines->collapse());
+                        } else {
+                            $professorId = Professor::where("name",substr($sigaa->professors,2,-2))->get();
+                        
+                            foreach ($professorId as $professor) {
+                                $filterDisciplines = $disciplinesJoinedWithProfessor->where("code",$sigaa->discipline_code)
+                                ->where("name", $professor->name);
+                                
+                                $filteredDisciplines->push($filterDisciplines);
+                            }    
+                        }
                     }
                 }
 
-                $finalCollection = $disciplinesResult->collapse()->unique()->paginate(12);
+                // dd("oi");
+                $disciplinesMixedWithProfessor = $filteredDisciplines->collapse()->unique();
+                $finalCollection = collect([]);
 
+                foreach ($disciplinesMixedWithProfessor as $professor) {
+                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
+                        $finalCollection->push(Discipline::where("professor_id",$professor->id)
+                        ->where("code",$professor->code)
+                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
+                        ->get());
+                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
+                        $finalCollection->push(Discipline::where("professor_id",$professor->id)
+                        ->where("code",$professor->code)
+                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
+                        ->get());
+                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
+                        $finalCollection->push(Discipline::where("professor_id",$professor->id)
+                        ->where("code",$professor->code)
+                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
+                        ->get());
+                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
+                        $finalCollection->push(Discipline::where("professor_id",$professor->id)
+                        ->where("code",$professor->code)
+                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
+                        ->get());
+                    }
+                }
+
+                // dd($finalCollection->collapse()->unique());
                 return view('disciplines.index')
-                ->with('disciplines', $finalCollection)
+                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
                 ->with('emphasis', $emphasis_all)
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
