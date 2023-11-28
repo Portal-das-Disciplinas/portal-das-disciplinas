@@ -121,7 +121,7 @@ mais.
                 </div>
                 <div class="card p-2">
                     <div class="d-none">{{$actualYear = date("Y")}}</div>
-                    <h1 class="mt-5">Dados do componente</h1>
+                    <h1 class="mt-5">Índices de aprovação</h1>
                     <div class="form">
                         <div class="form-group">
                             <div class="row d-flex align-items-end">
@@ -183,27 +183,28 @@ mais.
                                 <!--Conteúdo gerado por javascript -->
                             </select>
                         </div>
-
-
                     </div>
+
+                    <div class="mt-1">
+                        <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                    </div>
+
                     <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
                         Buscando dados...
                     </div>
-                    <div id="dadosDisciplina" class="container mt-2 d-none">
-                        <div class="row mb-2" style="border-bottom-style:solid;border-width:1px; border-color:gray">
-                            <h2 class="col-6 mb-0">Nota média</h2>
-                            <div class="col-6 d-flex justify-content-end">
-                                <h1 class="flex-end" id="notaMediaComponente">0</h1>
+                    <div id="dadosDisciplina" class="container py-2 d-none", style="border:solid 1px rgba(0,0,0,0.1)">
+                        <div class="row">
+                            <div class="col text-secondary">
+                                <h4 id="infoTipoBusca"></h4>
+                                <h4 id="infoNumDiscentes"></h4>
+                                <h4 id="infoProfessoresBusca"></h4>
                             </div>
-                            <h4 id="infoTipoBusca" class="col-12"></h4>
-                            <h4 id="infoNumDiscentes" class="col-12"></h4>
-                            <h4 id="infoProfessoresBusca" class="col-12"></h4>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <div class="d-flex justify-content-between">
-                                    <span>Aprovados</span>
-                                    <span style="color:green"><b id="percentagemAprovados">0%</b></span>
+                                    <strong class="text-success">Aprovados</strong>
+                                    <span class="text-success"><b id="percentagemAprovados">0%</b></span>
                                 </div>
                                 <div class="progress">
                                     <div id="progressAprovados" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -213,7 +214,7 @@ mais.
                         <div class="row">
                             <div class="col">
                                 <div class="d-flex justify-content-between">
-                                    <span>Reprovados</span>
+                                    <strong class="text-danger">Reprovados</strong>
                                     <span class="text-danger"><b id="percentagemReprovados">0%</b></span>
                                 </div>
                                 <div class="progress">
@@ -221,10 +222,16 @@ mais.
                                 </div>
                             </div>
                         </div>
+                        <div class="row mt-2" style="background-color:azure">
+                            <strong class="col-6 mb-0 text-primary">Nota média</strong>
+                            <div class="col-6 d-flex justify-content-end">
+                                <strong id="notaMediaComponente" class="text-primary">0</strong>
+                            </div>
+                            
+                        </div>
+                        
                     </div>
-                    <div class="mt-5 ml-4">
-                        <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
-                    </div>
+                    
 
                 </div>
             </div>
