@@ -41,9 +41,17 @@ class DisciplinePerformanceDataController extends Controller
     function getDisciplinePerformanceDataByInterval(Request $request){
         $service = new DisciplinePerformanceDataService();
         try{
-            $datas = $service->getPerformanceDataByInterval($request['disciplineCode'], $request['yearStart'],
+            if(isset($request['checkAllPeriods']) && ($request['checkAllPeriods'] == 'on')){
+                Log::info("check: " . $request['checkAllPeriods']);
+                $datas = $service->getPerformanceDataByDisciplineCode($request['disciplineCode']);
+                return response()->json($datas);
+            }
+            else{
+                Log::info("not checked: " . "get by interval");
+                $datas = $service->getPerformanceDataByInterval($request['disciplineCode'], $request['yearStart'],
                                 $request['periodStart'],$request['yearEnd'],$request['periodEnd']);
-            return response()->json($datas);
+                return response()->json($datas);
+            }
         }catch(Exception $e){
             $error = new stdClass();
             $error->error = "Erro";

@@ -119,15 +119,15 @@ mais.
                         @endif
                     </div>
                 </div>
-                <div class="card p-2">
+                <div class="card px-2">
                     <div class="d-none">{{$actualYear = date("Y")}}</div>
-                    <h1 class="mt-5">Índices de aprovação</h1>
+                    <h1 class="mt-2">Índices de aprovação</h1>
                     <div class="form">
-                        <div class="form-group">
+                        <div id="semesterSelectFields" class="form-group" style="opacity: 50%";>
                             <div class="row d-flex align-items-end">
                                 <div class="col-md-3">
                                     <label>Ano Inicial</label>
-                                    <select class="form-control" id="yearStart" name="yearStart" onchange="onChangeSelect(event)">
+                                    <select class="form-control disabled" id="yearStart" name="yearStart" onchange="onChangeSelect(event)" disabled>
                                         @for($i=$actualYear; $i > ($actualYear - 10);$i--)
                                         <option value='{{$i}}'>{{$i}}</option>
                                         @endfor
@@ -135,7 +135,7 @@ mais.
                                 </div>
                                 <div class="col-md-3">
                                     <label>Período Inicial</label>
-                                    <select id="periodStart" name="periodStart" class="form-control" onchange="onChangeSelect(event)">
+                                    <select id="periodStart" name="periodStart" class="form-control" onchange="onChangeSelect(event)" disabled>
                                         <option value=1>1</option>
                                         <option value=2>2</option>
                                         <option value=3>3</option>
@@ -146,7 +146,7 @@ mais.
                                 </div>
                                 <div class="col-md-3">
                                     <label>Ano Final</label>
-                                    <select class="form-control" id="yearEnd" name="yearEnd" onchange="onChangeSelect(event)">
+                                    <select class="form-control" id="yearEnd" name="yearEnd" onchange="onChangeSelect(event)" disabled>
                                         @for($i=$actualYear; $i > ($actualYear - 10);$i--)
                                         <option value='{{$i}}'>{{$i}}</option>
                                         @endfor
@@ -154,7 +154,7 @@ mais.
                                 </div>
                                 <div class="col-md-3">
                                     <label>Período Final</label>
-                                    <select id="periodEnd" name="periodEnd" class="form-control" onchange="onChangeSelect(event)">
+                                    <select id="periodEnd" name="periodEnd" class="form-control" onchange="onChangeSelect(event)" disabled>
                                         <option value=1>1</option>
                                         <option value=2>2</option>
                                         <option value=3>3</option>
@@ -171,6 +171,18 @@ mais.
                             </div>
                         </div>
 
+                        <div>
+                            <input id="checkAllPeriods" name="checkAllPeriods" type="checkbox" checked  onchange="onChangeCheckAllPeriods(event)">
+                            <label for="checkAllPeriods">Todos os períodos</label>
+                        </div>
+                        <div class="mt-1" style="border-bottom: solid 1px rgba(0,0,0,0.1)">
+                            <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                        </div>
+
+                        <div class="mt-3">
+                            <input id="checkOnlyProfessorClasses" name="onlyProfessorClasses" type="checkbox" checked  onchange="onChangeCheckOnlyProfessorClasses(event)">
+                            <label for="checkOnlyProfessorClasses">Somente turmas do docente</label>
+                        </div>
 
                         <div>
                             <input id="checkAllClasses" type="checkbox" checked  onchange="onChangeCheckAllClasses(event)">
@@ -185,14 +197,12 @@ mais.
                         </div>
                     </div>
 
-                    <div class="mt-1">
-                        <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
-                    </div>
+                    
 
                     <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
                         Buscando dados...
                     </div>
-                    <div id="dadosDisciplina" class="container py-2 d-none", style="border:solid 1px rgba(0,0,0,0.1)">
+                    <div id="dadosDisciplina" class="d-none container py-2 d-none", style="border:solid 1px rgba(0,0,0,0.1)">
                         <div class="row">
                             <div class="col text-secondary">
                                 <h4 id="infoTipoBusca"></h4>
@@ -743,9 +753,16 @@ mais.
 @endsection
 @section('scripts-bottom')
 <script>
+    let professorName = "{{$discipline->professor->name}}".toUpperCase();
+</script>
+<script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
+<script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
+    
+    searchDisciplineData("{{$discipline->code}}");
+    
 </script>
-<script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
+
 @endsection
