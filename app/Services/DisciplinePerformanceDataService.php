@@ -380,6 +380,16 @@ class DisciplinePerformanceDataService
         return $data->get();
     }
 
+    function getPerformanceDataByDisciplineCode($disciplineCode, $paginate = null){
+        $data = DisciplinePerformanceData::where('discipline_code','=',$disciplineCode);
+        if(isset($paginate)){
+            return $data->paginate();
+        }
+        else{
+            return $data->get();
+        }
+    }
+
     function getPerformanceDataByInterval($disciplineCode, $yearStart, $periodStart, $yearEnd, $periodEnd, $paginate = null)
     {
 
