@@ -291,8 +291,6 @@ function searchDisciplineData(disciplineCode) {
             yearEnd: yearE, periodEnd: periodE,
             checkAllPeriods: checkboxAllPeriods ? 'on' : null
         },
-        dataType: 'json',
-
         success: function (result) {
             setLastSearchValues();
             document.querySelector('#btnSearchDisciplineData').disabled = true;
@@ -325,11 +323,14 @@ function searchDisciplineData(disciplineCode) {
 
         statusCode: {
             500: function (e) {
-                console.log("Erro no servidor");
+                console.log("Erro no servidor: " + e);
+
             }
         },
         error: function (xhr, status, error) {
             console.log("Ocorreu um erro");
+            console.log(xhr.responseText);
+            console.log(error);
             document.querySelector("#dadosDisciplina").classList.add("d-none");
             let element = document.querySelector("#infoPesquisaDados");
             element.classList.add("d-none");
