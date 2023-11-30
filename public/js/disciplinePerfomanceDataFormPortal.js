@@ -291,8 +291,6 @@ function searchDisciplineData(disciplineCode) {
             yearEnd: yearE, periodEnd: periodE,
             checkAllPeriods: checkboxAllPeriods ? 'on' : null
         },
-        dataType: 'json',
-
         success: function (result) {
             setLastSearchValues();
             document.querySelector('#btnSearchDisciplineData').disabled = true;
