@@ -168,7 +168,8 @@ function updateInfos() {
     let qtdTurmasProfessor = 0;
     classPerformanceDatas.forEach(function (data, index) {
         if (checkedProfessorClasses) {
-            if (data['professors'].toUpperCase().match(professorName) != professorName) {
+
+            if (data['professors'].toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").match(professorName) != professorName) {
                 return;
             }
             qtdTurmasProfessor++;
@@ -200,7 +201,7 @@ function updateInfos() {
         groupClass.classList.add('d-none');
         let element = document.querySelector("#infoPesquisaDados");
         element.classList.remove("d-none");
-        element.innerHTML = "Esse professor não possui turmas";
+        element.innerHTML = "Esse professor não possui turmas.<p> <small>Desmarque a opção \"Somente turmas do docente\" para ver ter um resultado mais geral.</small></p>";
         document.querySelector("#dadosDisciplina").classList.add("d-none");
         return;
     }
@@ -314,7 +315,11 @@ function searchDisciplineData(disciplineCode) {
                 document.querySelector("#dadosDisciplina").classList.add("d-none");
                 let element = document.querySelector("#infoPesquisaDados");
                 element.classList.remove("d-none");
-                element.innerHTML = "Não foram encontrados dados para esse ano";
+                if(document.querySelector('#checkAllPeriods').checked){
+                    element.innerHTML = "Não foram encontrados dados de índice de aprovação para esta disciplina."
+                }else{
+                    element.innerHTML = "Não foram encontrados dados de índice de aprovação para este período."
+                }
                 updateInfos();
 
             }
@@ -323,14 +328,12 @@ function searchDisciplineData(disciplineCode) {
 
         statusCode: {
             500: function (e) {
-                console.log("Erro no servidor: " + e);
+                console.log("Erro no servidor");
 
             }
         },
         error: function (xhr, status, error) {
             console.log("Ocorreu um erro");
-            console.log(xhr.responseText);
-            console.log(error);
             document.querySelector("#dadosDisciplina").classList.add("d-none");
             let element = document.querySelector("#infoPesquisaDados");
             element.classList.add("d-none");
