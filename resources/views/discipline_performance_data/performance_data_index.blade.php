@@ -27,7 +27,7 @@ Dados de desempenho das disciplinas
                     <label>Ano</label>
                     <select name="year" class="form-control">
                         <option value="">TODOS</option>
-                        @for($i = Date('Y'); $i > Date('Y')-20; $i--)
+                        @for($i = Date('Y'); $i > 2000; $i--)
                         <option value="{{$i}}">{{$i}}</option>
                         @endfor
                     </select>
@@ -41,6 +41,7 @@ Dados de desempenho das disciplinas
                         <option>3</option>
                         <option>4</option>
                         <option>5</option>
+                        <option>6</option>
                     </select>
                 </div>
                 <div class="col-md-1 py-3">

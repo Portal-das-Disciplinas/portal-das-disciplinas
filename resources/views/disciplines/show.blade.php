@@ -128,7 +128,7 @@ mais.
                                 <div class="col-md-3">
                                     <label>Ano Inicial</label>
                                     <select class="form-control disabled" id="yearStart" name="yearStart" onchange="onChangeSelect(event)" disabled>
-                                        @for($i=$actualYear; $i > ($actualYear - 10);$i--)
+                                        @for($i=$actualYear; $i > 2000;$i--)
                                         <option value='{{$i}}'>{{$i}}</option>
                                         @endfor
                                     </select>
@@ -147,7 +147,7 @@ mais.
                                 <div class="col-md-3">
                                     <label>Ano Final</label>
                                     <select class="form-control" id="yearEnd" name="yearEnd" onchange="onChangeSelect(event)" disabled>
-                                        @for($i=$actualYear; $i > ($actualYear - 10);$i--)
+                                        @for($i=$actualYear; $i > 2000;$i--)
                                         <option value='{{$i}}'>{{$i}}</option>
                                         @endfor
                                     </select>
