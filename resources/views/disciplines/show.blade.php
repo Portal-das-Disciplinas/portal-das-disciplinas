@@ -119,7 +119,7 @@ mais.
                         @endif
                     </div>
                 </div>
-                <div class="card px-2">
+                <div class="card mt-5 px-2 py-2">
                     <div class="d-none">{{$actualYear = date("Y")}}</div>
                     <h1 class="mt-2">Índices de aprovação</h1>
                     <div class="form">
@@ -753,7 +753,7 @@ mais.
 @endsection
 @section('scripts-bottom')
 <script>
-    let professorName = "{{$discipline->professor->name}}".toUpperCase();
+    let professorName = "{{$discipline->professor->name}}".toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 </script>
 <script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
 <script>
