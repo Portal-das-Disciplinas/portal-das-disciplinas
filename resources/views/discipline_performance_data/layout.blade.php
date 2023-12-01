@@ -37,7 +37,7 @@ Agendamentos
                             <div class="col-md-6">
                                 <label>Ano inicial</label>
                                 <select name="yearStart" class="form-control">
-                                    @for($i= date('Y'); $i > date('Y')-10;$i--)
+                                    @for($i= date('Y'); $i > 2000; $i--)
                                     <option>{{$i}}</option>
                                     @endfor
                                 </select>
@@ -61,7 +61,7 @@ Agendamentos
                             <div class="col-md-6">
                                 <label>Ano final</label>
                                 <select name="yearEnd" class="form-control">
-                                    @for($i= date('Y'); $i > date('Y')-10;$i--)
+                                    @for($i= date('Y'); $i > 2000; $i--)
                                     <option>{{$i}}</option>
                                     @endfor
                                 </select>
