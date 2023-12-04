@@ -10,8 +10,20 @@ function setLastSearchValues() {
         lastPeriodStartValue = document.querySelector('#periodStart').value;
         lastYearEndValue = document.querySelector('#yearEnd').value;
         lastPeriodEndValue = document.querySelector('#periodEnd').value;
+    } else {
+        lastYearStartValue = 0;
+        lastPeriodStartValue = 0;
+        lastYearEndValue = 0;
+        lastPeriodEndValue = 0;
     }
     lastAllPeriodsValue = document.querySelector('#checkAllPeriods').checked;
+}
+
+function clearLastSemesterValues() {
+    lastYearStartValue = 0;
+    lastPeriodStartValue = 0;
+    lastYearEndValue = 0;
+    lastPeriodEndValue = 0;
 }
 
 function checkSearchValuesChanged() {
@@ -308,16 +320,15 @@ function searchDisciplineData(disciplineCode) {
 
             if (result.length > 0) {
                 updateInfos();
-                //document.querySelector('#dadosDisciplina').classList.remove('d-none');
 
             } else {
                 resetValues();
                 document.querySelector("#dadosDisciplina").classList.add("d-none");
                 let element = document.querySelector("#infoPesquisaDados");
                 element.classList.remove("d-none");
-                if(document.querySelector('#checkAllPeriods').checked){
+                if (checkboxAllPeriods) {
                     element.innerHTML = "Não foram encontrados dados de índice de aprovação para esta disciplina."
-                }else{
+                } else {
                     element.innerHTML = "Não foram encontrados dados de índice de aprovação para este período."
                 }
                 updateInfos();
