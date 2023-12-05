@@ -225,10 +225,12 @@ class APISigaaService
                         $boletimAluno["situacao"] == "REPROVADO"
                         || $boletimAluno["situacao"] == "REPROVADO POR FALTAS"
                         || $boletimAluno["situacao"] == "REPROVADO POR MÉDIA E POR FALTAS"
+                        || $boletimAluno["situacao"] == "REPROVADO POR NOTA"
                     ) {
                         $qtdReprovados++;
                     } else {
                         $qtdOutros++;
+                        Log::info("Situação desconhecida: " . $boletimAluno["situacao"]);
                     }
 
                     break;
