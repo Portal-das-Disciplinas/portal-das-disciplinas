@@ -175,34 +175,50 @@ mais.
                             <input id="checkAllPeriods" name="checkAllPeriods" type="checkbox" checked  onchange="onChangeCheckAllPeriods(event)">
                             <label for="checkAllPeriods">Todos os períodos</label>
                         </div>
-                        <div class="mt-1" style="border-bottom: solid 1px rgba(0,0,0,0.1)">
-                            <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                        <div class="mt-1 d-flex flex-column" style="border-bottom: solid 1px rgba(0,0,0,0.2)">
+                            <button id="btnSearchDisciplineData" class="btn btn-primary mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                            <small id="infoBtnSearchDisciplineData" class=" ml-3 text-info d-none" style="text-align:center">Altere a data ou marque/desmarque a opção "Todos os períodos" para fazer uma nova busca.</small>
                         </div>
 
-                        <div class="mt-3">
-                            <input id="checkOnlyProfessorClasses" name="onlyProfessorClasses" type="checkbox" checked  onchange="onChangeCheckOnlyProfessorClasses(event)">
-                            <label for="checkOnlyProfessorClasses">Somente turmas do docente</label>
+                        <div class="mt-3 px-1 d-flex flex-column" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
+                            <div>
+                                <input id="checkOnlyProfessorClasses" name="onlyProfessorClasses" type="checkbox" checked  onchange="onChangeCheckOnlyProfessorClasses(event)">
+                                <label for="checkOnlyProfessorClasses" style="cursor:pointer"><small>Somente turmas do professor</small></label>
+                            </div>
+                            <div>
+                                <input id="checkAllProfessorClasses" name="allProfessorClasses" type="checkbox" onchange="onChangeCheckOnlyProfessorClasses(event)">
+                                <label for="checkAllProfessorClasses" style="cursor:pointer"><small>Turmas de todos os professores</small></label>
+                            </div>
                         </div>
+                        <!--
+                        <div class="mt-3 px-1" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
+                            <div>
+                                <input id="checkAllClasses" type="checkbox" checked  onchange="onChangeCheckAllClasses(event)">
+                                <label for="checkAllClasses" style="cursor:pointer"><small>Soma de índices de aprovação de todas as turmas</small></label>
+                            </div>
+                            <div class="d-flex align-items-start">
+                                <input id="checkOneClass"  type="checkbox" onchange="onChangeCheckAllClasses(event)">
+                                <label for="checkOneClass" style="cursor:pointer" class="ml-2 d-flex align-items-start">
+                                    <small style="line-height:1">
+                                        Ìndices de aprovação por turma. <strong class="text-secondary">Se marcada selecione uma turma abaixo</strong>
+                                    </small>
+                                </label>
+                            </div>
+                        
 
-                        <div>
-                            <input id="checkAllClasses" type="checkbox" checked  onchange="onChangeCheckAllClasses(event)">
-                            <label for="checkAllClasses">Todas as turmas</label>
-                        </div>
-
-                        <div id="form-group-select-class" class="form-group d-none">
-                            <label>Turma</label>
-                            <select id="selectClass" class="form-control" onchange="onSelectClass(event)">
-                                <!--Conteúdo gerado por javascript -->
-                            </select>
-                        </div>
+                            <div id="form-group-select-class" class="form-group d-none">
+                                <label>Turma</label>
+                                <select id="selectClass" class="form-control" onchange="onSelectClass(event)">
+                                    
+                                </select>
+                            </div>
+                        </div>-->
                     </div>
-
-                    
 
                     <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
                         Buscando dados...
                     </div>
-                    <div id="dadosDisciplina" class="d-none container py-2 d-none", style="border:solid 1px rgba(0,0,0,0.1)">
+                    <div id="dadosDisciplina" class="mt-2 d-none container py-2 d-none", style="border:solid 1px rgba(0,0,0,0.1); border-radius:5px">
                         <div class="row">
                             <div class="col text-secondary">
                                 <h4 id="infoTipoBusca"></h4>
