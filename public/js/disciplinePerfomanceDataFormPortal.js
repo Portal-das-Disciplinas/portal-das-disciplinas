@@ -4,6 +4,8 @@ let lastYearEndValue = 0;//document.querySelector('#yearEnd').value;
 let lastPeriodEndValue = 0; //document.querySelector('#periodEnd').value;
 let lastAllPeriodsValue = 0;//document.querySelector('#checkAllPeriods').checked;
 
+let qtdTurmasProfessor = 0;
+
 function setLastSearchValues() {
     if (!document.querySelector('#checkAllPeriods').checked) {
         lastYearStartValue = document.querySelector('#yearStart').value;
@@ -43,9 +45,6 @@ function checkSearchValuesChanged() {
             (lastYearEndValue != actualYearEndValue) || (lastPeriodEndValue != actualPeriodEndValue));
     }
 
-    /*return ((lastYearStartValue != actualYearStartValue) || (lastPeriodStartValue != actualPeriodStartValue) ||
-            (lastYearEndValue != actualYearEndValue) || (lastPeriodEndValue != actualPeriodEndValue)
-             || (lastAllPeriodsValue != actualAllPeriodsValue));*/
 }
 
 function onChangeSelect(event) {
@@ -62,9 +61,14 @@ function onChangeSelect(event) {
     else {
         if (checkSearchValuesChanged()) {
             document.querySelector("#btnSearchDisciplineData").disabled = false;
+            document.querySelector('#infoBtnSearchDisciplineData').classList.add('d-none');
+
+
         }
         else {
             document.querySelector("#btnSearchDisciplineData").disabled = true;
+            document.querySelector('#infoBtnSearchDisciplineData').classList.remove('d-none');
+
         }
         errorMessageElement.innerHTML = "";
     }
@@ -83,21 +87,47 @@ function onSelectClass(event) {
 
 
 function onSearchDisciplineDataClick(code) {
-    document.querySelector('#checkAllClasses').checked = true;
-    checkedAllClasses = true;
     searchDisciplineData(code);
-    //document.querySelector("#btnSearchDisciplineData").disabled = true;
 }
 
 
 function onChangeCheckAllClasses(event) {
-
+    if (event.target.id == 'checkAllClasses') {
+        let checkboxOneClass = document.querySelector('#checkOneClass');
+        if (event.target.checked) {
+            checkboxOneClass.checked = false;
+        } else {
+            checkboxOneClass.checked = true;
+        }
+    } else if (event.target.id == 'checkOneClass') {
+        let checkboxAllClasses = document.querySelector('#checkAllClasses');
+        if (event.target.checked) {
+            checkboxAllClasses.checked = false;
+        } else {
+            checkboxAllClasses.checked = true;
+        }
+    }
     updateInfos();
 }
 
 function onChangeCheckOnlyProfessorClasses(event) {
-    document.querySelector('#selectClass').selectedIndex = 0;
-    classSelectedIndex = 0;
+    if (event.target.id == 'checkOnlyProfessorClasses') {
+        let checkboxAllProfessorsClasses = document.querySelector('#checkAllProfessorClasses');
+        if (event.target.checked) {
+            checkboxAllProfessorsClasses.checked = false;
+        } else {
+            checkboxAllProfessorsClasses.checked = true;
+        }
+    } else if (event.target.id == 'checkAllProfessorClasses') {
+        let checkboxOnlyProfessorClasses = document.querySelector('#checkOnlyProfessorClasses');
+        if (event.target.checked) {
+            checkboxOnlyProfessorClasses.checked = false;
+        } else {
+            checkboxOnlyProfessorClasses.checked = true;
+        }
+    }
+    //document.querySelector('#selectClass').selectedIndex = 0;
+    //classSelectedIndex = 0;
     updateInfos();
 }
 
@@ -119,8 +149,10 @@ function onChangeCheckAllPeriods(event) {
     }
     if (checkSearchValuesChanged()) {
         document.querySelector("#btnSearchDisciplineData").disabled = false;
+        document.querySelector('#infoBtnSearchDisciplineData').classList.add('d-none');
     } else {
         document.querySelector("#btnSearchDisciplineData").disabled = true;
+        document.querySelector('#infoBtnSearchDisciplineData').classList.remove('d-none');
     }
 }
 
@@ -135,14 +167,14 @@ let generalPerformanceData = {
     'numFailedStudents': 0,
 }
 
-let professorPerformanceData = {
+/*let professorPerformanceData = {
     'averageGrade': 0,
     'highestGrade': -1,
     'lowestGrade': 1000,
     'numStudents': 0,
     'numApprovedStudents': 0,
     'numFailedStudents': 0,
-}
+}*/
 
 function resetValues() {
     generalPerformanceData.averageGrade = 0;
@@ -152,20 +184,20 @@ function resetValues() {
     generalPerformanceData.numApprovedStudents = 0;
     generalPerformanceData.numFailedStudents = 0;
 
-    professorPerformanceData.averageGrade = 0;
+    /*professorPerformanceData.averageGrade = 0;
     professorPerformanceData.highestGrade = 0;
     professorPerformanceData.lowestGrade = 0;
     professorPerformanceData.numStudents = 0;
     professorPerformanceData.numApprovedStudents = 0;
-    professorPerformanceData.numFailedStudents = 0;
+    professorPerformanceData.numFailedStudents = 0;*/
 }
 
 function updateInfos() {
     resetValues();
-    let checkedAllClasses = document.querySelector('#checkAllClasses').checked;
+    //let checkedAllClasses = document.querySelector('#checkAllClasses').checked;
     let checkedProfessorClasses = document.querySelector('#checkOnlyProfessorClasses').checked;
-    let groupClass = document.querySelector("#form-group-select-class");
-    if (classPerformanceDatas.length == 0) {
+    //let groupClass = document.querySelector("#form-group-select-class");
+    /*if (classPerformanceDatas.length == 0) {
         groupClass.classList.add('d-none');
         return;
     }
@@ -174,10 +206,13 @@ function updateInfos() {
         groupClass.classList.add('d-none');
     } else {
         groupClass.classList.remove("d-none");
+    }*/
+    if(classPerformanceDatas == 0){
+        return;
     }
 
     let html = "";
-    let qtdTurmasProfessor = 0;
+    qtdTurmasProfessor = 0;
     classPerformanceDatas.forEach(function (data, index) {
         if (checkedProfessorClasses) {
 
@@ -210,7 +245,7 @@ function updateInfos() {
     });
 
     if (checkedProfessorClasses && (qtdTurmasProfessor == 0)) {
-        groupClass.classList.add('d-none');
+        // groupClass.classList.add('d-none');
         let element = document.querySelector("#infoPesquisaDados");
         element.classList.remove("d-none");
         element.innerHTML = "Esse professor não possui turmas.<p> <small>Desmarque a opção \"Somente turmas do docente\" para ver ter um resultado mais geral.</small></p>";
@@ -219,12 +254,13 @@ function updateInfos() {
     }
 
     generalPerformanceData.averageGrade = generalPerformanceData.averageGrade / generalPerformanceData.numStudents;
-    document.querySelector("#selectClass").innerHTML = html;
-    document.querySelector("#selectClass").selectedIndex = classSelectedIndex;
+    //document.querySelector("#selectClass").innerHTML = html;
+    //document.querySelector("#selectClass").selectedIndex = classSelectedIndex;
 
 
 
-    if (document.querySelector('#checkAllClasses').checked) {
+    //if (document.querySelector('#checkAllClasses').checked) {
+    if (true) {
         let mediaGeral = generalPerformanceData.averageGrade.toFixed(2);
         let percentagemAprovados = ((generalPerformanceData.numApprovedStudents / generalPerformanceData.numStudents) * 100).toFixed(2);
         let percentagemReprovados = ((generalPerformanceData.numFailedStudents / generalPerformanceData.numStudents) * 100).toFixed(2);
@@ -235,9 +271,20 @@ function updateInfos() {
         document.querySelector("#progressAprovados").style.width = percentagemAprovados + "%";
         document.querySelector("#percentagemReprovados").innerHTML = percentagemReprovados + "%";
         document.querySelector("#progressReprovados").style.width = percentagemReprovados + "%";
-        document.querySelector("#infoTipoBusca").innerHTML = "Dados de todas as turmas";
+        if(checkedProfessorClasses){
+            document.querySelector("#infoTipoBusca").innerHTML = "Dados de " + qtdTurmasProfessor + " turma";
+            if(qtdTurmasProfessor != 1){
+                document.querySelector("#infoTipoBusca").innerHTML+="s";
+            }
+        }else{
+            document.querySelector("#infoTipoBusca").innerHTML = "Dados de " + classPerformanceDatas.length + " turma";
+            if(classPerformanceDatas.length != 1){
+                document.querySelector("#infoTipoBusca").innerHTML+="s";
+            }
+        }
+       
         if (checkedProfessorClasses) {
-            document.querySelector("#infoProfessoresBusca").innerHTML = "Turmas apenas do professor(a) " + professorName;
+            document.querySelector("#infoProfessoresBusca").innerHTML = "Turmas com o(a) professor(a) " + professorName;
         }
         else {
             document.querySelector("#infoProfessoresBusca").innerHTML = "Turmas de todos os professores";
@@ -279,13 +326,19 @@ function updateInfos() {
         }
     }
 
+    if (document.querySelector('#btnSearchDisciplineData').disabled) {
+        document.querySelector('#infoBtnSearchDisciplineData').classList.remove('d-none');
+    } else {
+        document.querySelector('#infoBtnSearchDisciplineData').classList.add('d-none')
+    }
+
 }
 
 function searchDisciplineData(disciplineCode) {
-    idTurma = '';
+    /*idTurma = '';
     if (!document.querySelector('#checkAllClasses').checked) {
         idTurma = '/' + document.querySelector('#selectClass').value;
-    }
+    } */
 
     let yearS = document.querySelector("#yearStart").value;
     let periodS = document.querySelector("#periodStart").value;
@@ -307,6 +360,7 @@ function searchDisciplineData(disciplineCode) {
         success: function (result) {
             setLastSearchValues();
             document.querySelector('#btnSearchDisciplineData').disabled = true;
+            document.querySelector('#infoBtnSearchDisciplineData').classList.remove('d-none');
             resetValues();
             classPerformanceDatas = result;
             if (!Array.isArray(result)) {
@@ -332,7 +386,6 @@ function searchDisciplineData(disciplineCode) {
                     element.innerHTML = "Não foram encontrados dados de índice de aprovação para este período."
                 }
                 updateInfos();
-
             }
 
         },
