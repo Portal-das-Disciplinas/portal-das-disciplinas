@@ -6,6 +6,7 @@ use App\Exceptions\APISistemasIncorrectRequestExceception;
 use App\Exceptions\APISistemasRequestLimitException;
 use App\Exceptions\APISistemasServerErrorException;
 use App\Exceptions\APISistemasUnavailableException;
+use App\Exceptions\ApiUnknownValueException;
 use Exception;
 use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Log;
@@ -169,7 +170,6 @@ class APISigaaService
         $qtdAprovados = 0;
         $qtdReprovados = 0;
         $qtdDesconhecidos = 0;
-        $qtdOutros = 0;
         $situacaoDesconhecida = "";
         $turmas = $this->fetch("turma/v1/turmas?codigo-componente=" . $codigoComponente . "&id-situacao-turma=3" . $strAno . "" . $strPeriodo . "&sigla-nivel=G", "GET");
         $alunosTurma = [];
@@ -225,12 +225,13 @@ class APISigaaService
                         $boletimAluno["situacao"] == "REPROVADO"
                         || $boletimAluno["situacao"] == "REPROVADO POR FALTAS"
                         || $boletimAluno["situacao"] == "REPROVADO POR MÉDIA E POR FALTAS"
+                        || $boletimAluno["situacao"] == "REPROVADO POR NOTA E FALTA"
                         || $boletimAluno["situacao"] == "REPROVADO POR NOTA"
                     ) {
                         $qtdReprovados++;
                     } else {
-                        $qtdOutros++;
-                        Log::info("Situação desconhecida: " . $boletimAluno["situacao"]);
+                        Log::info("Erro: situação do boletim não tratada: " . $boletimAluno["situacao"]);
+                        throw new ApiUnknownValueException("Situção " . $boletimAluno["situacao"] . " não tratada.");
                     }
 
                     break;
@@ -250,7 +251,6 @@ class APISigaaService
             "quantidade-discentes" => $qtdAlunos,
             "quantidade-aprovados" => $qtdAprovados,
             "quantidade-reprovados" => $qtdReprovados,
-            "diferente-aprov-reprov" => $qtdOutros,
             "situacao-desconhecida" => $situacaoDesconhecida,
             "tempo-total" => (microtime(true) - $tempoInicio),
             "quantidade-turmas" => $qtdTurmas,
