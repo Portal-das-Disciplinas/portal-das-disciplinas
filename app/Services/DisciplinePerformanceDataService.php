@@ -381,7 +381,7 @@ class DisciplinePerformanceDataService
     }
 
     function getPerformanceDataByDisciplineCode($disciplineCode, $paginate = null){
-        $data = DisciplinePerformanceData::where('discipline_code','=',$disciplineCode);
+        $data = DisciplinePerformanceData::where('discipline_code','=',$disciplineCode)->orderBy('year','desc')->orderBy('period')->orderBy('class_code');
         if(isset($paginate)){
             return $data->paginate();
         }
@@ -395,15 +395,21 @@ class DisciplinePerformanceDataService
 
         if ($yearStart == $yearEnd) {
 
-            $data = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearStart)->where('period', '>=', $periodStart)->where('period', '<=', $periodEnd);
+            $data = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearStart)->
+                where('period', '>=', $periodStart)->where('period', '<=', $periodEnd)
+                ->orderBy('year','desc')->orderBy('period')->orderBy('class_code');
             if (isset($paginate)) {
                 return $data->paginate($paginate);
             }
             return $data->get();
         } else {
-            $data1 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '>=', $yearStart)->where('period', '>=', $periodStart)->where('year', '<=', $yearEnd - 1)->get();
-            $data2 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearEnd)->where('period', '<=', $periodEnd)->get();
-            $data = $data1->merge($data2)->all();
+            $data1 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->
+                where('year', '>=', $yearStart)->where('period', '>=', $periodStart)->
+                where('year', '<=', $yearEnd - 1)->orderBy('year','desc')->orderBy('period')->orderBy('class_code')->get();
+            $data2 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)
+                ->where('year', '=', $yearEnd)->where('period', '<=', $periodEnd)
+                ->orderBy('year','desc')->orderBy('period')->orderBy('class_code')->get();
+            $data = $data2->merge($data1)->all();
             if (isset($paginate)) {
                 return $data->paginate($paginate);
             }
