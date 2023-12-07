@@ -233,8 +233,11 @@ class DisciplinePerformanceDataService
                 break;
             }
         }
-        Log::info("Fim da execução dos agendamentos.");
-        $this->updateDisciplinePerformanceDataValues();
+        if(count($schedules) > 0){
+            Log::info("Fim da execução dos agendamentos.");
+            $this->updateDisciplinePerformanceDataValues();
+        }
+        
     }
 
     function runSchedule($idSchedule)
