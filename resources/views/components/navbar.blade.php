@@ -82,28 +82,28 @@
                                           <div class="dropdown-item py-3"> <i class="far fa-user mr-2"></i> Meu perfil
                                           </div>
                                       </a>
-                                      <a href="{{ route("disciplinas.create") }}">
+                                      <a href="{{ route('disciplinas.create') }}">
                                           <div class="dropdown-item py-3"> <i class="fas fa-book mr-2"></i></i>
                                               Cadastrar
                                               disciplina </div>
                                       </a>
                                       @if(auth()->user()->is_admin)
-                                          <a href="{{ route("professores.index") }}">
+                                          <a href="{{ route('professores.index') }}">
                                               <div class="dropdown-item py-3"> <i
                                                       class="fas fa-users-cog mr-2"></i>Painel
                                                   de Administração</div>
                                           </a>
-                                          <a href="{{ route("classificacoes.index") }}">
+                                          <a href="{{ route('classificacoes.index') }}">
                                               <div class="dropdown-item py-3"> <i class="fas fa-star mr-2 "></i>Painel
                                                   de
                                                   Classificações</div>
                                           </a>
-                                          <a href="{{ route("configuracoes.index") }}">
+                                          <a href="{{ route('configuracoes.index') }}">
                                               <div class="dropdown-item py-3"> <i class="fas fa-cogs mr-2"></i>Configurações</div>
                                           </a>
                                           <a href="{{ route('scheduling.index') }}">
                                               <div class="dropdown-item py-3"> 
-                                                <i class="fas fa-cogs mr-2"></i>
+                                                <i class="fas fa-chart-bar mr-2"></i>
                                                 Dados de desempenho das disciplinas
                                             </div>
                                           </a>
