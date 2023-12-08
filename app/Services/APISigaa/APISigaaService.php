@@ -17,14 +17,26 @@ use stdClass;
  */
 class APISigaaService
 {
-    private $baseUrlAuth = "https://autenticacao.ufrn.br/";
-    private $baseUrl = "https://api.ufrn.br/";
-    private $clientId = "portal-disciplinas-id-m3brevIfR75Tudlw";
-    private $clientSecret = "t3etHuCHo4a4r7N8histunaPEdrIb3pH";
-    private $apiKey = "mX5ZV9wY8p1RahQkZ8viPwOB9XlBVxGt";
-    private $grantType = "client_credentials";
-    private $tokenData = null;
-    private $qtdNewTokens = 0;
+    public $baseUrlAuth;
+    private $baseUrl;
+    private $clientId;
+    private $clientSecret;
+    private $apiKey;
+    private $grantType;
+    private $tokenData;
+    private $qtdNewTokens;
+
+    public function __construct()
+    {
+        $this->baseUrlAuth = env('API_SISTEMAS_BASE_URL_AUTH');
+        $this->baseUrl = env('API_SISTEMAS_BASE_URL');
+        $this->clientId = env('API_SISTEMAS_CLIENT_ID');
+        $this->clientSecret = env('API_SISTEMAS_CLIENT_SECRET');
+        $this->apiKey = env('API_SISTEMAS_API_KEY');
+        $this->grantType = env('API_SISTEMAS_GRANT_TYPE');
+        $this->tokenData = null;
+        $this->qtdNewTokens = 0;
+    }
 
     /**
      * Função auxiliar para fazer as requisições para a API
@@ -183,14 +195,12 @@ class APISigaaService
                     $docenteClass = "SEM NOME";
                     if ($docente['nome-docente']) {
                         $docenteClass = $docente['nome-docente'];
-                    }
-                    else if($docente["id-docente-externo"]){
-                        $docenteClass="DOCENTE EXTERNO";
-                        $docenteExterno = $this->fetch("/docente-externo/v1/docentes-externos/" . $docente['id-docente-externo'],"GET");
-                        if($docenteExterno['nome']){
+                    } else if ($docente["id-docente-externo"]) {
+                        $docenteClass = "DOCENTE EXTERNO";
+                        $docenteExterno = $this->fetch("/docente-externo/v1/docentes-externos/" . $docente['id-docente-externo'], "GET");
+                        if ($docenteExterno['nome']) {
                             $docenteClass = $docenteExterno['nome'];
                         }
-
                     }
 
                     array_push($docentesTurma, $docenteClass);
