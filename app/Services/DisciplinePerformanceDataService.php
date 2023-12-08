@@ -116,9 +116,15 @@ class DisciplinePerformanceDataService
     function listSchedules($status, $paginate = null)
     {
         if (isset($paginate)) {
-            return  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)->paginate($paginate);
+            return  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)
+                ->orderBy('created_at','desc')
+                ->orderBy('year','desc')
+                ->orderBy('period','asc')->paginate($paginate);
         }
-        return SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)->get();
+        return SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)
+            ->orderBy('created_at','desc')
+            ->orderBy('year','desc')
+            ->orderBy('period','asc')->get();
     }
 
     function listAllSchedules()

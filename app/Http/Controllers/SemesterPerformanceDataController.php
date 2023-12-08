@@ -22,7 +22,7 @@ class SemesterPerformanceDataController extends Controller
     public function index()
     {
 
-        $semesterPerformanceData = SemesterPerformanceData::query()->orderBy('year')->orderBy('period')->get();
+        $semesterPerformanceData = SemesterPerformanceData::query()->orderBy('year','desc')->orderBy('period','asc')->get();
         return view('discipline_performance_data/semester_performance_data')
             ->with('theme', $this->theme)
             ->with('semesterPerformanceData', $semesterPerformanceData);

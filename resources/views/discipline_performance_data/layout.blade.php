@@ -82,7 +82,7 @@ Agendamentos
                     </div>
                     <div class="form-group">
                         <input id="updateIfExists" type="checkbox" name="updateIfExists">
-                        <label for="updateIfExists" style="cursor:pointer">Atualizar dados existentes</label>
+                        <label for="updateIfExists" class="text-primary" style="cursor:pointer; user-select:none">Atualizar dados existentes</label>
                     </div>
                     <div class="d-flex justify-content-end">
                         <input type="submit" class="btn btn-primary" value="cadastrar">

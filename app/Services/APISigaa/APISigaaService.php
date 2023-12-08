@@ -180,9 +180,17 @@ class APISigaaService
                 $fetchDocentes = $this->fetch("turma/v1/turmas/" . $turma['id-turma'] . "/docentes", "GET");
                 $docentesTurma = [];
                 foreach ($fetchDocentes as $docente) {
-                    $docenteClass = "sem professor";
+                    $docenteClass = "SEM NOME";
                     if ($docente['nome-docente']) {
                         $docenteClass = $docente['nome-docente'];
+                    }
+                    else if($docente["id-docente-externo"]){
+                        $docenteClass="DOCENTE EXTERNO";
+                        $docenteExterno = $this->fetch("/docente-externo/v1/docentes-externos/" . $docente['id-docente-externo'],"GET");
+                        if($docenteExterno['nome']){
+                            $docenteClass = $docenteExterno['nome'];
+                        }
+
                     }
 
                     array_push($docentesTurma, $docenteClass);
