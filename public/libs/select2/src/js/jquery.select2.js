@@ -33,7 +33,7 @@ define([
               "The select2('" +
                 options +
                 "') method was called on an " +
-                "element that is not using Select2."
+                "element that is not using Select2.",
             );
           }
 

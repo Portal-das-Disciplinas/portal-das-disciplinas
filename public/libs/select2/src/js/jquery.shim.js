@@ -6,7 +6,7 @@ define(function () {
     console.error(
       "Select2: An instance of jQuery or a jQuery-compatible library was not " +
         "found. Make sure that you are including jQuery before Select2 on your " +
-        "web page."
+        "web page.",
     );
   }
 

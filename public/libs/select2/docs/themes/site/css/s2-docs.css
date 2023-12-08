@@ -71,7 +71,9 @@
     font-weight: 500;
     color: #767676;
     border-left: 1px solid transparent;
-    transition: color 0.2s, border-color 0.2s;
+    transition:
+        color 0.2s,
+        border-color 0.2s;
 }
 .s2-docs-sidebar .nav > li > a code {
     background-color: inherit;
@@ -586,9 +588,15 @@ section {
     border: 1px solid #eee;
 }
 .prettyprint.linenums {
-    -webkit-box-shadow: inset 40px 0 0 #fbfbfb, inset 41px 0 0 #f6f6f6;
-    -moz-box-shadow: inset 40px 0 0 #fbfbfb, inset 41px 0 0 #f6f6f6;
-    box-shadow: inset 40px 0 0 #fbfbfb, inset 41px 0 0 #f6f6f6;
+    -webkit-box-shadow:
+        inset 40px 0 0 #fbfbfb,
+        inset 41px 0 0 #f6f6f6;
+    -moz-box-shadow:
+        inset 40px 0 0 #fbfbfb,
+        inset 41px 0 0 #f6f6f6;
+    box-shadow:
+        inset 40px 0 0 #fbfbfb,
+        inset 41px 0 0 #f6f6f6;
 }
 
 ol.linenums {

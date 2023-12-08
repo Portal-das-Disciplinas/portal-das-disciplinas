@@ -9,7 +9,7 @@ define(["jquery", "../utils", "../keys"], function ($, Utils, KEYS) {
         '<input class="select2-search__field" type="search" tabindex="-1"' +
         ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
-        "</li>"
+        "</li>",
     );
 
     this.$searchContainer = $search;
@@ -82,7 +82,7 @@ define(["jquery", "../utils", "../keys"], function ($, Utils, KEYS) {
 
       if (key === KEYS.BACKSPACE && self.$search.val() === "") {
         var $previousChoice = self.$searchContainer.prev(
-          ".select2-selection__choice"
+          ".select2-selection__choice",
         );
 
         if ($previousChoice.length > 0) {
@@ -126,7 +126,7 @@ define(["jquery", "../utils", "../keys"], function ($, Utils, KEYS) {
 
         // Unbind the duplicated `keyup` event
         self.$selection.off("keyup.search");
-      }
+      },
     );
 
     this.$selection.on(
@@ -154,7 +154,7 @@ define(["jquery", "../utils", "../keys"], function ($, Utils, KEYS) {
         }
 
         self.handleSearch(evt);
-      }
+      },
     );
   };
 

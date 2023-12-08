@@ -2,7 +2,7 @@ define(["jquery", "./base", "../utils", "../keys"], function (
   $,
   BaseSelection,
   Utils,
-  KEYS
+  KEYS,
 ) {
   function SingleSelection() {
     SingleSelection.__super__.constructor.apply(this, arguments);
@@ -19,7 +19,7 @@ define(["jquery", "./base", "../utils", "../keys"], function (
       '<span class="select2-selection__rendered"></span>' +
         '<span class="select2-selection__arrow" role="presentation">' +
         '<b role="presentation"></b>' +
-        "</span>"
+        "</span>",
     );
 
     return $selection;

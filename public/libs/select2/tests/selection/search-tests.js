@@ -123,7 +123,7 @@ test("updating selection does not shift the focus", function (assert) {
   assert.equal(
     document.activeElement,
     $search[0],
-    "The search did not have focus originally"
+    "The search did not have focus originally",
   );
 
   // Trigger an update, this should redraw the search box
@@ -134,7 +134,7 @@ test("updating selection does not shift the focus", function (assert) {
   assert.equal(
     document.activeElement,
     $search[0],
-    "The search did not have focus after the selection was updated"
+    "The search did not have focus after the selection was updated",
   );
 });
 
@@ -170,7 +170,7 @@ test("the focus event shifts the focus", function (assert) {
   assert.notEqual(
     document.activeElement,
     $search[0],
-    "The search had focus originally"
+    "The search had focus originally",
   );
 
   assert.equal($search.length, 1, "The search was not visible");
@@ -186,7 +186,7 @@ test("the focus event shifts the focus", function (assert) {
   assert.equal(
     document.activeElement,
     $search[0],
-    "The search did not have focus originally"
+    "The search did not have focus originally",
   );
 });
 

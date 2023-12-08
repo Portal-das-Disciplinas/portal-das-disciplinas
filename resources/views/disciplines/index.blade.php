@@ -66,7 +66,7 @@
             <div class="card">
                 <div class="card-header row" id="headingOne">
                   <div class="col">
-                  <h5 class="mb-0">
+                    <h5 class="mb-0">
                     <button 
                         type="button" 
                         id="AccordionButton" 
@@ -78,22 +78,26 @@
                     >
                       Filtragem via Classificações
                     </button>
-                  </h5>
+                    </h5>
                   </div>
 
                   <input type="reset" style="display:none" id="resetButton" value="">
-                    <div class="col">
+
+                    <div class="col" style="display: flex; justify-content: flex-end;">
+                    <h5 class="mb-0">
                     <button 
-                        id="advancedOptionButton" 
-                        style="float:right;" 
-                        type="button"
+                    
+                        type="button" 
+                        id="aprovationsButton" 
                         class="btn btn-link" 
-                        data-toggle="tooltip" 
-                        data-placement="right" 
-                        title="Pesquisa Avançada"
+                        data-toggle="collapse" 
+                        data-target="#collapseTwo" 
+                        aria-expanded="false" 
+                        aria-controls="collapseTwo"
                     >
-                        Filtragem Avançada
+                      Filtragem via Aprovações
                     </button>
+                  </h5>
                     </div>
                 </div>
 
@@ -104,6 +108,12 @@
                                 <h3>Característica Predominante</h3>
                             </div>
                             <br>
+
+                            <!-- input que indica qual o filtro que está sendo enviado -->
+                            <div style="display:none">
+                            <input type="text" name="filtro" id="filtro" value="">
+                            </div>
+
                             @foreach($classifications as $classification)
                                 <div class="row">
                                     <div class="col-4" id="classificationName" style="padding-right:0;">
@@ -153,20 +163,92 @@
                                 <br>
                             @endforeach
                             <div class="container">
-                            <button  
-                                id="unmarkAll"
-                                style="float:right; padding: 15px; margin: 5px;" 
-                                type="button"
-                                class="btn btn-link" 
-                                data-toggle="tooltip" 
-                                data-placement="right" 
-                                title="Pesquisa Avançada"
-                            >
-                                Desmarcar tudo
-                            </button>
+                                <div class="row">
+                                    <div class="col">
+                                    </div>
+
+                                    <div class="col">
+                                        <button 
+                                            id="advancedOptionButton" 
+                                            style="float:right; padding: 15px; margin: 5px;" 
+                                            type="button"
+                                            class="btn btn-link" 
+                                            data-toggle="tooltip" 
+                                            data-placement="right" 
+                                            title="Pesquisa Avançada"
+                                        >
+                                            Filtragem Avançada
+                                        </button>
+
+                                        <button  
+                                            id="unmarkAll"
+                                            style="float:right; padding: 15px; margin: 5px;" 
+                                            type="button"
+                                            class="btn btn-link" 
+                                            data-toggle="tooltip" 
+                                            data-placement="right" 
+                                            title="Pesquisa Avançada"
+                                        >
+                                            Desmarcar tudo
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            </form>
+                            
                         </div>  
+                    </div>
+                </div>
+
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card card-body">    
+                    @if (count($studentsData) > 0)
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="col" style="display: flex; justify-content: center;">
+                                    <h3>Escolha as opções de Filtragem</h3>
+                                </div>
+                                <br>
+                                <div class="col" style="display: flex; justify-content: center;">
+                                        <div>
+                                        <select name="metodo" id="metodo">
+                                            <option value="aprovacao">Aprovação</option>
+                                            <option value="reprovacao">Reprovação</option>
+                                        </select>
+                                        <select name="maiorMenor" id="">
+                                            <option value="maior">Maior que</option>
+                                            <option value="menor">Menor que</option>
+                                        </select>
+                                        <input 
+                                            type="number" 
+                                            name="porcentagem" 
+                                            id="porcentagem" 
+                                            min="1" 
+                                            max="100"
+                                            value="null"
+                                            style="width:20%;"
+                                        />
+                                        <label for="">%</label>
+                                        </div>
+
+                                        <br>
+                                        <br>
+
+                                        <div>
+                                        <label for="periodo">Ano e período:</label>
+                                        <select name="periodo" id="periodo">
+                                            <option value="vazio" selected>Vazio</option>
+                                            @foreach($periodsColection as $periods)
+                                                <option value="{{ $periods }}" >{{ $periods }}</option>
+                                            @endforeach
+                                        </select>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <p class="response-search mt-4"> Nenhum dado encontrado </p>
+                    @endif
                     </div>
                 </div>
             </div>

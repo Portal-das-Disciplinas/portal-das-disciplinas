@@ -129,7 +129,7 @@
       return this.pushStack(
         jQuery.map(this, function (elem, i) {
           return callback.call(elem, i, elem);
-        })
+        }),
       );
     },
 
@@ -522,11 +522,11 @@
   // Populate the class2type map
   jQuery.each(
     "Boolean Number String Function Array Date RegExp Object Error Symbol".split(
-      " "
+      " ",
     ),
     function (i, name) {
       class2type["[object " + name + "]"] = name.toLowerCase();
-    }
+    },
   );
 
   function isArrayLike(obj) {
@@ -657,15 +657,15 @@
         rwhitespace = new RegExp(whitespace + "+", "g"),
         rtrim = new RegExp(
           "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$",
-          "g"
+          "g",
         ),
         rcomma = new RegExp("^" + whitespace + "*," + whitespace + "*"),
         rcombinators = new RegExp(
-          "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*"
+          "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*",
         ),
         rattributeQuotes = new RegExp(
           "=" + whitespace + "*([^\\]'\"]*?)" + whitespace + "*\\]",
-          "g"
+          "g",
         ),
         rpseudo = new RegExp(pseudos),
         ridentifier = new RegExp("^" + identifier + "$"),
@@ -685,7 +685,7 @@
               "*(\\d+)|))" +
               whitespace +
               "*\\)|)",
-            "i"
+            "i",
           ),
           bool: new RegExp("^(?:" + booleans + ")$", "i"),
           // For use in libraries implementing .is()
@@ -698,7 +698,7 @@
               "*((?:-\\d)?\\d*)" +
               whitespace +
               "*\\)|)(?=[^-]|$)",
-            "i"
+            "i",
           ),
         },
         rinputs = /^(?:input|select|textarea|button)$/i,
@@ -711,7 +711,7 @@
         // CSS escapes http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
         runescape = new RegExp(
           "\\\\([\\da-f]{1,6}" + whitespace + "?|(" + whitespace + ")|.)",
-          "ig"
+          "ig",
         ),
         funescape = function (_, escaped, escapedWhitespace) {
           var high = "0x" + escaped - 0x10000;
@@ -726,7 +726,7 @@
             : // Supplemental Plane codepoint (surrogate pair)
               String.fromCharCode(
                 (high >> 10) | 0xd800,
-                (high & 0x3ff) | 0xdc00
+                (high & 0x3ff) | 0xdc00,
               );
         },
         // Used for iframes
@@ -741,7 +741,7 @@
       try {
         push.apply(
           (arr = slice.call(preferredDoc.childNodes)),
-          preferredDoc.childNodes
+          preferredDoc.childNodes,
         );
         // Support: Android<4.0
         // Detect silently failing push.apply
@@ -1133,7 +1133,7 @@
 
         // Support: IE<9
         support.getElementsByClassName = rnative.test(
-          document.getElementsByClassName
+          document.getElementsByClassName,
         );
 
         // Support: IE<10
@@ -1269,7 +1269,7 @@
             // Boolean attributes and "value" are not treated correctly
             if (!div.querySelectorAll("[selected]").length) {
               rbuggyQSA.push(
-                "\\[" + whitespace + "*(?:value|" + booleans + ")"
+                "\\[" + whitespace + "*(?:value|" + booleans + ")",
               );
             }
 
@@ -1325,7 +1325,7 @@
               docElem.webkitMatchesSelector ||
               docElem.mozMatchesSelector ||
               docElem.oMatchesSelector ||
-              docElem.msMatchesSelector)
+              docElem.msMatchesSelector),
           ))
         ) {
           assert(function (div) {
@@ -1664,7 +1664,7 @@
             // Move the given value to match[3] whether quoted or unquoted
             match[3] = (match[3] || match[4] || match[5] || "").replace(
               runescape,
-              funescape
+              funescape,
             );
 
             if (match[2] === "~=") {
@@ -1763,14 +1763,14 @@
             return (
               pattern ||
               ((pattern = new RegExp(
-                "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)"
+                "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)",
               )) &&
                 classCache(className, function (elem) {
                   return pattern.test(
                     (typeof elem.className === "string" && elem.className) ||
                       (typeof elem.getAttribute !== "undefined" &&
                         elem.getAttribute("class")) ||
-                      ""
+                      "",
                   );
                 }))
             );
@@ -1801,7 +1801,7 @@
                 ? check && result.slice(-check.length) === check
                 : operator === "~="
                 ? (" " + result.replace(rwhitespace, " ") + " ").indexOf(
-                    check
+                    check,
                   ) > -1
                 : operator === "|="
                 ? result === check ||
@@ -2038,7 +2038,7 @@
             return function (elem) {
               return (
                 (elem.textContent || elem.innerText || getText(elem)).indexOf(
-                  text
+                  text,
                 ) > -1
               );
             };
@@ -2433,7 +2433,7 @@
         matcher,
         postFilter,
         postFinder,
-        postSelector
+        postSelector,
       ) {
         if (postFilter && !postFilter[expando]) {
           postFilter = setMatcher(postFilter);
@@ -2454,7 +2454,7 @@
               multipleContexts(
                 selector || "*",
                 context.nodeType ? [context] : context,
-                []
+                [],
               ),
             // Prefilter to get matcher input, preserving a map for seed-results synchronization
             matcherIn =
@@ -2521,7 +2521,7 @@
             matcherOut = condense(
               matcherOut === results
                 ? matcherOut.splice(preexisting, matcherOut.length)
-                : matcherOut
+                : matcherOut,
             );
             if (postFinder) {
               postFinder(null, results, matcherOut, xml);
@@ -2546,14 +2546,14 @@
               return elem === checkContext;
             },
             implicitRelative,
-            true
+            true,
           ),
           matchAnyContext = addCombinator(
             function (elem) {
               return indexOf(checkContext, elem) > -1;
             },
             implicitRelative,
-            true
+            true,
           ),
           matchers = [
             function (elem, context, xml) {
@@ -2574,7 +2574,7 @@
           } else {
             matcher = Expr.filter[tokens[i].type].apply(
               null,
-              tokens[i].matches
+              tokens[i].matches,
             );
 
             // Return special upon seeing a positional matcher
@@ -2593,12 +2593,12 @@
                     // If the preceding token was a descendant combinator, insert an implicit any-element `*`
                     tokens
                       .slice(0, i - 1)
-                      .concat({ value: tokens[i - 2].type === " " ? "*" : "" })
+                      .concat({ value: tokens[i - 2].type === " " ? "*" : "" }),
                   ).replace(rtrim, "$1"),
                 matcher,
                 i < j && matcherFromTokens(tokens.slice(i, j)),
                 j < len && matcherFromTokens((tokens = tokens.slice(j))),
-                j < len && toSelector(tokens)
+                j < len && toSelector(tokens),
               );
             }
             matchers.push(matcher);
@@ -2725,7 +2725,7 @@
 
       compile = Sizzle.compile = function (
         selector,
-        match /* Internal Use Only */
+        match /* Internal Use Only */,
       ) {
         var i,
           setMatchers = [],
@@ -2750,7 +2750,7 @@
           // Cache the compiled function
           cached = compilerCache(
             selector,
-            matcherFromGroupMatchers(elementMatchers, setMatchers)
+            matcherFromGroupMatchers(elementMatchers, setMatchers),
           );
 
           // Save selector and tokenization
@@ -2794,7 +2794,7 @@
           ) {
             context = (Expr.find["ID"](
               token.matches[0].replace(runescape, funescape),
-              context
+              context,
             ) || [])[0];
             if (!context) {
               return results;
@@ -2823,7 +2823,7 @@
                   token.matches[0].replace(runescape, funescape),
                   (rsibling.test(tokens[0].type) &&
                     testContext(context.parentNode)) ||
-                    context
+                    context,
                 ))
               ) {
                 // If seed is empty or no tokens remain, we can return early
@@ -2849,7 +2849,7 @@
           results,
           !context ||
             (rsibling.test(selector) && testContext(context.parentNode)) ||
-            context
+            context,
         );
         return results;
       };
@@ -2887,7 +2887,7 @@
           if (!isXML) {
             return elem.getAttribute(
               name,
-              name.toLowerCase() === "type" ? 1 : 2
+              name.toLowerCase() === "type" ? 1 : 2,
             );
           }
         });
@@ -3016,7 +3016,7 @@
           expr,
           jQuery.grep(elems, function (elem) {
             return elem.nodeType === 1;
-          })
+          }),
         );
   };
 
@@ -3035,7 +3035,7 @@
                 return true;
               }
             }
-          })
+          }),
         );
       }
 
@@ -3063,7 +3063,7 @@
         typeof selector === "string" && rneedsContext.test(selector)
           ? jQuery(selector)
           : selector || [],
-        false
+        false,
       ).length;
     },
   });
@@ -3116,8 +3116,8 @@
                 context && context.nodeType
                   ? context.ownerDocument || context
                   : document,
-                true
-              )
+                true,
+              ),
             );
 
             // HANDLE: $(html, props)
@@ -3244,7 +3244,7 @@
       }
 
       return this.pushStack(
-        matched.length > 1 ? jQuery.uniqueSort(matched) : matched
+        matched.length > 1 ? jQuery.uniqueSort(matched) : matched,
       );
     },
 
@@ -3267,19 +3267,19 @@
         this,
 
         // If it receives a jQuery object, the first element is used
-        elem.jquery ? elem[0] : elem
+        elem.jquery ? elem[0] : elem,
       );
     },
 
     add: function (selector, context) {
       return this.pushStack(
-        jQuery.uniqueSort(jQuery.merge(this.get(), jQuery(selector, context)))
+        jQuery.uniqueSort(jQuery.merge(this.get(), jQuery(selector, context))),
       );
     },
 
     addBack: function (selector) {
       return this.add(
-        selector == null ? this.prevObject : this.prevObject.filter(selector)
+        selector == null ? this.prevObject : this.prevObject.filter(selector),
       );
     },
   });
@@ -3355,7 +3355,7 @@
 
         return this.pushStack(matched);
       };
-    }
+    },
   );
   var rnotwhite = /\S+/g;
 
@@ -3605,7 +3605,7 @@
                     } else {
                       newDefer[tuple[0] + "With"](
                         this === promise ? newDefer.promise() : this,
-                        fn ? [returned] : arguments
+                        fn ? [returned] : arguments,
                       );
                     }
                   });
@@ -3644,7 +3644,7 @@
               // [ reject_list | resolve_list ].disable; progress_list.lock
             },
             tuples[i ^ 1][2].disable,
-            tuples[2][2].lock
+            tuples[2][2].lock,
           );
         }
 
@@ -3652,7 +3652,7 @@
         deferred[tuple[0]] = function () {
           deferred[tuple[0] + "With"](
             this === deferred ? promise : this,
-            arguments
+            arguments,
           );
           return this;
         };
@@ -3861,7 +3861,7 @@
           fn(
             elems[i],
             key,
-            raw ? value : value.call(elems[i], i, fn(elems[i], key))
+            raw ? value : value.call(elems[i], i, fn(elems[i], key)),
           );
         }
       }
@@ -4255,7 +4255,7 @@
         value,
         arguments.length > 1,
         null,
-        true
+        true,
       );
     },
 
@@ -4535,7 +4535,7 @@
       dataPriv.set(
         elems[i],
         "globalEval",
-        !refElements || dataPriv.get(refElements[i], "globalEval")
+        !refElements || dataPriv.get(refElements[i], "globalEval"),
       );
     }
   }
@@ -4821,7 +4821,7 @@
               selector && jQuery.expr.match.needsContext.test(selector),
             namespace: namespaces.join("."),
           },
-          handleObjIn
+          handleObjIn,
         );
 
         // Init the event handler queue if we're the first
@@ -5357,7 +5357,7 @@
           return ret;
         },
       };
-    }
+    },
   );
 
   jQuery.fn.extend({
@@ -5377,7 +5377,7 @@
             ? handleObj.origType + "." + handleObj.namespace
             : handleObj.origType,
           handleObj.selector,
-          handleObj.handler
+          handleObj.handler,
         );
         return this;
       }
@@ -5418,7 +5418,7 @@
     return jQuery.nodeName(elem, "table") &&
       jQuery.nodeName(
         content.nodeType !== 11 ? content : content.firstChild,
-        "tr"
+        "tr",
       )
       ? elem.getElementsByTagName("tbody")[0] ||
           elem.appendChild(elem.ownerDocument.createElement("tbody"))
@@ -5529,7 +5529,7 @@
         collection[0].ownerDocument,
         false,
         collection,
-        ignored
+        ignored,
       );
       first = fragment.firstChild;
 
@@ -5732,7 +5732,7 @@
         },
         null,
         value,
-        arguments.length
+        arguments.length,
       );
     },
 
@@ -5848,7 +5848,7 @@
         },
         null,
         value,
-        arguments.length
+        arguments.length,
       );
     },
 
@@ -5871,7 +5871,7 @@
 
           // Force callback invocation
         },
-        ignored
+        ignored,
       );
     },
   });
@@ -5903,7 +5903,7 @@
 
         return this.pushStack(ret);
       };
-    }
+    },
   );
 
   var iframe,
@@ -6261,7 +6261,7 @@
             elem,
             "border" + cssExpand[i] + "Width",
             true,
-            styles
+            styles,
           );
         }
       } else {
@@ -6274,7 +6274,7 @@
             elem,
             "border" + cssExpand[i] + "Width",
             true,
-            styles
+            styles,
           );
         }
       }
@@ -6324,7 +6324,7 @@
         name,
         extra || (isBorderBox ? "border" : "content"),
         valueIsBorderBox,
-        styles
+        styles,
       ) +
       "px"
     );
@@ -6360,7 +6360,7 @@
           values[index] = dataPriv.access(
             elem,
             "olddisplay",
-            defaultDisplay(elem.nodeName)
+            defaultDisplay(elem.nodeName),
           );
         }
       } else {
@@ -6370,7 +6370,7 @@
           dataPriv.set(
             elem,
             "olddisplay",
-            hidden ? display : jQuery.css(elem, "display")
+            hidden ? display : jQuery.css(elem, "display"),
           );
         }
       }
@@ -6568,7 +6568,7 @@
               name,
               extra,
               jQuery.css(elem, "boxSizing", false, styles) === "border-box",
-              styles
+              styles,
             );
 
         // Convert to pixels if value adjustment is needed
@@ -6598,7 +6598,7 @@
               })) + "px"
         );
       }
-    }
+    },
   );
 
   // Support: Android 2.3
@@ -6611,7 +6611,7 @@
           "marginRight",
         ]);
       }
-    }
+    },
   );
 
   // These hooks are used by animate to expand properties
@@ -6641,7 +6641,7 @@
       if (!rmargin.test(prefix)) {
         jQuery.cssHooks[prefix + suffix].set = setPositiveNumber;
       }
-    }
+    },
   );
 
   jQuery.fn.extend({
@@ -6671,7 +6671,7 @@
         },
         name,
         value,
-        arguments.length > 1
+        arguments.length > 1,
       );
     },
     show: function () {
@@ -6728,7 +6728,7 @@
           this.options.duration * percent,
           0,
           1,
-          this.options.duration
+          this.options.duration,
         );
       } else {
         this.pos = eased = percent;
@@ -6855,7 +6855,7 @@
   function createTween(value, prop, animation) {
     var tween,
       collection = (Animation.tweeners[prop] || []).concat(
-        Animation.tweeners["*"]
+        Animation.tweeners["*"],
       ),
       index = 0,
       length = collection.length;
@@ -7065,7 +7065,7 @@
         var currentTime = fxNow || createFxNow(),
           remaining = Math.max(
             0,
-            animation.startTime + animation.duration - currentTime
+            animation.startTime + animation.duration - currentTime,
           ),
           // Support: Android 2.3
           // Archaic crash bug won't allow us to use `1 - ( 0.5 || 0 )` (#12497)
@@ -7096,7 +7096,7 @@
             specialEasing: {},
             easing: jQuery.easing._default,
           },
-          options
+          options,
         ),
         originalProperties: properties,
         originalOptions: options,
@@ -7109,7 +7109,7 @@
             animation.opts,
             prop,
             end,
-            animation.opts.specialEasing[prop] || animation.opts.easing
+            animation.opts.specialEasing[prop] || animation.opts.easing,
           );
           animation.tweens.push(tween);
           return tween;
@@ -7146,7 +7146,7 @@
         animation,
         elem,
         props,
-        animation.opts
+        animation.opts,
       );
       if (result) {
         if (jQuery.isFunction(result.stop)) {
@@ -7168,7 +7168,7 @@
         elem: elem,
         anim: animation,
         queue: animation.opts.queue,
-      })
+      }),
     );
 
     // attach callbacks from options
@@ -7412,7 +7412,7 @@
       jQuery.fn[name] = function (speed, easing, callback) {
         return this.animate(props, speed, easing, callback);
       };
-    }
+    },
   );
 
   jQuery.timers = [];
@@ -7766,7 +7766,7 @@
     ],
     function () {
       jQuery.propFix[this.toLowerCase()] = this;
-    }
+    },
   );
 
   var rclass = /[\t\r\n\f]/g;
@@ -7882,7 +7882,7 @@
         return this.each(function (i) {
           jQuery(this).toggleClass(
             value.call(this, i, getClass(this), stateVal),
-            stateVal
+            stateVal,
           );
         });
       }
@@ -7922,7 +7922,7 @@
               "class",
               className || value === false
                 ? ""
-                : dataPriv.get(this, "__className__") || ""
+                : dataPriv.get(this, "__className__") || "",
             );
           }
         }
@@ -8315,7 +8315,7 @@
           ? this.on(name, null, data, fn)
           : this.trigger(name);
       };
-    }
+    },
   );
 
   jQuery.fn.extend({
@@ -8462,7 +8462,7 @@
     structure,
     options,
     originalOptions,
-    jqXHR
+    jqXHR,
   ) {
     var inspected = {},
       seekingTransport = structure === transports;
@@ -8474,7 +8474,7 @@
         var dataTypeOrTransport = prefilterOrFactory(
           options,
           originalOptions,
-          jqXHR
+          jqXHR,
         );
         if (
           typeof dataTypeOrTransport === "string" &&
@@ -8976,7 +8976,7 @@
         if (jQuery.lastModified[cacheURL]) {
           jqXHR.setRequestHeader(
             "If-Modified-Since",
-            jQuery.lastModified[cacheURL]
+            jQuery.lastModified[cacheURL],
           );
         }
         if (jQuery.etag[cacheURL]) {
@@ -8998,7 +8998,7 @@
         s.dataTypes[0] && s.accepts[s.dataTypes[0]]
           ? s.accepts[s.dataTypes[0]] +
               (s.dataTypes[0] !== "*" ? ", " + allTypes + "; q=0.01" : "")
-          : s.accepts["*"]
+          : s.accepts["*"],
       );
 
       // Check for headers option
@@ -9214,8 +9214,8 @@
             data: data,
             success: callback,
           },
-          jQuery.isPlainObject(url) && url
-        )
+          jQuery.isPlainObject(url) && url,
+        ),
       );
     };
   });
@@ -9341,7 +9341,7 @@
             prefix + "[" + (typeof v === "object" && v != null ? i : "") + "]",
             v,
             traditional,
-            add
+            add,
           );
         }
       });
@@ -9461,7 +9461,7 @@
             options.url,
             options.async,
             options.username,
-            options.password
+            options.password,
           );
 
           // Apply custom fields if provided
@@ -9514,7 +9514,7 @@
                     complete(
                       // File: protocol always yields status 0; see #8605, #14207
                       xhr.status,
-                      xhr.statusText
+                      xhr.statusText,
                     );
                   }
                 } else {
@@ -9529,7 +9529,7 @@
                       typeof xhr.responseText !== "string"
                       ? { binary: xhr.response }
                       : { text: xhr.responseText },
-                    xhr.getAllResponseHeaders()
+                    xhr.getAllResponseHeaders(),
                   );
                 }
               }
@@ -9633,7 +9633,7 @@
                 if (evt) {
                   complete(evt.type === "error" ? 404 : 200, evt.type);
                 }
-              })
+              }),
             );
 
           // Use native DOM manipulation to avoid our domManip AJAX trickery
@@ -9672,7 +9672,7 @@
           ? "url"
           : typeof s.data === "string" &&
             (s.contentType || "").indexOf(
-              "application/x-www-form-urlencoded"
+              "application/x-www-form-urlencoded",
             ) === 0 &&
             rjsonp.test(s.data) &&
             "data");
@@ -9831,7 +9831,7 @@
                   .append(jQuery.parseHTML(responseText))
                   .find(selector)
               : // Otherwise use the full result
-                responseText
+                responseText,
           );
 
           // If the request succeeds, this function gets "data", "status", "jqXHR"
@@ -9844,10 +9844,10 @@
               self.each(function () {
                 callback.apply(
                   this,
-                  response || [jqXHR.responseText, status, jqXHR]
+                  response || [jqXHR.responseText, status, jqXHR],
                 );
               });
-            }
+            },
         );
     }
 
@@ -9868,7 +9868,7 @@
       jQuery.fn[type] = function (fn) {
         return this.on(type, fn);
       };
-    }
+    },
   );
 
   jQuery.expr.filters.animated = function (elem) {
@@ -10007,7 +10007,7 @@
         parentOffset.left += jQuery.css(
           offsetParent[0],
           "borderLeftWidth",
-          true
+          true,
         );
       }
 
@@ -10067,7 +10067,7 @@
             if (win) {
               win.scrollTo(
                 !top ? val : win.pageXOffset,
-                top ? val : win.pageYOffset
+                top ? val : win.pageYOffset,
               );
             } else {
               elem[method] = val;
@@ -10075,10 +10075,10 @@
           },
           method,
           val,
-          arguments.length
+          arguments.length,
         );
       };
-    }
+    },
   );
 
   // Support: Safari<7-8+, Chrome<37-44+
@@ -10099,7 +10099,7 @@
             ? jQuery(elem).position()[prop] + "px"
             : computed;
         }
-      }
+      },
     );
   });
 
@@ -10139,7 +10139,7 @@
                   doc["scroll" + name],
                   elem.body["offset" + name],
                   doc["offset" + name],
-                  doc["client" + name]
+                  doc["client" + name],
                 );
               }
 
@@ -10152,10 +10152,10 @@
             type,
             chainable ? margin : undefined,
             chainable,
-            null
+            null,
           );
         };
-      }
+      },
     );
   });
 

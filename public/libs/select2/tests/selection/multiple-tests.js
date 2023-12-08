@@ -21,7 +21,7 @@ test("display uses templateSelection", function (assert) {
 
   var selection = new MultipleSelection(
     $("#qunit-fixture .multiple"),
-    templateOptions
+    templateOptions,
   );
 
   var out = selection.display({
@@ -46,7 +46,7 @@ test("templateSelection can addClass", function (assert) {
 
   var selection = new MultipleSelection(
     $("#qunit-fixture .multiple"),
-    templateOptions
+    templateOptions,
   );
 
   var $container = selection.selectionContainer();
@@ -55,7 +55,7 @@ test("templateSelection can addClass", function (assert) {
     {
       text: "test",
     },
-    $container
+    $container,
   );
 
   assert.ok(called);
@@ -90,7 +90,7 @@ test("empty update clears the selection title", function (assert) {
   assert.equal(
     $rendered.attr("title"),
     undefined,
-    "The title should be removed if nothing is rendered"
+    "The title should be removed if nothing is rendered",
   );
 });
 
@@ -110,7 +110,7 @@ test("update sets the title to the data text", function (assert) {
   assert.equal(
     $rendered.attr("title"),
     "test",
-    "The title should have been set to the text"
+    "The title should have been set to the text",
   );
 });
 
@@ -131,7 +131,7 @@ test("update sets the title to the data title", function (assert) {
   assert.equal(
     $rendered.attr("title"),
     "correct",
-    "The title should have taken precedence over the text"
+    "The title should have taken precedence over the text",
   );
 });
 
@@ -152,7 +152,7 @@ test("update should clear title for placeholder options", function (assert) {
   assert.equal(
     $rendered.attr("title"),
     undefined,
-    "The title should be removed if a placeholder is rendered"
+    "The title should be removed if a placeholder is rendered",
   );
 });
 
@@ -172,7 +172,7 @@ test("update should clear title for options without text", function (assert) {
   assert.equal(
     $rendered.attr("title"),
     undefined,
-    "The title should be removed if there is no text or title property"
+    "The title should be removed if there is no text or title property",
   );
 });
 
@@ -193,7 +193,7 @@ test("escapeMarkup is being used", function (assert) {
   assert.equal(
     $rendered.text().substr(1),
     unescapedText,
-    "The text should be escaped by default to prevent injection"
+    "The text should be escaped by default to prevent injection",
   );
 });
 
@@ -232,7 +232,7 @@ test("clear button respects the disabled state", function (assert) {
   assert.equal(
     $remove.length,
     1,
-    "The remove icon is displayed for the selection"
+    "The remove icon is displayed for the selection",
   );
 
   // Set up the unselect handler

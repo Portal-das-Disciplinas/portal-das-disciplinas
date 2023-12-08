@@ -12,7 +12,7 @@ define(["jquery", "./utils"], function ($, Utils) {
     var $dropdown = $(
       '<span class="select2-dropdown">' +
         '<span class="select2-results"></span>' +
-        "</span>"
+        "</span>",
     );
 
     $dropdown.attr("dir", this.options.get("dir"));

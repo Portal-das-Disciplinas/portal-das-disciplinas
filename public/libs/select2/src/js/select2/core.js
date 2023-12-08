@@ -2,7 +2,7 @@ define(["jquery", "./options", "./utils", "./keys"], function (
   $,
   Options,
   Utils,
-  KEYS
+  KEYS,
 ) {
   var Select2 = function ($element, options) {
     if (Utils.GetData($element[0], "select2") != null) {
@@ -539,7 +539,7 @@ define(["jquery", "./options", "./utils", "./keys"], function (
       console.warn(
         'Select2: The `select2("enable")` method has been deprecated and will' +
           ' be removed in later Select2 versions. Use $element.prop("disabled")' +
-          " instead."
+          " instead.",
       );
     }
 
@@ -561,7 +561,7 @@ define(["jquery", "./options", "./utils", "./keys"], function (
     ) {
       console.warn(
         'Select2: Data can no longer be set using `select2("data")`. You ' +
-          "should consider setting the value instead using `$element.val()`."
+          "should consider setting the value instead using `$element.val()`.",
       );
     }
 
@@ -578,7 +578,7 @@ define(["jquery", "./options", "./utils", "./keys"], function (
     if (this.options.get("debug") && window.console && console.warn) {
       console.warn(
         'Select2: The `select2("val")` method has been deprecated and will be' +
-          " removed in later Select2 versions. Use $element.val() instead."
+          " removed in later Select2 versions. Use $element.val() instead.",
       );
     }
 
@@ -611,17 +611,17 @@ define(["jquery", "./options", "./utils", "./keys"], function (
       this.$element[0].removeEventListener(
         "DOMAttrModified",
         this._syncA,
-        false
+        false,
       );
       this.$element[0].removeEventListener(
         "DOMNodeInserted",
         this._syncS,
-        false
+        false,
       );
       this.$element[0].removeEventListener(
         "DOMNodeRemoved",
         this._syncS,
-        false
+        false,
       );
     }
 
@@ -631,7 +631,7 @@ define(["jquery", "./options", "./utils", "./keys"], function (
     this.$element.off(".select2");
     this.$element.attr(
       "tabindex",
-      Utils.GetData(this.$element[0], "old-tabindex")
+      Utils.GetData(this.$element[0], "old-tabindex"),
     );
 
     this.$element.removeClass("select2-hidden-accessible");
@@ -655,7 +655,7 @@ define(["jquery", "./options", "./utils", "./keys"], function (
       '<span class="select2 select2-container">' +
         '<span class="selection"></span>' +
         '<span class="dropdown-wrapper" aria-hidden="true"></span>' +
-        "</span>"
+        "</span>",
     );
 
     $container.attr("dir", this.options.get("dir"));

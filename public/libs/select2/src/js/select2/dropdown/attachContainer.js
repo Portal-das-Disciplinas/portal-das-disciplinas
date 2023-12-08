@@ -6,7 +6,7 @@ define([], function () {
   AttachContainer.prototype.position = function (
     decorated,
     $dropdown,
-    $container
+    $container,
   ) {
     var $dropdownContainer = $container.find(".dropdown-wrapper");
     $dropdownContainer.append($dropdown);

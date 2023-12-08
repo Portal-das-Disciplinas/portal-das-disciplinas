@@ -20,7 +20,7 @@
     }
 
     @if $vendor {
-        $vendor-gradients: -#{$vendor}-#{$gradient-type}-gradient(
+        $vendor-gradients: -#{$vendor}-#{$gradient-type}- gradient(
                 #{$pre-spec} $gradients
             );
     } @else if $vendor == false {

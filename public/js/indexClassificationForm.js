@@ -1,23 +1,26 @@
-// advancedOptionButton
-// simpleSearch
-// advancedSearch
-
-// Deixa  a div que contém os input ranges
-// com display none por padrão
+/* Deixa  a div que contém os input ranges
+   com display none por padrão */
 $(".advancedSearch").css("display", "none");
 $(".simpleSearch").css("display", "flex");
 $("#advancedOptionButton").css("display", "none");
 $("#unmarkAll").css("display", "none");
+$("#filtro").attr("value", "null");
 
 $("#unmarkAll").on("click", () => {
     $("#resetButton").trigger("click");
 });
 
 $("#AccordionButton").on("click", () => {
+    /*Ao clicar no filtro por aprovação
+    altera a propriedade filtro para aprovacao,
+    indicando que o filtro por aprovacao será utilizado*/
+
     if ($("#AccordionButton").attr("aria-expanded") == "false") {
         $("#advancedOptionButton").css("display", "flex");
         $("#unmarkAll").css("display", "flex");
+        $("#filtro").attr("value", "classificacao");
     } else {
+        $("#filtro").attr("value", "null");
         $("#advancedOptionButton").css("display", "none");
         $("#unmarkAll").css("display", "none");
     }
@@ -37,7 +40,7 @@ $("#advancedOptionButton").on("click", () => {
 
         // Quando os ranges ativarem mudar o value de mínimo deles
         // de -1 para 0
-        $(".range").attr("min", 0); 
+        $(".range").attr("min", 0);
         $(".range").attr("value", 0);
 
         $(".simpleSearch").css("display", "none");
@@ -46,7 +49,7 @@ $("#advancedOptionButton").on("click", () => {
         $("#unmarkAll").css("display", "flex");
         $("#caracteristicas").css("display", "flex");
         $(".advancedSearch").css("display", "none");
-        
+
         // Quando os ranges ativarem mudar o value de mínimo deles
         // de 0 para -1
         $(".range").attr("min", -1);
@@ -54,4 +57,23 @@ $("#advancedOptionButton").on("click", () => {
 
         $(".simpleSearch").css("display", "flex");
     }
+});
+
+$("#aprovationsButton").on("click", () => {
+    //Reseta qualquer valor que tenha ficado no form
+    //$("#resetButton").trigger("click");
+
+    /*Ao clicar no filtro por aprovação
+    altera a propriedade filtro para aprovacao,
+    indicando que o filtro por aprovacao será utilizado*/
+
+    if ($("#aprovationsButton").attr("aria-expanded") == "false") {
+        $("#filtro").attr("value", "aprovacao");
+    } else {
+        $("#filtro").attr("value", "null");
+    }
+
+    //Desativa os ranges
+    $(".range").attr("min", -1);
+    $(".range").attr("value", -1);
 });

@@ -289,7 +289,7 @@
       var loggingCallback = function (callback) {
         if (objectType(callback) !== "function") {
           throw new Error(
-            "QUnit logging methods require a callback function as their first parameters."
+            "QUnit logging methods require a callback function as their first parameters.",
           );
         }
 
@@ -347,7 +347,7 @@
               loggingCallback +
               " was replaced with a new value.\n" +
               "Please, check out the documentation on how to apply logging callbacks.\n" +
-              "Reference: https://api.qunitjs.com/category/callbacks/"
+              "Reference: https://api.qunitjs.com/category/callbacks/",
           );
         }
       }
@@ -387,8 +387,8 @@
               function () {
                 QUnit.pushFailure(error, filePath + ":" + linerNr);
               },
-              { validTest: true }
-            )
+              { validTest: true },
+            ),
           );
         }
         return false;
@@ -495,16 +495,16 @@
 
         if (runStarted) {
           throw new Error(
-            "Called start() outside of a test context while already started"
+            "Called start() outside of a test context while already started",
           );
         } else if (globalStartAlreadyCalled || count > 1) {
           throw new Error(
-            "Called start() outside of a test context too many times"
+            "Called start() outside of a test context too many times",
           );
         } else if (config.autostart) {
           throw new Error(
             "Called start() outside of a test context when " +
-              "QUnit.config.autostart was true"
+              "QUnit.config.autostart was true",
           );
         } else if (!config.pageLoaded) {
           // The page isn't completely loaded yet, so bail out and let `QUnit.load` handle it
@@ -521,7 +521,7 @@
 
           QUnit.pushFailure(
             "Called start() with a non-numeric decrement.",
-            sourceFromStacktrace(2)
+            sourceFromStacktrace(2),
           );
           return;
         }
@@ -537,7 +537,7 @@
 
           QUnit.pushFailure(
             "Called start() while already started (test's semaphore was 0 already)",
-            sourceFromStacktrace(2)
+            sourceFromStacktrace(2),
           );
           return;
         }
@@ -581,7 +581,7 @@
           autostart: true,
           filter: "",
         },
-        true
+        true,
       );
 
       config.blocking = false;
@@ -865,7 +865,7 @@
             this.stack +
             ": " +
             (e.message || e),
-          extractStacktrace(e, 0)
+          extractStacktrace(e, 0),
         );
 
         // Else next test will carry the responsibility
@@ -905,7 +905,7 @@
               test.testName +
               ": " +
               (error.message || error),
-            extractStacktrace(error, 0)
+            extractStacktrace(error, 0),
           );
         }
 
@@ -945,7 +945,7 @@
         this.pushFailure(
           "Expected number of assertions to be defined, but expect() was " +
             "not called.",
-          this.stack
+          this.stack,
         );
       } else if (
         this.expected !== null &&
@@ -957,13 +957,13 @@
             " assertions, but " +
             this.assertions.length +
             " were run",
-          this.stack
+          this.stack,
         );
       } else if (this.expected === null && !this.assertions.length) {
         this.pushFailure(
           "Expected at least one assertion, but none were run - call " +
             "expect(0) to accept zero assertions.",
-          this.stack
+          this.stack,
         );
       }
 
@@ -1046,7 +1046,7 @@
         QUnit.config.reorder &&
         defined.sessionStorage &&
         +sessionStorage.getItem(
-          "qunit-test-" + this.module.name + "-" + this.testName
+          "qunit-test-" + this.module.name + "-" + this.testName,
         );
 
       return synchronize(run, priority, config.seed);
@@ -1087,7 +1087,7 @@
       if (!(this instanceof Test)) {
         throw new Error(
           "pushFailure() assertion outside test context, was " +
-            sourceFromStacktrace(2)
+            sourceFromStacktrace(2),
         );
       }
 
@@ -1141,7 +1141,7 @@
 
               // Unblock
               QUnit.start();
-            }
+            },
           );
         }
       }
@@ -1208,7 +1208,7 @@
             !!regexFilter[1],
             regexFilter[2],
             regexFilter[3],
-            fullName
+            fullName,
           )
         : this.stringFilter(filter, fullName);
     },
@@ -1266,7 +1266,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
     if (!QUnit.config.current) {
       throw new Error(
         "pushFailure() assertion outside test context, in " +
-          sourceFromStacktrace(2)
+          sourceFromStacktrace(2),
       );
     }
 
@@ -1320,7 +1320,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
 
       // Insert into a random position after all priority items
       index = Math.floor(
-        unitSampler() * (config.queue.length - priorityCount + 1)
+        unitSampler() * (config.queue.length - priorityCount + 1),
       );
       config.queue.splice(priorityCount + index, 0, callback);
     } else {
@@ -1376,14 +1376,14 @@ This method will throw an error in 2.0, and will be removed in 2.1
     newGlobals = diff(config.pollution, old);
     if (newGlobals.length > 0) {
       QUnit.pushFailure(
-        "Introduced global variable(s): " + newGlobals.join(", ")
+        "Introduced global variable(s): " + newGlobals.join(", "),
       );
     }
 
     deletedGlobals = diff(old, config.pollution);
     if (deletedGlobals.length > 0) {
       QUnit.pushFailure(
-        "Deleted global variable(s): " + deletedGlobals.join(", ")
+        "Deleted global variable(s): " + deletedGlobals.join(", "),
       );
     }
   }
@@ -1496,7 +1496,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
         if (popped) {
           test.pushFailure(
             "Too many calls to the `assert.async` callback",
-            sourceFromStacktrace(2)
+            sourceFromStacktrace(2),
           );
           return;
         }
@@ -1538,14 +1538,14 @@ This method will throw an error in 2.0, and will be removed in 2.1
       // not exactly the test where assertion were intended to be called.
       if (!currentTest) {
         throw new Error(
-          "assertion outside test context, in " + sourceFromStacktrace(2)
+          "assertion outside test context, in " + sourceFromStacktrace(2),
         );
       }
 
       if (currentTest.usedAsync === true && currentTest.semaphore === 0) {
         currentTest.pushFailure(
           "Assertion after the final `assert.async` was resolved",
-          sourceFromStacktrace(2)
+          sourceFromStacktrace(2),
         );
 
         // Allow this assertion to continue running anyway...
@@ -2235,7 +2235,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
               ret.push(
                 dump.parse(key, "key") +
                   ": " +
-                  dump.parse(val, undefined, stack)
+                  dump.parse(val, undefined, stack),
               );
             }
             dump.down();
@@ -2401,7 +2401,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
 })(
   (function () {
     return this;
-  })()
+  })(),
 );
 
 (function () {
@@ -2454,7 +2454,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
       tooltip:
         "Enabling this will run tests outside of a try-catch block. Makes debugging " +
         "exceptions in IE reasonable. Stored as query-strings.",
-    }
+    },
   );
 
   QUnit.begin(function () {
@@ -2843,12 +2843,12 @@ This method will throw an error in 2.0, and will be removed in 2.1
     addEvents(
       urlConfigContainer.getElementsByTagName("input"),
       "click",
-      toolbarChanged
+      toolbarChanged,
     );
     addEvents(
       urlConfigContainer.getElementsByTagName("select"),
       "change",
-      toolbarChanged
+      toolbarChanged,
     );
 
     return urlConfigContainer;
@@ -3013,8 +3013,8 @@ This method will throw an error in 2.0, and will be removed in 2.1
       userAgent.innerHTML = "";
       userAgent.appendChild(
         document.createTextNode(
-          "QUnit " + QUnit.version + "; " + navigator.userAgent
-        )
+          "QUnit " + QUnit.version + "; " + navigator.userAgent,
+        ),
       );
     }
   }
@@ -3194,7 +3194,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
         QUnit.config.reorder &&
         defined.sessionStorage &&
         +sessionStorage.getItem(
-          "qunit-test-" + details.module + "-" + details.name
+          "qunit-test-" + details.module + "-" + details.name,
         );
 
       running.innerHTML =
@@ -3345,11 +3345,11 @@ This method will throw an error in 2.0, and will be removed in 2.1
       if (bad) {
         sessionStorage.setItem(
           "qunit-test-" + details.module + "-" + details.name,
-          bad
+          bad,
         );
       } else {
         sessionStorage.removeItem(
-          "qunit-test-" + details.module + "-" + details.name
+          "qunit-test-" + details.module + "-" + details.name,
         );
       }
     }
@@ -3725,7 +3725,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
         if (
           text1.substring(
             text1.length - pointermid,
-            text1.length - pointerend
+            text1.length - pointerend,
           ) ===
           text2.substring(text2.length - pointermid, text2.length - pointerend)
         ) {
@@ -3755,7 +3755,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
       text1,
       text2,
       checklines,
-      deadline
+      deadline,
     ) {
       var diffs,
         longtext,
@@ -3893,11 +3893,11 @@ This method will throw an error in 2.0, and will be removed in 2.1
         while ((j = shorttext.indexOf(seed, j + 1)) !== -1) {
           prefixLength = dmp.diffCommonPrefix(
             longtext.substring(i),
-            shorttext.substring(j)
+            shorttext.substring(j),
           );
           suffixLength = dmp.diffCommonSuffix(
             longtext.substring(0, i),
-            shorttext.substring(0, j)
+            shorttext.substring(0, j),
           );
           if (bestCommon.length < suffixLength + prefixLength) {
             bestCommon =
@@ -4014,7 +4014,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
               // Delete the offending records and add the merged ones.
               diffs.splice(
                 pointer - countDelete - countInsert,
-                countDelete + countInsert
+                countDelete + countInsert,
               );
               pointer = pointer - countDelete - countInsert;
               a = this.DiffMain(textDelete, textInsert, false, deadline);
@@ -4209,7 +4209,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
       text2,
       x,
       y,
-      deadline
+      deadline,
     ) {
       var text1a, text1b, text2a, text2b, diffs, diffsb;
       text1a = text1.substring(0, x);
@@ -4345,7 +4345,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
               ]);
               diffs[pointer - 1][1] = deletion.substring(
                 0,
-                deletion.length - overlapLength1
+                deletion.length - overlapLength1,
               );
               diffs[pointer + 1][1] = insertion.substring(overlapLength1);
               pointer++;
@@ -4365,7 +4365,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
               diffs[pointer - 1][0] = DIFF_INSERT;
               diffs[pointer - 1][1] = insertion.substring(
                 0,
-                insertion.length - overlapLength2
+                insertion.length - overlapLength2,
               );
               diffs[pointer + 1][0] = DIFF_DELETE;
               diffs[pointer + 1][1] = deletion.substring(overlapLength2);
@@ -4591,11 +4591,11 @@ This method will throw an error in 2.0, and will be removed in 2.1
                     diffs[pointer][1];
                   textInsert = textInsert.substring(
                     0,
-                    textInsert.length - commonlength
+                    textInsert.length - commonlength,
                   );
                   textDelete = textDelete.substring(
                     0,
-                    textDelete.length - commonlength
+                    textDelete.length - commonlength,
                   );
                 }
               }
@@ -4616,7 +4616,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
                   pointer - countDelete - countInsert,
                   countDelete + countInsert,
                   [DIFF_DELETE, textDelete],
-                  [DIFF_INSERT, textInsert]
+                  [DIFF_INSERT, textInsert],
                 );
               }
               pointer =
@@ -4658,7 +4658,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
         ) {
           diffPointer = diffs[pointer][1];
           position = diffPointer.substring(
-            diffPointer.length - diffs[pointer - 1][1].length
+            diffPointer.length - diffs[pointer - 1][1].length,
           );
 
           // This is a single edit surrounded by equalities.
@@ -4668,7 +4668,7 @@ This method will throw an error in 2.0, and will be removed in 2.1
               diffs[pointer - 1][1] +
               diffs[pointer][1].substring(
                 0,
-                diffs[pointer][1].length - diffs[pointer - 1][1].length
+                diffs[pointer][1].length - diffs[pointer - 1][1].length,
               );
             diffs[pointer + 1][1] =
               diffs[pointer - 1][1] + diffs[pointer + 1][1];

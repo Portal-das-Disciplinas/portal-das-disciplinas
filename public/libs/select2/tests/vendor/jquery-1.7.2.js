@@ -281,7 +281,7 @@
         return this.pushStack(
           slice.apply(this, arguments),
           "slice",
-          slice.call(arguments).join(",")
+          slice.call(arguments).join(","),
         );
       },
 
@@ -289,7 +289,7 @@
         return this.pushStack(
           jQuery.map(this, function (elem, i) {
             return callback.call(elem, i, elem);
-          })
+          }),
         );
       },
 
@@ -459,7 +459,7 @@
           document.addEventListener(
             "DOMContentLoaded",
             DOMContentLoaded,
-            false
+            false,
           );
 
           // A fallback to window.onload, that will always work
@@ -583,7 +583,7 @@
             data
               .replace(rvalidescape, "@")
               .replace(rvalidtokens, "]")
-              .replace(rvalidbraces, "")
+              .replace(rvalidbraces, ""),
           )
         ) {
           return new Function("return " + data)();
@@ -901,7 +901,7 @@
                 elems[i],
                 key,
                 exec ? value.call(elems[i], i, fn(elems[i], key)) : value,
-                pass
+                pass,
               );
             }
           }
@@ -971,7 +971,7 @@
       "Boolean Number String Function Array Date RegExp Object".split(" "),
       function (i, name) {
         class2type["[object " + name + "]"] = name.toLowerCase();
-      }
+      },
     );
 
     browserMatch = jQuery.uaMatch(userAgent);
@@ -1000,7 +1000,7 @@
         document.removeEventListener(
           "DOMContentLoaded",
           DOMContentLoaded,
-          false
+          false,
         );
         jQuery.ready();
       };
@@ -1323,19 +1323,19 @@
                             .then(
                               newDefer.resolve,
                               newDefer.reject,
-                              newDefer.notify
+                              newDefer.notify,
                             );
                         } else {
                           newDefer[action + "With"](
                             this === deferred ? newDefer : this,
-                            [returned]
+                            [returned],
                           );
                         }
                       });
                     } else {
                       deferred[handler](newDefer[action]);
                     }
-                  }
+                  },
                 );
               })
               .promise();
@@ -1368,14 +1368,14 @@
             state = "resolved";
           },
           failList.disable,
-          progressList.lock
+          progressList.lock,
         )
         .fail(
           function () {
             state = "rejected";
           },
           doneList.disable,
-          progressList.lock
+          progressList.lock,
         );
 
       // Call given func if any
@@ -1713,7 +1713,7 @@
           (parseInt(
             (window.getComputedStyle(marginDiv, null) || { marginRight: 0 })
               .marginRight,
-            10
+            10,
           ) || 0) === 0;
       }
 
@@ -2101,7 +2101,7 @@
         value,
         arguments.length > 1,
         null,
-        false
+        false,
       );
     },
 
@@ -2255,7 +2255,7 @@
           function () {
             jQuery.dequeue(elem, type);
           },
-          hooks
+          hooks,
         );
       }
 
@@ -2342,7 +2342,7 @@
                 elements[i],
                 deferDataKey,
                 jQuery.Callbacks("once memory"),
-                true
+                true,
               )))
         ) {
           count++;
@@ -2374,7 +2374,7 @@
         jQuery.attr,
         name,
         value,
-        arguments.length > 1
+        arguments.length > 1,
       );
     },
 
@@ -2390,7 +2390,7 @@
         jQuery.prop,
         name,
         value,
-        arguments.length > 1
+        arguments.length > 1,
       );
     },
 
@@ -2480,7 +2480,7 @@
         return this.each(function (i) {
           jQuery(this).toggleClass(
             value.call(this, i, this.className, stateVal),
-            stateVal
+            stateVal,
           );
         });
       }
@@ -3196,7 +3196,7 @@
             quick: selector && quickParse(selector),
             namespace: namespaces.join("."),
           },
-          handleObjIn
+          handleObjIn,
         );
 
         // Init the event handler queue if we're the first
@@ -3287,7 +3287,7 @@
           ? new RegExp(
               "(^|\\.)" +
                 namespaces.split(".").sort().join("\\.(?:.*\\.)?") +
-                "(\\.|$)"
+                "(\\.|$)",
             )
           : null;
 
@@ -3657,7 +3657,7 @@
     // *** attrChange attrName relatedNode srcElement  are not normalized, non-W3C, deprecated, will be removed in 1.8 ***
     props:
       "attrChange attrName relatedNode srcElement altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(
-        " "
+        " ",
       ),
 
     fixHooks: {},
@@ -3678,7 +3678,7 @@
     mouseHooks: {
       props:
         "button buttons clientX clientY fromElement offsetX offsetY pageX pageY screenX screenY toElement".split(
-          " "
+          " ",
         ),
       filter: function (event, original) {
         var eventDoc,
@@ -3944,7 +3944,7 @@
           return ret;
         },
       };
-    }
+    },
   );
 
   // IE submit delegation
@@ -4066,7 +4066,7 @@
             fix,
             event.target,
             jQuery.event.fix(event),
-            true
+            true,
           );
         };
 
@@ -4152,7 +4152,7 @@
             ? handleObj.origType + "." + handleObj.namespace
             : handleObj.origType,
           handleObj.selector,
-          handleObj.handler
+          handleObj.handler,
         );
         return this;
       }
@@ -4275,7 +4275,7 @@
       if (rmouseEvent.test(name)) {
         jQuery.event.fixHooks[name] = jQuery.event.mouseHooks;
       }
-    }
+    },
   );
 
   /*!
@@ -4392,7 +4392,7 @@
                   context.parentNode
                   ? context.parentNode
                   : context,
-                contextXML
+                contextXML,
               );
 
           set = ret.expr ? Sizzle.filter(ret.expr, ret.set) : ret.set;
@@ -4566,7 +4566,7 @@
                 inplace,
                 result,
                 not,
-                isXMLFilter
+                isXMLFilter,
               );
 
               if (!match) {
@@ -4795,7 +4795,7 @@
             doneName,
             checkSet,
             nodeCheck,
-            isXML
+            isXML,
           );
         },
       },
@@ -4881,7 +4881,7 @@
               (match[2] === "even" && "2n") ||
                 (match[2] === "odd" && "2n+1") ||
                 (!/\D/.test(match[2]) && "0n+" + match[2]) ||
-                match[2]
+                match[2],
             );
 
             // calculate the numbers (first)n+(last) including if they are negative
@@ -5267,11 +5267,11 @@
 
     for (var type in Expr.match) {
       Expr.match[type] = new RegExp(
-        Expr.match[type].source + /(?![^\[]*\])(?![^\(]*\))/.source
+        Expr.match[type].source + /(?![^\[]*\])(?![^\(]*\))/.source,
       );
       Expr.leftMatch[type] = new RegExp(
         /(^(?:.|\r|\n)*?)/.source +
-          Expr.match[type].source.replace(/\\(\d+)/g, fescape)
+          Expr.match[type].source.replace(/\\(\d+)/g, fescape),
       );
     }
     // Expose origPOS
@@ -5547,7 +5547,7 @@
               ) {
                 return makeArray(
                   context.getElementsByClassName(match[2]),
-                  extra
+                  extra,
                 );
               }
             }
@@ -5606,7 +5606,7 @@
                 if (!relativeHierarchySelector || hasParent) {
                   return makeArray(
                     context.querySelectorAll("[id='" + nid + "'] " + query),
-                    extra
+                    extra,
                   );
                 }
               } catch (pseudoError) {
@@ -5643,7 +5643,7 @@
         // on a disconnected node (IE 9 fails this)
         var disconnectedMatch = !matches.call(
             document.createElement("div"),
-            "div"
+            "div",
           ),
           pseudoWorks = false;
 
@@ -6014,7 +6014,7 @@
       return jQuery.inArray(
         // If it receives a jQuery object, the first element is used
         elem.jquery ? elem[0] : elem,
-        this
+        this,
       );
     },
 
@@ -6023,14 +6023,14 @@
           typeof selector === "string"
             ? jQuery(selector, context)
             : jQuery.makeArray(
-                selector && selector.nodeType ? [selector] : selector
+                selector && selector.nodeType ? [selector] : selector,
               ),
         all = jQuery.merge(this.get(), set);
 
       return this.pushStack(
         isDisconnected(set[0]) || isDisconnected(all[0])
           ? all
-          : jQuery.unique(all)
+          : jQuery.unique(all),
       );
     },
 
@@ -6111,7 +6111,7 @@
 
         return this.pushStack(ret, name, slice.call(arguments).join(","));
       };
-    }
+    },
   );
 
   jQuery.extend({
@@ -6265,13 +6265,13 @@
             ? jQuery.text(this)
             : this.empty().append(
                 ((this[0] && this[0].ownerDocument) || document).createTextNode(
-                  value
-                )
+                  value,
+                ),
               );
         },
         null,
         value,
-        arguments.length
+        arguments.length,
       );
     },
 
@@ -6472,7 +6472,7 @@
         },
         null,
         value,
-        arguments.length
+        arguments.length,
       );
     },
 
@@ -6509,7 +6509,7 @@
           ? this.pushStack(
               jQuery(jQuery.isFunction(value) ? value() : value),
               "replaceWith",
-              value
+              value,
             )
           : this;
       }
@@ -6585,7 +6585,7 @@
               // in place.
               results.cacheable || (l > 1 && i < lastIndex)
                 ? jQuery.clone(fragment, true, true)
-                : fragment
+                : fragment,
             );
           }
         }
@@ -6604,8 +6604,8 @@
               jQuery.globalEval(
                 (elem.text || elem.textContent || elem.innerHTML || "").replace(
                   rcleanScript,
-                  "/*$0*/"
-                )
+                  "/*$0*/",
+                ),
               );
             }
 
@@ -6815,7 +6815,7 @@
           return this.pushStack(ret, name, insert.selector);
         }
       };
-    }
+    },
   );
 
   function getAll(elem) {
@@ -7005,7 +7005,7 @@
             ) {
               div.insertBefore(
                 context.createTextNode(rleadingWhitespace.exec(elem)[0]),
-                div.firstChild
+                div.firstChild,
               );
             }
 
@@ -7060,13 +7060,15 @@
             (!script.type || rscriptType.test(script.type))
           ) {
             scripts.push(
-              script.parentNode ? script.parentNode.removeChild(script) : script
+              script.parentNode
+                ? script.parentNode.removeChild(script)
+                : script,
             );
           } else {
             if (script.nodeType === 1) {
               var jsTags = jQuery.grep(
                 script.getElementsByTagName("script"),
-                checkScriptType
+                checkScriptType,
               );
 
               ret.splice.apply(ret, [i + 1, 0].concat(jsTags));
@@ -7150,7 +7152,7 @@
       },
       name,
       value,
-      arguments.length > 1
+      arguments.length > 1,
     );
   };
 
@@ -7477,7 +7479,7 @@
         return ropacity.test(
           (computed && elem.currentStyle
             ? elem.currentStyle.filter
-            : elem.style.filter) || ""
+            : elem.style.filter) || "",
         )
           ? parseFloat(RegExp.$1) / 100 + ""
           : computed
@@ -7579,7 +7581,7 @@
           return expanded;
         },
       };
-    }
+    },
   );
 
   var r20 = /%20/g,
@@ -7681,7 +7683,7 @@
     originalOptions,
     jqXHR,
     dataType /* internal */,
-    inspected /* internal */
+    inspected /* internal */,
   ) {
     dataType = dataType || options.dataTypes[0];
     inspected = inspected || {};
@@ -7709,7 +7711,7 @@
             originalOptions,
             jqXHR,
             selection,
-            inspected
+            inspected,
           );
         }
       }
@@ -7723,7 +7725,7 @@
         originalOptions,
         jqXHR,
         "*",
-        inspected
+        inspected,
       );
     }
     // unnecessary when only executing (prefilters)
@@ -7813,7 +7815,7 @@
                     // Locate the specified elements
                     .find(selector)
                 : // If not, just inject the full result
-                  responseText
+                  responseText,
             );
           }
 
@@ -7865,7 +7867,7 @@
       jQuery.fn[o] = function (f) {
         return this.on(o, f);
       };
-    }
+    },
   );
 
   jQuery.each(["get", "post"], function (i, method) {
@@ -8178,7 +8180,7 @@
         if (fireGlobals) {
           globalEventContext.trigger(
             "ajax" + (isSuccess ? "Success" : "Error"),
-            [jqXHR, s, isSuccess ? success : error]
+            [jqXHR, s, isSuccess ? success : error],
           );
         }
 
@@ -8307,7 +8309,7 @@
         if (jQuery.lastModified[ifModifiedKey]) {
           jqXHR.setRequestHeader(
             "If-Modified-Since",
-            jQuery.lastModified[ifModifiedKey]
+            jQuery.lastModified[ifModifiedKey],
           );
         }
         if (jQuery.etag[ifModifiedKey]) {
@@ -8321,7 +8323,7 @@
         s.dataTypes[0] && s.accepts[s.dataTypes[0]]
           ? s.accepts[s.dataTypes[0]] +
               (s.dataTypes[0] !== "*" ? ", " + allTypes + "; q=0.01" : "")
-          : s.accepts["*"]
+          : s.accepts["*"],
       );
 
       // Check for headers option
@@ -8434,7 +8436,7 @@
             prefix + "[" + (typeof v === "object" ? i : "") + "]",
             v,
             traditional,
-            add
+            add,
           );
         }
       });
@@ -9237,7 +9239,7 @@
               jQuery._data(
                 this,
                 "toggle" + p,
-                method === "show" ? "hide" : "show"
+                method === "show" ? "hide" : "show",
               );
               e[method]();
             } else {
@@ -9381,7 +9383,7 @@
       jQuery.fn[name] = function (speed, easing, callback) {
         return this.animate(props, speed, easing, callback);
       };
-    }
+    },
   );
 
   jQuery.extend({
@@ -9530,7 +9532,7 @@
       } else {
         this.custom(
           this.prop === "width" || this.prop === "height" ? 1 : 0,
-          this.cur()
+          this.cur(),
         );
       }
 
@@ -9622,7 +9624,7 @@
             n,
             0,
             1,
-            options.duration
+            options.duration,
           );
           this.now = this.start + (this.end - this.start) * this.pos;
         }
@@ -9725,7 +9727,7 @@
         if (!iframeDoc || !iframe.createElement) {
           iframeDoc = (iframe.contentWindow || iframe.contentDocument).document;
           iframeDoc.write(
-            (jQuery.support.boxModel ? "<!doctype html>" : "") + "<html><body>"
+            (jQuery.support.boxModel ? "<!doctype html>" : "") + "<html><body>",
           );
           iframeDoc.close();
         }
@@ -10013,7 +10015,7 @@
             if (win) {
               win.scrollTo(
                 !top ? val : jQuery(win).scrollLeft(),
-                top ? val : jQuery(win).scrollTop()
+                top ? val : jQuery(win).scrollTop(),
               );
             } else {
               elem[method] = val;
@@ -10022,10 +10024,10 @@
           method,
           val,
           arguments.length,
-          null
+          null,
         );
       };
-    }
+    },
   );
 
   function getWindow(elem) {
@@ -10096,7 +10098,7 @@
               elem.body[scrollProp],
               doc[scrollProp],
               elem.body[offsetProp],
-              doc[offsetProp]
+              doc[offsetProp],
             );
           }
 
@@ -10113,7 +10115,7 @@
         type,
         value,
         arguments.length,
-        null
+        null,
       );
     };
   });

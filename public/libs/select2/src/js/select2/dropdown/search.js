@@ -9,7 +9,7 @@ define(["jquery", "../utils"], function ($, Utils) {
         '<input class="select2-search__field" type="search" tabindex="-1"' +
         ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="searchbox" aria-autocomplete="list" />' +
-        "</span>"
+        "</span>",
     );
 
     this.$searchContainer = $search;

@@ -41,7 +41,7 @@ define(["jquery"], function ($) {
   InfiniteScroll.prototype.loadMoreIfNeeded = function () {
     var isLoadMoreVisible = $.contains(
       document.documentElement,
-      this.$loadingMore[0]
+      this.$loadingMore[0],
     );
 
     if (this.loading || !isLoadMoreVisible) {
@@ -76,7 +76,7 @@ define(["jquery"], function ($) {
     var $option = $(
       "<li " +
         'class="select2-results__option select2-results__option--load-more"' +
-        'role="option" aria-disabled="true"></li>'
+        'role="option" aria-disabled="true"></li>',
     );
 
     var message = this.options.get("translations").get("loadingMore");

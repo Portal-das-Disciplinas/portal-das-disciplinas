@@ -10,7 +10,7 @@ var Utils = require("select2/utils");
 
 var CustomSelection = Utils.Decorate(
   Utils.Decorate(MultipleSelection, SelectionPlaceholder),
-  InlineSearch
+  InlineSearch,
 );
 
 test("width does not extend the search box", function (assert) {
@@ -20,7 +20,7 @@ test("width does not extend the search box", function (assert) {
     '<div style="width: 100px; display: table-cell">' +
       '<div style="width: 100%" ' +
       'class="select2-container select2-container--default"></div>' +
-      "</div>"
+      "</div>",
   );
   var container = new MockContainer();
 
@@ -29,7 +29,7 @@ test("width does not extend the search box", function (assert) {
     $element,
     new Options({
       placeholder: "Test placeholder",
-    })
+    }),
   );
 
   var $selection = selection.render();
@@ -47,12 +47,12 @@ test("width does not extend the search box", function (assert) {
   assert.equal(
     $search.outerWidth(),
     60,
-    "The search should not be the entire width of the container"
+    "The search should not be the entire width of the container",
   );
 
   assert.equal(
     $container.children().outerWidth(),
     100,
-    "The container should be the width assigned to the parent in CSS"
+    "The container should be the width assigned to the parent in CSS",
   );
 });
