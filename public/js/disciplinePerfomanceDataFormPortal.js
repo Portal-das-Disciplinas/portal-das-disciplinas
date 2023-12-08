@@ -131,13 +131,13 @@ function onChangeCheckAllPeriods(event) {
 let classPerformanceDatas = [];
 
 let generalPerformanceData = {
-    'averageGrade': 0,
-    'highestGrade': -1,
-    'lowestGrade': 1000,
-    'numStudents': 0,
-    'numApprovedStudents': 0,
-    'numFailedStudents': 0,
-}
+    averageGrade: 0,
+    highestGrade: -1,
+    lowestGrade: 1000,
+    numStudents: 0,
+    numApprovedStudents: 0,
+    numFailedStudents: 0,
+};
 
 function resetValues() {
     generalPerformanceData.averageGrade = 0;
@@ -311,7 +311,9 @@ function searchDisciplineData(disciplineCode) {
                 let element = document.querySelector("#infoPesquisaDados");
                 element.classList.remove("d-none");
                 element.innerHTML = "Ocorreu um erro ao obter os dados";
-                document.querySelector("#btnSearchDisciplineData").disabled = false;
+                document.querySelector(
+                    "#btnSearchDisciplineData",
+                ).disabled = false;
                 return;
             }
 
@@ -320,7 +322,9 @@ function searchDisciplineData(disciplineCode) {
 
             } else {
                 resetValues();
-                document.querySelector("#dadosDisciplina").classList.add("d-none");
+                document
+                    .querySelector("#dadosDisciplina")
+                    .classList.add("d-none");
                 let element = document.querySelector("#infoPesquisaDados");
                 element.classList.remove("d-none");
                 if (checkboxAllPeriods) {

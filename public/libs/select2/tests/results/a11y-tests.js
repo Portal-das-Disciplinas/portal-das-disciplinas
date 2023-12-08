@@ -19,7 +19,7 @@ test("multiple select should have aria-multiselectable", function (assert) {
     $("<select></select>"),
     new Options({
       multiple: true,
-    })
+    }),
   );
 
   var $results = results.render();

@@ -31,7 +31,7 @@ test("width from style returns null if nothing is found", function (assert) {
 
 test("width from computed element width", function (assert) {
   var $style = $(
-    '<style type="text/css">.css-set-width { width: 500px; }</style>'
+    '<style type="text/css">.css-set-width { width: 500px; }</style>',
   );
   var $test = $('<select class="css-set-width"></select>');
 
@@ -53,7 +53,7 @@ test("resolve gets the style if it is there", function (assert) {
 
 test("resolve falls back to element if there is no style", function (assert) {
   var $style = $(
-    '<style type="text/css">.css-set-width { width: 500px; }</style>'
+    '<style type="text/css">.css-set-width { width: 500px; }</style>',
   );
   var $test = $('<select class="css-set-width"></select>');
 
@@ -67,12 +67,12 @@ test("resolve falls back to element if there is no style", function (assert) {
 
 test("computedstyle gets the style if parent is invisible", function (assert) {
   var $style = $(
-    '<style type="text/css">.css-set-width { width: 500px; }</style>'
+    '<style type="text/css">.css-set-width { width: 500px; }</style>',
   );
   var $test = $(
     '<div style="display:none;">' +
       '<select class="css-set-width"></select>' +
-      "</div>"
+      "</div>",
   );
 
   $("#qunit-fixture").append($style);

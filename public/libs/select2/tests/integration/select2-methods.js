@@ -10,7 +10,7 @@ test("single default selection returned", function (assert) {
       "<option>One</option>" +
       "<option>Two</option>" +
       '<option value="3" selected>Three</option>' +
-      "</select>"
+      "</select>",
   );
   var options = new Options({});
 
@@ -33,7 +33,7 @@ test("multiple default selections returned", function (assert) {
       "<option selected>One</option>" +
       "<option>Two</option>" +
       '<option value="3" selected>Three</option>' +
-      "</select>"
+      "</select>",
   );
   var options = new Options({});
 
@@ -60,7 +60,7 @@ test("single value matches jquery value", function (assert) {
       "<option>One</option>" +
       "<option>Two</option>" +
       '<option value="3" selected>Three</option>' +
-      "</select>"
+      "</select>",
   );
   var options = new Options({});
 
@@ -79,7 +79,7 @@ test("multiple value matches the jquery value", function (assert) {
       "<option selected>One</option>" +
       "<option>Two</option>" +
       '<option value="3" selected>Three</option>' +
-      "</select>"
+      "</select>",
   );
   var options = new Options({});
 
@@ -92,12 +92,12 @@ test("multiple value matches the jquery value", function (assert) {
   assert.deepEqual(
     value,
     ["One", "3"],
-    "The values should match the option tag attribute"
+    "The values should match the option tag attribute",
   );
 
   assert.deepEqual(
     value,
     $select.val(),
-    "The values should match the jquery values"
+    "The values should match the jquery values",
   );
 });

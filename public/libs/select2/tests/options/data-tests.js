@@ -18,7 +18,7 @@ test("with nesting", function (assert) {
   if ($test[0].dataset == null) {
     assert.ok(
       true,
-      "We can not run this test with jQuery 1.x if dataset is not implemented"
+      "We can not run this test with jQuery 1.x if dataset is not implemented",
     );
 
     return;
@@ -38,7 +38,7 @@ test("overrides initialized data", function (assert) {
       options: "yes",
       override: "no",
     },
-    $test
+    $test,
   );
 
   assert.equal(options.get("options"), "yes");

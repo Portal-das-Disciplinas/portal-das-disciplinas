@@ -8,7 +8,7 @@ define(["jquery", "../utils"], function ($, Utils) {
         console.warn(
           "Select2: Using a hidden input with Select2 is no longer " +
             "supported and may stop working in the future. It is recommended " +
-            "to use a `<select>` element instead."
+            "to use a `<select>` element instead.",
         );
       }
     }
@@ -41,7 +41,7 @@ define(["jquery", "../utils"], function ($, Utils) {
 
       selected.push.apply(
         selected,
-        getSelected(data, this.$element.val().split(this._valueSeparator))
+        getSelected(data, this.$element.val().split(this._valueSeparator)),
       );
     }
 

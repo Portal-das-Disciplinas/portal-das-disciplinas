@@ -6,8 +6,9 @@
     $black: mix(black, white, $black);
 
     // Subtract the colors from white
-    $color: white - invert($cyan) - invert($magenta) - invert($yellow) -
-        invert($black);
+    $color: white - invert($cyan) - invert($magenta) - invert($yellow) - invert(
+            $black
+        );
 
     @return $color;
 }

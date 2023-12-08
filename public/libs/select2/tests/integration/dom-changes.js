@@ -24,7 +24,7 @@ test("adding a new unselected option changes nothing", function (assert) {
   var Select2 = require("select2/core");
 
   var $select = $(
-    "<select>" + "<option>One</option>" + "<option>Two</option>" + "</select>"
+    "<select>" + "<option>One</option>" + "<option>Two</option>" + "</select>",
   );
 
   $("#qunit-fixture").append($select);
@@ -37,7 +37,7 @@ test("adding a new unselected option changes nothing", function (assert) {
     assert.equal(
       args.data[0].id,
       "One",
-      "The selection changed to something other than One"
+      "The selection changed to something other than One",
     );
 
     if (expected != 2) {
@@ -77,7 +77,7 @@ test("adding a new selected option changes the value", function (assert) {
   var Select2 = require("select2/core");
 
   var $select = $(
-    "<select>" + "<option>One</option>" + "<option>Two</option>" + "</select>"
+    "<select>" + "<option>One</option>" + "<option>Two</option>" + "</select>",
   );
 
   $("#qunit-fixture").append($select);
@@ -90,7 +90,7 @@ test("adding a new selected option changes the value", function (assert) {
     assert.equal(
       args.data[0].id,
       "Three",
-      "The selection did not change to Three"
+      "The selection did not change to Three",
     );
 
     if (expected != 2) {
@@ -130,7 +130,7 @@ test("removing an unselected option changes nothing", function (assert) {
   var Select2 = require("select2/core");
 
   var $select = $(
-    "<select>" + "<option>One</option>" + "<option>Two</option>" + "</select>"
+    "<select>" + "<option>One</option>" + "<option>Two</option>" + "</select>",
   );
 
   $("#qunit-fixture").append($select);
@@ -143,7 +143,7 @@ test("removing an unselected option changes nothing", function (assert) {
     assert.equal(
       args.data[0].id,
       "One",
-      "The selection changed to something other than One"
+      "The selection changed to something other than One",
     );
 
     if (expected != 2) {
@@ -181,7 +181,7 @@ test("removing a selected option changes the value", function (assert) {
   var Select2 = require("select2/core");
 
   var $select = $(
-    "<select>" + "<option>One</option>" + "<option>Two</option>" + "</select>"
+    "<select>" + "<option>One</option>" + "<option>Two</option>" + "</select>",
   );
 
   $("#qunit-fixture").append($select);
@@ -217,7 +217,7 @@ test("searching tags does not loose focus", function (assert) {
     '<select multiple="multiple">' +
       '  <option value="1">Text1</option>' +
       ' <option value="2">Text2</option>' +
-      "</select>"
+      "</select>",
   );
 
   $("#qunit-fixture").append($select);

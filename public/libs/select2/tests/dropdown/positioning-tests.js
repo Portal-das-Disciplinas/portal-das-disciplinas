@@ -26,13 +26,13 @@ test("appends to the dropdown parent", function (assert) {
     $select,
     new Options({
       dropdownParent: $parent,
-    })
+    }),
   );
 
   assert.equal(
     $parent.children().length,
     1,
-    "Only the select should be in the container"
+    "Only the select should be in the container",
   );
 
   var $dropdown = dropdown.render();
@@ -44,7 +44,7 @@ test("appends to the dropdown parent", function (assert) {
   assert.equal(
     $parent.children().length,
     1,
-    "The dropdown should not be placed until after it is opened"
+    "The dropdown should not be placed until after it is opened",
   );
 
   dropdown._showDropdown();
@@ -52,12 +52,12 @@ test("appends to the dropdown parent", function (assert) {
   assert.equal(
     $parent.children().length,
     2,
-    "The dropdown should now be in the container as well"
+    "The dropdown should now be in the container as well",
   );
 
   assert.ok(
     $.contains($parent[0], $dropdown[0]),
-    "The dropdown should be contained within the parent container"
+    "The dropdown should be contained within the parent container",
   );
 });
 
@@ -91,7 +91,7 @@ test("dropdown is positioned down with static margins", function (assert) {
     $select,
     new Options({
       dropdownParent: $parent,
-    })
+    }),
   );
 
   var $dropdown = dropdown.render();
@@ -99,7 +99,7 @@ test("dropdown is positioned down with static margins", function (assert) {
   assert.equal(
     $dropdown[0].style.top,
     0,
-    "The drodpown should not have any offset before it is displayed"
+    "The drodpown should not have any offset before it is displayed",
   );
 
   dropdown.bind(container, $container);
@@ -108,19 +108,19 @@ test("dropdown is positioned down with static margins", function (assert) {
 
   assert.ok(
     dropdown.$dropdown.hasClass("select2-dropdown--below"),
-    "The dropdown should be forced down"
+    "The dropdown should be forced down",
   );
 
   assert.equal(
     $dropdown.css("top").replace(/\D+/, ""),
     $container.outerHeight() + 5,
-    "The offset should be 5px at the top"
+    "The offset should be 5px at the top",
   );
 
   assert.equal(
     $dropdown.css("left"),
     "10px",
-    "The offset should be 10px on the left"
+    "The offset should be 10px on the left",
   );
 });
 
@@ -152,7 +152,7 @@ test("dropdown is positioned down with absolute offsets", function (assert) {
     $select,
     new Options({
       dropdownParent: $parent,
-    })
+    }),
   );
 
   var $dropdown = dropdown.render();
@@ -160,7 +160,7 @@ test("dropdown is positioned down with absolute offsets", function (assert) {
   assert.equal(
     $dropdown[0].style.top,
     0,
-    "The drodpown should not have any offset before it is displayed"
+    "The drodpown should not have any offset before it is displayed",
   );
 
   dropdown.bind(container, $container);
@@ -169,19 +169,19 @@ test("dropdown is positioned down with absolute offsets", function (assert) {
 
   assert.ok(
     dropdown.$dropdown.hasClass("select2-dropdown--below"),
-    "The dropdown should be forced down"
+    "The dropdown should be forced down",
   );
 
   assert.equal(
     $dropdown.css("top").replace(/\D+/, ""),
     $container.outerHeight(),
-    "There should not be an extra top offset"
+    "There should not be an extra top offset",
   );
 
   assert.equal(
     $dropdown.css("left"),
     "0px",
-    "There should not be an extra left offset"
+    "There should not be an extra left offset",
   );
 });
 
@@ -204,7 +204,7 @@ test("dropdown is positioned even when not in document", function (assert) {
     $select,
     new Options({
       dropdownParent: $("html"),
-    })
+    }),
   );
 
   var $dropdown = dropdown.render();
@@ -212,7 +212,7 @@ test("dropdown is positioned even when not in document", function (assert) {
   assert.equal(
     $dropdown[0].style.top,
     0,
-    "The drodpown should not have any offset before it is displayed"
+    "The drodpown should not have any offset before it is displayed",
   );
 
   dropdown.bind(container, $container);
@@ -221,18 +221,18 @@ test("dropdown is positioned even when not in document", function (assert) {
 
   assert.ok(
     dropdown.$dropdown.hasClass("select2-dropdown--below"),
-    "The dropdown should be forced down"
+    "The dropdown should be forced down",
   );
 
   assert.equal(
     $dropdown.css("top"),
     "0px",
-    "The offset should be 0px at the top"
+    "The offset should be 0px at the top",
   );
 
   assert.equal(
     $dropdown.css("left"),
     "0px",
-    "The offset should be 0px on the left"
+    "The offset should be 0px on the left",
   );
 });

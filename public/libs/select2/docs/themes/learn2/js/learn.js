@@ -27,7 +27,7 @@ function getScrollBarWidth() {
 
 function setMenuHeight() {
   $("#sidebar .highlightable").height(
-    $("#sidebar").innerHeight() - $("#header-wrapper").height() - 40
+    $("#sidebar").innerHeight() - $("#header-wrapper").height() - 40,
   );
 }
 
@@ -218,7 +218,7 @@ jQuery(document).ready(function () {
       }
 
       code.after(
-        '<span class="copy-to-clipboard" title="Copy to clipboard" />'
+        '<span class="copy-to-clipboard" title="Copy to clipboard" />',
       );
       code.next(".copy-to-clipboard").on("mouseleave", function () {
         $(this)

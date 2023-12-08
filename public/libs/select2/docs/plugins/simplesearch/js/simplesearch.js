@@ -8,7 +8,7 @@
   };
 
   var fields = document.querySelectorAll(
-    'input[name="searchfield"][data-search-input]'
+    'input[name="searchfield"][data-search-input]',
   );
   fields.forEach(function (field) {
     var form = findAncestor(field, "form[data-simplesearch-form]"),

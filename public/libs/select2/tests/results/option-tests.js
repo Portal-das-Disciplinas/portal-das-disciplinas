@@ -54,7 +54,7 @@ test("option in disabled optgroup is disabled", function (assert) {
   var results = new Results($("<select></select>"), new Options({}));
 
   var $option = $("<optgroup disabled><option></option></optgroup>").find(
-    "option"
+    "option",
   );
   var option = results.option({
     element: $option[0],
