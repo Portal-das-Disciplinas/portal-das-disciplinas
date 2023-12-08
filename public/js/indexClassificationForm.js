@@ -4,7 +4,7 @@ $(".advancedSearch").css("display", "none");
 $(".simpleSearch").css("display", "flex");
 $("#advancedOptionButton").css("display", "none");
 $("#unmarkAll").css("display", "none");
-$("#filtro").attr("value", "null");
+// $("#filtro").attr("value", "null");
 
 $("#unmarkAll").on("click", () => {
     $("#resetButton").trigger("click");
