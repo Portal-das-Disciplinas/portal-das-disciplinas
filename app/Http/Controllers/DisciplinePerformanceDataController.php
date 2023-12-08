@@ -14,63 +14,79 @@ class DisciplinePerformanceDataController extends Controller
 {
     protected $performanceDataService;
     protected $theme;
-    function __construct(){
+    function __construct()
+    {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
         $this->performanceDataService = new DisciplinePerformanceDataService();
-        $this->middleware('admin')->except(['getDisciplinePerformanceData','getDisciplinePerformanceDataByInterval']);
+        $this->middleware('admin')->except(['getDisciplinePerformanceData', 'getDisciplinePerformanceDataByInterval']);
     }
 
     /**
      * Retorna os indices de perfomance da displina no formato JSON
      * 
      */
-    function getDisciplinePerformanceData(Request $request){
-        try{
+    function getDisciplinePerformanceData(Request $request)
+    {
+        try {
             $service = new DisciplinePerformanceDataService();
             $datas = $service->getPerformanceData($request['disciplineCode'], $request['year'], $request['period']);
             return response()->json($datas);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $error = new stdClass();
             $error->error = "Erro";
             return response()->json(json_encode($error));
         }
-        
     }
 
-    function getDisciplinePerformanceDataByInterval(Request $request){
+    function getDisciplinePerformanceDataByInterval(Request $request)
+    {
+        if ($request->ajax()) {
+            $service = new DisciplinePerformanceDataService();
+            try {
+                if (isset($request['checkAllPeriods']) && ($request['checkAllPeriods'] == 'on')) {
+                    $datas = $service->getPerformanceDataByDisciplineCode($request['disciplineCode']);
+                    return response()->json($datas);
+                } else {
+                    $datas = $service->getPerformanceDataByInterval(
+                        $request['disciplineCode'],
+                        $request['yearStart'],
+                        $request['periodStart'],
+                        $request['yearEnd'],
+                        $request['periodEnd']
+                    );
+                    return response()->json($datas);
+                }
+            } catch (Exception $e) {
+                $error = new stdClass();
+                $error->error = "Erro";
+                Log::error("error" . $e->getMessage());
+                return response()->json(json_encode($error));
+            }
+        }
+    }
+
+    function index(Request $request)
+    {
+        return view('discipline_performance_data.performance_data_index')->with('theme', $this->theme);
+    }
+
+    function listData(Request $request)
+    {
         $service = new DisciplinePerformanceDataService();
-        try{
-            $datas = $service->getPerformanceDataByInterval($request['disciplineCode'], $request['yearStart'],
-                                $request['periodStart'],$request['yearEnd'],$request['periodEnd']);
-            return response()->json($datas);
-        }catch(Exception $e){
-            $error = new stdClass();
-            $error->error = "Erro";
-            Log::error("error" . $e->getMessage());
-            return response()->json(json_encode($error));
-        }
-    }
-
-    function index(Request $request){
-        return view('discipline_performance_data.performance_data_index')->with('theme', $this->theme); 
-
-    }
-
-    function listData(Request $request){
-        $service = new DisciplinePerformanceDataService(); 
-        $data =  $service->getPerformanceData($request['disciplineCode'], $request['year'], $request['period'],10);
+        $data =  $service->getPerformanceData($request['disciplineCode'], $request['year'], $request['period'], 10);
         return view('discipline_performance_data.performance_data_index')
             ->with('theme', $this->theme)
             ->with('performanceData', $data)
-            ->with('disciplineCode',$request->disciplineCode)
+            ->with('disciplineCode', $request->disciplineCode)
             ->with('disciplineName', $request->disciplineName)
             ->with('year', $request->year)
             ->with('period', $request->period);
     }
 
 
-    function deletePerformanceData(Request $request){
+    function deletePerformanceData(Request $request)
+    {
 
         $service = new DisciplinePerformanceDataService();
         $idData = $request->idData;
@@ -78,19 +94,13 @@ class DisciplinePerformanceDataController extends Controller
         return redirect()->back();
     }
 
-    function deletePerformanceDataByCodeYearPeriod(Request $request){
-        try{
+    function deletePerformanceDataByCodeYearPeriod(Request $request)
+    {
+        try {
             $this->performanceDataService->deletePerformanceDataByCodeYearPeriod($request->disciplineCode, $request->year, $request->period);
             return redirect()->back();
-        }catch(Exception $e){
-           return redirect()->back()->withErrors(['delete'=>'Erro ao deletar']);
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['delete' => 'Erro ao deletar']);
         }
-        
-
     }
-
-
-
-
-
 }

@@ -119,23 +119,23 @@ mais.
                         @endif
                     </div>
                 </div>
-                <div class="card p-2">
+                <div class="card mt-5 px-2 py-2">
                     <div class="d-none">{{$actualYear = date("Y")}}</div>
-                    <h1 class="mt-5">Dados do componente</h1>
+                    <h1 class="mt-2">Índices de aprovação</h1>
                     <div class="form">
-                        <div class="form-group">
+                        <div id="semesterSelectFields" class="form-group" style="opacity: 50%";>
                             <div class="row d-flex align-items-end">
                                 <div class="col-md-3">
                                     <label>Ano Inicial</label>
-                                    <select class="form-control" id="yearStart" name="yearStart" onchange="onChangeSelect(event)">
-                                        @for($i=$actualYear; $i > ($actualYear - 10);$i--)
+                                    <select class="form-control form-control-sm disabled" id="yearStart" name="yearStart" onchange="onChangeSelect(event)" disabled>
+                                        @for($i=$actualYear; $i > 2000;$i--)
                                         <option value='{{$i}}'>{{$i}}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     <label>Período Inicial</label>
-                                    <select id="periodStart" name="periodStart" class="form-control" onchange="onChangeSelect(event)">
+                                    <select id="periodStart" name="periodStart" class="form-control form-control-sm" onchange="onChangeSelect(event)" disabled>
                                         <option value=1>1</option>
                                         <option value=2>2</option>
                                         <option value=3>3</option>
@@ -146,15 +146,15 @@ mais.
                                 </div>
                                 <div class="col-md-3">
                                     <label>Ano Final</label>
-                                    <select class="form-control" id="yearEnd" name="yearEnd" onchange="onChangeSelect(event)">
-                                        @for($i=$actualYear; $i > ($actualYear - 10);$i--)
+                                    <select class="form-control form-control-sm" id="yearEnd" name="yearEnd" onchange="onChangeSelect(event)" disabled>
+                                        @for($i=$actualYear; $i > 2000;$i--)
                                         <option value='{{$i}}'>{{$i}}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="col-md-3">
                                     <label>Período Final</label>
-                                    <select id="periodEnd" name="periodEnd" class="form-control" onchange="onChangeSelect(event)">
+                                    <select id="periodEnd" name="periodEnd" class="form-control form-control-sm" onchange="onChangeSelect(event)" disabled>
                                         <option value=1>1</option>
                                         <option value=2>2</option>
                                         <option value=3>3</option>
@@ -171,39 +171,51 @@ mais.
                             </div>
                         </div>
 
-
                         <div>
-                            <input id="checkAllClasses" type="checkbox" checked  onchange="onChangeCheckAllClasses(event)">
-                            <label for="checkAllClasses">Todas as turmas</label>
+                            <input id="checkAllPeriods" name="checkAllPeriods" type="checkbox" checked  onchange="onChangeCheckAllPeriods(event)">
+                            <label for="checkAllPeriods">Todos os períodos</label>
+                        </div>
+                        <div class="mt-1 d-flex flex-column" style="border-bottom: solid 1px rgba(0,0,0,0.2)">
+                            <button id="btnSearchDisciplineData" class="btn btn-primary mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                            <small id="infoBtnSearchDisciplineData" class=" ml-3 text-info d-none" style="text-align:center">Altere a data ou marque/desmarque a opção "Todos os períodos" para fazer uma nova busca.</small>
                         </div>
 
-                        <div id="form-group-select-class" class="form-group d-none">
-                            <label>Turma</label>
-                            <select id="selectClass" class="form-control" onchange="onSelectClass(event)">
-                                <!--Conteúdo gerado por javascript -->
-                            </select>
+                        <div class="mt-3 px-1 d-flex flex-column" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
+                            <div>
+                                <input id="checkOnlyProfessorClasses" name="onlyProfessorClasses" type="checkbox" checked  onchange="onChangeAllClasses(event)">
+                                <label for="checkOnlyProfessorClasses" style="cursor:pointer"><small>Somente turmas do professor</small></label>
+                            </div>
+                            <div>
+                                <input id="checkAllClasses" name="allClasses" type="checkbox" onchange="onChangeAllClasses(event)">
+                                <label for="checkAllClasses" style="cursor:pointer"><small>Turmas de todos os professores</small></label>
+                            </div>
                         </div>
-
-
+                        
+                        <div class="mt-3 px-1" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
+                            <div id="form-group-select-class" class="form-group d-none">
+                                <label for="selectClass">Turma</label>
+                                <select id="selectClass" class="form-control form-control-sm" onchange="onSelectClass(event)">
+                                </select>
+                            </div>
+                        </div>
                     </div>
+
                     <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
                         Buscando dados...
                     </div>
-                    <div id="dadosDisciplina" class="container mt-2 d-none">
-                        <div class="row mb-2" style="border-bottom-style:solid;border-width:1px; border-color:gray">
-                            <h2 class="col-6 mb-0">Nota média</h2>
-                            <div class="col-6 d-flex justify-content-end">
-                                <h1 class="flex-end" id="notaMediaComponente">0</h1>
+                    <div id="dadosDisciplina" class="mt-2 d-none container py-2 d-none", style="border:solid 1px rgba(0,0,0,0.1); border-radius:5px">
+                        <div class="row">
+                            <div class="col text-secondary">
+                                <h4 id="infoTipoBusca"></h4>
+                                <h4 id="infoNumDiscentes"></h4>
+                                <h4 id="infoProfessoresBusca"></h4>
                             </div>
-                            <h4 id="infoTipoBusca" class="col-12"></h4>
-                            <h4 id="infoNumDiscentes" class="col-12"></h4>
-                            <h4 id="infoProfessoresBusca" class="col-12"></h4>
                         </div>
                         <div class="row">
                             <div class="col">
                                 <div class="d-flex justify-content-between">
-                                    <span>Aprovados</span>
-                                    <span style="color:green"><b id="percentagemAprovados">0%</b></span>
+                                    <strong class="text-success">Aprovados</strong>
+                                    <span class="text-success"><b id="percentagemAprovados">0%</b></span>
                                 </div>
                                 <div class="progress">
                                     <div id="progressAprovados" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
@@ -213,7 +225,7 @@ mais.
                         <div class="row">
                             <div class="col">
                                 <div class="d-flex justify-content-between">
-                                    <span>Reprovados</span>
+                                    <strong class="text-danger">Reprovados</strong>
                                     <span class="text-danger"><b id="percentagemReprovados">0%</b></span>
                                 </div>
                                 <div class="progress">
@@ -221,10 +233,16 @@ mais.
                                 </div>
                             </div>
                         </div>
+                        <div class="row mt-2" style="background-color:azure">
+                            <strong class="col-6 mb-0 text-primary">Nota média</strong>
+                            <div class="col-6 d-flex justify-content-end">
+                                <strong id="notaMediaComponente" class="text-primary">0</strong>
+                            </div>
+                            
+                        </div>
+                        
                     </div>
-                    <div class="mt-5 ml-4">
-                        <button id="btnSearchDisciplineData" class="btn btn-primary btn-sm mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
-                    </div>
+                    
 
                 </div>
             </div>
@@ -736,9 +754,16 @@ mais.
 @endsection
 @section('scripts-bottom')
 <script>
+    let professorName = "{{$discipline->professor->name}}".toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+</script>
+<script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
+<script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
+    
+    searchDisciplineData("{{$discipline->code}}");
+    
 </script>
-<script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
+
 @endsection
