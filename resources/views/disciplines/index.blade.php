@@ -224,6 +224,7 @@
                                             id="porcentagem" 
                                             min="1" 
                                             max="100"
+                                            value="null"
                                             style="width:20%;"
                                         />
                                         <label for="">%</label>

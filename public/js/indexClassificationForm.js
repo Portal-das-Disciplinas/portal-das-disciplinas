@@ -4,6 +4,7 @@ $(".advancedSearch").css("display", "none");
 $(".simpleSearch").css("display", "flex");
 $("#advancedOptionButton").css("display", "none");
 $("#unmarkAll").css("display", "none");
+$("#filtro").attr("value", "null");
 
 $("#unmarkAll").on("click", () => {
     $("#resetButton").trigger("click");
@@ -13,12 +14,13 @@ $("#AccordionButton").on("click", () => {
     /*Ao clicar no filtro por aprovação
     altera a propriedade filtro para aprovacao,
     indicando que o filtro por aprovacao será utilizado*/
-    $("#filtro").attr("value", "classificacao");
 
     if ($("#AccordionButton").attr("aria-expanded") == "false") {
         $("#advancedOptionButton").css("display", "flex");
         $("#unmarkAll").css("display", "flex");
+        $("#filtro").attr("value", "classificacao");
     } else {
+        $("#filtro").attr("value", "null");
         $("#advancedOptionButton").css("display", "none");
         $("#unmarkAll").css("display", "none");
     }
@@ -64,7 +66,12 @@ $("#aprovationsButton").on("click", () => {
     /*Ao clicar no filtro por aprovação
     altera a propriedade filtro para aprovacao,
     indicando que o filtro por aprovacao será utilizado*/
-    $("#filtro").attr("value", "aprovacao");
+
+    if ($("#aprovationsButton").attr("aria-expanded") == "false") {
+        $("#filtro").attr("value", "aprovacao");
+    } else {
+        $("#filtro").attr("value", "null");
+    }
 
     //Desativa os ranges
     $(".range").attr("min", -1);
