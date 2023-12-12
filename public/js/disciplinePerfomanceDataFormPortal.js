@@ -194,7 +194,7 @@ function updateInfos() {
         groupClass.classList.add('d-none');
         let element = document.querySelector("#infoPesquisaDados");
         element.classList.remove("d-none");
-        element.innerHTML = "Esse professor não possui turmas.<p> <small>Desmarque a opção \"Somente turmas do docente\" para ver ter um resultado mais geral.</small></p>";
+        element.innerHTML = "Esse professor não possui turmas.<p> <small>Desmarque a opção \"Somente turmas do professor\" para ver ter um resultado mais geral.</small></p>";
         document.querySelector("#dadosDisciplina").classList.add("d-none");
         return;
     }else if(!checkedOnlyProfessorClasses){
