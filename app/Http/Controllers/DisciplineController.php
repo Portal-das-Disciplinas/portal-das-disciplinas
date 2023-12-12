@@ -852,7 +852,7 @@ class DisciplineController extends Controller
                     ->join("professors", "disciplines.professor_id", "=", "professors.id")
                     ->where("year",substr($request->input('periodo'),0,-2))
                     ->where("period",substr($request->input('periodo'),-1))
-                    ->where("name", "like", "%".$discipline_name."%")
+                    ->where("disciplines.name", "like", "%".$discipline_name."%")
                     ->get();
 
                 } else if ($request->input('periodo') === "vazio" && $request->input('porcentagem') !== null) {
@@ -861,28 +861,28 @@ class DisciplineController extends Controller
                         $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
                         ->join("professors", "disciplines.professor_id", "=", "professors.id")
                         ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("name", "like", "%".$discipline_name."%")
+                        ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
 
                     } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
                         $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
                         ->join("professors", "disciplines.professor_id", "=", "professors.id")
                         ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("name", "like", "%".$discipline_name."%")
+                        ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
 
                     } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
                         $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
                         ->join("professors", "disciplines.professor_id", "=", "professors.id")
                         ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("name", "like", "%".$discipline_name."%")
+                        ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
 
                     } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
                         $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
                         ->join("professors", "disciplines.professor_id", "=", "professors.id")
                         ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("name", "like", "%".$discipline_name."%")
+                        ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
 
                     }
@@ -894,7 +894,7 @@ class DisciplineController extends Controller
                         ->where("year",substr($request->input('periodo'),0,-2))
                         ->where("period",substr($request->input('periodo'),-1))
                         ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("name", "like", "%".$discipline_name."%")
+                        ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
 
                     } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
@@ -903,7 +903,7 @@ class DisciplineController extends Controller
                         ->where("year",substr($request->input('periodo'),0,-2))
                         ->where("period",substr($request->input('periodo'),-1))
                         ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("name", "like", "%".$discipline_name."%")
+                        ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
                        
                     } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
@@ -912,7 +912,7 @@ class DisciplineController extends Controller
                         ->where("year",substr($request->input('periodo'),0,-2))
                         ->where("period",substr($request->input('periodo'),-1))
                         ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("name", "like", "%".$discipline_name."%")
+                        ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
 
                     } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
@@ -921,7 +921,7 @@ class DisciplineController extends Controller
                         ->where("year",substr($request->input('periodo'),0,-2))
                         ->where("period",substr($request->input('periodo'),-1))
                         ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("name", "like", "%".$discipline_name."%")
+                        ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
 
                     }
