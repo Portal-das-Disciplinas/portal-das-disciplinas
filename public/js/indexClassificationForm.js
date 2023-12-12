@@ -4,7 +4,6 @@ $(".advancedSearch").css("display", "none");
 $(".simpleSearch").css("display", "flex");
 $("#advancedOptionButton").css("display", "none");
 $("#unmarkAll").css("display", "none");
-// $("#filtro").attr("value", "null");
 
 $("#unmarkAll").on("click", () => {
     $("#resetButton").trigger("click");
@@ -60,9 +59,6 @@ $("#advancedOptionButton").on("click", () => {
 });
 
 $("#aprovationsButton").on("click", () => {
-    //Reseta qualquer valor que tenha ficado no form
-    //$("#resetButton").trigger("click");
-
     /*Ao clicar no filtro por aprovação
     altera a propriedade filtro para aprovacao,
     indicando que o filtro por aprovacao será utilizado*/
