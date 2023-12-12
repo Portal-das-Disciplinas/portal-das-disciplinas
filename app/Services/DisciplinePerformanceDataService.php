@@ -9,6 +9,7 @@ use App\Exceptions\APISistemasUnavailableException;
 use App\Exceptions\InvalidIntervalException;
 use App\Models\Discipline;
 use App\Models\DisciplinePerformanceData;
+use App\Models\Professor;
 use App\Models\SchedulingDisciplinePerfomanceDataUpdate;
 use App\Models\SemesterPerformanceData;
 use App\Services\APISigaa\APISigaaService;
@@ -117,14 +118,14 @@ class DisciplinePerformanceDataService
     {
         if (isset($paginate)) {
             return  SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)
-                ->orderBy('created_at','desc')
-                ->orderBy('year','desc')
-                ->orderBy('period','asc')->paginate($paginate);
+                ->orderBy('created_at', 'desc')
+                ->orderBy('year', 'desc')
+                ->orderBy('period', 'asc')->paginate($paginate);
         }
         return SchedulingDisciplinePerfomanceDataUpdate::where('status', '=', $status)
-            ->orderBy('created_at','desc')
-            ->orderBy('year','desc')
-            ->orderBy('period','asc')->get();
+            ->orderBy('created_at', 'desc')
+            ->orderBy('year', 'desc')
+            ->orderBy('period', 'asc')->get();
     }
 
     function listAllSchedules()
@@ -239,11 +240,10 @@ class DisciplinePerformanceDataService
                 break;
             }
         }
-        if(count($schedules) > 0){
+        if (count($schedules) > 0) {
             Log::info("Fim da execução dos agendamentos.");
             $this->updateDisciplinePerformanceDataValues();
         }
-        
     }
 
     function runSchedule($idSchedule)
@@ -279,7 +279,7 @@ class DisciplinePerformanceDataService
                     if ($dataFromDatabase == null) {
                         $apiPerfomanceClassData = $apiService->getDisciplineData($discipline->code, $turma['id-turma'], $schedule->year, $schedule->period);
                         $averageGrade = 0;
-                        if($apiPerfomanceClassData['quantidade-discentes'] != 0){
+                        if ($apiPerfomanceClassData['quantidade-discentes'] != 0) {
                             $averageGrade = $apiPerfomanceClassData['soma-medias'] / $apiPerfomanceClassData['quantidade-discentes'];
                         }
                         DB::beginTransaction();
@@ -315,7 +315,7 @@ class DisciplinePerformanceDataService
                     } else if ($dataFromDatabase != null && $updateIfExists) {
                         $apiPerfomanceClassData = $apiService->getDisciplineData($discipline->code, $turma['id-turma'], $schedule->year, $schedule->period);
                         $averageGrade = 0;
-                        if($apiPerfomanceClassData['quantidade-discentes'] != 0){
+                        if ($apiPerfomanceClassData['quantidade-discentes'] != 0) {
                             $averageGrade = $apiPerfomanceClassData['soma-medias'] / $apiPerfomanceClassData['quantidade-discentes'];
                         }
                         DB::beginTransaction();
@@ -389,12 +389,12 @@ class DisciplinePerformanceDataService
         return $data->get();
     }
 
-    function getPerformanceDataByDisciplineCode($disciplineCode, $paginate = null){
-        $data = DisciplinePerformanceData::where('discipline_code','=',$disciplineCode)->orderBy('year','desc')->orderBy('period')->orderBy('class_code');
-        if(isset($paginate)){
+    function getPerformanceDataByDisciplineCode($disciplineCode, $paginate = null)
+    {
+        $data = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->orderBy('year', 'desc')->orderBy('period')->orderBy('class_code');
+        if (isset($paginate)) {
             return $data->paginate();
-        }
-        else{
+        } else {
             return $data->get();
         }
     }
@@ -404,20 +404,17 @@ class DisciplinePerformanceDataService
 
         if ($yearStart == $yearEnd) {
 
-            $data = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearStart)->
-                where('period', '>=', $periodStart)->where('period', '<=', $periodEnd)
-                ->orderBy('year','desc')->orderBy('period')->orderBy('class_code');
+            $data = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '=', $yearStart)->where('period', '>=', $periodStart)->where('period', '<=', $periodEnd)
+                ->orderBy('year', 'desc')->orderBy('period')->orderBy('class_code');
             if (isset($paginate)) {
                 return $data->paginate($paginate);
             }
             return $data->get();
         } else {
-            $data1 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->
-                where('year', '>=', $yearStart)->where('period', '>=', $periodStart)->
-                where('year', '<=', $yearEnd - 1)->orderBy('year','desc')->orderBy('period')->orderBy('class_code')->get();
+            $data1 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)->where('year', '>=', $yearStart)->where('period', '>=', $periodStart)->where('year', '<=', $yearEnd - 1)->orderBy('year', 'desc')->orderBy('period')->orderBy('class_code')->get();
             $data2 = DisciplinePerformanceData::where('discipline_code', '=', $disciplineCode)
                 ->where('year', '=', $yearEnd)->where('period', '<=', $periodEnd)
-                ->orderBy('year','desc')->orderBy('period')->orderBy('class_code')->get();
+                ->orderBy('year', 'desc')->orderBy('period')->orderBy('class_code')->get();
             $data = $data2->merge($data1)->all();
             if (isset($paginate)) {
                 return $data->paginate($paginate);
@@ -470,10 +467,12 @@ class DisciplinePerformanceDataService
         if (isset($disciplineCode)) {
             $disciplines = Discipline::where('code', '=', $disciplineCode)->get();
             if (count($disciplines) == 0) {
+                DB::commit();
                 return;
+                
             }
         } else {
-            $disciplines = Discipline::all();
+            $disciplines = Discipline::All();
         }
         try {
             foreach ($disciplines as $discipline) {
@@ -481,7 +480,12 @@ class DisciplinePerformanceDataService
                 $numStudents = 0;
                 $numApprovedStudents = 0;
                 $numFailedStudents = 0;
-                $performanceData = DisciplinePerformanceData::where('discipline_code', '=', $discipline->code)->get();
+                $professor = Professor::where('id','=',$discipline->{'professor_id'})->first();
+                if(isset($professor) && isset($professor->name)){
+                    $performanceData = DisciplinePerformanceData::where('discipline_code', '=', $discipline->code)
+                        ->where("professors","like","%" . $professor->name . "%")->get();
+                }
+                
                 if (count($performanceData) > 0) {
                     foreach ($performanceData as $data) {
                         $sumGrades += $data['sum_grades'];
@@ -492,7 +496,7 @@ class DisciplinePerformanceDataService
                     $discipline->{'approved_students_percentage'} = ($numApprovedStudents / $numStudents) * 100.0;
                     $discipline->{'failed_students_percentage'} = ($numFailedStudents / $numStudents) * 100.0;
                     $discipline->{'average_grade'} = $sumGrades / $numStudents;
-                    $discipline->save(); 
+                    $discipline->save();
                 }
                 DB::commit();
             }
