@@ -33,6 +33,11 @@ Semestre com dados de índices de rendimento
 @if(count($semesterPerformanceData) > 0)
 <div class="row">
     <div class="col-md-12">
+        <div class="d-flex justify-content-center mb-1 mt-3">{{$semesterPerformanceData->links()}}</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
         <table class="table table-hover table-bordered table-small">
             <thead>
                 <tr>
@@ -104,6 +109,11 @@ Semestre com dados de índices de rendimento
         </table>
     </div>
 
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center mt-3">{{$semesterPerformanceData->links()}}</div>
+    </div>
 </div>
 @else
 <div class="row">

@@ -23,7 +23,7 @@ Agendamentos
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Cadastro de agendamento</h5>
+                <h3 class="modal-title">Cadastro de agendamento</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -82,17 +82,28 @@ Agendamentos
                     </div>
                     <div class="form-group">
                         <input id="updateIfExists" type="checkbox" name="updateIfExists">
-                        <label for="updateIfExists" class="text-primary" style="cursor:pointer; user-select:none">Atualizar dados existentes</label>
+                        <label for="updateIfExists" class="text-primary" style="cursor:pointer; user-select:none">Atualizar dados existentes.</label>
+                        <small>
+                            <p class="text-secondary">
+                                Se marcado, a busca na API Sistemas será feita mesmo contendo 
+                                os dados já cadastrados no banco de dados do Portal das Disciplinas.
+                            </p>
+                            <p class="text-secondary">
+                                O tempo de conclusão da tarefa será maior.
+                            </p>
+                        </small>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <input type="submit" class="btn btn-primary" value="cadastrar">
+                        <input id="btnSubmitSchedule" type="submit" hidden>
                     </div>
                 </form>
+                
 
             </div>
             <div class="modal-footer">
-                <div class="d-flex justify-content-end">
-                    <span class="text-secondary" style="cursor:pointer" data-dismiss="modal">Fechar</span>
+                <div class="d-flex justify-content-end align-items-center">
+                    <span class="text-secondary" style="cursor:pointer" data-dismiss="modal">Cancelar</span>
+                    <label for="btnSubmitSchedule" class="btn btn-primary btn-sm ml-3">Cadastrar</label>
                 </div>
             </div>
         </div>
