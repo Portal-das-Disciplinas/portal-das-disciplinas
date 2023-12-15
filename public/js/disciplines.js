@@ -1,6 +1,11 @@
 let idLinks = 0;
 let participants = [];
 
+/**
+ * Define os participantes no array.
+ *
+ * @param {Array} participantsArray - Array de participantes.
+ */
 function setParticipants(participantsArray) {
     participants = participantsArray;
     participants.forEach(function (p, index) {
@@ -11,6 +16,11 @@ function setParticipants(participantsArray) {
     });
 }
 
+/**
+ * Adiciona um novo participante ao array.
+ *
+ * @param {Event} event - Objeto de evento.
+ */
 function addParticipantField(event) {
     event.preventDefault();
     let emptyParticipant = {
@@ -23,7 +33,11 @@ function addParticipantField(event) {
     participants.push(emptyParticipant);
     renderParticipants("#participants");
 }
-
+/**
+ * Remove um participante do array.
+ *
+ * @param {Event} event - Objeto de evento.
+ */
 function removeParticipantField(event) {
     event.preventDefault();
     index = event.target.id;
@@ -37,7 +51,11 @@ function removeParticipantField(event) {
     sendParticipantsToFormInput();
     renderParticipants("#participants");
 }
-
+/**
+ * Adiciona um novo link ao participante.
+ *
+ * @param {Event} event - Objeto de evento.
+ */
 function addLinkField(event) {
     event.preventDefault();
 
@@ -54,6 +72,13 @@ function addLinkField(event) {
     renderParticipants("#participants");
 }
 
+/**
+ * Remove um link do participante.
+ *
+ * @param {Event} event - Objeto de evento.
+ * @param {number} indexParticipant - Índice do participante.
+ * @param {number} linkIndex - Índice do link.
+ */
 function removeLinkField(event, indexParticipant, linkIndex) {
     event.preventDefault();
     participants[indexParticipant].links = participants[
@@ -67,35 +92,72 @@ function removeLinkField(event, indexParticipant, linkIndex) {
     sendParticipantsToFormInput();
     renderParticipants("#participants");
 }
-
+/**
+ * Envia os participantes para o campo de formulário.
+ */
 function sendParticipantsToFormInput() {
     document.querySelector("#participantsList").value =
         JSON.stringify(participants);
 }
 
+/**
+ * Manipula a alteração do nome do participante.
+ *
+ * @param {Event} event - Objeto de evento.
+ */
 function onChangeParticipantName(event) {
     participants[event.target.id].name = event.target.value;
     sendParticipantsToFormInput();
 }
+
+/**
+ * Manipula a alteração da função do participante.
+ *
+ * @param {Event} event - Objeto de evento.
+ */
 function onChangeParticipantRole(event) {
     participants[event.target.id].role = event.target.value;
     sendParticipantsToFormInput();
 }
+/**
+ * Manipula a alteração do e-mail do participante.
+ *
+ * @param {Event} event - Objeto de evento.
+ */
 function onChangeParticipantEmail(event) {
     participants[event.target.id].email = event.target.value;
     sendParticipantsToFormInput();
 }
 
+/**
+ * Manipula a alteração do nome do link.
+ *
+ * @param {Event} event - Objeto de evento.
+ * @param {number} participantIndex - Índice do participante.
+ * @param {number} linkIndex - Índice do link.
+ */
 function onChangeLinkName(event, participantIndex, linkIndex) {
     participants[participantIndex].links[linkIndex].name = event.target.value;
     sendParticipantsToFormInput();
 }
 
+/**
+ * Manipula a alteração da URL do link.
+ *
+ * @param {Event} event - Objeto de evento.
+ * @param {number} participantIndex - Índice do participante.
+ * @param {number} linkIndex - Índice do link.
+ */
 function onChangeLinkUrl(event, participantIndex, linkIndex) {
     participants[participantIndex].links[linkIndex].url = event.target.value;
     sendParticipantsToFormInput();
 }
 
+/**
+ * Renderiza os participantes na interface.
+ *
+ * @param {string} idElement - ID do elemento HTML.
+ */
 function renderParticipants(idElement) {
     let html = "";
     participants.forEach(function (participant, index) {
