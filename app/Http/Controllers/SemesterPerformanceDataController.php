@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @class SemesterPerformanceDataController
+ * @brief Controlador para gerenciar dados de desempenho por semestre.
+ */
 class SemesterPerformanceDataController extends Controller
 {
     protected $theme;
@@ -19,6 +23,10 @@ class SemesterPerformanceDataController extends Controller
         $this->theme = json_decode($contents, true);
     }
 
+    /**
+     * @brief Exibe a página principal de dados de desempenho por semestre.
+     * @return \Illuminate\View\View Retorna a view 'discipline_performance_data/semester_performance_data'.
+     */
     public function index()
     {
 
@@ -28,6 +36,11 @@ class SemesterPerformanceDataController extends Controller
             ->with('semesterPerformanceData', $semesterPerformanceData);
     }
 
+    /**
+     * @brief Exclui um dado de desempenho por semestre.
+     * @param int $id Identificador do dado de desempenho por semestre.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página principal.
+     */
     public function destroy($id)
     {
         DB::beginTransaction();

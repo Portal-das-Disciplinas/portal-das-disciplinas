@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
+/**
+ * @class ThemeController
+ * @brief Controlador para gerenciar o tema da aplicação.
+ */
 class ThemeController extends Controller
 {
     protected $theme;
@@ -19,12 +23,22 @@ class ThemeController extends Controller
         $this->theme = json_decode($contents, true);
     }
 
+    /**
+     * @brief Exibe a página de configuração do tema.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\View\View Retorna a view 'admin.theme.index'.
+     */
     public function index(Request $request)
     {
         return view('admin.theme.index')
         ->with('theme', $this->theme);
     }
     
+    /**
+     * @brief Armazena as configurações do tema.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona para a página de configurações.
+     */
     public function store(Request $request)
     {
         $logo = $request->file('logo');

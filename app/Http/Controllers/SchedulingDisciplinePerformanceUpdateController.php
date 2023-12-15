@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @class SchedulingDisciplinePerformanceUpdateController
+ * @brief Controlador para agendar e gerenciar a atualização de dados de desempenho de disciplinas.
+ */
 class SchedulingDisciplinePerformanceUpdateController extends Controller
 {
 
@@ -23,6 +27,11 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
         $this->middleware('admin');
     }
 
+    /**
+     * @brief Exibe a página inicial de agendamento de atualizações de desempenho de disciplinas.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\View\View Retorna a view 'discipline_performance_data.schedules_index'.
+     */
     function index(Request $request)
     {
         $paginateValue = 10;
@@ -58,6 +67,11 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
             ->with('searchType', $searchType);
     }
 
+    /**
+     * @brief Armazena um novo agendamento de atualização de desempenho de disciplinas.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página de agendamento.
+     */
     function store(Request $request)
     {
         try {
@@ -74,13 +88,23 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
         }
     }
 
+    /**
+     * @brief Exclui um agendamento de atualização de desempenho de disciplinas.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página de agendamento.
+     */
     function delete(Request $request)
     {
         $service = new DisciplinePerformanceDataService();
         $service->delete($request['idSchedule']);
         return redirect()->route('scheduling.index');
     }
-
+    
+    /**
+     * @brief Executa um agendamento de atualização de desempenho de disciplinas.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página de agendamento.
+     */
     function runSchedule(Request $request)
     {
         $service = new DisciplinePerformanceDataService();
