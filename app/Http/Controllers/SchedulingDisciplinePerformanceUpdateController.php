@@ -9,6 +9,7 @@ use App\Services\DisciplinePerformanceDataService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class SchedulingDisciplinePerformanceUpdateController extends Controller
@@ -25,32 +26,20 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
 
     function index(Request $request)
     {
-        $paginateValue = 10;
-        $status = $request->scheduleStatus;
-        $scheduleService = new DisciplinePerformanceDataService();
-        $searchType = "TODOS";
-        if ($status == null) {
-            $schedules = $scheduleService->listSchedules('PENDING', $paginateValue);
-            $searchType = "PENDENTES";
-        } else {
-            $schedules = $scheduleService->listSchedules($status, $paginateValue);
-            switch ($status) {
-                case 'PENDING':
-                    $searchType = 'PENDENTES';
-                    break;
-                case 'RUNNING':
-                    $searchType = 'EXECUTANDO';
-                    break;
-                case 'COMPLETE':
-                    $searchType = 'COMPLETOS';
-                    break;
-                case 'ERROR':
-                    $searchType = 'COM ERROS';
-                    break;
-                default:
-                    $searchType = '';
-            }
+        $statusBeforeDelete = Session::get('statusBeforeDelete');
+        
+        if(isset($statusBeforeDelete)){
+            $searchType = $statusBeforeDelete;
+        }else{
+            $searchType = $request->scheduleStatus;
         }
+       
+        $scheduleService = new DisciplinePerformanceDataService();
+        if (!isset($searchType)) {
+            $searchType = "PENDING";
+        }
+        $paginateValue = 10;
+        $schedules = $scheduleService->listSchedules($searchType, $paginateValue);
 
         return view('discipline_performance_data.schedules_index')
             ->with('theme', $this->theme)
@@ -78,7 +67,7 @@ class SchedulingDisciplinePerformanceUpdateController extends Controller
     {
         $service = new DisciplinePerformanceDataService();
         $service->delete($request['idSchedule']);
-        return redirect()->route('scheduling.index');
+        return redirect()->route('scheduling.index')->with(['statusBeforeDelete'=>$request->searchType]);
     }
 
     function runSchedule(Request $request)

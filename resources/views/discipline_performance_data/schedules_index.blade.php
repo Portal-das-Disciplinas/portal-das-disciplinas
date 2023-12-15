@@ -25,10 +25,10 @@ Agendamentos
             <form id="formSearchSchedules" class="w-100" method="GET" action="{{route('scheduling.index')}}">
                 <div class="form-row">
                     <select id="selectSearchType" name="scheduleStatus" class="form-control" onchange=onSelectStatusSchedulesChange()>
-                        <option value="PENDING" {{$searchType=='PENDENTES'? 'selected': ''}}> Agendamentos PENDENTES</option>
-                        <option value="COMPLETE" {{$searchType=='COMPLETOS'? 'selected': ''}}> Agendamentos COMPLETOS</option>
-                        <option value="RUNNING" {{$searchType=='EXECUTANDO'? 'selected': ''}}> Agendamentos EXECUTANDO</option>
-                        <option value="ERROR" {{$searchType=='COM ERROS'? 'selected': ''}}> Agendamentos com ERROS</option>
+                        <option value="PENDING" {{$searchType=='PENDING'? 'selected': ''}}> Agendamentos PENDENTES</option>
+                        <option value="COMPLETE" {{$searchType=='COMPLETE'? 'selected': ''}}> Agendamentos COMPLETOS</option>
+                        <option value="RUNNING" {{$searchType=='RUNNING'? 'selected': ''}}> Agendamentos EXECUTANDO</option>
+                        <option value="ERROR" {{$searchType=='ERROR'? 'selected': ''}}> Agendamentos com ERROS</option>
                     </select>
                 </div>
             </form>
@@ -38,7 +38,25 @@ Agendamentos
 
 <div class="row mt-4">
     <div class="col-md-12">
-        <h2 id="SearchFilterType">{{$searchType}}</h2>
+        <h2 id="SearchFilterType">
+            @switch($searchType)
+                @case('PENDING')
+                    PENDENTES
+                    @break
+
+                @case('RUNNING')
+                    EXECUTANDO
+                    @break
+
+                @case('COMPLETE')
+                    COMPLETO
+                    @break
+
+                @case('ERROR')
+                    COM ERROS
+                    @break    
+            @endswitch
+        </h2>
     </div>
 </div>
 
@@ -66,13 +84,13 @@ Agendamentos
             </div>
             <div class="col-sm-3">
                 @if($schedule->status == 'PENDING')
-                <strong class="text-primary">AGENDADO</strong>
+                <span><span class="text-secondary">Status: </span><strong class="text-primary">AGENDADO</strong></span>
                 @elseif($schedule->status == 'RUNNING')
-                <strong class="text-success">EXECUTANDO</strong>
+                <span><span class="text-secondary">Status: </span><strong class="text-success">EXECUTANDO</strong></span>
                 @elseif($schedule->status == 'COMPLETE')
                 <span><span class="text-secondary">Status: </span><strong class="text-primary">COMPLETO</strong></span>
                 @elseif($schedule->status == 'ERROR')
-                <strong class="text-danger">ERRO</strong>
+                <span><span class="text-secondary">Status: </span><strong class="text-danger">ERRO</strong></span>
                 @endif
             </div>
             <div class="col-md-1 py-2">
@@ -80,6 +98,7 @@ Agendamentos
                     @csrf
                     @method('delete')
                     <input type="hidden" name="idSchedule" value="{{$schedule->id}}">
+                    <input type="hidden" name="searchType" value="{{$searchType}}">
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-danger btn-sm" type="submit">Excluir</button>
                     </div>
