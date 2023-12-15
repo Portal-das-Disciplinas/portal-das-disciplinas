@@ -51,40 +51,31 @@ Agendamentos
 @endif
 
 @foreach($schedules as $schedule)
-<div class="row mt-2" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
+<div class="row mt-4" style="box-shadow:2px 2px 15px rgba(0,0,0,0.2)">
     <div class="col-md-12">
         <div class="row">
             <div class=" col-md-4 d-flex flex-column">
-                <span><b>Semestre: {{$schedule->year . '.' . $schedule->period}}</b></span>
+                <strong>Semestre: {{$schedule->year . '.' . $schedule->period}}</strong>
                 <small class="text-secondary">Criado em: {{date('d-m-Y h:i:s',strtotime($schedule->created_at)) }}</small>
                 @if($schedule->status == 'COMPLETE')
                 <small class="text-info">executado em: <b> {{(floor($schedule->{'update_time'}/3600)) }} </b> horas <b> {{(floor(($schedule->{'update_time'}%3600)/60))}} </b> minutos e <b>{{((($schedule->{'update_time'}%3600)%60))}} </b> segundos</small>
                 @endif
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <span class="text-primary">{{$schedule->{'num_new_data'} }} dado(s) criado(s)</span>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 @if($schedule->status == 'PENDING')
-                <strong class="text-info">status: AGENDADO</strong>
+                <strong class="text-primary">AGENDADO</strong>
                 @elseif($schedule->status == 'RUNNING')
-                <strong class="text-success">status: RODANDO</strong>
+                <strong class="text-success">EXECUTANDO</strong>
                 @elseif($schedule->status == 'COMPLETE')
-                <strong class="text-primary">status: COMPLETO</strong>
+                <span><span class="text-secondary">Status: </span><strong class="text-primary">COMPLETO</strong></span>
                 @elseif($schedule->status == 'ERROR')
-                <strong class="text-danger">status: ERRO</strong>
+                <strong class="text-danger">ERRO</strong>
                 @endif
             </div>
-        </div>
-        @if($schedule->{'error_description'})
-        <div class="row">
-            <div class="col-md-12 alert-danger">
-                <span>{{$schedule->error_description}}</span>
-            </div>
-        </div>
-        @endif
-        <div class="row">
-            <div class="col-md-12 py-2">
+            <div class="col-md-1 py-2">
                 <form method="post" action="{{route('scheduling.delete')}}">
                     @csrf
                     @method('delete')
@@ -95,6 +86,13 @@ Agendamentos
                 </form>
             </div>
         </div>
+        @if($schedule->{'error_description'})
+        <div class="row">
+            <div class="col-md-12 alert-danger">
+                <span>{{$schedule->error_description}}</span>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endforeach
