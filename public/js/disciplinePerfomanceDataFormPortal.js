@@ -6,6 +6,9 @@ let lastAllPeriodsValue = 0;
 
 let qtdTurmasProfessor = 0;
 
+/**
+ * Armazena os valores da última pesquisa.
+ */
 function setLastSearchValues() {
     if (!document.querySelector('#checkAllPeriods').checked) {
         lastYearStartValue = document.querySelector('#yearStart').value;
@@ -21,6 +24,9 @@ function setLastSearchValues() {
     lastAllPeriodsValue = document.querySelector('#checkAllPeriods').checked;
 }
 
+/**
+ * Limpa os valores do último semestre.
+ */
 function clearLastSemesterValues() {
     lastYearStartValue = 0;
     lastPeriodStartValue = 0;
@@ -28,6 +34,10 @@ function clearLastSemesterValues() {
     lastPeriodEndValue = 0;
 }
 
+/**
+ * Verifica se houve alterações nos valores de pesquisa.
+ * @returns {boolean} - True se houver alterações, caso contrário, false.
+ */
 function checkSearchValuesChanged() {
     let actualYearStartValue = document.querySelector('#yearStart').value;
     let actualPeriodStartValue = document.querySelector('#periodStart').value;
@@ -47,6 +57,10 @@ function checkSearchValuesChanged() {
 
 }
 
+/**
+ * Atualiza as informações ao selecionar um valor no dropdown.
+ * @param {Event} event - O evento de seleção.
+ */
 function onChangeSelect(event) {
     yearSelectedIndex = event.target.selectedIndex;
     let yearStart = document.querySelector('#yearStart').value;
@@ -73,16 +87,28 @@ function onChangeSelect(event) {
 
 let classSelectedIndex = 0;
 
+/**
+ * Atualiza as informações ao selecionar uma classe.
+ * @param {Event} event - O evento de seleção da classe.
+ */
 function onSelectClass(event) {
     classSelectedIndex = event.target.selectedIndex;
     updateInfos();
 
 }
 
+/**
+ * Inicia a pesquisa dos dados da disciplina.
+ * @param {string} code - O código da disciplina.
+ */
 function onSearchDisciplineDataClick(code) {
     searchDisciplineData(code);
 }
 
+/**
+ * Altera as opções de busca ao marcar/desmarcar checkboxes.
+ * @param {Event} event - O evento de alteração de checkbox.
+ */
 function onChangeAllClasses(event) {
     if (event.target.id == 'checkOnlyProfessorClasses') {
         let checkboxAllClasses = document.querySelector('#checkAllClasses');
@@ -104,6 +130,10 @@ function onChangeAllClasses(event) {
     updateInfos();
 }
 
+/**
+ * Altera a visibilidade do grupo de seleção de períodos.
+ * @param {Event} event - O evento de alteração de checkbox.
+ */
 function onChangeCheckAllPeriods(event) {
     let selectFieldsArea = document.querySelector('#semesterSelectFields');
     let selects = document.querySelectorAll('#semesterSelectFields select');
@@ -139,6 +169,9 @@ let generalPerformanceData = {
     numFailedStudents: 0,
 };
 
+/**
+ * Reseta os valores das estatísticas gerais.
+ */
 function resetValues() {
     generalPerformanceData.averageGrade = 0;
     generalPerformanceData.highestGrade = 0;
@@ -148,6 +181,9 @@ function resetValues() {
     generalPerformanceData.numFailedStudents = 0;
 }
 
+/**
+ * Atualiza as informações exibidas.
+ */
 function updateInfos() {
     resetValues();
     let checkedAllClasses = document.querySelector('#checkAllClasses').checked;

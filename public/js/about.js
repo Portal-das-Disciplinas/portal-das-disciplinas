@@ -1,3 +1,7 @@
+/**
+ * Renderiza os campos de entrada para os participantes do conteúdo de vídeo.
+ * @param {string} parentElement - O seletor do elemento pai onde os campos serão renderizados.
+ */
 function renderInputParticipants(parentElement) {
     let element = document.querySelector(parentElement);
     let html = "";
@@ -27,6 +31,9 @@ function renderInputParticipants(parentElement) {
     element.innerHTML = html;
 }
 
+/**
+ * Adiciona um novo campo de participante se o limite não for atingido.
+ */
 function addParticipantField() {
     if (videoContentProducers.length < 10) {
         videoContentProducers.push({ name: "", email: "" });
@@ -36,6 +43,10 @@ function addParticipantField() {
     }
 }
 
+/**
+ * Remove um campo de participante com o índice fornecido.
+ * @param {number} index - O índice do participante a ser removido.
+ */
 function deleteParticipantField(index) {
     videoContentProducers = videoContentProducers.filter(
         function (participant, idx) {
@@ -45,6 +56,11 @@ function deleteParticipantField(index) {
     renderInputParticipants("#formVideoContentProducers");
 }
 
+/**
+ * Atualiza o nome do participante no array ao alterar o campo de nome.
+ * @param {Event} event - O evento de mudança.
+ * @param {number} index - O índice do participante no array.
+ */
 function onChangeName(event, index) {
     videoContentProducers[index].name = event.target.value;
     event.target.classList.remove("bg-warning");
@@ -55,6 +71,11 @@ function onChangeName(event, index) {
         [index].classList.add("d-none");
 }
 
+/**
+ * Atualiza o e-mail do participante no array ao alterar o campo de e-mail.
+ * @param {Event} event - O evento de mudança.
+ * @param {number} index - O índice do participante no array.
+ */
 function onChangeEmail(event, index) {
     videoContentProducers[index].email = event.target.value;
     event.target.classList.remove("bg-warning");
@@ -65,6 +86,9 @@ function onChangeEmail(event, index) {
         [index].classList.add("d-none");
 }
 
+/**
+ * Submete o formulário se todos os campos estiverem válidos.
+ */
 function submitFormContentProducers() {
     let names = document.querySelectorAll(
         "#formVideoContentProducers input[type=text]",
@@ -105,6 +129,9 @@ function submitFormContentProducers() {
     }
 }
 
+/**
+ * Abre o modal de produtores de vídeo.
+ */
 function openModalVideoProducers() {
     videoContentProducers = [];
     databaseVideoContentProducers.forEach(function (producer) {
@@ -114,6 +141,9 @@ function openModalVideoProducers() {
     renderInputParticipants("#formVideoContentProducers");
 }
 
+/**
+ * Atualiza o portal de vídeo.
+ */
 function updateVideoPortal() {
     let form = document.querySelector("#modalAlterarVideo form");
     if (form.checkValidity() == true) {
@@ -125,14 +155,25 @@ function updateVideoPortal() {
     }
 }
 
+/**
+ * Remove o vídeo.
+ */
 function removeVideo() {
     document.querySelector("#deleteVideoForm").submit();
 }
 
+/**
+ * Executado quando há uma alteração no campo de link.
+ */
 function onChangeInputLink() {
     document.querySelector("#modalAlterarVideo small").classList.add("d-none");
 }
 
+/**
+ * Abre o modal de edição do nome da seção.
+ * @param {string} idModal - O ID do modal.
+ * @param {string} sectionName - O nome da seção.
+ */
 function openModalEditSectionName(idModal, sectionName) {
     $("#" + idModal + " #section-name").val(sectionName);
     $("#" + idModal).modal("show");

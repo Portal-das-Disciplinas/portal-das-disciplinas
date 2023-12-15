@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use stdClass;
 
+/**
+ * @class DisciplinePerformanceDataController
+ * @brief Controlador para gerenciar operações relacionadas aos dados de desempenho de disciplinas.
+ */
 class DisciplinePerformanceDataController extends Controller
 {
     protected $performanceDataService;
@@ -23,8 +27,9 @@ class DisciplinePerformanceDataController extends Controller
     }
 
     /**
-     * Retorna os indices de perfomance da displina no formato JSON
-     * 
+     * @brief Retorna os índices de desempenho da disciplina no formato JSON.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\JsonResponse Resposta JSON contendo os índices de desempenho.
      */
     function getDisciplinePerformanceData(Request $request)
     {
@@ -39,6 +44,11 @@ class DisciplinePerformanceDataController extends Controller
         }
     }
 
+    /**
+     * @brief Retorna os índices de desempenho da disciplina dentro de um intervalo de tempo no formato JSON.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\JsonResponse Resposta JSON contendo os índices de desempenho dentro do intervalo especificado.
+     */
     function getDisciplinePerformanceDataByInterval(Request $request)
     {
         if ($request->ajax()) {
@@ -66,11 +76,21 @@ class DisciplinePerformanceDataController extends Controller
         }
     }
 
+    /**
+     * @brief Exibe a página de índices de desempenho das disciplinas.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View Página de visualização dos índices de desempenho.
+     */
     function index(Request $request)
     {
         return view('discipline_performance_data.performance_data_index')->with('theme', $this->theme);
     }
 
+     /**
+     * @brief Lista os dados de desempenho da disciplina.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View Página de visualização dos dados de desempenho.
+     */
     function listData(Request $request)
     {
         $service = new DisciplinePerformanceDataService();
@@ -84,7 +104,11 @@ class DisciplinePerformanceDataController extends Controller
             ->with('period', $request->period);
     }
 
-
+    /**
+     * @brief Exclui os dados de desempenho da disciplina.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página anterior.
+     */
     function deletePerformanceData(Request $request)
     {
 
@@ -94,6 +118,11 @@ class DisciplinePerformanceDataController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @brief Exclui os dados de desempenho da disciplina com base no código da disciplina, ano e período.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página anterior.
+     */
     function deletePerformanceDataByCodeYearPeriod(Request $request)
     {
         try {
