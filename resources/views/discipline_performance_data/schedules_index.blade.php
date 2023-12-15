@@ -105,6 +105,21 @@ Agendamentos
                 </form>
             </div>
         </div>
+        @if($schedule->{'update_if_exists'})
+        <div class="row">
+            <div class="col-md-12">
+                <small class="text-success">
+                    <b>
+                        @if($schedule->status == 'PENDING')
+                        * ATUALIZAR DADOS EXISTENTES *
+                        @else
+                        * ATUALIZADO DADOS EXISTENTES *
+                        @endif
+                    </b>
+                </small>
+            </div>
+        </div>
+        @endif
         @if($schedule->{'error_description'})
         <div class="row">
             <div class="col-md-12 alert-danger">
