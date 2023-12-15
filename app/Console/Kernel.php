@@ -27,13 +27,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //$schedule->command('inspire')->everyMinute();
         $schedule->call(function(){
             $service = new DisciplinePerformanceDataService();
             $service->runSchedules();
         })->name("updateScheduling")
             ->withoutOverlapping()
-            ->everyMinute()
+            ->dailyAt('01:00')
             ->timezone('America/Sao_Paulo')
             ->onSuccess(function(){
             })->onFailure(function(){

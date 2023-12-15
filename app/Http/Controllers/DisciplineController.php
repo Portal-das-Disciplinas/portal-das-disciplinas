@@ -1481,10 +1481,19 @@ class DisciplineController extends Controller
                 }
             }
            
-
             DB::commit();
             $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
+
+            $allPerformanceData = DisciplinePerformanceData::all();
+            $minYear = $allPerformanceData->min('year');
+            $queryMinYear = $allPerformanceData->where('year','=',$minYear);
+            $minPeriod = $queryMinYear->min('period');
+            $maxYear = $allPerformanceData->max('year');
+            $queryMaxYear = $allPerformanceData->where('year','=',$maxYear);
+            $maxPeriod = $queryMaxYear->max('period');
+            $disciplinePerformanceDataService->saveSchedules(['yearStart'=>$minYear, 'periodStart'=>$minPeriod, 'yearEnd'=>$maxYear, 'periodEnd'=>$maxPeriod]);
+
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             Log::error($exception);

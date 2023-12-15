@@ -21,10 +21,17 @@ use Illuminate\Support\Facades\Log;
 use phpDocumentor\Reflection\DocBlock\Tags\Throws;
 use Throwable;
 
+/**
+ * Classe responsável por realizar as tarefas relacionadas com dados de desempenho das turmas das disciplinas.
+ */
 class DisciplinePerformanceDataService
 {
 
-
+    /**
+     * Salva agendamentos de busca de dados na API Sistemas de acordo com as informanações passadas no parâmetro $data.
+     * Pra cada semestre é gerado um agendamento.
+     * @param array $data Contém as chaves 'yearStart' que é o ano inicial, 'periodStart' que é o período inicial, 'yearEnd' que é o ano final e 'periodEnd' que é o período final.  
+     */
     public function saveSchedules($data)
     {
 
@@ -469,7 +476,6 @@ class DisciplinePerformanceDataService
             if (count($disciplines) == 0) {
                 DB::commit();
                 return;
-                
             }
         } else {
             $disciplines = Discipline::All();
@@ -480,12 +486,12 @@ class DisciplinePerformanceDataService
                 $numStudents = 0;
                 $numApprovedStudents = 0;
                 $numFailedStudents = 0;
-                $professor = Professor::where('id','=',$discipline->{'professor_id'})->first();
-                if(isset($professor) && isset($professor->name)){
+                $professor = Professor::where('id', '=', $discipline->{'professor_id'})->first();
+                if (isset($professor) && isset($professor->name)) {
                     $performanceData = DisciplinePerformanceData::where('discipline_code', '=', $discipline->code)
-                        ->where("professors","like","%" . $professor->name . "%")->get();
+                        ->where("professors", "like", "%" . $professor->name . "%")->get();
                 }
-                
+
                 if (count($performanceData) > 0) {
                     foreach ($performanceData as $data) {
                         $sumGrades += $data['sum_grades'];
