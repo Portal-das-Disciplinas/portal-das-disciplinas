@@ -1365,6 +1365,11 @@ class DisciplineController extends Controller
             if ($user->isAdmin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
+            if(!isset($professor)){
+                DB::commit();
+                return redirect()->back()->withInput()->withErrors(['professorError'=>'É necessário selecionar um professor para a disciplina']);
+               
+            }
 
             $discipline = Discipline::create([
                 'name' => $request->input('name'),
@@ -1496,7 +1501,6 @@ class DisciplineController extends Controller
 
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
-            Log::error($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.create")
                 ->withInput();
@@ -1506,7 +1510,7 @@ class DisciplineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param $id
+     * @param $id Identificador único da disciplina
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
@@ -1544,7 +1548,7 @@ class DisciplineController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param int $id Identificador único da disciplina
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -1583,7 +1587,7 @@ class DisciplineController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param int $id Identificador único da disciplina
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRequest $request, $id)
@@ -1597,9 +1601,6 @@ class DisciplineController extends Controller
             if ($user->isAdmin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
-
-
-
 
             $discipline = Discipline::query()->find($id);
             $discipline->update([
@@ -1771,7 +1772,7 @@ class DisciplineController extends Controller
 
             if ($faqValidator->fails()) {
 
-                return redirect()->back()->withInput()->withErrors(['faq' => 'faq']);
+                return redirect()->back()->withInput()->withErrors(['faq' => 'É necessário preencher os campos de FAQ']);
             }
 
             $databaseFaqsIds = Faq::where('discipline_id', $discipline->id)->pluck('id')->toArray();
@@ -1820,7 +1821,7 @@ class DisciplineController extends Controller
             dd($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.edit", $discipline->id)
-                ->withInput();
+                ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina']);
         }
     }
 
