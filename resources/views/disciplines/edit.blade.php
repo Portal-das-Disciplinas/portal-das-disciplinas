@@ -14,14 +14,17 @@ noindex, follow
     <div class='page-title'>
         <h1>Editar disciplina</h1>
     </div>
-    @error('faq')
+    
+    @if($errors->any())
+    @foreach($errors->all() as $error)
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        Preencha todos os campos <strong>Pergunta</strong> e <strong>Resposta</strong> das Faqs
+        <li>{{$error}}</li>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
-    @enderror
+    @endforeach
+    @endif
 
     <h4 class="text-center m-4"></h4>
     <div class=" font-weight-bold">

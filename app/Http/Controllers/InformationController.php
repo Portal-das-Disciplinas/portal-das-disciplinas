@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @class InformationController
+ * @brief Controlador para gerenciar informações do sistema.
+ */
 class InformationController extends Controller
 {
     protected $theme;
@@ -25,6 +29,11 @@ class InformationController extends Controller
         $this->middleware('admin')->except('index');
     }
 
+    /**
+     * @brief Exibe a página inicial de informações.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\View\View Retorna a view 'information' com as informações necessárias.
+     */
     public function index(Request $request)
     {
 
@@ -99,6 +108,11 @@ class InformationController extends Controller
             ->with('theme', $this->theme);
     }
 
+    /**
+     * @brief Armazena informações no banco de dados.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página anterior.
+     */
     public function store(Request $request)
     {
         if ($request['id-information']) {
@@ -114,7 +128,11 @@ class InformationController extends Controller
     }
 
 
-
+    /**
+     * @brief Armazena ou atualiza informações no banco de dados.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página de informações.
+     */
     public function update(Request $request)
     {
         $idCurrentCollabsText = $request['id-current'];
@@ -123,6 +141,11 @@ class InformationController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * @brief Armazena ou atualiza informações no banco de dados.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página de informações.
+     */
     public function StoreOrUpdate(Request $request)
     {
         DB::beginTransaction();
@@ -143,6 +166,12 @@ class InformationController extends Controller
         }
     }
 
+    /**
+     * @brief Exclui informações com base no nome.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @param string $name Nome da informação a ser removida.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página de informações.
+     */
     public function deleteByName(Request $request, $name){
         DB::beginTransaction();
         try{

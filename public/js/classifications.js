@@ -6,12 +6,20 @@ let numCards = classificationCards.length;
 let dragged = null;
 let previousContainer = null;
 
+/**
+ * Atualiza os índices das cartas com base na posição.
+ */
 function updateIndexes() {
     classificationCards.forEach(function (c, index) {
         let l = (c.querySelector(".index_info").innerHTML = index);
     });
 }
 
+/**
+ * Move a card para cima na lista.
+ * @param {string} cardId - O ID do card a ser movido.
+ * @returns {boolean} - Retorna true se o card foi movido com sucesso.
+ */
 function moveUp(cardId) {
     classificationCards.forEach(function (card, index) {
         if (card.id == cardId) {
@@ -33,6 +41,11 @@ function moveUp(cardId) {
     });
 }
 
+/**
+ * Move a card para baixo na lista.
+ * @param {string} cardId - O ID do card a ser movido.
+ * @returns {boolean} - Retorna true se o card foi movido com sucesso.
+ */
 function moveDown(cardId) {
     classificationCards.forEach(function (card, index) {
         if (card.id == cardId) {
@@ -86,6 +99,9 @@ classificationCards.forEach(function (card, index) {
     });
 });
 
+/**
+ * Atualiza a ordem dos cards no servidor.
+ */
 function updateOrder() {
     let list = [];
     classificationCards.forEach(function (card, index) {

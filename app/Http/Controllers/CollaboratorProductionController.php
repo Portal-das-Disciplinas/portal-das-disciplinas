@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @class CollaboratorProductionController
+ * @brief Controlador para gerenciar operações relacionadas à produção de colaboradores.
+ */
 class CollaboratorProductionController extends Controller
 {
     protected $theme;
@@ -22,6 +26,11 @@ class CollaboratorProductionController extends Controller
         $this->middleware('admin')->except('show');
     }
 
+    /**
+     * @brief Exibe a página de produção de um colaborador.
+     * @param Request $request O objeto de requisição HTTP.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View Página de visualização com detalhes da produção do colaborador.
+     */
     public function show(Request $request)
     {
 
@@ -46,6 +55,11 @@ class CollaboratorProductionController extends Controller
             ->with('opinionLinkForm',$opinionLinkForm);
     }
 
+    /**
+     * @brief Armazena uma lista de produções de colaboradores em formato JSON no banco de dados.
+     * @param Request $request O objeto de requisição HTTP contendo a lista de produções em formato JSON.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página anterior com feedback sobre o resultado da operação.
+     */
     public function storeListJson(Request $request)
     {
         $validator = Validator::make($request->all(),[
@@ -85,6 +99,12 @@ class CollaboratorProductionController extends Controller
         return redirect()->back()->with('feedback_ok','Dados salvos com sucesso!');
     }
 
+
+    /**
+     * @brief Atualiza os dados de uma produção de colaborador no banco de dados.
+     * @param Request $request O objeto de requisição HTTP contendo os dados de atualização.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página anterior com feedback sobre o resultado da operação.
+     */
     public function update(Request $request){
         $inputValidator = Validator::make($request->all(),[
             'productionId' => 'required',
@@ -111,6 +131,11 @@ class CollaboratorProductionController extends Controller
         return redirect()->back()->with('feedback_ok', 'Atualizado com sucesso');
     }
 
+    /**
+     * @brief Remove uma produção de colaborador do banco de dados.
+     * @param Request $request O objeto de requisição HTTP contendo o ID da produção a ser removida.
+     * @return \Illuminate\Http\RedirectResponse Redireciona de volta para a página anterior com feedback sobre o resultado da operação.
+     */
     public function delete(Request $request){
         try{
         $collaboratorProduction = CollaboratorProduction::find($request->productionId);

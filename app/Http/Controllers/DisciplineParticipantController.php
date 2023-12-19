@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @class DisciplineParticipantController
+ * @brief Controlador para gerenciar operações relacionadas aos participantes de disciplinas.
+ */
 class DisciplineParticipantController extends Controller
 {
 
@@ -67,6 +71,11 @@ class DisciplineParticipantController extends Controller
     }
 
 
+    /**
+     * @brief Salva ou atualiza os produtores de conteúdo relacionados a um vídeo da disciplina.
+     * @param Request $request Objeto que contém as informações da requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona para a página anterior com feedback sobre o resultado da operação.
+     */
     public function storeOrUpdatePortalVideoProducers(Request $request){
 
         

@@ -3,6 +3,12 @@
 //     $("#"+p).html(" > " + value + "%");
 // };
 
+/**
+ * Manipula a entrada de dados, atualizando elementos HTML com o valor fornecido.
+ *
+ * @param {string} object - Identificador do objeto HTML.
+ * @param {number} value - Valor a ser exibido.
+ */
 function handleInput(object, value) {
     let p = object.slice(5);
     let aux = 100 - parseInt(value);
@@ -16,6 +22,13 @@ function handleInput(object, value) {
     }
 }
 
+/**
+ * Alterna a exibição de caixas de seleção com base no estado do checkbox.
+ *
+ * @param {HTMLInputElement} checkbox - Caixa de seleção principal.
+ * @param {string} divSecondary - ID da div secundária a ser alternada.
+ * @param {string} range - ID do intervalo de entrada a ser alternado.
+ */
 function toggleCheckboxes(checkbox, divSecondary, range) {
 
     const secondaryDiv = document.getElementById(divSecondary);

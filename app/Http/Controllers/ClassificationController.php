@@ -7,7 +7,10 @@ use App\Models\Classification;
 use App\Models\Discipline;
 use Illuminate\Support\Facades\Storage;
 
-
+/**
+ * @class ClassificationController
+ * @brief Controlador para gerenciar operações relacionadas a classificações.
+ */
 class ClassificationController extends Controller
 {
     protected $theme;
@@ -18,6 +21,10 @@ class ClassificationController extends Controller
         $this->theme = json_decode($contents, true);
     }
 
+    /**
+     * @brief Exibe a página principal com todas as classificações.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View Página de visualização com as classificações.
+     */
     public function index()
     {
         $classifications = Classification::all()->sortBy('order');
@@ -26,12 +33,21 @@ class ClassificationController extends Controller
             ->with('theme', $this->theme);
     }
 
+    /**
+     * @brief Exibe o formulário para criar uma nova classificação.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View Página de visualização com o formulário de criação.
+     */
     public function create()
     {
         return view('admin.classification.form')
             ->with('theme', $this->theme);
     }
 
+    /**
+     * @brief Armazena uma nova classificação no banco de dados.
+     * @param Request $request O objeto de requisição HTTP.
+     * @return \Illuminate\Http\RedirectResponse Redireciona para a página de índice de classificações após a criação.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -63,6 +79,11 @@ class ClassificationController extends Controller
         return redirect()->route('classificacoes.index');
     }
     
+    /**
+     * @brief Exibe a página de detalhes de uma classificação específica.
+     * @param int $id O ID da classificação.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View Página de visualização com detalhes da classificação.
+     */
     public function show($id)
     {
         $classification = Classification::find($id);
@@ -71,6 +92,11 @@ class ClassificationController extends Controller
             ->with('theme', $this->theme);
     }
 
+    /**
+     * @brief Exibe o formulário para editar uma classificação existente.
+     * @param int $id O ID da classificação a ser editada.
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View Página de visualização com o formulário de edição.
+     */
     public function edit($id)
     {
         $classification = Classification::find($id);
@@ -81,6 +107,12 @@ class ClassificationController extends Controller
             ->with('theme', $this->theme);
     }
     
+     /**
+     * @brief Atualiza os dados de uma classificação existente no banco de dados.
+     * @param Request $request O objeto de requisição HTTP.
+     * @param int $id O ID da classificação a ser atualizada.
+     * @return \Illuminate\Http\RedirectResponse Redireciona para a página de índice de classificações após a atualização.
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -100,6 +132,11 @@ class ClassificationController extends Controller
         return redirect()->route('classificacoes.index');
     }
 
+    /**
+     * @brief Atualiza a ordem das classificações com base na lista fornecida.
+     * @param Request $request O objeto de requisição HTTP contendo a lista de IDs.
+     * @return \Illuminate\Http\JsonResponse Resposta JSON contendo a lista de IDs atualizada.
+     */
     function updateClassificationOrder(Request $request){
        $data =  json_decode($request->idList);
        foreach($data as $index => $idClassification){
@@ -111,6 +148,11 @@ class ClassificationController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * @brief Remove uma classificação do banco de dados.
+     * @param int $id O ID da classificação a ser removida.
+     * @return \Illuminate\Http\RedirectResponse Redireciona para a página de índice de classificações após a remoção.
+     */
     public function destroy($id)
     {
         $classification = Classification::find($id);

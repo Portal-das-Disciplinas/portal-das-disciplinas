@@ -1,16 +1,33 @@
+/**
+ * Atualiza o índice do ano selecionado.
+ * @param {Event} event - O evento de seleção do ano.
+ */
 function onSelectYear(event) {
     yearSelectedIndex = event.target.selectedIndex;
 }
 
+/**
+ * Atualiza o índice do período selecionado.
+ * @param {Event} event - O evento de seleção do período.
+ */
 function onSelectPeriod(event) {
     periodSelectedIndex = event.target.selectedIndex;
 }
 let classSelectedIndex = -1000;
 
+/**
+ * Atualiza o índice da turma selecionada.
+ * @param {Event} event - O evento de seleção da turma.
+ */
 function onSelectClass(event) {
     classSelectedIndex = event.target.selectedIndex;
 }
 
+/**
+ * Realiza a busca por turmas de uma disciplina.
+ * @param {Event} event - O evento de clique.
+ * @param {string} disciplineCode - O código da disciplina.
+ */
 function onClickSearchClasses(event, disciplineCode) {
     codigoComponente = disciplineCode;
     ano = document.querySelector("#selectYear").value;
@@ -45,6 +62,10 @@ function onClickSearchClasses(event, disciplineCode) {
     });
 }
 
+/**
+ * Inicia a pesquisa dos dados da disciplina.
+ * @param {string} code - O código da disciplina.
+ */
 function onSearchDisciplineDataClick(code) {
     if (
         !document.querySelector("#checkAllClasses").checked &&
@@ -60,6 +81,10 @@ function onSearchDisciplineDataClick(code) {
 let yearSelectedIndex = 0;
 let periodSelectedIndex = 0;
 
+/**
+ * Altera a visibilidade do grupo de seleção de turmas com base na seleção "Selecionar Todas as Turmas".
+ * @param {Event} event - O evento de alteração.
+ */
 function onChangeCheckAllClasses(event) {
     let isChecked = event.target.checked;
     let groupClass = document.querySelector("#form-group-select-class");
@@ -70,6 +95,10 @@ function onChangeCheckAllClasses(event) {
     }
 }
 
+/**
+ * Inicia a pesquisa dos dados da disciplina.
+ * @param {string} code - O código da disciplina.
+ */
 function searchDisciplineData(code) {
     tempoInicial = new Date().getMilliseconds();
     let disciplineCode = code;
