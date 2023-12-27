@@ -18,7 +18,7 @@ class Professor extends Model
     protected $table = 'professors';
 
     /**
-     * Os atributos que pode ser associados em massa, no método create.
+     * Array com os atributos que são atribuíveis em massa pelo método create.\n
      * name: Nome do professor.\n
      * profile_pic_link: Url do link da foto do professor.\n
      * public_email: E-mail público do professor.(Não usado no login)

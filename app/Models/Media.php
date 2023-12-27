@@ -13,7 +13,7 @@ class Media extends Model
     protected $table = 'medias'; /*!< Nome da tabela que representa o modelo
 
     /**
-     * Os atributos que são atribuíveis em massa.
+     * Array com os atributos que são atribuíveis em massa pelo método Media::create.
      *title: Título da mídia.\n
      *type: Tipo da mídia.\n
      *url:\n
@@ -31,7 +31,7 @@ class Media extends Model
     ];
 
     /**
-     *Os atributos que são convertidos para outro tipo.
+     *Array com os atributos que são convertidos para outro tipo.
      */
     protected $casts = [
         'is_trailer' => 'boolean',
