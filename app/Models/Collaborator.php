@@ -12,7 +12,7 @@ class Collaborator extends Model
 {
     use HasFactory;
     /**
-     * Array com os atributos que são atribuíveis em massa no método Collaborator::create.\n
+     * Array com os atributos que são atribuíveis em massa pelo método Collaborator::create.\n
      * name: Nome do colaborador.\n
      * bond: Vinculo do colaborador com o projeto.\n
      * role: Função do colaborador no projeto.\n

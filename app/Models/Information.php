@@ -15,7 +15,7 @@ class Information extends Model
     protected $table = "informations";/*!<Nome da tabela que representa esse modelo */
 
     /**
-     * Array com os atributos que são associados em massa.\n
+     * Array com os atributos que são atribuíveis em massa pelo método Information::create.\n
      * name: Nome único para identificação da informação.\n
      * value: Valor da informação.
      */

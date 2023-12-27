@@ -18,7 +18,7 @@ class Faq extends Model
     protected $table = 'faqs';
 
     /**
-     * Os atributos que podem ser associados em massa, no método create.
+     * Array com os atributos que são atribuíveis em massa pelo método Faq::create.
      * title: Título da pergunta.\n
      * content: Conteúdo da pergunta.\n
      * discipline_id: ID da disciplina da qual contém a pergunta.
