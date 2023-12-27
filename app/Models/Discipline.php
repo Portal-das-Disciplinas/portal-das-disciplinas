@@ -16,7 +16,7 @@ class Discipline extends Model
     protected $table = 'disciplines';
 
     /**
-     * Os atributos que são atribuiveis em massa.\n
+     * Array com os atributos que são atribuiveis em massa no método Discipline::create.\n
      * code: Código da disciplina.\n
      * name: Nome da disciplina.\n
      * description: Descrição da disciplina.\n

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Representa a classificação da disciplina
+ * Classe que guarda o nome de uma classificação para a disciplina e o nome dos seus dois valores opostos.w
  * 
  */
 class Classification extends Model
@@ -19,7 +19,8 @@ class Classification extends Model
     protected $table = 'classifications';
 
     /**
-     *Os atributos que podem ser associados em massa, no metodo create.
+     *Os atributos que são atribuíveis em massa, no metodo Classification::create.\n
+     *name: Nome da classificação
      */
     protected $fillable = [
         'name',
