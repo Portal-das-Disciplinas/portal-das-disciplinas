@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Link extends Model
 {
     /**
-     * Array com os atributos que são associados em massa.\n
+     * Array com os atributos que são atribuíveis em massa pelo método Link::create.\n
      * name: Nome único do link.\n
      * url: Endereço do link.\n
      * ativo: Informa se o link está ativo ou inativo.

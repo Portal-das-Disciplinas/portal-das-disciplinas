@@ -54,10 +54,16 @@ class DisciplinePerformanceData extends Model
         'semester_performance_id'
     ];
 
+    /**
+     * Retorna a disciplina que contém esse dados.(Remover este método depois)
+     */
     public function discipline(){
         return $this->belongsTo(Discipline::class);
     }
 
+    /**
+     * Retorna a porcentagem dos alunos aprovados desta turma.
+     */
     public function calculatePercentage () {
         $percentage = round(($this->num_approved_students*100) / $this->num_students);
 

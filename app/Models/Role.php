@@ -18,7 +18,7 @@ class Role extends Model
     protected $table = 'roles';
 
     /**
-     * Os atributos que são atribuíveis em massa.\n
+     * Array com os atributos que são atribuíveis em massa pelo método Role::create.\n
      * name: Nome da Role.\n
      * priority_level: Nível de acesso.
      */

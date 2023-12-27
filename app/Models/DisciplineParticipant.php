@@ -14,7 +14,7 @@ class DisciplineParticipant extends Model
     use HasFactory;
 
     /**
-     * Atributos que são atribuíveis em massa.\n
+     * Array com os atributos que são atribuíveis em massa pelo método DisciplineParticipant::create.\n
      * name: Nome do participante.\n
      * role: Função do participante na produção de conteúdo da página.\n
      * email: e-mail do participante.\n
