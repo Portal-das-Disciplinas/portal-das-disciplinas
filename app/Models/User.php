@@ -16,7 +16,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-     * Os atributos que são associados em massa.\n
+     * Array com os atributos que são atribuíveis em massa pelo método User::create.\n
      * name -> Nome do usuário.\n
      * email ->E-mail utilizando para o usuário fazer login.\n
      * password -> Senha do usuário.\n

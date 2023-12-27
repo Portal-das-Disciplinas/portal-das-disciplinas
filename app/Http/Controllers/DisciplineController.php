@@ -53,7 +53,8 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Retorna a página com todas as disciplinas cadastradas no portal.
+     * @param $request Objeto contendo as informações da requisição http.
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
@@ -1328,7 +1329,7 @@ class DisciplineController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Abre um formulário para criar um novo professor
      *
      * @param CreateRequest $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View

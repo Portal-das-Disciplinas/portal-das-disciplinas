@@ -5,21 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class ClassificationDiscipline extends Model
 {
     use HasFactory;
 
     /**
-     * Nome da tabela associada com o modelo.
+     * Classe que associa uma classificação com uma disciplina
      */
     protected $table = 'classifications_disciplines';
+
     /**
      * Nome da chave estrageira na tabela no banco de dados.
      */
     protected $primaryKey = 'classification_id';
 
     /**
-     * Os atributos que são associados em massa, no método create.\n
+     * Array com os atributos que são associados em massa, no método ClassificationDiscipline::create.\n
      * classification_id: ID da classificação(Classification).
      * discipline_id: ID da disciplina.
      * value: Valor da classificação.
