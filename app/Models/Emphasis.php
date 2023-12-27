@@ -18,7 +18,7 @@ class Emphasis extends Model
     protected $table = 'emphasis';
     
     /**
-     * Os atributos que são associados em massa, no método create.\n
+     * Array com os atributos que são atribuíveis em massa pelo método Emphasis::create.\n
      * name: Nome da ênfase.
      */
     protected $fillable = [

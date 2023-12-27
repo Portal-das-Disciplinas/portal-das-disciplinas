@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Contém informações do aluno
+ * Representa as  informações do aluno
  */
 class Student extends Model
 {
@@ -18,7 +18,7 @@ class Student extends Model
     protected $table = 'students';
 
     /**
-     * Os atributos que podem ser atribuidos em massa.\n
+     * Array com os atributos que são atribuíveis em massa pelo método Student::create.\n
      * name: Nome do aluno.\n
      * profile_pic_link: Link da foto de perfil do aluno.\n
      * user_id: ID do usuário(User) do qual está vinculado ao aluno(Student).

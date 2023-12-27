@@ -21,7 +21,7 @@ class ClassificationDiscipline extends Model
     protected $primaryKey = 'classification_id';
 
     /**
-     * Array com os atributos que são associados em massa, no método ClassificationDiscipline::create.\n
+     * Array com os atributos que são associados em massa pelo método ClassificationDiscipline::create.\n
      * classification_id: ID da classificação(Classification).
      * discipline_id: ID da disciplina.
      * value: Valor da classificação.

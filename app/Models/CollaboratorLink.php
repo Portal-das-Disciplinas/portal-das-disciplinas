@@ -13,7 +13,7 @@ class CollaboratorLink extends Model
 {
     use HasFactory;
     /**
-     * Atributos que são atribuíveis em massa.
+     * Array com os atributos que são atribuíveis em massa pelo método CollaboratorLink::create.\n
      * name: Nome para referenciar o link do colaborador.\n
      * url: Url do link do colaborador.\n
      * collaborator_id: ID do colaborador que possui o link.

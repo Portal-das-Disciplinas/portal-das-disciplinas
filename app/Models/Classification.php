@@ -19,8 +19,8 @@ class Classification extends Model
     protected $table = 'classifications';
 
     /**
-     *Os atributos que são atribuíveis em massa, no metodo Classification::create.\n
-     *name: Nome da classificação
+     *Array com os atributos que são atribuíveis em massa pelo método Classification::create.\n
+     *name: Nome da classificação.
      */
     protected $fillable = [
         'name',

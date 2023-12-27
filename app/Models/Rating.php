@@ -17,7 +17,7 @@ class Rating extends Model
     protected $table = 'rating';
 
     /**
-     * Os atributos que são atribuíveis em massa.
+     * Array com os atributos que são atribuíveis em massa pelo método Rating:create.
      *
      * @var array
      */
