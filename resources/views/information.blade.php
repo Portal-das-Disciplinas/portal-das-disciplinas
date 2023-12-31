@@ -433,6 +433,7 @@
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
+                        <img src="https://www.google.com/s2/favicons?domain={{$link->url}}" alt="icone">
                         <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
@@ -531,6 +532,7 @@
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
+                        <img src="https://www.google.com/s2/favicons?domain={{$link->url}}" alt="icone">
                         <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
@@ -637,6 +639,7 @@
                     @slot('links')
                     <div class="d-flex justify-content-center align-items-center flex-wrap">
                         @foreach($collaborator->links as $link)
+                        <img src="https://www.google.com/s2/favicons?domain={{$link->url}}" alt="icone">
                         <a href="{{$link->url}}" class="smaller-p ml-1 mr-1" rel="noopener" target="_blank">{{$link->name}}</a>
                         @endforeach
                     </div>
