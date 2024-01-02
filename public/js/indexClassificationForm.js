@@ -73,3 +73,19 @@ $("#aprovationsButton").on("click", () => {
     $(".range").attr("min", -1);
     $(".range").attr("value", -1);
 });
+
+$("#professorsButton").on("click", () => {
+    /*Ao clicar no filtro por aprovação
+    altera a propriedade filtro para aprovacao,
+    indicando que o filtro por aprovacao será utilizado*/
+
+    if ($("#professorsButton").attr("aria-expanded") == "false") {
+        $("#filtro").attr("value", "professor");
+    } else {
+        $("#filtro").attr("value", "null");
+    }
+
+    //Desativa os ranges
+    $(".range").attr("min", -1);
+    $(".range").attr("value", -1);
+});

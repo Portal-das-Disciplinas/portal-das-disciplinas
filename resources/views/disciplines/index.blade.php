@@ -67,37 +67,53 @@
                 <div class="card-header row" id="headingOne">
                   <div class="col">
                     <h5 class="mb-0">
-                    <button 
-                        type="button" 
-                        id="AccordionButton" 
-                        class="btn btn-link" 
-                        data-toggle="collapse" 
-                        data-target="#collapseOne" 
-                        aria-expanded="false" 
-                        aria-controls="collapseOne"
-                    >
-                      Filtragem via Classificações
-                    </button>
+                        <button 
+                            type="button" 
+                            id="AccordionButton" 
+                            class="btn btn-link" 
+                            data-toggle="collapse" 
+                            data-target="#collapseOne" 
+                            aria-expanded="false" 
+                            aria-controls="collapseOne"
+                        >
+                        Filtragem via Classificações
+                        </button>
                     </h5>
                   </div>
 
                   <input type="reset" style="display:none" id="resetButton" value="">
 
+                    <div class="col" style="display: flex; justify-content: center;">
+                        <h5 class="mb-0">
+                            <button 
+                            
+                                type="button" 
+                                id="aprovationsButton" 
+                                class="btn btn-link" 
+                                data-toggle="collapse" 
+                                data-target="#collapseTwo" 
+                                aria-expanded="false" 
+                                aria-controls="collapseTwo"
+                            >
+                            Filtragem via Aprovações
+                            </button>
+                        </h5>
+                    </div>
+
                     <div class="col" style="display: flex; justify-content: flex-end;">
-                    <h5 class="mb-0">
-                    <button 
-                    
-                        type="button" 
-                        id="aprovationsButton" 
-                        class="btn btn-link" 
-                        data-toggle="collapse" 
-                        data-target="#collapseTwo" 
-                        aria-expanded="false" 
-                        aria-controls="collapseTwo"
-                    >
-                      Filtragem via Aprovações
-                    </button>
-                  </h5>
+                        <h5 class="mb-0">
+                            <button 
+                                type="button" 
+                                id="professorsButton" 
+                                class="btn btn-link" 
+                                data-toggle="collapse" 
+                                data-target="#collapseThree" 
+                                aria-expanded="false" 
+                                aria-controls="collapseThree"
+                            >
+                            Filtragem via Professor
+                            </button>
+                        </h5>
                     </div>
                 </div>
 
@@ -242,7 +258,6 @@
                                             @endforeach
                                         </select>
                                         </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -251,11 +266,28 @@
                     @endif
                     </div>
                 </div>
+
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                    <div class="card card-body" style="display:flex; align-items:center;">  
+                        <div class="col" style="display: flex; justify-content: center;">
+                            <h3>Escolha o Professor</h3>
+                        </div>
+
+                        <br>
+
+                        <select name="professors" id="professors" style="width:40%;">
+                            <option value="null" name="professor" selected>Selecione</option>
+                            @foreach($professors as $professor)
+                                <option value="{{ $professor->id }}">{{ $professor->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
         
     @isset($disciplines)
-        
         @if(count($disciplines) == 0)
             <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
         @else
