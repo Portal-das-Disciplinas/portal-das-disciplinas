@@ -1367,8 +1367,8 @@ class DisciplineController extends Controller
                 $professor = Professor::query()->find($request->input('professor'));
             }
             if(!isset($professor)){
-                DB::commit();
-                return redirect()->back()->withInput()->withErrors(['professorError'=>'É necessário selecionar um professor para a disciplina']);
+                DB::rollBack();
+                return redirect()->back()->withInput()->withErrors(['professor_error'=>'É necessário selecionar um professor para a disciplina.']);
                
             }
 
@@ -1458,6 +1458,15 @@ class DisciplineController extends Controller
 
             if ($titles != null) {
                 foreach ($titles as $key => $title) {
+                    if(($title == "" || $title == null)&&($contents[$key] == "" || $contents[$key] == null)){
+                        continue;
+                    }
+                    else if($title == "" || $title==null || $contents[$key] == "" || $contents[$key] == null){
+                        DB::rollBack();
+                        return redirect()->back()
+                            ->withErrors(['faq_error' => 'Erro ao cadastrar a FAQ.
+                                 Verifique se a Faq contém o conteúdo da PERGUNTA e da RESPOSTA preenchidos.']);
+                    }
                     Faq::create([
                         'discipline_id' => $discipline->id,
                         'title' => $title,
@@ -1503,7 +1512,7 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return redirect()->route("disciplinas.create")
+            return redirect()->back()->withErrors(['error'=>"Erro ao cadastrar a disciplina"])
                 ->withInput();
         }
     }
