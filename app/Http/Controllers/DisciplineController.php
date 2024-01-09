@@ -66,6 +66,7 @@ class DisciplineController extends Controller
         $emphasis = Emphasis::all();
         $classifications = Classification::all();
         $studentsData = DisciplinePerformanceData::all();
+        $professors_all = Professor::all();
 
         $disciplinesPeriods = collect([]);
 
@@ -103,7 +104,8 @@ class DisciplineController extends Controller
             ->with('opinionLinkForm',$opinionLinkForm)
             ->with('classifications', $classifications)
             ->with('studentsData', $studentsData)
-            ->with('periodsColection', $periodsColection);
+            ->with('periodsColection', $periodsColection)
+            ->with('professors', $professors_all);
     }
 
     public function disciplineFilter(Request $request)
@@ -113,6 +115,7 @@ class DisciplineController extends Controller
         $disciplines_all = Discipline::all();
         $classifications_all = Classification::all();
         $studentsData = DisciplinePerformanceData::all();
+        $professors_all = Professor::all();
 
         $disciplinesPeriods = collect([]);
 
@@ -126,6 +129,7 @@ class DisciplineController extends Controller
 
         $emphasis_id = $request->input('emphasis');
         $discipline_name = $request->input('name_discipline');
+        $professor_name = $request->input('professors');
 
         $arrayClassifications = array($request->input());
         
@@ -276,7 +280,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($discipline_name == null && $emphasis_id == null) {
                 // pesquisa apenas por classificações
                 $disciplines = ClassificationDiscipline::all();
@@ -359,7 +364,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($emphasis_id != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where('emphasis_id', $emphasis_id)
@@ -444,7 +450,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($discipline_name != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where("name", "like", "%" . $discipline_name . "%")
@@ -529,7 +536,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else {
                 return redirect('/')
                 ->with('disciplines', $disciplines_all->paginate(12))
@@ -537,7 +545,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             }
         } else if (count($arrayValues) > 0 && $request->input('filtro') === "aprovacao") {
             if ($discipline_name != null && $emphasis_id != null) {
@@ -651,7 +660,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($discipline_name === null && $emphasis_id === null) {
                 // pesquisa apenas pelo filtro de aprovações
                 if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') === null) {
@@ -744,7 +754,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($emphasis_id != null) {
                 if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') === null) {
                     // Pesquisa por periodo
@@ -845,7 +856,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($discipline_name != null) {
                 if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') === null) {
                     // Pesquisa por periodo
@@ -946,7 +958,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else {
                 return redirect('/')
                 ->with('disciplines', $disciplines_all->paginate(12))
@@ -954,7 +967,119 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
+            }
+        } else if (count($arrayValues) > 0 && $request->input('filtro') === "professor") {
+            if ($discipline_name != null && $emphasis_id != null) {
+                // mandou o name_discipline e a emphasis
+                
+                $finalCollection = collect([]);
+                $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
+                ->where("disciplines.name","like","%".$discipline_name."%")
+                ->where("disciplines.emphasis_id",$emphasis_id)
+                ->where("professors.id", $professor_name)
+                ->get();
+
+                foreach($disciplinesCombo as $ids) {
+                    $finalCollection->push(
+                        Discipline::where("professor_id",$ids->professor_id)
+                        ->where("code",$ids->code)
+                        ->get()
+                    );
+                }
+
+                return view('disciplines.index')
+                ->with("disciplines", $finalCollection->collapse()->unique()->paginate(12))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
+            } else if ($discipline_name === null && $emphasis_id === null) {
+                // pesquisar apenas pelo professor
+
+                $finalCollection = collect([]);
+                $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
+                ->where("professors.id", $professor_name)
+                ->get();
+
+                foreach($disciplinesCombo as $ids) {
+                    $finalCollection->push(
+                        Discipline::where("professor_id",$ids->professor_id)
+                        ->where("code",$ids->code)
+                        ->get()
+                    );
+                }
+
+                return view('disciplines.index')
+                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
+            } else if ($emphasis_id != null) {
+                // pesquisar pelo professor e enfase
+
+                $finalCollection = collect([]);
+                $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
+                ->where("disciplines.emphasis_id",$emphasis_id)
+                ->where("professors.id", $professor_name)
+                ->get();
+
+                foreach($disciplinesCombo as $ids) {
+                    $finalCollection->push(
+                        Discipline::where("professor_id",$ids->professor_id)
+                        ->where("code",$ids->code)
+                        ->get()
+                    );
+                }
+                
+                return view('disciplines.index')
+                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
+            } else if ($discipline_name != null) {
+                // pesquisar pelo discipline name e o professor
+
+                $finalCollection = collect([]);
+                $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
+                ->where("disciplines.name","like","%".$discipline_name."%")
+                ->where("professors.id", $professor_name)
+                ->get();
+
+                foreach($disciplinesCombo as $ids) {
+                    $finalCollection->push(
+                        Discipline::where("professor_id",$ids->professor_id)
+                        ->where("code",$ids->code)
+                        ->get()
+                    );
+                }
+                
+                return view('disciplines.index')
+                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
+            } else {
+                return redirect('/')
+                ->with('disciplines', $disciplines_all->paginate(12))
+                ->with('emphasis', $emphasis_all)
+                ->with('theme', $this->theme)
+                ->with('classifications', $classifications_all)
+                ->with('studentsData', $studentsData)
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             }
         } else if ($isRangeChosen == 0) {
             // Ranges foram enviados
@@ -1036,7 +1161,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($discipline_name == null && $emphasis_id == null) {
                 $disciplines = ClassificationDiscipline::all(); 
                 $classifications = Classification::all();
@@ -1111,7 +1237,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($emphasis_id != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where('emphasis_id', $emphasis_id)
@@ -1189,7 +1316,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($discipline_name != null) {
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where("name", "like", "%" . $discipline_name . "%")
@@ -1266,7 +1394,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else {
                 return redirect('/')
                 ->with('disciplines', $disciplines_all->paginate(12))
@@ -1274,7 +1403,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             }
         } else {
             // Apenas o nome ou a ênfase foram enviados
@@ -1288,7 +1418,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($emphasis_id != null) {
                 $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
 
@@ -1297,7 +1428,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($discipline_name != null) {
                 $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
 
@@ -1306,7 +1438,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else if ($emphasis_id == null) {
                 $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
 
@@ -1315,7 +1448,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             } else {
                 return redirect('/')
                 ->with('disciplines', $disciplines_all->paginate(12))
@@ -1323,7 +1457,8 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('classifications', $classifications_all)
                 ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection);
+                ->with('periodsColection', $periodsColection)
+                ->with('professors', $professors_all);
             }
         }
     }
