@@ -66,7 +66,8 @@ class DisciplineController extends Controller
         $emphasis = Emphasis::all();
         $classifications = Classification::all();
         $studentsData = DisciplinePerformanceData::all();
-        $professors_all = Professor::all();
+        $professors_all = Professor::all()->sortBy('name');
+        // dd($professors_all);
 
         $disciplinesPeriods = collect([]);
 
@@ -115,7 +116,7 @@ class DisciplineController extends Controller
         $disciplines_all = Discipline::all();
         $classifications_all = Classification::all();
         $studentsData = DisciplinePerformanceData::all();
-        $professors_all = Professor::all();
+        $professors_all = Professor::all()->sortBy('name');;
 
         $disciplinesPeriods = collect([]);
 
