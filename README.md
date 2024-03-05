@@ -1,21 +1,20 @@
-# Portal disciplina
+# Portal das Disciplina
 
 ## Passo 1 - Preparando o ambiente
 
 Para rodar o projeto é necessário instalar os requisitos abaixo:
 
-1. Instalar o xampp (Versão 7.3)
+1. Instalar o xampp (Versão 7.3.33)
 2. Instalar o node
 3. Instalar o composer
 4. Instalar o laravel
 
 ## Passo 2 - Depêndencias Laravel
 
-### Após essas instalações é necessacio acessar o diretorio do projeto no console e utilizar os seguintes comandos:
+### Após essas instalações é necessário acessar o diretório do projeto no console e utilizar os seguintes comandos:
 
     composer install
     npm install
-    npm run dev
 
 ## Passo 3 - Configurando banco de dados
 
@@ -24,7 +23,7 @@ Para rodar o projeto é necessário instalar os requisitos abaixo:
 
     copy .env.example .env
 
-3. **Logo após esse comando configure o arquivo .env para o seu banco de dados**
+3. **Logo após esse comando configure o arquivo .env para o seu banco de dados. É nescessário também inserir informações de acesso à API Sistemas para exibir os índices de desempenho das turmas.**
 
 ## Rode os comandos abaixo no diretório do projeto
 
