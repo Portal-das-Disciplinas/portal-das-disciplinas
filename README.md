@@ -15,6 +15,7 @@ Para rodar o projeto é necessário instalar os requisitos abaixo:
 
     composer install
     npm install
+    composer require doctrine/dbal
 
 ## Passo 3 - Configurando banco de dados
 
