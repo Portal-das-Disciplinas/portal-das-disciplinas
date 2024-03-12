@@ -177,6 +177,9 @@ class APISigaaService
         $qtdAlunos = 0;
         $qtdAlunosComMedia = 0;
         $somaMedias = 0;
+        $somaMediasUnidade1 = 0;
+        $somaMediasUnidade2 = 0;
+        $somaMediasUnidade3 = 0;
         $maiorMedia = 0;
         $menorMedia = 10;
         $qtdAprovados = 0;
@@ -235,6 +238,23 @@ class APISigaaService
                     $encontrouBoletim = true;
                     $qtdAlunosComMedia++;
                     $somaMedias += $boletimAluno["media-final"];
+                    foreach($boletimAluno["notas-unidades"] as $nota){
+                        if($nota["unidade"] == "1"){
+                            if($nota["media"]!=null){
+                                $somaMediasUnidade1 += $nota["media"];
+                            }
+                        }elseif($nota["unidade"] == "2"){
+                            if($nota["media"] != null){
+                                $somaMediasUnidade2 += $nota["media"];
+                            }
+                        }elseif($nota["unidade"] == "3"){
+                            if($nota["media"] != null){
+                                $somaMediasUnidade3 += $nota["media"];
+                            }
+                        }else{
+                            Log::warning("Unidade desconhecida: " . " unidade: " . $nota["unidade"]);
+                        }
+                    }
                     $menorMedia = min($menorMedia, $boletimAluno["media-final"]);
                     $maiorMedia = max($maiorMedia, $boletimAluno["media-final"]);
                     if ($boletimAluno["situacao"] == "APROVADO" || $boletimAluno["situacao"] == "APROVADO POR NOTA") {
@@ -264,6 +284,9 @@ class APISigaaService
 
         $dados = array(
             "soma-medias" => $somaMedias,
+            "soma-medias-unidade1" => $somaMediasUnidade1,
+            "soma-medias-unidade2" => $somaMediasUnidade2,
+            "soma-medias-unidade3" => $somaMediasUnidade3,
             "maior-media" => $maiorMedia,
             "menor-media" => $menorMedia,
             "quantidade-discentes" => $qtdAlunos,

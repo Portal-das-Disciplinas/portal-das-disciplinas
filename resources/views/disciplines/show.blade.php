@@ -123,7 +123,7 @@ mais.
                     <div class="d-none">{{$actualYear = date("Y")}}</div>
                     <h1 class="mt-2">Índices de aprovação</h1>
                     <div class="form">
-                        <div id="semesterSelectFields" class="form-group" style="opacity: 50%";>
+                        <div id="semesterSelectFields" class="form-group" style="opacity: 50%" ;>
                             <div class="row d-flex align-items-end">
                                 <div class="col-md-3">
                                     <label>Ano Inicial</label>
@@ -172,7 +172,7 @@ mais.
                         </div>
 
                         <div>
-                            <input id="checkAllPeriods" name="checkAllPeriods" type="checkbox" checked  onchange="onChangeCheckAllPeriods(event)">
+                            <input id="checkAllPeriods" name="checkAllPeriods" type="checkbox" checked onchange="onChangeCheckAllPeriods(event)">
                             <label for="checkAllPeriods">Todos os períodos</label>
                         </div>
                         <div class="mt-1 d-flex flex-column" style="border-bottom: solid 1px rgba(0,0,0,0.2)">
@@ -182,7 +182,7 @@ mais.
 
                         <div class="mt-3 px-1 d-flex flex-column" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
                             <div>
-                                <input id="checkOnlyProfessorClasses" name="onlyProfessorClasses" type="checkbox" checked  onchange="onChangeAllClasses(event)">
+                                <input id="checkOnlyProfessorClasses" name="onlyProfessorClasses" type="checkbox" checked onchange="onChangeAllClasses(event)">
                                 <label for="checkOnlyProfessorClasses" style="cursor:pointer"><small>Somente turmas do professor</small></label>
                             </div>
                             <div>
@@ -190,7 +190,7 @@ mais.
                                 <label for="checkAllClasses" style="cursor:pointer"><small>Turmas de todos os professores</small></label>
                             </div>
                         </div>
-                        
+
                         <div class="mt-3 px-1" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
                             <div id="form-group-select-class" class="form-group d-none">
                                 <label for="selectClass">Turma</label>
@@ -203,7 +203,7 @@ mais.
                     <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
                         Buscando dados...
                     </div>
-                    <div id="dadosDisciplina" class="mt-2 d-none container py-2 d-none", style="border:solid 1px rgba(0,0,0,0.1); border-radius:5px">
+                    <div id="dadosDisciplina" class="mt-2 d-none container py-2 d-none" , style="border:solid 1px rgba(0,0,0,0.1); border-radius:5px">
                         <div class="row">
                             <div class="col text-secondary">
                                 <h4 id="infoTipoBusca"></h4>
@@ -234,15 +234,90 @@ mais.
                             </div>
                         </div>
                         <div class="row mt-2" style="background-color:azure">
-                            <strong class="col-6 mb-0 text-primary">Nota média</strong>
+                            <strong class="col-6 mb-0 text-primary">Nota média<small class="text-secondary">&nbsp;(todas as unidades)</small></strong>
                             <div class="col-6 d-flex justify-content-end">
                                 <strong id="notaMediaComponente" class="text-primary">0</strong>
                             </div>
-                            
                         </div>
-                        
+
+                        <div id="notasPorUnidade"class="row mt-2" style="border: 1px solid rgba(0,0,0,0.2); border-radius:5px" ><!--Notas das unidades-->
+                            <div class="col-md-12">
+                                <strong class="text-secondary">Nota média por unidade</strong>
+                            </div>
+                            <div class="col-md-4 pb-3" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-secondary">Unidade 1</span>
+                                                    <span id="notaUnidade1" class="text-secondary">5.0</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="progress">
+                                                    <div id="progressNotaUnidade1" class="progress-bar bg-primary" role="progressbar" style="width: 10%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-secondary">Unidade 2</span>
+                                                    <span id="notaUnidade2" class="text-secondary">9.7</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="progress">
+                                                    <div id="progressNotaUnidade2" class="progress-bar bg-primary" role="progressbar" style="width: 97%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="text-secondary">Unidade 3</span>
+                                                    <span id="notaUnidade3" class="text-secondary">4.2</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="progress">
+                                                    <div id="progressNotaUnidade3" class="progress-bar bg-primary" role="progressbar" style="width: 42%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    
+
 
                 </div>
             </div>
@@ -761,9 +836,8 @@ mais.
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
-    
+
     searchDisciplineData("{{$discipline->code}}");
-    
 </script>
 
 @endsection

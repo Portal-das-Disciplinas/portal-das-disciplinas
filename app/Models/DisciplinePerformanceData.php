@@ -21,6 +21,9 @@ class DisciplinePerformanceData extends Model
      * discipline_code: Código da disciplina.\n
      * discipline_name: Nome da disciplina.\n
      * average_grade: Nota média da turma.\n
+     * average_grade_unit1: Nota média da turma da unidade 1.\n
+     * average_grade_unit2: Nota média da turma da unidade 2.\n
+     * average_grade_unit3: Nota média da turma da unidade 3.\n
      * professors: String no formato de array com o nome do professores da turma.\n
      * num_students: Quantidade de alunos da turma.\n
      * num_approved_students: Quantidade de alunos aprovados.\n
@@ -39,6 +42,9 @@ class DisciplinePerformanceData extends Model
         'discipline_code',
         'discipline_name',
         'average_grade',
+        'average_grade_unit1',
+        'average_grade_unit2',
+        'average_grade_unit3',
         'professors',
         'num_students',
         'num_approved_students',

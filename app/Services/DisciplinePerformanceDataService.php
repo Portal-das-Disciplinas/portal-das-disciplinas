@@ -286,8 +286,14 @@ class DisciplinePerformanceDataService
                     if ($dataFromDatabase == null) {
                         $apiPerfomanceClassData = $apiService->getDisciplineData($discipline->code, $turma['id-turma'], $schedule->year, $schedule->period);
                         $averageGrade = 0;
+                        $averageGradeUnit1 = 0;
+                        $averageGradeUnit2 = 0;
+                        $averageGradeUnit3 = 0;
                         if ($apiPerfomanceClassData['quantidade-discentes'] != 0) {
                             $averageGrade = $apiPerfomanceClassData['soma-medias'] / $apiPerfomanceClassData['quantidade-discentes'];
+                            $averageGradeUnit1 = $apiPerfomanceClassData['soma-medias-unidade1'] / $apiPerfomanceClassData['quantidade-discentes'];
+                            $averageGradeUnit2 = $apiPerfomanceClassData['soma-medias-unidade2'] / $apiPerfomanceClassData['quantidade-discentes'];
+                            $averageGradeUnit3 = $apiPerfomanceClassData['soma-medias-unidade3'] / $apiPerfomanceClassData['quantidade-discentes'];
                         }
                         DB::beginTransaction();
                         try {
@@ -298,6 +304,9 @@ class DisciplinePerformanceDataService
                                 'schedule_description' => $turma['descricao-horario'],
                                 'sum_grades' => $apiPerfomanceClassData['soma-medias'],
                                 'average_grade' =>  $averageGrade,
+                                'average_grade_unit1' => $averageGradeUnit1,
+                                'average_grade_unit2' => $averageGradeUnit2,
+                                'average_grade_unit3' => $averageGradeUnit3,
                                 'highest_grade' => $apiPerfomanceClassData['maior-media'],
                                 'lowest_grade' => $apiPerfomanceClassData['menor-media'],
                                 'num_students' => $apiPerfomanceClassData['quantidade-discentes'],
@@ -322,8 +331,14 @@ class DisciplinePerformanceDataService
                     } else if ($dataFromDatabase != null && $updateIfExists) {
                         $apiPerfomanceClassData = $apiService->getDisciplineData($discipline->code, $turma['id-turma'], $schedule->year, $schedule->period);
                         $averageGrade = 0;
+                        $averageGradeUnit1 = 0;
+                        $averageGradeUnit2 = 0;
+                        $averageGradeUnit3 = 0;
                         if ($apiPerfomanceClassData['quantidade-discentes'] != 0) {
                             $averageGrade = $apiPerfomanceClassData['soma-medias'] / $apiPerfomanceClassData['quantidade-discentes'];
+                            $averageGradeUnit1 = $apiPerfomanceClassData['soma-medias-unidade1'] / $apiPerfomanceClassData['quantidade-discentes'];
+                            $averageGradeUnit2 = $apiPerfomanceClassData['soma-medias-unidade2'] / $apiPerfomanceClassData['quantidade-discentes'];
+                            $averageGradeUnit3 = $apiPerfomanceClassData['soma-medias-unidade3'] / $apiPerfomanceClassData['quantidade-discentes'];
                         }
                         DB::beginTransaction();
                         try {
@@ -333,6 +348,9 @@ class DisciplinePerformanceDataService
                             $dataFromDatabase->{'schedule_description'} = $turma['descricao-horario'];
                             $dataFromDatabase->{'sum_grades'} = $apiPerfomanceClassData['soma-medias'];
                             $dataFromDatabase->{'average_grade'} = $averageGrade;
+                            $dataFromDatabase->{'average_grade_unit1'} = $averageGradeUnit1;
+                            $dataFromDatabase->{'average_grade_unit2'} = $averageGradeUnit2;
+                            $dataFromDatabase->{'average_grade_unit3'} = $averageGradeUnit3;
                             $dataFromDatabase->{'highest_grade'} = $apiPerfomanceClassData['maior-media'];
                             $dataFromDatabase->{'lowest_grade'} = $apiPerfomanceClassData['menor-media'];
                             $dataFromDatabase->{'num_students'} = $apiPerfomanceClassData['quantidade-discentes'];
