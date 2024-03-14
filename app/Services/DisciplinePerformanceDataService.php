@@ -307,6 +307,9 @@ class DisciplinePerformanceDataService
                                 'average_grade_unit1' => $averageGradeUnit1,
                                 'average_grade_unit2' => $averageGradeUnit2,
                                 'average_grade_unit3' => $averageGradeUnit3,
+                                'sum_unit1_grades' => $apiPerfomanceClassData['soma-medias-unidade1'],
+                                'sum_unit2_grades' => $apiPerfomanceClassData['soma-medias-unidade2'],
+                                'sum_unit3_grades' => $apiPerfomanceClassData['soma-medias-unidade3'],
                                 'highest_grade' => $apiPerfomanceClassData['maior-media'],
                                 'lowest_grade' => $apiPerfomanceClassData['menor-media'],
                                 'num_students' => $apiPerfomanceClassData['quantidade-discentes'],
@@ -351,6 +354,9 @@ class DisciplinePerformanceDataService
                             $dataFromDatabase->{'average_grade_unit1'} = $averageGradeUnit1;
                             $dataFromDatabase->{'average_grade_unit2'} = $averageGradeUnit2;
                             $dataFromDatabase->{'average_grade_unit3'} = $averageGradeUnit3;
+                            $dataFromDatabase->{'sum_unit1_grades'} = $apiPerfomanceClassData['soma-medias-unidade1'];
+                            $dataFromDatabase->{'sum_unit2_grades'} = $apiPerfomanceClassData['soma-medias-unidade2'];
+                            $dataFromDatabase->{'sum_unit3_grades'} = $apiPerfomanceClassData['soma-medias-unidade3'];
                             $dataFromDatabase->{'highest_grade'} = $apiPerfomanceClassData['maior-media'];
                             $dataFromDatabase->{'lowest_grade'} = $apiPerfomanceClassData['menor-media'];
                             $dataFromDatabase->{'num_students'} = $apiPerfomanceClassData['quantidade-discentes'];
