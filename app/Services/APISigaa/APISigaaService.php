@@ -177,6 +177,12 @@ class APISigaaService
         $qtdAlunos = 0;
         $qtdAlunosComMedia = 0;
         $somaMedias = 0;
+        $somaMediasUnidade1 = 0;
+        $somaMediasUnidade2 = 0;
+        $somaMediasUnidade3 = 0;
+        $unidade1ComNota = true;
+        $unidade2ComNota = true;
+        $unidade3ComNota = true;
         $maiorMedia = 0;
         $menorMedia = 10;
         $qtdAprovados = 0;
@@ -235,6 +241,36 @@ class APISigaaService
                     $encontrouBoletim = true;
                     $qtdAlunosComMedia++;
                     $somaMedias += $boletimAluno["media-final"];
+                    foreach($boletimAluno["notas-unidades"] as $nota){
+                        if($nota["unidade"] == 1){
+                            if(!is_null($nota["media"])){
+                                $somaMediasUnidade1 += $nota["media"];
+                            }
+                            else{
+                                $unidade1ComNota = false;
+                                //Log::info('U1 -> ' . 'id-turma: ' . $boletimAluno['id-turma'] . ' ano: ' . $boletimAluno['ano'] . ' perido: ' . $boletimAluno['periodo'] . ' id-aluno: ' . $aluno['id-participante']);
+                            }
+                        }elseif($nota["unidade"] == 2){
+                            if(!is_null($nota["media"])){
+                                $somaMediasUnidade2 += $nota["media"];
+                            }
+                            else{
+                                $unidade2ComNota = false;
+                                
+                                //Log::info('U2 -> ' . 'id-turma: ' . $boletimAluno['id-turma'] . ' ano: ' . $boletimAluno['ano'] . ' perido: ' . $boletimAluno['periodo'] . ' id-aluno: ' . $aluno['id-participante']);
+                            }
+                        }elseif($nota["unidade"] == 3){
+                            if(!is_null($nota["media"])){
+                                $somaMediasUnidade3 += $nota["media"];
+                            }
+                            else{
+                                $unidade3ComNota = false;
+                                //Log::info('U3 -> ' . 'id-turma: ' . $boletimAluno['id-turma'] . ' ano: ' . $boletimAluno['ano'] . ' perido: ' . $boletimAluno['periodo'] . ' id-aluno: ' . $aluno['id-participante']);
+                            }
+                        }else{
+                            Log::warning("Unidade desconhecida: " . " unidade: " . $nota["unidade"]);
+                        }
+                    }
                     $menorMedia = min($menorMedia, $boletimAluno["media-final"]);
                     $maiorMedia = max($maiorMedia, $boletimAluno["media-final"]);
                     if ($boletimAluno["situacao"] == "APROVADO" || $boletimAluno["situacao"] == "APROVADO POR NOTA") {
@@ -264,6 +300,12 @@ class APISigaaService
 
         $dados = array(
             "soma-medias" => $somaMedias,
+            "soma-medias-unidade1" => $somaMediasUnidade1,
+            "soma-medias-unidade2" => $somaMediasUnidade2,
+            "soma-medias-unidade3" => $somaMediasUnidade3,
+            "unidade1-com-nota" => $unidade1ComNota,
+            "unidade2-com-nota" => $unidade2ComNota,
+            "unidade3-com-nota" => $unidade3ComNota,
             "maior-media" => $maiorMedia,
             "menor-media" => $menorMedia,
             "quantidade-discentes" => $qtdAlunos,
