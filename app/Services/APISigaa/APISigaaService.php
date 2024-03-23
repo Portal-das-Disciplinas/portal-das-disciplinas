@@ -180,6 +180,9 @@ class APISigaaService
         $somaMediasUnidade1 = 0;
         $somaMediasUnidade2 = 0;
         $somaMediasUnidade3 = 0;
+        $unidade1ComNota = true;
+        $unidade2ComNota = true;
+        $unidade3ComNota = true;
         $maiorMedia = 0;
         $menorMedia = 10;
         $qtdAprovados = 0;
@@ -239,17 +242,30 @@ class APISigaaService
                     $qtdAlunosComMedia++;
                     $somaMedias += $boletimAluno["media-final"];
                     foreach($boletimAluno["notas-unidades"] as $nota){
-                        if($nota["unidade"] == "1"){
-                            if($nota["media"]!=null){
+                        if($nota["unidade"] == 1){
+                            if(!is_null($nota["media"])){
                                 $somaMediasUnidade1 += $nota["media"];
                             }
-                        }elseif($nota["unidade"] == "2"){
-                            if($nota["media"] != null){
+                            else{
+                                $unidade1ComNota = false;
+                                //Log::info('U1 -> ' . 'id-turma: ' . $boletimAluno['id-turma'] . ' ano: ' . $boletimAluno['ano'] . ' perido: ' . $boletimAluno['periodo'] . ' id-aluno: ' . $aluno['id-participante']);
+                            }
+                        }elseif($nota["unidade"] == 2){
+                            if(!is_null($nota["media"])){
                                 $somaMediasUnidade2 += $nota["media"];
                             }
-                        }elseif($nota["unidade"] == "3"){
-                            if($nota["media"] != null){
+                            else{
+                                $unidade2ComNota = false;
+                                
+                                //Log::info('U2 -> ' . 'id-turma: ' . $boletimAluno['id-turma'] . ' ano: ' . $boletimAluno['ano'] . ' perido: ' . $boletimAluno['periodo'] . ' id-aluno: ' . $aluno['id-participante']);
+                            }
+                        }elseif($nota["unidade"] == 3){
+                            if(!is_null($nota["media"])){
                                 $somaMediasUnidade3 += $nota["media"];
+                            }
+                            else{
+                                $unidade3ComNota = false;
+                                //Log::info('U3 -> ' . 'id-turma: ' . $boletimAluno['id-turma'] . ' ano: ' . $boletimAluno['ano'] . ' perido: ' . $boletimAluno['periodo'] . ' id-aluno: ' . $aluno['id-participante']);
                             }
                         }else{
                             Log::warning("Unidade desconhecida: " . " unidade: " . $nota["unidade"]);
@@ -287,6 +303,9 @@ class APISigaaService
             "soma-medias-unidade1" => $somaMediasUnidade1,
             "soma-medias-unidade2" => $somaMediasUnidade2,
             "soma-medias-unidade3" => $somaMediasUnidade3,
+            "unidade1-com-nota" => $unidade1ComNota,
+            "unidade2-com-nota" => $unidade2ComNota,
+            "unidade3-com-nota" => $unidade3ComNota,
             "maior-media" => $maiorMedia,
             "menor-media" => $menorMedia,
             "quantidade-discentes" => $qtdAlunos,

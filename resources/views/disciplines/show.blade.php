@@ -251,7 +251,7 @@ mais.
                                             <div class="col-md-12">
                                                 <div class="d-flex justify-content-between">
                                                     <span class="text-secondary">Unidade 1</span>
-                                                    <span id="notaUnidade1" class="text-secondary">5.0</span>
+                                                    <span id="notaUnidade1" class="text-secondary">N/A</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -284,7 +284,7 @@ mais.
                                         <div class="row">
                                             <div class="col">
                                                 <div class="progress">
-                                                    <div id="progressNotaUnidade2" class="progress-bar bg-primary" role="progressbar" style="width: 97%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div id="progressNotaUnidade2" class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
                                         </div>

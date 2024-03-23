@@ -310,6 +310,9 @@ class DisciplinePerformanceDataService
                                 'sum_unit1_grades' => $apiPerfomanceClassData['soma-medias-unidade1'],
                                 'sum_unit2_grades' => $apiPerfomanceClassData['soma-medias-unidade2'],
                                 'sum_unit3_grades' => $apiPerfomanceClassData['soma-medias-unidade3'],
+                                'unit1_with_grade' => $apiPerfomanceClassData['unidade1-com-nota'],
+                                'unit2_with_grade' => $apiPerfomanceClassData['unidade2-com-nota'],
+                                'unit3_with_grade' => $apiPerfomanceClassData['unidade3-com-nota'],
                                 'highest_grade' => $apiPerfomanceClassData['maior-media'],
                                 'lowest_grade' => $apiPerfomanceClassData['menor-media'],
                                 'num_students' => $apiPerfomanceClassData['quantidade-discentes'],
@@ -357,6 +360,9 @@ class DisciplinePerformanceDataService
                             $dataFromDatabase->{'sum_unit1_grades'} = $apiPerfomanceClassData['soma-medias-unidade1'];
                             $dataFromDatabase->{'sum_unit2_grades'} = $apiPerfomanceClassData['soma-medias-unidade2'];
                             $dataFromDatabase->{'sum_unit3_grades'} = $apiPerfomanceClassData['soma-medias-unidade3'];
+                            $dataFromDatabase->{'unit1_with_grade'} = $apiPerfomanceClassData['unidade1-com-nota'];
+                            $dataFromDatabase->{'unit2_with_grade'} = $apiPerfomanceClassData['unidade2-com-nota'];
+                            $dataFromDatabase->{'unit3_with_grade'} = $apiPerfomanceClassData['unidade3-com-nota'];
                             $dataFromDatabase->{'highest_grade'} = $apiPerfomanceClassData['maior-media'];
                             $dataFromDatabase->{'lowest_grade'} = $apiPerfomanceClassData['menor-media'];
                             $dataFromDatabase->{'num_students'} = $apiPerfomanceClassData['quantidade-discentes'];

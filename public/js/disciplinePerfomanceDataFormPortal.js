@@ -1,4 +1,4 @@
-let lastYearStartValue = 0; 
+let lastYearStartValue = 0;
 let lastPeriodStartValue = 0;
 let lastYearEndValue = 0;
 let lastPeriodEndValue = 0;
@@ -162,8 +162,9 @@ let classPerformanceDatas = [];
 
 let generalPerformanceData = {
     averageGrade: 0,
-    highestGrade: -1,
-    lowestGrade: 1000,
+    averageUnit1Grade: 0,
+    averageUnit2Grade: 0,
+    averageUnit3Grade: 0,
     numStudents: 0,
     numApprovedStudents: 0,
     numFailedStudents: 0,
@@ -174,11 +175,17 @@ let generalPerformanceData = {
  */
 function resetValues() {
     generalPerformanceData.averageGrade = 0;
-    generalPerformanceData.highestGrade = 0;
-    generalPerformanceData.lowestGrade = 0;
+    generalPerformanceData.averageUnit1Grade = 0;
+    generalPerformanceData.averageUnit2Grade = 0;
+    generalPerformanceData.averageUnit3Grade = 0;
+    //generalPerformanceData.highestGrade = 0;
+    //generalPerformanceData.lowestGrade = 0;
     generalPerformanceData.numStudents = 0;
     generalPerformanceData.numApprovedStudents = 0;
     generalPerformanceData.numFailedStudents = 0;
+    generalPerformanceData.unit1WithGrade = true;
+    generalPerformanceData.unit2WithGrade = true;
+    generalPerformanceData.unit3WithGrade = true;
 }
 
 /**
@@ -190,7 +197,7 @@ function updateInfos() {
     let checkedOnlyProfessorClasses = document.querySelector('#checkOnlyProfessorClasses').checked;
     let groupClass = document.querySelector("#form-group-select-class");
 
-    if(classPerformanceDatas == 0){
+    if (classPerformanceDatas == 0) {
         return;
     }
 
@@ -219,13 +226,26 @@ function updateInfos() {
         }
         html += "<option value='" + index + "'>" + data['year'] + "." + data['period'] + " - turma " + data['class_code'] + " - " + nomeDocentes + " </option>"
         generalPerformanceData.averageGrade += data['sum_grades'];
+        generalPerformanceData.averageUnit1Grade += data['sum_unit1_grades'];
+        generalPerformanceData.averageUnit2Grade += data['sum_unit2_grades'];
+        generalPerformanceData.averageUnit3Grade += data['sum_unit3_grades'];
         generalPerformanceData.numStudents += data['num_students'];
         generalPerformanceData.numApprovedStudents += data['num_approved_students'];
         generalPerformanceData.numFailedStudents += data['num_failed_students'];
         generalPerformanceData.highestGrade = Math.max(generalPerformanceData.highestGrade, data['highest_grade']);
         generalPerformanceData.lowestGrade = Math.min(generalPerformanceData.lowestGrade, data['lowest_grade']);
+        if (data['unit1_with_grade'] == false) {
+            generalPerformanceData.unit1WithGrade = false;
+        }
+        if (data['unit2_with_grade'] == false) {
+            generalPerformanceData.unit2WithGrade = false;
+        }
+        if (data['unit3_with_grade'] == false) {
+            generalPerformanceData.unit3WithGrade = false;
+        }
+
     });
-    
+
     if (checkedOnlyProfessorClasses && (qtdTurmasProfessor == 0)) {
         groupClass.classList.add('d-none');
         let element = document.querySelector("#infoPesquisaDados");
@@ -233,21 +253,30 @@ function updateInfos() {
         element.innerHTML = "Esse professor não possui turmas.<p> <small>Desmarque a opção \"Somente turmas do professor\" para ver ter um resultado mais geral.</small></p>";
         document.querySelector("#dadosDisciplina").classList.add("d-none");
         return;
-    }else if(!checkedOnlyProfessorClasses){
+    } else if (!checkedOnlyProfessorClasses) {
         groupClass.classList.remove('d-none');
     }
-    else if(checkedOnlyProfessorClasses){
+    else if (checkedOnlyProfessorClasses) {
         groupClass.classList.add('d-none');
-        
+
     }
     generalPerformanceData.averageGrade = generalPerformanceData.averageGrade / generalPerformanceData.numStudents;
+    generalPerformanceData.averageUnit1Grade = generalPerformanceData.averageUnit1Grade / generalPerformanceData.numStudents;
+    generalPerformanceData.averageUnit2Grade = generalPerformanceData.averageUnit2Grade / generalPerformanceData.numStudents;
+    generalPerformanceData.averageUnit3Grade = generalPerformanceData.averageUnit3Grade / generalPerformanceData.numStudents;
     document.querySelector("#selectClass").innerHTML = html;
     document.querySelector("#selectClass").selectedIndex = classSelectedIndex;
 
     if (!checkedAllClasses || (document.querySelector('#selectClass').value == -1)) {
         let mediaGeral = generalPerformanceData.averageGrade.toFixed(2);
+        let mediaUnidade1 = generalPerformanceData.averageUnit1Grade.toFixed(2);
+        let mediaUnidade2 = generalPerformanceData.averageUnit2Grade.toFixed(2);
+        let mediaUnidade3 = generalPerformanceData.averageUnit3Grade.toFixed(2);
         let percentagemAprovados = ((generalPerformanceData.numApprovedStudents / generalPerformanceData.numStudents) * 100).toFixed(2);
         let percentagemReprovados = ((generalPerformanceData.numFailedStudents / generalPerformanceData.numStudents) * 100).toFixed(2);
+        let progressNotaUnidade1 = ((mediaUnidade1 / 1) * 10);
+        let progressNotaUnidade2 = ((mediaUnidade2 / 1) * 10);
+        let progressNotaUnidade3 = ((mediaUnidade3 / 1) * 10);
         document.querySelector("#infoPesquisaDados").classList.add("d-none");
         document.querySelector("#dadosDisciplina").classList.remove("d-none");
         document.querySelector("#notaMediaComponente").innerHTML = mediaGeral;
@@ -255,18 +284,48 @@ function updateInfos() {
         document.querySelector("#progressAprovados").style.width = percentagemAprovados + "%";
         document.querySelector("#percentagemReprovados").innerHTML = percentagemReprovados + "%";
         document.querySelector("#progressReprovados").style.width = percentagemReprovados + "%";
-        if(checkedOnlyProfessorClasses){
-            document.querySelector("#infoTipoBusca").innerHTML = "Dados de " + qtdTurmasProfessor + " turma";
-            if(qtdTurmasProfessor != 1){
-                document.querySelector("#infoTipoBusca").innerHTML+="s";
-            }
+
+        if (generalPerformanceData.unit1WithGrade) {
+            document.querySelector("#notaUnidade1").innerHTML = mediaUnidade1;
+            document.querySelector('#progressNotaUnidade1').style.width = progressNotaUnidade1 + "%";
+        } else {
+            document.querySelector("#notaUnidade1").innerHTML = "N/A";
+            document.querySelector('#progressNotaUnidade1').style.width = 0;
+        }
+        if (generalPerformanceData.unit2WithGrade) {
+            document.querySelector("#notaUnidade2").innerHTML = mediaUnidade2;
+            document.querySelector('#progressNotaUnidade2').style.width = progressNotaUnidade2 + "%";
+        } else {
+            document.querySelector("#notaUnidade2").innerHTML = "N/A";
+            document.querySelector('#progressNotaUnidade2').style.width = 0;
+        }
+        if (generalPerformanceData.unit3WithGrade) {
+            document.querySelector("#notaUnidade3").innerHTML = mediaUnidade3;
+            document.querySelector('#progressNotaUnidade3').style.width = progressNotaUnidade3 + "%";
+        } else {
+            document.querySelector("#notaUnidade3").innerHTML = "N/A";
+            document.querySelector('#progressNotaUnidade3').style.width = 0;
+        }
+
+        if(generalPerformanceData.averageUnit1Grade == 0 &&
+             generalPerformanceData.averageUnit2Grade == 0 && generalPerformanceData.averageUnit3Grade == 0){
+                document.querySelector('#notasPorUnidade').classList.add('d-none');
         }else{
+            document.querySelector('#notasPorUnidade').classList.remove('d-none');
+        }
+
+        if (checkedOnlyProfessorClasses) {
+            document.querySelector("#infoTipoBusca").innerHTML = "Dados de " + qtdTurmasProfessor + " turma";
+            if (qtdTurmasProfessor != 1) {
+                document.querySelector("#infoTipoBusca").innerHTML += "s";
+            }
+        } else {
             document.querySelector("#infoTipoBusca").innerHTML = "Dados de " + classPerformanceDatas.length + " turma";
-            if(classPerformanceDatas.length != 1){
-                document.querySelector("#infoTipoBusca").innerHTML+="s";
+            if (classPerformanceDatas.length != 1) {
+                document.querySelector("#infoTipoBusca").innerHTML += "s";
             }
         }
-       
+
         if (checkedOnlyProfessorClasses) {
             document.querySelector("#infoProfessoresBusca").innerHTML = "Turmas com o(a) professor(a) " + professorName;
         }
@@ -278,6 +337,9 @@ function updateInfos() {
         let index = document.querySelector('#selectClass').value;
         let data = classPerformanceDatas[index];
         let mediaGeral = data['average_grade'].toFixed(2);
+        let mediaUnidade1 = data['average_grade_unit1'].toFixed(2);
+        let mediaUnidade2 = data['average_grade_unit2'].toFixed(2);
+        let mediaUnidade3 = data['average_grade_unit3'].toFixed(2);
         let percentagemAprovados = ((data['num_approved_students'] / data['num_students']) * 100).toFixed(2);
         let percentagemReprovados = ((data['num_failed_students'] / data['num_students']) * 100).toFixed(2);
         document.querySelector("#infoPesquisaDados").classList.add("d-none");
@@ -289,6 +351,36 @@ function updateInfos() {
         document.querySelector("#progressReprovados").style.width = percentagemReprovados + "%";
         document.querySelector("#infoTipoBusca").innerHTML = "Apenas a turma " + classPerformanceDatas[index]['class_code'];
         document.querySelector("#infoNumDiscentes").innerHTML = classPerformanceDatas[index]['num_students'] + " discentes";
+        if (data['unit1_with_grade']) {
+            document.querySelector("#notaUnidade1").innerHTML = mediaUnidade1;
+            document.querySelector("#progressNotaUnidade1").style.width = (mediaUnidade1 * 10) + '%';
+
+        } else {
+            document.querySelector("#notaUnidade1").innerHTML = "N/A";
+            document.querySelector("#progressNotaUnidade1").style.width = 0;
+        }
+        if (data['unit2_with_grade']) {
+            document.querySelector("#notaUnidade2").innerHTML = mediaUnidade2;
+            document.querySelector("#progressNotaUnidade2").style.width = (mediaUnidade2 * 10) + '%';
+        } else {
+            document.querySelector("#notaUnidade2").innerHTML = "N/A"
+            document.querySelector("#progressNotaUnidade2").style.width = 0;
+        }
+        if (data['unit3_with_grade']) {
+            document.querySelector("#notaUnidade3").innerHTML = mediaUnidade3;
+            document.querySelector("#progressNotaUnidade3").style.width = (mediaUnidade3 * 10) + '%';
+        } else {
+            document.querySelector("#notaUnidade3").innerHTML = "N/A"
+            document.querySelector("#progressNotaUnidade3").style.width = 0;
+        }
+
+        if(data['average_grade_unit1']== 0 &&
+            data['average_grade_unit2'] == 0 && data['average_grade_unit3'] == 0){
+               document.querySelector('#notasPorUnidade').classList.add('d-none');
+       }else{
+           document.querySelector('#notasPorUnidade').classList.remove('d-none');
+       }
+       
         let professores = JSON.parse(classPerformanceDatas[index]['professors']);
         if (professores.length == 0) {
             document.querySelector("#infoProfessoresBusca").innerHTML = "sem professor";
