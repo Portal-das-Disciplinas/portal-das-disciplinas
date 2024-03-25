@@ -345,6 +345,7 @@ mais.
                         </div>
                     </div>
                     @endif
+                    @if(isset($discipline->subjectConcepts) && (count($discipline->subjectConcepts)>0))
                     <div class="card">
                         <div class="card-header" id="headingTwo">
                             <h5 class="mb-0">
@@ -356,11 +357,14 @@ mais.
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                             <div class="card-body">
                                <ul class="list-group list-group-flush">
-                                    <!--<li class="list-group-item"><small>Conceito 1</small></li> -->
+                                    @foreach($discipline->subjectConcepts as $concept)
+                                    <li class="list-group-item"><small>{{$concept->value}}</small></li>
+                                    @endforeach
                                </ul>
                             </div>
                         </div>
                     </div>
+                    @endif
                     <div class="card">
                         <div class="card-header" id="headingThree">
                             <h5 class="mb-0">
