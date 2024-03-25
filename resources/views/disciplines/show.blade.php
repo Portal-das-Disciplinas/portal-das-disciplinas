@@ -356,31 +356,35 @@ mais.
                         </div>
                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                             <div class="card-body">
-                               <ul class="list-group list-group-flush">
+                                <ul class="list-group list-group-flush">
                                     @foreach($discipline->subjectConcepts as $concept)
                                     <li class="list-group-item"><small>{{$concept->value}}</small></li>
                                     @endforeach
-                               </ul>
+                                </ul>
                             </div>
                         </div>
                     </div>
                     @endif
+                    @if(isset($discipline->subjectReferences) &&(count($discipline->subjectReferences)>0))
                     <div class="card">
                         <div class="card-header" id="headingThree">
                             <h5 class="mb-0">
                                 <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                   <strong>Referências</strong>
+                                    <strong>Referências</strong>
                                 </button>
                             </h5>
                         </div>
                         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
-                                  <!--  <li class="list-group-item"><small>Livro: Fundamentos de Programação I</small></li> -->
+                                    @foreach($discipline->subjectReferences as $reference)
+                                    <li class="list-group-item"><small>{{$reference->value}}</small></li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
             <!-- PROFESSOR -->
