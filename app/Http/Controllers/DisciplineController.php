@@ -24,6 +24,7 @@ use App\Models\Link;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
 use App\Models\SubjectConcept;
+use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
@@ -1855,6 +1856,33 @@ class DisciplineController extends Controller
                         $subjectConcept = SubjectConcept::find($idConcept);
                         $subjectConcept->{'value'} = $concept;
                         $subjectConcept->save();
+                    }
+                }
+            }
+
+            $databaseReferencesIds = SubjectReference::where('discipline_id','=',$discipline->id)->pluck('id');
+            if(!isset($request->referencesId)){
+                SubjectReference::where('discipline_id','=',$discipline->id)->delete();
+            }else{
+                foreach($databaseReferencesIds->all() as $key=>$idReferenceDatabase){
+                    if(!in_array($idReferenceDatabase, $request->referencesId)){
+                        SubjectReference::destroy($idReferenceDatabase);
+                    }
+                }
+            }
+            
+            if(isset($request->references)){
+                foreach($request->references as $key=>$reference){
+                    $idReference = $request->referencesId[$key];
+                    if($idReference == -1){
+                        SubjectReference::create([
+                            'value' => $reference,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }else{
+                        $subjectReference = SubjectReference::find($idReference);
+                        $subjectReference->{'value'} = $reference;
+                        $subjectReference->save();
                     }
                 }
             }

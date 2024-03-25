@@ -115,9 +115,9 @@ noindex, follow
                             @enderror
                         </div>
                     </div>
-                    <div class="card p-2 mt-2" style="background-color: cadetblue">
+                    <div class="card p-2 mt-2" style="background-color: #F0F8FF">
                         <div id="area-edit-topics" class="card">
-                            <span>Tópicos da disciplina</span>
+                            <span>Edição dos Tópicos</span>
                             <div id="area-fields-topics">
                                 @foreach($discipline->subjectTopics as $key=>$topic)
                                 <div id="{{'topic-' . $key}}" class="form-group">
@@ -135,7 +135,7 @@ noindex, follow
                         </div>
 
                         <div id="area-edit-concepts" class="px-1 mt-2 card">
-                            <span>Conceitos da disciplina</span>
+                            <span>Edição dos conceitos</span>
                             <div id="area-fields-concepts">
                                 @foreach($discipline->subjectConcepts as $key=>$concept)
                                 <div id="{{'concept-' . $key}}" class="form-group">
@@ -151,6 +151,25 @@ noindex, follow
                                 <span class="btn btn-primary btn-sm" onclick="addConceptField()">Adicionar campo</span>
                             </div>
                         </div>
+
+                        <div id="area-edit-references" class="px-1 mt-2 card">
+                            <span>Edição das referências</span>
+                            <div id="area-fields-references">
+                                @foreach($discipline->subjectReferences as $key=>$reference)
+                                <div id="{{'reference-' . $key}}" class="form-group">
+                                    <textarea name="references[]" type="text" class="form-control">{{$reference->value}}</textarea>
+                                    <input name="referencesId[]" type="hidden" value="{{$reference->id}}">
+                                    <div class="d-flex justify-content-end">
+                                        <small class="text-danger" style="cursor:pointer" onclick="removeReferenceField(event)">remover</small>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <span class="btn btn-primary btn-sm" onclick="addReferenceField()">Adicionar campo</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 {{-- TODO

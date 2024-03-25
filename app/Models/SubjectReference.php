@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class SubjectReference extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'value',
+        'discipline_id'
+    ];
 }
