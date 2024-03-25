@@ -115,8 +115,8 @@ noindex, follow
                             @enderror
                         </div>
                     </div>
-                    <div class="card p-2 mt-2" >
-                        <div id="area-edit-topics">
+                    <div class="card p-2 mt-2" style="background-color: cadetblue">
+                        <div id="area-edit-topics" class="card">
                             <span>Tópicos da disciplina</span>
                             <div id="area-fields-topics">
                                 @foreach($discipline->subjectTopics as $key=>$topic)
@@ -131,6 +131,24 @@ noindex, follow
                             </div>
                             <div class="d-flex justify-content-end">
                                 <span class="btn btn-primary btn-sm" onclick="addTopicField()">Adicionar campo</span>
+                            </div>
+                        </div>
+
+                        <div id="area-edit-concepts" class="px-1 mt-2 card">
+                            <span>Conceitos da disciplina</span>
+                            <div id="area-fields-concepts">
+                                @foreach($discipline->subjectConcepts as $key=>$concept)
+                                <div id="{{'concept-' . $key}}" class="form-group">
+                                    <textarea name="concepts[]" type="text" class="form-control">{{$concept->value}}</textarea>
+                                    <input name="conceptsId[]" type="hidden" value="{{$concept->id}}">
+                                    <div class="d-flex justify-content-end">
+                                        <small class="text-danger" style="cursor:pointer" onclick="removeConceptField(event)">remover</small>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <span class="btn btn-primary btn-sm" onclick="addConceptField()">Adicionar campo</span>
                             </div>
                         </div>
                     </div>

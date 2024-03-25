@@ -23,6 +23,7 @@ use App\Models\Professor;
 use App\Models\Link;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
+use App\Models\SubjectConcept;
 use App\Models\SubjectTopic;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
@@ -1714,7 +1715,9 @@ class DisciplineController extends Controller
                 'medias',
                 'faqs',
                 'disciplineParticipants',
-                'subjectTopics'
+                'subjectTopics',
+                'subjectConcepts',
+                'subjectReferences'
             ])
             ->findOrFail($id);
         $classifications = Classification::query()->orderBy('order','ASC')->get();
@@ -1828,6 +1831,35 @@ class DisciplineController extends Controller
                     }
                 }
             }
+
+            $databaseConceptsIds = SubjectConcept::where('discipline_id','=',$discipline->id)->pluck('id');
+            if(!isset($request->conceptsId)){
+                SubjectConcept::where('discipline_id','=',$discipline->id)->delete();
+            }else{
+                foreach($databaseConceptsIds->all() as $key=>$idConceptDatabase){
+                    if(!in_array($idConceptDatabase, $request->conceptsId)){
+                        SubjectConcept::destroy($idConceptDatabase);
+                    }
+                }
+            }
+            
+            if(isset($request->concepts)){
+                foreach($request->concepts as $key=>$concept){
+                    $idConcept = $request->conceptsId[$key];
+                    if($idConcept == -1){
+                        SubjectConcept::create([
+                            'value' => $concept,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }else{
+                        $subjectConcept = SubjectConcept::find($idConcept);
+                        $subjectConcept->{'value'} = $concept;
+                        $subjectConcept->save();
+                    }
+                }
+            }
+
+
 
             $url = $request->input('media-trailer') ?? '';
             $mediaId = YoutubeService::getIdFromUrl($url);
