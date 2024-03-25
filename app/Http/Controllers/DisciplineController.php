@@ -1668,6 +1668,7 @@ class DisciplineController extends Controller
                 'medias',
                 'faqs',
                 'classificationsDisciplines.classification',
+                'subjectTopics'
             ])
             ->findOrFail($id);
         $user = Auth::user();

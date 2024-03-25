@@ -240,7 +240,7 @@ mais.
                             </div>
                         </div>
 
-                        <div id="notasPorUnidade"class="row mt-2" style="border: 1px solid rgba(0,0,0,0.2); border-radius:5px" ><!--Notas das unidades-->
+                        <div id="notasPorUnidade" class="row mt-2" style="border: 1px solid rgba(0,0,0,0.2); border-radius:5px"><!--Notas das unidades-->
                             <div class="col-md-12">
                                 <strong class="text-secondary">Nota média por unidade</strong>
                             </div>
@@ -319,6 +319,64 @@ mais.
                     </div>
 
 
+                </div>
+            </div>
+            <div class="sectiond">
+                <h1>Conteúdo</h1>
+                <div id="accordion">
+                    @if(isset($discipline->subjectTopics) && (count($discipline->subjectTopics)>0))
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <strong>Temas</strong>
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    @foreach($discipline->subjectTopics as $topic)
+                                    <li class="list-group-item"><small>{{$topic->value}}</small></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    <div class="card">
+                        <div class="card-header" id="headingTwo">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <strong>Conceitos</strong>
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="card-body">
+                               <ul class="list-group list-group-flush">
+                                    <!--<li class="list-group-item"><small>Conceito 1</small></li> -->
+                               </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                   <strong>Referências</strong>
+                                </button>
+                            </h5>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                  <!--  <li class="list-group-item"><small>Livro: Fundamentos de Programação I</small></li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- PROFESSOR -->
