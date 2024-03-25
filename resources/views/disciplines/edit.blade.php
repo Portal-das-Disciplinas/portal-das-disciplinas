@@ -115,7 +115,25 @@ noindex, follow
                             @enderror
                         </div>
                     </div>
-
+                    <div class="card p-2 mt-2" >
+                        <div id="area-edit-topics">
+                            <span>Tópicos da disciplina</span>
+                            <div id="area-fields-topics">
+                                @foreach($discipline->subjectTopics as $key=>$topic)
+                                <div id="{{'topic-' . $key}}" class="form-group">
+                                    <textarea name="topics[]" type="text" class="form-control">{{$topic->value}}</textarea>
+                                    <input name="topicsId[]" type="hidden" value="{{$topic->id}}">
+                                    <div class="d-flex justify-content-end">
+                                        <small class="text-danger" style="cursor:pointer" onclick="removeTopicField(event)">remover</small>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <span class="btn btn-primary btn-sm" onclick="addTopicField()">Adicionar campo</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {{-- TODO
                 Card de midias com "x" para excluir --}}
@@ -357,6 +375,7 @@ $classificationsJson = json_encode($classifications);
 @endsection
 @section('scripts-bottom')
 <script src="{{asset('js/disciplines.js')}}"></script>
+<script src="{{asset('js/subjectContentsEdit.js')}}"></script>
 
 <script>
     //let classifications = JSON.parse('{!! $classificationsJson !!}');

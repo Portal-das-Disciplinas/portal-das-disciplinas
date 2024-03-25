@@ -23,6 +23,7 @@ use App\Models\Professor;
 use App\Models\Link;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
+use App\Models\SubjectTopic;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
 use Exception;
@@ -1713,6 +1714,7 @@ class DisciplineController extends Controller
                 'medias',
                 'faqs',
                 'disciplineParticipants',
+                'subjectTopics'
             ])
             ->findOrFail($id);
         $classifications = Classification::query()->orderBy('order','ASC')->get();
@@ -1741,7 +1743,7 @@ class DisciplineController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-
+       
         DB::beginTransaction();
         try {
             $user = Auth::user();
@@ -1791,7 +1793,6 @@ class DisciplineController extends Controller
                     $discipline->disciplineParticipants()->updateOrCreate(['id' => $json->id], $participant->toArray());
                 } else {
                     $participant->save();
-                    //$discipline->disciplineParticipants()->save($participant->toArray());
                 }
                 ParticipantLink::where('discipline_participant_id', $participant->id)->delete();
                 foreach ($json->links as $linkJson) {
@@ -1799,6 +1800,32 @@ class DisciplineController extends Controller
                     $link->name = $linkJson->name;
                     $link->url = $linkJson->url;
                     $participant->links()->save($link);
+                }
+            }
+            $databaseTopicsIds = SubjectTopic::where('discipline_id','=',$discipline->id)->pluck('id');
+            if(!isset($request->topicsId)){
+                SubjectTopic::where('discipline_id','=',$discipline->id)->delete();
+            }else{
+                foreach($databaseTopicsIds->all() as $key=>$idTopicDatabase){
+                    if(!in_array($idTopicDatabase, $request->topicsId)){
+                        SubjectTopic::destroy($idTopicDatabase);
+                    }
+                }
+            }
+            
+            if(isset($request->topics)){
+                foreach($request->topics as $key=>$topic){
+                    $idTopic = $request->topicsId[$key];
+                    if($idTopic == -1){
+                        SubjectTopic::create([
+                            'value' => $topic,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }else{
+                        $subjectTopic = SubjectTopic::find($idTopic);
+                        $subjectTopic->{'value'} = $topic;
+                        $subjectTopic->save();
+                    }
                 }
             }
 
@@ -1967,7 +1994,7 @@ class DisciplineController extends Controller
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
-            dd($exception);
+            //dd($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina']);
