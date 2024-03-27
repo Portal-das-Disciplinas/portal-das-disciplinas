@@ -188,4 +188,16 @@ class Discipline extends Model
     public function disciplineParticipants(){
         return $this->hasMany(DisciplineParticipant::class)->orderBy('name');
     }
+
+    public function subjectTopics(){
+        return $this->hasMany(SubjectTopic::class);
+    }
+
+    public function subjectConcepts(){
+        return $this->hasMany(SubjectConcept::class);
+    }
+
+    public function subjectReferences(){
+        return $this->hasMany(SubjectReference::class);
+    }
 }
