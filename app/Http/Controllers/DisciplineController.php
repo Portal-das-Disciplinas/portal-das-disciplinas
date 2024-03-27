@@ -23,6 +23,9 @@ use App\Models\Professor;
 use App\Models\Link;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
+use App\Models\SubjectConcept;
+use App\Models\SubjectReference;
+use App\Models\SubjectTopic;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
 use Exception;
@@ -1668,6 +1671,9 @@ class DisciplineController extends Controller
                 'medias',
                 'faqs',
                 'classificationsDisciplines.classification',
+                'subjectTopics',
+                'subjectConcepts',
+                'subjectReferences'
             ])
             ->findOrFail($id);
         $user = Auth::user();
@@ -1710,6 +1716,9 @@ class DisciplineController extends Controller
                 'medias',
                 'faqs',
                 'disciplineParticipants',
+                'subjectTopics',
+                'subjectConcepts',
+                'subjectReferences'
             ])
             ->findOrFail($id);
         $classifications = Classification::query()->orderBy('order','ASC')->get();
@@ -1738,7 +1747,7 @@ class DisciplineController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-
+       
         DB::beginTransaction();
         try {
             $user = Auth::user();
@@ -1788,7 +1797,6 @@ class DisciplineController extends Controller
                     $discipline->disciplineParticipants()->updateOrCreate(['id' => $json->id], $participant->toArray());
                 } else {
                     $participant->save();
-                    //$discipline->disciplineParticipants()->save($participant->toArray());
                 }
                 ParticipantLink::where('discipline_participant_id', $participant->id)->delete();
                 foreach ($json->links as $linkJson) {
@@ -1798,6 +1806,88 @@ class DisciplineController extends Controller
                     $participant->links()->save($link);
                 }
             }
+            $databaseTopicsIds = SubjectTopic::where('discipline_id','=',$discipline->id)->pluck('id');
+            if(!isset($request->topicsId)){
+                SubjectTopic::where('discipline_id','=',$discipline->id)->delete();
+            }else{
+                foreach($databaseTopicsIds->all() as $key=>$idTopicDatabase){
+                    if(!in_array($idTopicDatabase, $request->topicsId)){
+                        SubjectTopic::destroy($idTopicDatabase);
+                    }
+                }
+            }
+            
+            if(isset($request->topics)){
+                foreach($request->topics as $key=>$topic){
+                    $idTopic = $request->topicsId[$key];
+                    if($idTopic == -1){
+                        SubjectTopic::create([
+                            'value' => $topic,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }else{
+                        $subjectTopic = SubjectTopic::find($idTopic);
+                        $subjectTopic->{'value'} = $topic;
+                        $subjectTopic->save();
+                    }
+                }
+            }
+
+            $databaseConceptsIds = SubjectConcept::where('discipline_id','=',$discipline->id)->pluck('id');
+            if(!isset($request->conceptsId)){
+                SubjectConcept::where('discipline_id','=',$discipline->id)->delete();
+            }else{
+                foreach($databaseConceptsIds->all() as $key=>$idConceptDatabase){
+                    if(!in_array($idConceptDatabase, $request->conceptsId)){
+                        SubjectConcept::destroy($idConceptDatabase);
+                    }
+                }
+            }
+            
+            if(isset($request->concepts)){
+                foreach($request->concepts as $key=>$concept){
+                    $idConcept = $request->conceptsId[$key];
+                    if($idConcept == -1){
+                        SubjectConcept::create([
+                            'value' => $concept,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }else{
+                        $subjectConcept = SubjectConcept::find($idConcept);
+                        $subjectConcept->{'value'} = $concept;
+                        $subjectConcept->save();
+                    }
+                }
+            }
+
+            $databaseReferencesIds = SubjectReference::where('discipline_id','=',$discipline->id)->pluck('id');
+            if(!isset($request->referencesId)){
+                SubjectReference::where('discipline_id','=',$discipline->id)->delete();
+            }else{
+                foreach($databaseReferencesIds->all() as $key=>$idReferenceDatabase){
+                    if(!in_array($idReferenceDatabase, $request->referencesId)){
+                        SubjectReference::destroy($idReferenceDatabase);
+                    }
+                }
+            }
+            
+            if(isset($request->references)){
+                foreach($request->references as $key=>$reference){
+                    $idReference = $request->referencesId[$key];
+                    if($idReference == -1){
+                        SubjectReference::create([
+                            'value' => $reference,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }else{
+                        $subjectReference = SubjectReference::find($idReference);
+                        $subjectReference->{'value'} = $reference;
+                        $subjectReference->save();
+                    }
+                }
+            }
+
+
 
             $url = $request->input('media-trailer') ?? '';
             $mediaId = YoutubeService::getIdFromUrl($url);
@@ -1964,7 +2054,7 @@ class DisciplineController extends Controller
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
-            dd($exception);
+            //dd($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina']);
