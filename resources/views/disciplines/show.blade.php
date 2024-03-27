@@ -321,74 +321,110 @@ mais.
 
                 </div>
             </div>
-            <div class="sectiond">
-                <h1>Conteúdo</h1>
-                <div id="accordion">
-                    @if(isset($discipline->subjectTopics) && (count($discipline->subjectTopics)>0))
-                    <div class="card">
-                        <div class="card-header" id="headingOne">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <strong>Temas</strong>
-                                </button>
-                            </h5>
-                        </div>
-
-                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    @foreach($discipline->subjectTopics as $topic)
-                                    <li class="list-group-item"><small>{{$topic->value}}</small></li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
+            <div class="section">
+                <h1>Conteúdos</h1>
+                @if(isset($discipline->subjectTopics) && (count($discipline->subjectTopics)>0))
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <h3 class="text-primary">Temas</h3>
+                        @if(count($discipline->subjectTopics) > 3)
+                        <a id="seeMoreTopics" class="link" data-toggle="collapse" href="#collapseTopics" role="button" aria-expanded="false" aria-controls="collapseTopics">
+                            ver mais
+                        </a>
+                        @endif
                     </div>
-                    @endif
-                    @if(isset($discipline->subjectConcepts) && (count($discipline->subjectConcepts)>0))
-                    <div class="card">
-                        <div class="card-header" id="headingTwo">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    <strong>Conceitos</strong>
-                                </button>
-                            </h5>
-                        </div>
-                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    @foreach($discipline->subjectConcepts as $concept)
-                                    <li class="list-group-item"><small>{{$concept->value}}</small></li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    @endif
-                    @if(isset($discipline->subjectReferences) &&(count($discipline->subjectReferences)>0))
-                    <div class="card">
-                        <div class="card-header" id="headingThree">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    <strong>Referências</strong>
-                                </button>
-                            </h5>
-                        </div>
-                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    @foreach($discipline->subjectReferences as $reference)
-                                    <li class="list-group-item"><small>{{$reference->value}}</small></li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
+                    @if(count($discipline->subjectTopics) <= 3)
+                    <ul class="list-group list-group-flush">
+                    @for($i = 0;$i < count($discipline->subjectTopics);$i++)
+                        <li class="list-group-item"><small>{{$discipline->subjectTopics[$i]->value}}</small></li>
+                    @endfor
+                    </ul>
+                    @else
+                    <ul class="list-group list-group-flush">
+                    @for($i = 0;$i < 3;$i++)
+                        <li class="list-group-item"><small>{{$discipline->subjectTopics[$i]->value}}</small></li>
+                    @endfor
+                    </ul>
+                    <div class="collapse" id="collapseTopics">
+                        <ul class="list-group list-group-flush">
+                            @for($i=3;$i < count($discipline->subjectTopics);$i++)
+                            <li class="list-group-item"><small>{{$discipline->subjectTopics[$i]->value}}</small></li>
+                            @endfor
+                        </ul>
                     </div>
                     @endif
                 </div>
+                @endif
+
+                @if(isset($discipline->subjectConcepts) && (count($discipline->subjectConcepts)>0))
+                <div class="card mt-2">
+                    <div class="card-header d-flex justify-content-between">
+                        <h3 class="text-primary">Conceitos</h3>
+                        @if(count($discipline->subjectConcepts) > 3)
+                        <a id="seeMoreConcepts" class="link" data-toggle="collapse" href="#collapseConcepts" role="button" aria-expanded="false" aria-controls="collapseConcepts">
+                            ver mais
+                        </a>
+                        @endif
+                    </div>
+                    @if(count($discipline->subjectConcepts) <= 3)
+                    <ul class="list-group list-group-flush">
+                    @for($i = 0;$i < count($discipline->subjectConcepts);$i++)
+                        <li class="list-group-item"><small>{{$discipline->subjectConcepts[$i]->value}}</small></li>
+                    @endfor
+                    </ul>
+                    @else
+                    <ul class="list-group list-group-flush">
+                    @for($i = 0;$i < 3;$i++)
+                        <li class="list-group-item"><small>{{$discipline->subjectConcepts[$i]->value}}</small></li>
+                    @endfor
+                    </ul>
+                    <div class="collapse" id="collapseConcepts">
+                        <ul class="list-group list-group-flush">
+                            @for($i=3;$i < count($discipline->subjectConcepts);$i++)
+                            <li class="list-group-item"><small>{{$discipline->subjectConcepts[$i]->value}}</small></li>
+                            @endfor
+                        </ul>
+                    </div>
+                    @endif
+                </div>
+                @endif
+
+                @if(isset($discipline->subjectReferences) && (count($discipline->subjectReferences)>0))
+                <div class="card mt-2">
+                    <div class="card-header d-flex justify-content-between">
+                        <h3 class="text-primary">Referências</h3>
+                        @if(count($discipline->subjectReferences) > 3)
+                        <a id="seeMoreReferences" class="link" data-toggle="collapse" href="#collapseReferences" role="button" aria-expanded="false" aria-controls="collapseReferences">
+                            ver mais
+                        </a>
+                        @endif
+                    </div>
+                    @if(count($discipline->subjectReferences) <= 3)
+                    <ul class="list-group list-group-flush">
+                    @for($i = 0;$i < count($discipline->subjectReferences);$i++)
+                        <li class="list-group-item"><small>{{$discipline->subjectReferences[$i]->value}}</small></li>
+                    @endfor
+                    </ul>
+                    @else
+                    <ul class="list-group list-group-flush">
+                    @for($i = 0;$i < 3;$i++)
+                        <li class="list-group-item"><small>{{$discipline->subjectReferences[$i]->value}}</small></li>
+                    @endfor
+                    </ul>
+                    <div class="collapse" id="collapseReferences">
+                        <ul class="list-group list-group-flush">
+                            @for($i=3;$i < count($discipline->subjectReferences);$i++)
+                            <li class="list-group-item"><small>{{$discipline->subjectReferences[$i]->value}}</small></li>
+                            @endfor
+                        </ul>
+                    </div>
+                    @endif
+                </div>
+                @endif
             </div>
-            <!-- PROFESSOR -->
         </div>
+        <!-- PROFESSOR -->
+
 
         <div class="side col-md-4">
             <div class='classifications'>
@@ -507,7 +543,7 @@ mais.
     </div>
 </div>
 
-</div>
+
 <!-- FAQ -->
 
 @if($discipline->faqs->count())
@@ -898,6 +934,7 @@ mais.
     let professorName = "{{$discipline->professor->name}}".toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 </script>
 <script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
+<script src="{{asset('js/subjectContentsCollapse.js')}}"></script>
 <script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
