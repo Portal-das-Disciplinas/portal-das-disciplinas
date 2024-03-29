@@ -21,6 +21,7 @@ use App\Http\Controllers\LinksController;
 use App\Http\Controllers\ParticipantLinkController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
 use App\Http\Controllers\SemesterPerformanceDataController;
+use App\Http\Controllers\TopicController;
 use App\Models\Collaborator;
 use App\Models\DisciplinePerformanceData;
 use App\Models\Link;
@@ -46,6 +47,8 @@ Auth::routes([
     'reset' => false, // Password Reset Routes...
     'verify' => false, // Email Verification Routes...
 ]);
+
+Route::post('/topic/store', [TopicController::class, 'store']);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/', [DisciplineController::class, 'index'])->name('index');
