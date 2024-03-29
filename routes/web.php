@@ -49,6 +49,7 @@ Auth::routes([
 ]);
 
 Route::post('/topic/store', [TopicController::class, 'store']);
+Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/', [DisciplineController::class, 'index'])->name('index');
