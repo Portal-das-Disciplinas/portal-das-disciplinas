@@ -80,6 +80,14 @@
 .span-info {
     color: var(--main-md-color);
 }
+.autocomplete-result {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.autocomplete-result:hover {
+    background-color: #f0f0f0;
+}
 
 @media only all and (max-width: 768px) {
     html {
