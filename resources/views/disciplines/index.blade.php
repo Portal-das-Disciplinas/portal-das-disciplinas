@@ -284,6 +284,7 @@
                     </div>
                 </div>
                 </form>
+                <div id="autocomplete-results" class="autocomplete-results"></div>
             </div>
         </div>
         
@@ -380,4 +381,5 @@
 
 <script src="{{ asset('js/indexClassificationForm.js') }}"></script>
 <script src="{{ asset('js/indexSlider.js') }}"></script>
+<script src="{{ asset('js/disciplineAutoComplete.js') }}"></script>
 @endsection
