@@ -1468,6 +1468,15 @@ class DisciplineController extends Controller
     }
 
     /**
+     * O usuário pode visualizar opções enquanto digita por disciplinas, autocomplete.
+     */
+    public function autocomplete(Request $request)
+    {
+        $disciplines = Discipline::where('name', 'like', '%' . $request->input('query') . '%')->limit(10)->get();
+        return response()->json($disciplines);
+    }
+
+    /**
      * Abre um formulário para criar um novo professor
      *
      * @param CreateRequest $request
