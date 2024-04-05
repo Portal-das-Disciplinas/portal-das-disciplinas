@@ -28,6 +28,7 @@ use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
+use App\Services\DisciplineService;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -114,6 +115,18 @@ class DisciplineController extends Controller
 
     public function disciplineFilter(Request $request)
     {
+        $disciplineService = new DisciplineService();
+        $filteredDisciplines = $disciplineService->filterDisciplines($request);
+        $emphasis = Emphasis::all();
+        $professors = Professor::all();
+
+        return view('disciplines.index')
+            ->with('theme',$this->theme)
+            ->with('disciplines',$filteredDisciplines)
+            ->with('emphasis',$emphasis)
+            ->with('professors',$professors);
+
+        //codigo antigo abaixo
         // dd($request);
         $emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
