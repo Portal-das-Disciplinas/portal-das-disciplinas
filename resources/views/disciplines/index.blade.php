@@ -53,85 +53,198 @@
                                 </div>
                             </div>
                         </div>
+                        <small id="texto-mostrar-filtros" class=" btn btn-outline-info btn-sm text-white mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">+ filtros</small>
+                        <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label class="text-white" for="select-professors">Professor</label>
+                                    <select class="form-control" id="select-professors" name="professors">
+                                        <option value="null">Todos os professores</option>
+                                        @if(isset($professors))
+                                        @foreach($professors as $professor)
+                                        <option value="{{$professor->id}}">{{$professor->name}}</option>
+                                        @endforeach
+                                        @endif
+                                    </select>
+                                </div>
 
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <label class="text-white" for="select-professors">Professor</label>
-                                <select class="form-control" id="select-professors" name="professors">
-                                    <option value="null">Todos os professores</option>
-                                    @if(isset($professors))
-                                    @foreach($professors as $professor)
-                                    <option value="{{$professor->id}}">{{$professor->name}}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
                             </div>
+                            <div class="row mt-4 ">
+                                <div class="col-md-12">
+                                    <input id="check-filtro-classificacoes" name="check-filtro-classificacoes" type="checkbox" onclick="onCheckClassificationFilter(event)">
+                                    <label for="check-filtro-classificacoes" class="text-white">Filtro por classificações</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div id="collapse-classificacoes" class=" row collapse">
+                                        <div class="col-md-12">
+                                            <div class="d-flex">
+                                                <div class="mr-5">
+                                                    <input id="filtro-classificacoes-caracteristica" name="filtro-classificacoes-caracteristica" type="checkbox" checked onchange="onClickClassificationFilterType(event)">
+                                                    <label for="filtro-classificacoes-caracteristica" class="text-white" style="cursor:pointer"><small>Filtro por Característa</small></label>
+                                                </div>
+                                                <div>
+                                                    <input id="filtro-classificacoes-detalhado" name="filtro-classificacoes-detalhado" type="checkbox" onchange="onClickClassificationFilterType(event)">
+                                                    <label for="filtro-classificacoes-detalhado" class="text-white" style="cursor:pointer"><small>Filtro detalhado</small></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="d-flex flex-column">
+                                                <div id="area-caracteristica-predominante" class="bg-white" style="border-radius: 10px; border:solid 1px lightgray;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="d-flex justify-content-center">
+                                                                <h3>Característica predominante</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table class="table">
+                                                                <tbody>
+                                                                    @foreach($classifications as $classification)
+                                                                    <tr>
+                                                                        <td><small>{{$classification->name}}</small></td>
+                                                                        <td>
+                                                                            <div class="d-flex flex-column align-items-center">
+                                                                                <input type="radio" name="{{'classification' . $classification->id}}" value="type_a">
+                                                                                <small>{{$classification->{'type_a'} }}</small>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="d-flex flex-column align-items-center">
+                                                                                <input type="radio" name="{{'classification' . $classification->id}}" value="neutra" checked>
+                                                                                <small class="text-secondary">Neutra</small>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="d-flex flex-column align-items-center">
+                                                                                <input type="radio" name="{{'classification' . $classification->id}}" value="type_b">
+                                                                                <small>{{$classification->{'type_b'} }}</small>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                <input id="check-filtro-aprovacao" name="check-filtro-aprovacao" type="checkbox" onchange="onChangeCheckFilterApproval(event)">
-                                <label class="text-white" for="check-filtro-aprovacao" style="cursor:pointer">Filtro por dados de aprovação</label>
-                            </div>
-                            <div class="col-md-5 " >
-                                <div class="form-row">
-                                    <div class="col-md-4 mb-1">
-                                        <select id="select-tipo-aprov" class="form-control mr-1" name="tipo-aprov">
-                                            <option value="aprov">aprovação</option>
-                                            <option value="reprov">reprovação</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-1">
-                                        <select id="select-comparacao" class="form-control mr-1" name="comparacao">
-                                            <option value="maior">maior que</option>
-                                            <option value="menor">menor que</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="d-flex align-items-center">
-                                            <input id="input-valor-comparacao" type="number" min="0" max="100" class="form-control" name="valor-comparacao"  placeholder="0">
-                                            <span class="text-white ml-2">%</span>
+                                                <div id="area-filtro-detalhado" class="bg-white d-none" style="border-radius: 10px; border:solid 1px lightgray;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="d-flex justify-content-center">
+                                                                <h3 class="text-wshite;">Filtro detalhado</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table class="table">
+                                                                <tbody>
+                                                                    @foreach($classifications as $classification)
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input id="{{'classification_detail_active' . $classification->id}}" name="{{'classification_detail_active' . $classification->id}}" type="checkbox">
+                                                                            <small>{{$classification->name}}</small>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="d-flex justify-content-center align-items-center flex-column">
+                                                                                <small>{{$classification->{'type_a'} }}</small>
+                                                                                <input type="radio" id="{{'classification_detail' . $classification->id .'type_a_value'}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_a" checked>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="d-flex flex-column align-items-center">
+                                                                                <input id="{{'classification_detail' . $classification->id}}" type="range" min="0" max="100" value="0" name="{{'classification_detail' . $classification->id}}" style="appearance:none; background:lightgray;height:8px;width:75px;" oninput="onChangeClassificationSlider(event)" step="5">
+                                                                                <span id="{{'classification_detail' . $classification->id . 'info_value'}}" class="text-primary mt-3">0</span>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div class="d-flex flex-column justify-content-center align-items-center">
+                                                                                <small>{{$classification->{'type_b'} }}</small>
+                                                                                <input type="radio" id="{{'classification_detail' . $classification->id .'type_b_value'}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_b">
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
-                            <div class="col-md-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-row">
-                                            <div class="col-md-3">
-                                                <label class="text-white">Ano</label>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <select id="select-ano-aprov" name="ano-aprov" class="form-control">
-                                                    <option value="null">Todos</option>
-                                                    @for($i=2014;$i < date('Y');$i++) <option value="{{$i}}">{{$i}}</option>
-                                                        @endfor
-                                                </select>
-                                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <input id="check-filtro-aprovacao" name="check-filtro-aprovacao" type="checkbox" onchange="onChangeCheckFilterApproval(event)">
+                                    <label class="text-white" for="check-filtro-aprovacao" style="cursor:pointer">Filtro por dados de aprovação</label>
+                                </div>
+                                <div class="col-md-5 ">
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-1">
+                                            <select id="select-tipo-aprov" class="form-control mr-1" name="tipo-aprov">
+                                                <option value="aprov">aprovação</option>
+                                                <option value="reprov">reprovação</option>
+                                            </select>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-row">
-                                            <div class="col-md-5">
-                                                <label class="text-white">Período</label>
-                                            </div>
-                                            <div class="col-md-7">
-                                                <select id="select-periodo-aprov" name="periodo-aprov" class="form-control" style="background-color: lightgray;" disabled>
-                                                    <option value="null">Todos</option>
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                </select>
+                                        <div class="col-md-4 mb-1">
+                                            <select id="select-comparacao" class="form-control mr-1" name="comparacao">
+                                                <option value="maior">maior que</option>
+                                                <option value="menor">menor que</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="d-flex align-items-center">
+                                                <input id="input-valor-comparacao" type="number" min="0" max="100" class="form-control" name="valor-comparacao" placeholder="0">
+                                                <span class="text-white ml-2">%</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-row">
+                                                <div class="col-md-3">
+                                                    <label class="text-white">Ano</label>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <select id="select-ano-aprov" name="ano-aprov" class="form-control">
+                                                        <option value="null">Todos</option>
+                                                        @for($i=2014;$i < date('Y');$i++) <option value="{{$i}}">{{$i}}</option>
+                                                            @endfor
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-row">
+                                                <div class="col-md-5">
+                                                    <label class="text-white">Período</label>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <select id="select-periodo-aprov" name="periodo-aprov" class="form-control" style="background-color: lightgray;" disabled>
+                                                        <option value="null">Todos</option>
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                 </form>

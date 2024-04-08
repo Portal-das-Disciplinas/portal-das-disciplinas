@@ -68,7 +68,7 @@ class DisciplineController extends Controller
         $name_discipline = $request->name_discipline ?? null;
 
         $emphasis = Emphasis::all();
-        $classifications = Classification::all();
+        $classifications = Classification::all()->sortBy('order');
         $studentsData = DisciplinePerformanceData::all();
         $professors_all = Professor::all()->sortBy('name');
         // dd($professors_all);
@@ -119,11 +119,13 @@ class DisciplineController extends Controller
         $filteredDisciplines = $disciplineService->filterDisciplines($request);
         $emphasis = Emphasis::all();
         $professors = Professor::all();
+        $classifications = Classification::All()->sortBy('order');
 
         return view('disciplines.index')
             ->with('theme',$this->theme)
             ->with('disciplines',$filteredDisciplines)
             ->with('emphasis',$emphasis)
+            ->with('classifications', $classifications)
             ->with('professors',$professors);
 
         //codigo antigo abaixo
