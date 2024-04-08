@@ -122,7 +122,7 @@ class DisciplineService
             return $filteredByClassifications;
         }
         else{
-            return $disciplines->get();
+            return $disciplines->paginate(12);
         }
     }
 }

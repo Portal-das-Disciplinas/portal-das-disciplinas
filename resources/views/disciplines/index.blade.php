@@ -56,6 +56,11 @@
                         <small id="texto-mostrar-filtros" class=" btn btn-outline-info btn-sm text-white mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">+ filtros</small>
                         <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
                             <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <input id="filtro-livre" name="filtro-livre" class="form-control" type="text" placeholder="Digite um tema, conceito ou referência">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
                                 <div class="col-md-6">
                                     <label class="text-white" for="select-professors">Professor</label>
                                     <select class="form-control" id="select-professors" name="professors">
@@ -69,6 +74,7 @@
                                 </div>
 
                             </div>
+
                             <div class="row mt-4 ">
                                 <div class="col-md-12">
                                     <input id="check-filtro-classificacoes" name="check-filtro-classificacoes" type="checkbox" onclick="onCheckClassificationFilter(event)">
@@ -320,6 +326,13 @@
         </div>
         @endif
         @endisset
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center">
+                    {{$disciplines->links()}}
+                </div>
+            </div>
+        </div>
     </div>
 
 </section>

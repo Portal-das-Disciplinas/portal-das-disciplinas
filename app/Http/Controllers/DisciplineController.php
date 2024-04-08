@@ -130,7 +130,7 @@ class DisciplineController extends Controller
 
         //codigo antigo abaixo
         // dd($request);
-        $emphasis_all = Emphasis::all();
+        /*$emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
         $classifications_all = Classification::all();
         $studentsData = DisciplinePerformanceData::all();
@@ -1479,7 +1479,7 @@ class DisciplineController extends Controller
                 ->with('periodsColection', $periodsColection)
                 ->with('professors', $professors_all);
             }
-        }
+        } */
     }
 
     /**
