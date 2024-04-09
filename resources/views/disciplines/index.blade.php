@@ -53,6 +53,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="autocomplete-results" class="autocomplete-results mt-1 "></div>
                         <small id="texto-mostrar-filtros" class=" btn btn-outline-info btn-sm text-white mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">+ filtros</small>
                         <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
                             <div class="row mt-3">
@@ -255,6 +256,7 @@
                         </div>
                     </div>
                 </form>
+                
             </div>
         </div>
 
@@ -340,6 +342,9 @@
 
 
 
+<script src="{{ asset('js/indexClassificationForm.js') }}"></script>
+<script src="{{ asset('js/indexSlider.js') }}"></script>
+<script src="{{ asset('js/disciplineAutoComplete.js') }}"></script>
 @endsection
 @section('scripts-bottom')
 <script src="{{ asset('js/disciplines/disciplineFilters.js')}}"></script>

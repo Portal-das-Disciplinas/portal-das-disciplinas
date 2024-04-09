@@ -64,7 +64,7 @@ class DisciplineController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $name_discipline = $request->name_discipline ?? null;
 
         $emphasis = Emphasis::all();
@@ -88,7 +88,7 @@ class DisciplineController extends Controller
         //         'professor',
         //         'medias',
         //     ])
-        //     ->orderBy('name', 'ASC') 
+        //     ->orderBy('name', 'ASC')
         //     ->when(isset($name_discipline), function($query) use($name_discipline) {
         //         $query->where("name", "like", $name_discipline."%");
         //     })
@@ -99,7 +99,7 @@ class DisciplineController extends Controller
         $emphasis = Emphasis::all();
         $disciplines = Discipline::query()->orderBy('name','ASC')->get();
         $opinionLinkForm = Link::where('name','opinionForm')->first();
-       
+
         return view('disciplines.index')
             // ->with('name_discipline', $name_discipline)
             ->with('disciplines', $disciplines->paginate(12))
@@ -151,17 +151,17 @@ class DisciplineController extends Controller
         $professor_name = $request->input('professors');
 
         $arrayClassifications = array($request->input());
-        
+
         $input;
         $arrayValues;
         $arrayValuesRanges;
         $disciplines = collect([]);
-        
+
         // isRangeChosen: variável que checa se os ranges foram enviados
-        // 0 = sim / 1 = não 
+        // 0 = sim / 1 = não
         $isRangeChosen = 1;
 
-        // pega todos os parametros vindos do 
+        // pega todos os parametros vindos do
         // request e salva numa variável
         foreach($arrayClassifications as $arr) {
             $arrayValues = $arr;
@@ -178,7 +178,7 @@ class DisciplineController extends Controller
                 // array_push($arrayValuesRanges, $key => $value);
 
                 // If para checar se os ranges estão sendo enviados
-                // com qualquer valor diferente de menos 1, significando 
+                // com qualquer valor diferente de menos 1, significando
                 // que os ranges foram enviados
                 if ($value != -1) {
                     $isRangeChosen = 0;
@@ -204,7 +204,7 @@ class DisciplineController extends Controller
             }
         }
 
-        // Foreach pra remover valores nulos do $arrayValuesRanges 
+        // Foreach pra remover valores nulos do $arrayValuesRanges
         foreach ($arrayValuesRanges as $key => $value) {
             if ($value < 1) {
                 unset($arrayValuesRanges[$key]);
@@ -219,13 +219,13 @@ class DisciplineController extends Controller
                 ->where("name", "like", "%" . $discipline_name . "%")
                 ->where("emphasis_id", $emphasis_id)
                 ->get();
-                
+
                 $classifications = Classification::all();
                 $disciplinesResult = collect([]);
                 $finalCollection = collect([]);
                 $arrayClassificationValues = array();
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"])
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValues as $arrKey => $arrValue) {
@@ -254,7 +254,7 @@ class DisciplineController extends Controller
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
-                
+
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -308,7 +308,7 @@ class DisciplineController extends Controller
                 $arrayClassificationValues = array();
                 $disciplinesResult = collect([]);
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"])
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValues as $arrKey => $arrValue) {
@@ -389,13 +389,13 @@ class DisciplineController extends Controller
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where('emphasis_id', $emphasis_id)
                 ->get();
-                
+
                 $classifications = Classification::all();
                 $disciplinesResult = collect([]);
                 $finalCollection = collect([]);
                 $arrayClassificationValues = array();
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"])
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValues as $arrKey => $arrValue) {
@@ -424,7 +424,7 @@ class DisciplineController extends Controller
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
-                
+
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -481,7 +481,7 @@ class DisciplineController extends Controller
                 $finalCollection = collect([]);
                 $arrayClassificationValues = array();
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"])
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValues as $arrKey => $arrValue) {
@@ -510,7 +510,7 @@ class DisciplineController extends Controller
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
-                
+
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
@@ -548,7 +548,7 @@ class DisciplineController extends Controller
                 }
 
                 $finalCollection = $disciplinesResult->collapse()->unique()->paginate(12);
-                
+
                 return view('disciplines.index')
                 ->with('disciplines', $finalCollection)
                 ->with('emphasis', $emphasis_all)
@@ -580,7 +580,7 @@ class DisciplineController extends Controller
                     ->where("disciplines.name", "like", "%".$discipline_name."%")
                     ->where("emphasis_id", $emphasis_id)
                     ->get();
-                    
+
                 } else if ($request->input('periodo') === "vazio" && $request->input('porcentagem') !== null) {
                     // Pesquisa por porcentagem
                     if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
@@ -690,7 +690,7 @@ class DisciplineController extends Controller
                     ->where("year",substr($request->input('periodo'),0,-2))
                     ->where("period",substr($request->input('periodo'),-1))
                     ->get();
-                    
+
                 } else if ($request->input('periodo') === "vazio" && $request->input('porcentagem') !== null) {
                     // Pesquisa por porcentagem
                     if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
@@ -835,7 +835,7 @@ class DisciplineController extends Controller
                         ->where("approved_students_percentage", "<", $request->input('porcentagem'))
                         ->where("emphasis_id", $emphasis_id)
                         ->get();
-                       
+
                     } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
                         $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
                         ->join("professors", "disciplines.professor_id", "=", "professors.id")
@@ -937,7 +937,7 @@ class DisciplineController extends Controller
                         ->where("approved_students_percentage", "<", $request->input('porcentagem'))
                         ->where("disciplines.name", "like", "%".$discipline_name."%")
                         ->get();
-                       
+
                     } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
                         $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
                         ->join("professors", "disciplines.professor_id", "=", "professors.id")
@@ -992,7 +992,7 @@ class DisciplineController extends Controller
         } else if (count($arrayValues) > 0 && $request->input('filtro') === "professor") {
             if ($discipline_name != null && $emphasis_id != null) {
                 // mandou o name_discipline e a emphasis
-                
+
                 $finalCollection = collect([]);
                 $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
                 ->where("disciplines.name","like","%".$discipline_name."%")
@@ -1056,7 +1056,7 @@ class DisciplineController extends Controller
                         ->get()
                     );
                 }
-                
+
                 return view('disciplines.index')
                 ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
                 ->with('emphasis', $emphasis_all)
@@ -1081,7 +1081,7 @@ class DisciplineController extends Controller
                         ->get()
                     );
                 }
-                
+
                 return view('disciplines.index')
                 ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
                 ->with('emphasis', $emphasis_all)
@@ -1106,15 +1106,15 @@ class DisciplineController extends Controller
                 $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
                 ->where("name", "like", "%" . $discipline_name . "%")
                 ->where("emphasis_id", $emphasis_id)
-                ->get(); 
-                
+                ->get();
+
                 $classifications = Classification::all();
                 $disciplinesResult = collect([]);
                 $finalCollection = collect([]);
                 $arrayClassificationValues = array();
                 $arrayCollectionDisciplines = collect([]);
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"])
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
@@ -1143,13 +1143,13 @@ class DisciplineController extends Controller
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
-                
+
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
                         $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
                         ->get();
-                        
+
                         foreach ($disciplineGroup as $keyGroup => $valueGroup) {
                             if ($valueGroup->classification_id == $key) {
                                 $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
@@ -1165,7 +1165,7 @@ class DisciplineController extends Controller
                         }
                     }
 
-                    
+
                     if ($fieldsToCheck == $cont) {
                         $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
                         $disciplinesResult->push($result);
@@ -1183,14 +1183,14 @@ class DisciplineController extends Controller
                 ->with('periodsColection', $periodsColection)
                 ->with('professors', $professors_all);
             } else if ($discipline_name == null && $emphasis_id == null) {
-                $disciplines = ClassificationDiscipline::all(); 
+                $disciplines = ClassificationDiscipline::all();
                 $classifications = Classification::all();
                 $disciplinesResult = collect([]);
                 $finalCollection = collect([]);
                 $arrayClassificationValues = array();
                 $arrayCollectionDisciplines = collect([]);
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"])
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
@@ -1219,13 +1219,13 @@ class DisciplineController extends Controller
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
-                
+
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
                         $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
                         ->get();
-                        
+
                         foreach ($disciplineGroup as $keyGroup => $valueGroup) {
                             if ($valueGroup->classification_id == $key) {
                                 $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
@@ -1241,13 +1241,13 @@ class DisciplineController extends Controller
                         }
                     }
 
-                    
+
                     if ($fieldsToCheck == $cont) {
                         $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
                         $disciplinesResult->push($result);
                     }
                 }
-                
+
                 $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
 
                 return view('disciplines.index')
@@ -1269,7 +1269,7 @@ class DisciplineController extends Controller
                 $arrayClassificationValues = array();
                 $arrayCollectionDisciplines = collect([]);
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"])
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
@@ -1298,13 +1298,13 @@ class DisciplineController extends Controller
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
-                
+
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
                         $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
                         ->get();
-                        
+
                         foreach ($disciplineGroup as $keyGroup => $valueGroup) {
                             if ($valueGroup->classification_id == $key) {
                                 $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
@@ -1320,7 +1320,7 @@ class DisciplineController extends Controller
                         }
                     }
 
-                    
+
                     if ($fieldsToCheck == $cont) {
                         $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
                         $disciplinesResult->push($result);
@@ -1348,7 +1348,7 @@ class DisciplineController extends Controller
                 $arrayClassificationValues = array();
                 $arrayCollectionDisciplines = collect([]);
 
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
+                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"])
                 // e trocar o "Metodologias" pelo respectivo id
                 foreach ($classifications as $key => $value) {
                     foreach ($arrayValuesRanges as $arrKey => $arrValue) {
@@ -1377,13 +1377,13 @@ class DisciplineController extends Controller
                 }
 
                 $fieldsToCheck = count($arrayClassificationValues);
-                
+
                 foreach ($disciplines as $disciplineKey => $disciplineValue) {
                     $cont = 0;
                     foreach ($arrayClassificationValues as $key => $value) {
                         $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
                         ->get();
-                        
+
                         foreach ($disciplineGroup as $keyGroup => $valueGroup) {
                             if ($valueGroup->classification_id == $key) {
                                 $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
@@ -1398,7 +1398,7 @@ class DisciplineController extends Controller
                             }
                         }
                     }
-                    
+
                     if ($fieldsToCheck == $cont) {
                         $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
                         $disciplinesResult->push($result);
@@ -1483,6 +1483,20 @@ class DisciplineController extends Controller
     }
 
     /**
+     * O usuário pode visualizar opções enquanto digita por disciplinas, autocomplete.
+     */
+    public function autocomplete(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Realize uma consulta no banco de dados para encontrar disciplinas que correspondam à consulta do usuário
+        $disciplines = Discipline::select('name')->distinct()->where('name', 'like', '%' . $query . '%')->limit(10)->get();
+
+        // Retorne os resultados em um formato adequado, como JSON
+        return response()->json($disciplines);
+    }
+
+    /**
      * Abre um formulário para criar um novo professor
      *
      * @param CreateRequest $request
@@ -1523,7 +1537,7 @@ class DisciplineController extends Controller
             if(!isset($professor)){
                 DB::rollBack();
                 return redirect()->back()->withInput()->withErrors(['professor_error'=>'É necessário selecionar um professor para a disciplina.']);
-               
+
             }
 
             $discipline = Discipline::create([
@@ -1649,7 +1663,7 @@ class DisciplineController extends Controller
                     }
                 }
             }
-           
+
             DB::commit();
             $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
@@ -1694,7 +1708,7 @@ class DisciplineController extends Controller
         $user = Auth::user();
 
         $classifications = Classification::all()->sortBy('order');
-                
+
         $opinioLinkForm = Link::where('name','opinionForm')->first();
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
@@ -1704,7 +1718,7 @@ class DisciplineController extends Controller
                 ->with('opinionLinkForm',$opinioLinkForm)
                 ->with('showOpinionForm',true);
         }
-        
+
         return view(self::VIEW_PATH . 'show', compact('discipline'))
             ->with('classifications', $classifications)
             ->with('theme', $this->theme)
@@ -2007,7 +2021,7 @@ class DisciplineController extends Controller
             //         ['value' => $request->input('classification-' . $classificationId)]
             //     );
             // }
-        
+
             foreach($classification_collection as $col) {
                 foreach($classificationsMap as $class){
                     ClassificationDiscipline::where('discipline_id',$id)
@@ -2143,7 +2157,7 @@ class DisciplineController extends Controller
         $apiService = new APISigaaService();
 
         $data = $apiService->getDisciplineData($request['codigo'], $request['idTurma'], $request['ano'], $request['periodo']);
-        
+
         return response()->json($data,200);
     }
 
@@ -2158,7 +2172,7 @@ class DisciplineController extends Controller
                 if(in_array($disciplineCodeAndName, $disciplineCodesAndNames) == false){
                     array_push($disciplineCodesAndNames, $disciplineCodeAndName);
                 }
-                
+
             }
             return response()->json($disciplineCodesAndNames);
         }
