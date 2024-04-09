@@ -123,7 +123,7 @@ class DisciplineController extends Controller
 
         return view('disciplines.index')
             ->with('theme',$this->theme)
-            ->with('disciplines',$filteredDisciplines)
+            ->with('disciplines',$filteredDisciplines->paginate(12))
             ->with('emphasis',$emphasis)
             ->with('classifications', $classifications)
             ->with('professors',$professors);

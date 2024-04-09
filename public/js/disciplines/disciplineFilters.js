@@ -1,6 +1,6 @@
 const disabledStyle = "background-color: lightgray; opacity: 70%;";
 
-function changeFilterFields() {
+function changeApprovalFilterFields() {
     let checkFiltroAprovacao = document.querySelector("#check-filtro-aprovacao");
     let selectTipoAprov = document.querySelector('#select-tipo-aprov');
     let selectComparacao = document.querySelector('#select-comparacao');
@@ -31,12 +31,31 @@ function changeFilterFields() {
         selectPeriodoAprov.style = disabledStyle;
     }
 }
+
+function changeClassificationFilter() {
+    let checkFeatureFilter = document.querySelector('#filtro-classificacoes-caracteristica');
+    let checkDetailFilter = document.querySelector('#filtro-classificacoes-detalhado');
+    if(checkFeatureFilter.checked == false && checkDetailFilter.checked == false){
+        checkFeatureFilter.checked = true;
+    }
+    if (checkFeatureFilter.checked) {
+        document.querySelector("checked");
+        document.querySelector("#filtro-classificacoes-detalhado").checked = false;
+        document.querySelector("#area-caracteristica-predominante").classList.remove("d-none");
+        document.querySelector("#area-filtro-detalhado").classList.add("d-none");
+    }
+    else {
+        document.querySelector("#filtro-classificacoes-caracteristica").checked = false;
+        document.querySelector("#area-filtro-detalhado").classList.remove("d-none");
+        document.querySelector("#area-caracteristica-predominante").classList.add("d-none");
+    }
+}
+
 function onChangeCheckFilterApproval(event) {
-    changeFilterFields();
+    changeApprovalFilterFields();
 }
 
 window.onload = function () {
-    changeFilterFields();
     $('#collapse-filters').on('hide.bs.collapse', function (event) {
         if (event.target.id == "collapse-filters") {
             let selectProfessor = document.querySelector("#select-professors");
@@ -45,9 +64,7 @@ window.onload = function () {
             selectProfessor.selectedIndex = 0;
             checkClassificationFilter.checked = false;
             checkApprovalFilter.checked = false;
-            changeFilterFields();
         }
-
     });
 
     $('#collapse-filters').on('shown.bs.collapse', function (event) {
@@ -57,15 +74,17 @@ window.onload = function () {
     });
 
     $('#collapse-filters').on('hidden.bs.collapse', function (event) {
+        $('#collapse-classificacoes').collapse('hide');
         if (event.target.id == "collapse-filters") {
             document.querySelector("#texto-mostrar-filtros").innerHTML = "+ filtros";
+            document.querySelector("#filtro-livre").value = null;
         }
     });
 };
 
 function onChangeClassificationSlider(event) {
     let classificationValue = document.querySelector("#" + event.target.id + 'info_value');
-    classificationValue.innerHTML = event.target.value;
+    classificationValue.innerHTML = ">= " + event.target.value;
 }
 
 function onClickClassificationFilterType(event) {
@@ -91,5 +110,4 @@ function onCheckClassificationFilter(event) {
     }
 }
 
-
-
+changeApprovalFilterFields();

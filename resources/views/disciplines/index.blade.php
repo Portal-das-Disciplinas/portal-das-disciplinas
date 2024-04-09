@@ -57,7 +57,8 @@
                         <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
                             <div class="row mt-3">
                                 <div class="col-md-12">
-                                    <input id="filtro-livre" name="filtro-livre" class="form-control" type="text" placeholder="Digite um tema, conceito ou referência">
+                                    <label class="text-white">Digite, alguns tópicos, conceitos ou referências separados por vírgula</label>
+                                    <input id="filtro-livre" name="filtro-livre" class="form-control" type="text" placeholder="Busca em Grafos, javascript, Inteligência Artificial">
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -78,10 +79,10 @@
                             <div class="row mt-4 ">
                                 <div class="col-md-12">
                                     <input id="check-filtro-classificacoes" name="check-filtro-classificacoes" type="checkbox" onclick="onCheckClassificationFilter(event)">
-                                    <label for="check-filtro-classificacoes" class="text-white">Filtro por classificações</label>
+                                    <label for="check-filtro-classificacoes" class="text-white" style="cursor:pointer;">Filtro por classificações</label>
                                 </div>
                                 <div class="col-md-12">
-                                    <div id="collapse-classificacoes" class=" row collapse">
+                                    <div id="collapse-classificacoes" class="row collapse">
                                         <div class="col-md-12">
                                             <div class="d-flex">
                                                 <div class="mr-5">
@@ -141,7 +142,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="d-flex justify-content-center">
-                                                                <h3 class="text-wshite;">Filtro detalhado</h3>
+                                                                <h3>Filtro detalhado</h3>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -164,7 +165,7 @@
                                                                         <td>
                                                                             <div class="d-flex flex-column align-items-center">
                                                                                 <input id="{{'classification_detail' . $classification->id}}" type="range" min="0" max="100" value="0" name="{{'classification_detail' . $classification->id}}" style="appearance:none; background:lightgray;height:8px;width:75px;" oninput="onChangeClassificationSlider(event)" step="5">
-                                                                                <span id="{{'classification_detail' . $classification->id . 'info_value'}}" class="text-primary mt-3">0</span>
+                                                                                <span id="{{'classification_detail' . $classification->id . 'info_value'}}" class="text-primary mt-3"> >= 0</span>
                                                                             </div>
                                                                         </td>
                                                                         <td>
@@ -207,7 +208,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="d-flex align-items-center">
-                                                <input id="input-valor-comparacao" type="number" min="0" max="100" class="form-control" name="valor-comparacao" placeholder="0">
+                                                <input id="input-valor-comparacao" type="number" min="0" max="100" class="form-control" name="valor-comparacao" value="0">
                                                 <span class="text-white ml-2">%</span>
                                             </div>
                                         </div>
@@ -336,10 +337,10 @@
     </div>
 
 </section>
-</div>
-</div>
 
-<script src="{{ asset('js/indexClassificationForm.js') }}"></script>
-<script src="{{ asset('js/indexSlider.js') }}"></script>
+
+
+@endsection
+@section('scripts-bottom')
 <script src="{{ asset('js/disciplines/disciplineFilters.js')}}"></script>
 @endsection

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services;
 
 use App\Models\Classification;
@@ -8,20 +7,21 @@ use App\Models\ClassificationDiscipline;
 use App\Models\Discipline;
 use App\Models\DisciplinePerformanceData;
 use App\Models\Professor;
+use App\Models\SubjectConcept;
+use App\Models\SubjectReference;
+use App\Models\SubjectTopic;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Normalizer;
 
 class DisciplineService
 {
     public function filterDisciplines(Request $request)
     {
-        $filteredByClassifications = collect([]);
-        $filteredByApproval = collect([]);
+        $filteredDisciplines = collect([]);
         $disciplines = Discipline::query();
         if ($request->name_discipline) {
             $disciplines->where('name', 'like', '%' . $request->name_discipline . '%');
-        }else{
+        } else {
             $disciplines->where('name', 'like', '%' . "" . '%');
         }
         if ($request->emphasis) {
@@ -30,8 +30,31 @@ class DisciplineService
         if ($request->professors && $request->professors != "null") {
             $disciplines->where('professor_id', $request->professors);
         }
+        $filteredDisciplines = $disciplines->get();
+
+        if ($request->{'filtro-livre'}) {
+            $filteredByCustomFilter = collect([]);
+            $requestText = $request->{'filtro-livre'};
+            $words = explode(",", $requestText);
+            foreach ($filteredDisciplines as $discipline) {
+                $topicsCount = SubjectTopic::where('discipline_id', '=', $discipline->id);
+                $conceptsCount = SubjectConcept::where('discipline_id', '=', $discipline->id);
+                $referencesCount = SubjectReference::where('discipline_id', '=', $discipline->id);
+                foreach ($words as $word) {
+                    $topicsCount->where('value', 'like', '%' . $word . '%');
+                    $conceptsCount->where('value', 'like', '%' . $word . '%');
+                    $referencesCount->where('value', 'like', '%' . $word . '%');
+                }
+                if (($topicsCount->count() + $conceptsCount->count() + $referencesCount->count()) > 0) {
+                    $filteredByCustomFilter->push($discipline);
+                }
+            }
+            $filteredDisciplines = $filteredByCustomFilter;
+        }
+
         if ($request->{'check-filtro-classificacoes'} && $request->{'check-filtro-classificacoes'} == "on") {
-            foreach ($disciplines->get() as $discipline) {
+            $filteredByClassifications = collect([]);
+            foreach ($filteredDisciplines as $discipline) {
                 $classifications = ClassificationDiscipline::where('discipline_id', '=', $discipline->id)
                     ->join('classifications', 'classification_id', '=', 'classifications.id')
                     ->select('classifications.id as id_classification', 'classifications.name', 'classifications_disciplines.value')->get();
@@ -48,16 +71,15 @@ class DisciplineService
                     } else {
                         $classificationValue = $request->{'classification_detail' . $classification->id_classification};
                         $checkboxActive = $request->{'classification_detail_active' . $classification->id_classification};
-                        $typeValue = $request->{'classification_detail' . $classification->id_classification .'radio'};
+                        $typeValue = $request->{'classification_detail' . $classification->id_classification . 'radio'};
                         if ($checkboxActive) {
-                            if($typeValue == 'type_a'){
-                                if($classification->value < $classificationValue){
+                            if ($typeValue == 'type_a') {
+                                if ($classification->value < $classificationValue) {
                                     $includeToArray = false;
                                     continue;
                                 }
-                            }
-                            else{
-                                if((100 - $classification->value) < $classificationValue){
+                            } else {
+                                if ((100 - $classification->value) < $classificationValue) {
                                     $includeToArray = false;
                                     continue;
                                 }
@@ -69,15 +91,11 @@ class DisciplineService
                     $filteredByClassifications->push($discipline);
                 }
             }
+            $filteredDisciplines = $filteredByClassifications;
         }
         if ($request['check-filtro-aprovacao']) {
-            $disciplinesDB = null;
-            if($request->{'check-filtro-classificacoes'}){
-                $disciplinesDB = $filteredByClassifications;
-            }else{
-                $disciplinesDB = $disciplines->get();
-            }
-            foreach ($disciplinesDB as $discipline) {
+            $filteredByApproval = collect([]);
+            foreach ($filteredDisciplines as $discipline) {
                 $numStudents = 0;
                 $numApprovedStudents = 0;
                 $numFailedStudents = 0;
@@ -86,7 +104,7 @@ class DisciplineService
                 $professorName = preg_replace('/[\x{0300}-\x{036F}]/u', '', $professorName);
                 $professorName = strtoupper($professorName);
                 $performanceData = DisciplinePerformanceData::where('discipline_code', $discipline->code)->where('professors', 'like', '%' . $professorName . '%');
-                if ($request->{'ano-aprov'} && $request->{'ano-aprov'} != "null" ) {
+                if ($request->{'ano-aprov'} && $request->{'ano-aprov'} != "null") {
                     $performanceData->where('year', '=', $request->{'ano-aprov'});
                     if ($request->{'periodo-aprov'} && $request->{'periodo-aprov'} != "null") {
                         $performanceData->where('period', '=', $request->{'periodo-aprov'});
@@ -113,16 +131,9 @@ class DisciplineService
                     $filteredByApproval->push($discipline);
                 }
             }
-        }
-        if($request['check-filtro-aprovacao']){
-            return $filteredByApproval;
 
+            $filteredDisciplines = $filteredByApproval;
         }
-        elseif($request->{'check-filtro-classificacoes'}){
-            return $filteredByClassifications;
-        }
-        else{
-            return $disciplines->paginate(12);
-        }
+        return $filteredDisciplines;
     }
 }
