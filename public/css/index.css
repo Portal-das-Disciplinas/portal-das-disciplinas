@@ -81,6 +81,7 @@
     color: var(--main-md-color);
 }
 .autocomplete-result {
+    background-color: white;
     padding: 5px;
     cursor: pointer;
 }

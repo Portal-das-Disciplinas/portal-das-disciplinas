@@ -28,6 +28,7 @@ use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
+use App\Services\DisciplineService;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -67,7 +68,7 @@ class DisciplineController extends Controller
         $name_discipline = $request->name_discipline ?? null;
 
         $emphasis = Emphasis::all();
-        $classifications = Classification::all();
+        $classifications = Classification::all()->sortBy('order');
         $studentsData = DisciplinePerformanceData::all();
         $professors_all = Professor::all()->sortBy('name');
         // dd($professors_all);
@@ -114,8 +115,22 @@ class DisciplineController extends Controller
 
     public function disciplineFilter(Request $request)
     {
+        $disciplineService = new DisciplineService();
+        $filteredDisciplines = $disciplineService->filterDisciplines($request);
+        $emphasis = Emphasis::all();
+        $professors = Professor::all();
+        $classifications = Classification::All()->sortBy('order');
+
+        return view('disciplines.index')
+            ->with('theme',$this->theme)
+            ->with('disciplines',$filteredDisciplines->paginate(12))
+            ->with('emphasis',$emphasis)
+            ->with('classifications', $classifications)
+            ->with('professors',$professors);
+
+        //codigo antigo abaixo
         // dd($request);
-        $emphasis_all = Emphasis::all();
+        /*$emphasis_all = Emphasis::all();
         $disciplines_all = Discipline::all();
         $classifications_all = Classification::all();
         $studentsData = DisciplinePerformanceData::all();
@@ -1464,7 +1479,7 @@ class DisciplineController extends Controller
                 ->with('periodsColection', $periodsColection)
                 ->with('professors', $professors_all);
             }
-        }
+        } */
     }
 
     /**
