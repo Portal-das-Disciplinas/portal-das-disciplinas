@@ -84,7 +84,9 @@ window.onload = function () {
 
 function onChangeClassificationSlider(event) {
     let classificationValue = document.querySelector("#" + event.target.id + 'info_value');
+    let checkbox = document.querySelector("#classification_detail_active" + event.target.id.replace('classification_detail',''));
     classificationValue.innerHTML = ">= " + event.target.value;
+    checkbox.checked = true;
 }
 
 function onClickClassificationFilterType(event) {

@@ -437,6 +437,9 @@ mais.
                 </div>
                 <div class="col-md-4">
                     <div class="section">
+                        @if((isset($discipline->subjectTopics) && (count($discipline->subjectTopics ) > 0)) ||
+                            (isset($discipline->subjectConcepts) && (count($discipline->subjectConcepts) > 0)) ||
+                            (isset($discipline->subjectReferences) && (count($discipline->subjectReferences) > 0)))
                         <h1>Conteúdos</h1>
                         @if(isset($discipline->subjectTopics) && (count($discipline->subjectTopics)>0))
                         <div class="card">
@@ -528,6 +531,12 @@ mais.
                                         </ul>
                                     </div>
                                     @endif
+                        </div>
+                        @endif
+                        @else
+                        <div class="card">
+                            <h1>Conteúdos</h1>
+                            <p1>Nenhum conteúdo cadastrado.</p1>
                         </div>
                         @endif
                     </div>
