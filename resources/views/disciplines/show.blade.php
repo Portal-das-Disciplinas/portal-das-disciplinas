@@ -536,7 +536,7 @@ mais.
                         @else
                         <div class="card">
                             <h1>Conteúdos</h1>
-                            <p1>Nenhum conteúdo cadastrado</p1>
+                            <p1>Nenhum conteúdo cadastrado.</p1>
                         </div>
                         @endif
                     </div>
