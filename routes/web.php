@@ -48,8 +48,10 @@ Auth::routes([
     'verify' => false, // Email Verification Routes...
 ]);
 
-Route::post('/topic/store', [TopicController::class, 'store']);
+Route::get('/discipline/{discipline_id}/topic/{topic_id}/subtopics', [TopicController::class, 'getSubtopicsList']);
+Route::post('/topic/store', [TopicController::class, 'store'])->name('topic.store');
 Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
+Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/', [DisciplineController::class, 'index'])->name('index');
