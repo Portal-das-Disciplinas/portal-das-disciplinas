@@ -35,7 +35,7 @@ function changeApprovalFilterFields() {
 function changeClassificationFilter() {
     let checkFeatureFilter = document.querySelector('#filtro-classificacoes-caracteristica');
     let checkDetailFilter = document.querySelector('#filtro-classificacoes-detalhado');
-    if(checkFeatureFilter.checked == false && checkDetailFilter.checked == false){
+    if (checkFeatureFilter.checked == false && checkDetailFilter.checked == false) {
         checkFeatureFilter.checked = true;
     }
     if (checkFeatureFilter.checked) {
@@ -82,9 +82,43 @@ window.onload = function () {
     });
 };
 
+function onSelectClassificationTypeA(event, classificationId) {
+    let typeAName = document.querySelector('#classification_detail_type_a_name' + classificationId);
+    let typeBName = document.querySelector('#classification_detail_type_b_name' + classificationId);
+    if (event.target.checked) {
+        typeAName.classList.add('text-primary');
+        typeAName.classList.remove('text-secondary');
+        typeBName.classList.remove('text-primary');
+        typeBName.classList.add('text-secondary');
+    } else { 
+        typeAName.classList.remove('text-primary');
+        typeAName.classList.add('text-secondary');
+        typeBName.classList.add('text-primary');
+        typeBName.classList.remove('text-secondary');
+    }
+
+}
+
+function onSelectClassificationTypeB(event, classificationId) {
+    let typeAName = document.querySelector('#classification_detail_type_a_name' + classificationId);
+    let typeBName = document.querySelector('#classification_detail_type_b_name' + classificationId);
+    if (event.target.checked) {
+        typeAName.classList.remove('text-primary');
+        typeAName.classList.add('text-secondary');
+        typeBName.classList.add('text-primary');
+        typeBName.classList.remove('text-secondary');
+    } else { 
+        typeAName.classList.add('text-primary');
+        typeAName.classList.remove('text-secondary');
+        typeBName.classList.remove('text-primary');
+        typeBName.classList.add('text-secondary');
+    }
+
+}
+
 function onChangeClassificationSlider(event) {
     let classificationValue = document.querySelector("#" + event.target.id + 'info_value');
-    let checkbox = document.querySelector("#classification_detail_active" + event.target.id.replace('classification_detail',''));
+    let checkbox = document.querySelector("#classification_detail_active" + event.target.id.replace('classification_detail', ''));
     classificationValue.innerHTML = ">= " + event.target.value;
     checkbox.checked = true;
 }
