@@ -608,10 +608,10 @@ $classificationsJson = json_encode($classifications);
         $('.edit-topic').click(function() {
             counterEdit += 1;
 
-            let topicTitle = $(topicElement).children('.topic-title').text();
+            let topicTitle = $(topicElement).children('span.topic-title').text();
 
             // Param true para não remover os eventos
-            let initialHtml = $(topicElement).clone(true);
+            let initialHtml = $(topicElement).children().clone(true);
 
             let editTopicForm = `
             <div class="container" id="topic-edit-form-${counterEdit}">
