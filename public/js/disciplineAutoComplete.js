@@ -28,8 +28,9 @@ function searchDisciplines(query) {
 }
 
 // Função para exibir os resultados do autocompletar
+// Função para exibir os resultados do autocompletar
 function displayAutocompleteResults(results) {
-    autocompleteResults.innerHTML = '';
+    autocompleteResults.innerHTML = ''; // Limpa os resultados antigos
     results.forEach(function(result) {
         var resultItem = document.createElement('div');
         resultItem.textContent = result.name;
@@ -38,21 +39,16 @@ function displayAutocompleteResults(results) {
             searchInput.value = result.name;
             autocompleteResults.innerHTML = '';
         });
+
+        // Adiciona os ouvintes de hover
+        resultItem.addEventListener('mouseenter', function() {
+            resultItem.classList.add('hovered');
+        });
+        resultItem.addEventListener('mouseleave', function() {
+            resultItem.classList.remove('hovered');
+        });
+
         autocompleteResults.appendChild(resultItem);
     });
 }
 
-// Event listener para adicionar e remover a classe de hover
-document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('mouseenter', function(event) {
-        if (event.target.classList.contains('autocomplete-result')) {
-            event.target.classList.add('hovered');
-        }
-    });
-
-    document.addEventListener('mouseleave', function(event) {
-        if (event.target.classList.contains('autocomplete-result')) {
-            event.target.classList.remove('hovered');
-        }
-    });
-});
