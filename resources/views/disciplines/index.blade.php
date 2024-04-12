@@ -77,7 +77,7 @@
 
                             </div>
 
-                            <div class="row mt-4 ">
+                            <div class="row mt-1 ">
                                 <div class="col-md-12">
                                     <input id="check-filtro-classificacoes" name="check-filtro-classificacoes" type="checkbox" onclick="onCheckClassificationFilter(event)">
                                     <label for="check-filtro-classificacoes" class="text-white" style="cursor:pointer;">Filtro por classificações</label>
@@ -112,23 +112,23 @@
                                                                 <tbody>
                                                                     @foreach($classifications as $classification)
                                                                     <tr>
-                                                                        <td><small>{{$classification->name}}</small></td>
+                                                                        <td><small class="font-weight-bold">{{$classification->name}}</small></td>
                                                                         <td>
                                                                             <div class="d-flex flex-column align-items-center">
-                                                                                <input type="radio" name="{{'classification' . $classification->id}}" value="type_a">
-                                                                                <small>{{$classification->{'type_a'} }}</small>
+                                                                                <input id="{{'predominant_classification_type_a' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="type_a">
+                                                                                <label for="{{'predominant_classification_type_a' . $classification->id}}" style="cursor:pointer;"><small class="font-weight-bold">{{$classification->{'type_a'} }}</small></label>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex flex-column align-items-center">
-                                                                                <input type="radio" name="{{'classification' . $classification->id}}" value="neutra" checked>
-                                                                                <small class="text-secondary">Neutra</small>
+                                                                                <input id="{{'predominant_classification_neutral' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="neutra" checked>
+                                                                                <label for="{{'predominant_classification_neutral' . $classification->id}}" style="cursor:pointer;"> <small class="text-secondary font-weight-bold">Neutra</small></label>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex flex-column align-items-center">
-                                                                                <input type="radio" name="{{'classification' . $classification->id}}" value="type_b">
-                                                                                <small>{{$classification->{'type_b'} }}</small>
+                                                                                <input id="{{'predominant_classification_type_b' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="type_b">
+                                                                                <label for="{{'predominant_classification_type_b' . $classification->id}}" style="cursor:pointer;"><small class="font-weight-bold">{{$classification->{'type_b'} }}</small></label>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -155,24 +155,24 @@
                                                                     <tr>
                                                                         <td>
                                                                             <input id="{{'classification_detail_active' . $classification->id}}" name="{{'classification_detail_active' . $classification->id}}" type="checkbox">
-                                                                            <small>{{$classification->name}}</small>
+                                                                            <label for="{{'classification_detail_active' . $classification->id}}" style="cursor:pointer;"><small class="font-weight-bold">{{$classification->name}}</small></label>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex justify-content-center align-items-center flex-column">
-                                                                                <small>{{$classification->{'type_a'} }}</small>
-                                                                                <input type="radio" id="{{'classification_detail' . $classification->id .'type_a_value'}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_a" checked>
+                                                                                <label for="{{'classification_detail_type_a_value' . $classification->id}}"><small id="{{'classification_detail_type_a_name' . $classification->id }}" class="text-primary font-weight-bold" style="cursor:pointer;">{{$classification->{'type_a'} }}</small></label>
+                                                                                <input type="radio" id="{{'classification_detail_type_a_value' . $classification->id}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_a" checked onchange="onSelectClassificationTypeA(event, '{{$classification->id}}' )">
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex flex-column align-items-center">
                                                                                 <input id="{{'classification_detail' . $classification->id}}" type="range" min="0" max="100" value="0" name="{{'classification_detail' . $classification->id}}" style="appearance:none; background:lightgray;height:8px;width:75px;" oninput="onChangeClassificationSlider(event)" step="5">
-                                                                                <span id="{{'classification_detail' . $classification->id . 'info_value'}}" class="text-primary mt-3"> >= 0</span>
+                                                                                <span id="{{'classification_detail' . $classification->id . 'info_value'}}" class="text-primary mt-3 font-weight-bold"> >= 0</span>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex flex-column justify-content-center align-items-center">
-                                                                                <small>{{$classification->{'type_b'} }}</small>
-                                                                                <input type="radio" id="{{'classification_detail' . $classification->id .'type_b_value'}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_b">
+                                                                                <label for="{{'classification_detail_type_b_value' . $classification->id}}"><small id="{{'classification_detail_type_b_name' . $classification->id }}" class="text-secondary font-weight-bold" style="cursor:pointer;">{{$classification->{'type_b'} }}</small></label>
+                                                                                <input type="radio" id="{{'classification_detail_type_b_value' . $classification->id}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_b" onchange="onSelectClassificationTypeB(event, '{{$classification->id}}' )">
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -256,17 +256,24 @@
                         </div>
                     </div>
                 </form>
-                
+
             </div>
         </div>
 
         @isset($disciplines)
         @if(count($disciplines) == 0)
-        <p class="response-search mt-4"> Nenhuma disciplina encontrada </p>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="d-flex justify-content-center">
+                    <h2 class="text-white"> Nenhuma disciplina encontrada </h2>
+                </div>
+            </div>
+
+        </div>
         @else
         <div class="row pb-5">
             @foreach($disciplines as $discipline)
-            <div class="col-12 col-sm-6 col-lg-3 mt-5 ">
+            <div class="col-12 col-sm-6 col-lg-3 mb-5 ">
                 <div class="discipline-card card shadow light-border-radius">
                     @if(!is_null($discipline['trailer']))
                     <div class="teacher-video-container">
