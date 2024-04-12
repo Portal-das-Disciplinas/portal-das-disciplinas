@@ -15,4 +15,8 @@ class Topic extends Model
     public function disciplines() {
         return $this->belongsToMany('App\Models\Discipline');
     }
+
+    public function subtopics() {
+        return $this->hasMany(Topic::class, 'parent_topic_id')->with('subtopics');
+    }
 }
