@@ -15,29 +15,27 @@ class TopicController extends Controller
         try {
             $request->validate([
                 'title' => 'required|string',
+                'discipline_id' => 'required'
             ]);
 
-            $disciplines = Discipline::all();
-            $discipline = $disciplines->find($request->discipline_id);
+            $discipline = Discipline::find($request->discipline_id);
 
             $topic = new Topic(['title' => $request->title]);
+
+            if (!is_null($request->parent_topic_id)) {
+                $topic->parent_topic_id = $request->parent_topic_id;
+            }
+
             $topic->save();
 
             $discipline->topics()->attach($topic->id);
 
             DB::commit();
 
-            return response()->json([
-                'ok' => 'true',
-                'topic' => $topic
-            ]);
+            return true;
         } catch (\Exception $exception) {
             DB::rollback();
-            // return redirect()->back()->withInput();
-            return response()->json([
-                'ok' => 'false',
-                'error' => $exception
-            ]);
+            return redirect()->back()->withInput();
         }
     }
 
@@ -46,29 +44,49 @@ class TopicController extends Controller
 
         try {
             $request->validate([
-                "required_level" => "required"
+                "required_level" => "required",
+                "title" => "string"
             ]);
 
             $topic = Topic::find($topic_id);
-            $topic->required_level = $request->required_level;
 
-            if (!is_null($request->parent_topic)) {
-                $topic->parent_topic_id = $request->parent_topic;
-            }
+            $topic->title = $request->title;
+            $topic->required_level = $request->required_level;
 
             $topic->save();
 
             DB::commit();
 
-            return response()->json([
-                'ok' => 'true',
-            ]);
+            return true;
         } catch (\Exception $exception) {
             DB::rollBack();
-            return response()->json([
-                'ok' => 'false',
-                'error' => $exception
-            ]);
+            return redirect()->back()->withInput();
         }
+    }
+
+    public function destroy($discipline_id, $topic_id) {
+        DB::beginTransaction();
+
+        try {
+            $topic = Topic::find($topic_id);
+
+            $topic->disciplines()->detach($discipline_id);
+            $topic->delete();
+
+            DB::commit();
+
+            return true;
+        } catch (\Exception $exception) {
+            DB::rollback();
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function getSubtopicsList($discipline_id, $topic_id) {
+        $discipline = Discipline::find($discipline_id);
+        $topic = Topic::find($topic_id);
+        $subtopics = $topic->subtopics;
+
+        return view('components.subtopics', compact('subtopics', 'topic'))->render();
     }
 }
