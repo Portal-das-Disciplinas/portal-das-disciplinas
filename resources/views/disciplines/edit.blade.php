@@ -293,6 +293,45 @@ noindex, follow
                     </div>
                 </div>
             </div>
+
+            <div class="form-row mt-3">
+                <div class="form-group">
+                    <div class="d-flex">
+                        <label for="">Tópicos</label>
+                        <p data-toggle="tooltip" data-placement="top" title="Conhecimentos e habilidades necessários ou interessantes para que o aluno possa fazer matricula na disciplina
+                        "><i class="far fa-question-circle ml-1"></i></p>
+                    </div>
+                    <div>
+                        <ul id="discipline-topics">
+                            @forelse ($discipline->topics as $topic)
+                                @if (is_null($topic->parent_topic_id))
+                                    <li class="mb-3" id="topic-{{ $topic->id }}">
+                                        <span class="topic-title">{{ $topic->title }}</span>
+
+                                        <a 
+                                            class="ml-3 expand-topic" 
+                                            data-topic_id="{{ $topic->id }}" 
+                                            style="cursor: pointer; font-size: 14px;"
+                                        >
+                                            Mostrar mais
+                                        </a>
+
+                                        <br>
+
+                                        @if ($topic->required_level)
+                                            <small> Nível desejado: {{  $topic->required_level }}</small>
+                                        @endif
+                                    </li>
+                                @endif
+                            @empty
+                                <p>No topics</p>
+                            @endforelse
+                        </ul>
+                        <button type="button" class="mt-2 btn btn-outline-primary add-topic">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+
             <div class='page-title'>
                 <h3>Perguntas Frequentes</h3>
             </div>
@@ -447,6 +486,198 @@ $classificationsJson = json_encode($classifications);
     sendParticipantsToFormInput();
     renderParticipants('#participants');
 
+
+    // Scripts referente á adição de tópicos
+    let counter = 1;
+    let newTopicBtn = document.querySelector('.add-topic');
+
+    $(document).on('click', '.add-topic', function() {
+        let topicsList = document.getElementById('discipline-topics');
+        let parentTopic = null;
+
+        if ($(this).hasClass('subtopic-control')) {
+            let topicId = $(this).data('topic_id');
+            topicsList = document.getElementById(`topic-${topicId}-subtopics`);
+            parentTopic = topicId;
+        }
+
+        let newTopicForm = `
+        <div class="mb-3" id="topic-form-${counter}">
+            <div class="d-flex">
+                <input type="text" class="form-control" placeholder="Título do tópico" title="Digite o título do tópico" id="topic-input-${counter}">
+                <div class="d-flex ml-4">
+                    <button type="button" class="remove-topic-form btn border-danger text-danger mr-2" style="width: 42px;" data-target="#topic-form-${counter}">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                    <button type="button" class="save-topic btn border-success text-success" style="width: 42px;" data-input-target="#topic-input-${counter}">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        `;
+        
+        $(topicsList).append(newTopicForm);
+        counter += 1;
+
+        // Evitar que o click dispare mais de uma vez
+        $('.save-topic').unbind('click').click(function() {
+            let inputId = $(this).data('input-target');
+            let topicTitle = $(inputId).val();
+            let disciplineId = "{{ $discipline->id }}";
+
+            
+            $.ajax({
+                url: "{{route('topic.store')}}",
+                method: 'POST',
+                data: {
+                    'title': topicTitle,
+                    'discipline_id': disciplineId,
+                    'parent_topic_id': parentTopic
+                },
+                error: function(e) {
+                    console.log(e);
+                },
+                success: function(result) {
+                    location.reload(); 
+                }
+
+            });
+        });
+
+        $('.remove-topic-form').unbind('click').click(function() {
+            let topicFormId = $(this).data('target');
+            $(topicFormId).remove();
+        });
+    });
+    
+    $(document).on('click', '.expand-topic', function() {
+        let topicId = $(this).data('topic_id');
+        let disciplineId = {{ $discipline->id }};
+        let topicElement = $(`#topic-${topicId}`);
+
+        if ($(this).hasClass('expanded')) {
+            $(`#topic-${topicId}-controls`).remove();
+            $(this).html('Mostrar Mais');
+            $(this).removeClass('expanded');
+            $(`#topic-${topicId}-subtopics`).remove();
+        } else {
+            $(this).addClass('expanded');
+
+            $(this).html('Mostrar menos');
+            $(topicElement).append(`
+            <div class="d-flex my-3" id="topic-${topicId}-controls">
+                <button type="button" class="add-topic subtopic-control btn btn-outline-success mr-3" title="Adicionar subtópico" data-topic_id="${topicId}">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="edit-topic btn btn-outline-primary mr-3" title="Editar tópico" data-topic_id="${topicId}">
+                    <i class="fa fa-wrench" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="delete-topic  btn btn-outline-danger" title="Remover tópico" data-topic_id="${topicId}">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+            </div>
+            `);
+
+            $.ajax({
+                method: "GET",
+                url: `/discipline/${disciplineId}/topic/${topicId}/subtopics`,
+                success: function(html) {
+                    topicElement.append(html);
+                }
+            });
+        }
+
+        $('.delete-topic').click(function() {
+            let topicToRemove = $(this).data('topic_id');
+
+            $.ajax({
+                method: "DELETE",
+                url: `/discipline/${disciplineId}/topic/${topicId}/delete`,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function() {
+                    location.reload(); 
+                }
+            });
+        });
+
+        let counterEdit = 0;
+
+        $('.edit-topic').click(function() {
+            counterEdit += 1;
+
+            let topicTitle = $(topicElement).children('.topic-title').text();
+
+            // Param true para não remover os eventos
+            let initialHtml = $(topicElement).clone(true);
+
+            let editTopicForm = `
+            <div class="container" id="topic-edit-form-${counterEdit}">
+                <div class="form-group">
+                    <div class="d-flex">
+                        <label for="title-edit">
+                            Título
+                        </label>
+                        <p data-toggle="tooltip" data-placement="top" title="Título do tópico"><i class="far fa-question-circle ml-1"></i></p>
+                    </div>
+                    <div class="input-group">
+                        <input class="form-control" id="title-edit-${counterEdit}" placeholder="Título do tópico" value="${topicTitle}" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="d-flex">
+                        <label for="level">
+                            Nível desejado
+                        </label>
+                        <p data-toggle="tooltip" data-placement="top" title="Nível de conhecimento que deseja que o aluno possua"><i class="far fa-question-circle ml-1"></i></p>
+                    </div>
+                    <div class="input-group mt-2">
+                        <select class="form-control" id="level-edit-${counterEdit}">
+                            <option value="Aceitável">Aceitável</option>
+                            <option value="Bom">Bom</option>
+                            <option value="Ótimo">Ótimo</option>
+                            <option value="Notável">Notável</option>
+                            <option value="Excepcional">Excepcional</option>
+                        </select>
+                    </div>
+                    <div class="d-flex mt-3">
+                        <button type="button" class="cancel-edit btn text-danger mr-2">Cancelar</button>
+                        <button type="button" class="save-edit btn text-primary">Salvar</button>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            $(topicElement).html(editTopicForm);
+
+            $(`#topic-edit-form-${counterEdit}`).on('click', '.save-edit', function() {
+                let title = $(`#title-edit-${counterEdit}`).val();
+                let level = $(`#level-edit-${counterEdit}`).val();
+
+                $.ajax({
+                method: "PUT",
+                url: `/topic/${topicId}/update`,
+                data: {
+                    title: title,
+                    required_level: level
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function() {
+                    location.reload(); 
+                }
+            });
+            });
+
+            $(`#topic-edit-form-${counterEdit}`).on('click', '.cancel-edit', function() {
+                $(topicElement).html(initialHtml);
+            });
+        });
+    });
 </script>
 
 
