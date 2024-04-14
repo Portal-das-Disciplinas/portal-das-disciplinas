@@ -39,7 +39,7 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="input-group search-bar col-md-12">
-                                <input id="name_discipline" type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{ $name_discipline ?? '' }}" />
+                                <input id="name_discipline" type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$name_discipline ?? ''}}" />
 
                                 <select name="emphasis" id="emphasis" class='form-control col-3'>
                                     <option selected value=""> Todas as ênfases </option>
