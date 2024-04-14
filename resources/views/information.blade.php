@@ -254,8 +254,8 @@
                 <h3>Produção do desenvolvedor no portal</h3>
             </div>
             <div class="modal-body">
-                <p><strong id="productionBrief"></strong></p>
-                <p id="productionDetails" class="text-secondary"></p>
+                <p style="word-wrap: break-word;"><strong id="productionBrief"></strong></p>
+                <p id="productionDetails" class="text-secondary" style="word-wrap: break-word;"></p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary btn-sm" data-dismiss="modal">Fechar</button>
@@ -494,13 +494,13 @@
                         @endif
                     </div>
                     <div id="collapse{{$collaborator->id}}" class="collapse bg-white justify-content-start align-items-start mx-1" style="box-shadow:5px 5px 10px grey;border-radius:5px;">
-                        <table class="table table-striped">
+                        <table class="table table-striped" style="table-layout:fixed;width:100%">
                             <tbody>
                                 @foreach($collaborator->productions->sortBy([['created_at','desc'],['id','asc']])->take(5) as $production)
                                 <tr>
                                     <td class="py-3" onclick="showModalCollaboratorProduction('{{$production->brief}}','{{$production->details}}')" style="cursor:pointer">
                                         <small>
-                                            <p style="line-height:1.1; text-align:center">{{$production->brief}}</p>
+                                            <p style="line-height:1.1; text-align:center; word-wrap:break-word">{{$production->brief}}</p>
                                         </small>
                                     </td>
                                 </tr>
