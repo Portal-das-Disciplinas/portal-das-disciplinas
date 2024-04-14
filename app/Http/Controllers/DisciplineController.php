@@ -100,7 +100,7 @@ class DisciplineController extends Controller
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
 
         return view('disciplines.index')
-            ->with('disciplines', $disciplines->paginate(1))
+            ->with('disciplines', $disciplines->paginate(12))
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
@@ -121,7 +121,7 @@ class DisciplineController extends Controller
         $classifications = Classification::All()->sortBy('order');
         return view('disciplines.index')
             ->with('theme', $this->theme)
-            ->with('disciplines', $filteredDisciplines->paginate(1)->withQueryString())
+            ->with('disciplines', $filteredDisciplines->paginate(12)->withQueryString())
             ->with('emphasis', $emphasis)
             ->with('classifications', $classifications)
             ->with('professors', $professors);
