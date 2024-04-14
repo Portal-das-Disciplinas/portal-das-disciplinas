@@ -64,7 +64,6 @@ class DisciplineController extends Controller
      */
     public function index(Request $request)
     {
-
         $name_discipline = $request->name_discipline ?? null;
 
         $emphasis = Emphasis::all();
@@ -76,7 +75,7 @@ class DisciplineController extends Controller
         $disciplinesPeriods = collect([]);
 
         //foreach para juntar todos os anos e periodos numa collection
-        foreach($studentsData as $student) {
+        foreach ($studentsData as $student) {
             $disciplinesPeriods->push("$student->year.$student->period");
         }
 
@@ -97,16 +96,15 @@ class DisciplineController extends Controller
         //     })
         //     ->get();
         $emphasis = Emphasis::all();
-        $disciplines = Discipline::query()->orderBy('name','ASC')->get();
-        $opinionLinkForm = Link::where('name','opinionForm')->first();
+        $disciplines = Discipline::query()->orderBy('name', 'ASC')->get();
+        $opinionLinkForm = Link::where('name', 'opinionForm')->first();
 
         return view('disciplines.index')
-            // ->with('name_discipline', $name_discipline)
-            ->with('disciplines', $disciplines->paginate(12))
+            ->with('disciplines', $disciplines->paginate(1))
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
-            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('opinionLinkForm', $opinionLinkForm)
             ->with('classifications', $classifications)
             ->with('studentsData', $studentsData)
             ->with('periodsColection', $periodsColection)
@@ -117,16 +115,16 @@ class DisciplineController extends Controller
     {
         $disciplineService = new DisciplineService();
         $filteredDisciplines = $disciplineService->filterDisciplines($request);
+
         $emphasis = Emphasis::all();
         $professors = Professor::all();
         $classifications = Classification::All()->sortBy('order');
-
         return view('disciplines.index')
-            ->with('theme',$this->theme)
-            ->with('disciplines',$filteredDisciplines->paginate(12))
-            ->with('emphasis',$emphasis)
+            ->with('theme', $this->theme)
+            ->with('disciplines', $filteredDisciplines->paginate(1)->withQueryString())
+            ->with('emphasis', $emphasis)
             ->with('classifications', $classifications)
-            ->with('professors',$professors);
+            ->with('professors', $professors);
 
         //codigo antigo abaixo
         // dd($request);
@@ -1511,13 +1509,13 @@ class DisciplineController extends Controller
         if (Auth::user()->isAdmin) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
-        $opinioLinkForm = Link::where('name','opinionForm')->first();
+        $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm',true);
+            ->with('showOpinionForm', true);
     }
     /**
      * Store a newly created resource in storage.
@@ -1534,10 +1532,9 @@ class DisciplineController extends Controller
             if ($user->isAdmin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
-            if(!isset($professor)){
+            if (!isset($professor)) {
                 DB::rollBack();
-                return redirect()->back()->withInput()->withErrors(['professor_error'=>'É necessário selecionar um professor para a disciplina.']);
-
+                return redirect()->back()->withInput()->withErrors(['professor_error' => 'É necessário selecionar um professor para a disciplina.']);
             }
 
             $discipline = Discipline::create([
@@ -1626,10 +1623,9 @@ class DisciplineController extends Controller
 
             if ($titles != null) {
                 foreach ($titles as $key => $title) {
-                    if(($title == "" || $title == null)&&($contents[$key] == "" || $contents[$key] == null)){
+                    if (($title == "" || $title == null) && ($contents[$key] == "" || $contents[$key] == null)) {
                         continue;
-                    }
-                    else if($title == "" || $title==null || $contents[$key] == "" || $contents[$key] == null){
+                    } else if ($title == "" || $title == null || $contents[$key] == "" || $contents[$key] == null) {
                         DB::rollBack();
                         return redirect()->back()
                             ->withErrors(['faq_error' => 'Erro ao cadastrar a FAQ.
@@ -1670,17 +1666,17 @@ class DisciplineController extends Controller
 
             $allPerformanceData = DisciplinePerformanceData::all();
             $minYear = $allPerformanceData->min('year');
-            $queryMinYear = $allPerformanceData->where('year','=',$minYear);
+            $queryMinYear = $allPerformanceData->where('year', '=', $minYear);
             $minPeriod = $queryMinYear->min('period');
             $maxYear = $allPerformanceData->max('year');
-            $queryMaxYear = $allPerformanceData->where('year','=',$maxYear);
+            $queryMaxYear = $allPerformanceData->where('year', '=', $maxYear);
             $maxPeriod = $queryMaxYear->max('period');
-            $disciplinePerformanceDataService->saveSchedules(['yearStart'=>$minYear, 'periodStart'=>$minPeriod, 'yearEnd'=>$maxYear, 'periodEnd'=>$maxPeriod]);
+            $disciplinePerformanceDataService->saveSchedules(['yearStart' => $minYear, 'periodStart' => $minPeriod, 'yearEnd' => $maxYear, 'periodEnd' => $maxPeriod]);
 
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error'=>"Erro ao cadastrar a disciplina"])
+            return redirect()->back()->withErrors(['error' => "Erro ao cadastrar a disciplina"])
                 ->withInput();
         }
     }
@@ -1709,21 +1705,21 @@ class DisciplineController extends Controller
 
         $classifications = Classification::all()->sortBy('order');
 
-        $opinioLinkForm = Link::where('name','opinionForm')->first();
+        $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
             return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))
                 ->with('classifications', $classifications)
                 ->with('theme', $this->theme)
-                ->with('opinionLinkForm',$opinioLinkForm)
-                ->with('showOpinionForm',true);
+                ->with('opinionLinkForm', $opinioLinkForm)
+                ->with('showOpinionForm', true);
         }
 
         return view(self::VIEW_PATH . 'show', compact('discipline'))
             ->with('classifications', $classifications)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm',true);
+            ->with('showOpinionForm', true);
     }
 
     /**
@@ -1750,21 +1746,21 @@ class DisciplineController extends Controller
                 'subjectReferences'
             ])
             ->findOrFail($id);
-        $classifications = Classification::query()->orderBy('order','ASC')->get();
+        $classifications = Classification::query()->orderBy('order', 'ASC')->get();
         $participants = array();
         for ($i = 0; $i < count($discipline->disciplineParticipants()->get()); $i++) {
             array_push($participants, json_decode($discipline->disciplineParticipants()->get()[$i]));
             $participants[$i]->links = json_decode($discipline->disciplineParticipants()->get()[$i]->links);
         }
 
-        $opinioLinkForm = Link::where('name','opinionForm')->first();
+        $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('participants', $participants)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm',true);
+            ->with('showOpinionForm', true);
     }
 
     /**
@@ -1776,7 +1772,7 @@ class DisciplineController extends Controller
      */
     public function update(UpdateRequest $request, $id)
     {
-       
+
         DB::beginTransaction();
         try {
             $user = Auth::user();
@@ -1835,26 +1831,26 @@ class DisciplineController extends Controller
                     $participant->links()->save($link);
                 }
             }
-            $databaseTopicsIds = SubjectTopic::where('discipline_id','=',$discipline->id)->pluck('id');
-            if(!isset($request->topicsId)){
-                SubjectTopic::where('discipline_id','=',$discipline->id)->delete();
-            }else{
-                foreach($databaseTopicsIds->all() as $key=>$idTopicDatabase){
-                    if(!in_array($idTopicDatabase, $request->topicsId)){
+            $databaseTopicsIds = SubjectTopic::where('discipline_id', '=', $discipline->id)->pluck('id');
+            if (!isset($request->topicsId)) {
+                SubjectTopic::where('discipline_id', '=', $discipline->id)->delete();
+            } else {
+                foreach ($databaseTopicsIds->all() as $key => $idTopicDatabase) {
+                    if (!in_array($idTopicDatabase, $request->topicsId)) {
                         SubjectTopic::destroy($idTopicDatabase);
                     }
                 }
             }
-            
-            if(isset($request->topics)){
-                foreach($request->topics as $key=>$topic){
+
+            if (isset($request->topics)) {
+                foreach ($request->topics as $key => $topic) {
                     $idTopic = $request->topicsId[$key];
-                    if($idTopic == -1){
+                    if ($idTopic == -1) {
                         SubjectTopic::create([
                             'value' => $topic,
                             'discipline_id' => $discipline->id
                         ]);
-                    }else{
+                    } else {
                         $subjectTopic = SubjectTopic::find($idTopic);
                         $subjectTopic->{'value'} = $topic;
                         $subjectTopic->save();
@@ -1862,26 +1858,26 @@ class DisciplineController extends Controller
                 }
             }
 
-            $databaseConceptsIds = SubjectConcept::where('discipline_id','=',$discipline->id)->pluck('id');
-            if(!isset($request->conceptsId)){
-                SubjectConcept::where('discipline_id','=',$discipline->id)->delete();
-            }else{
-                foreach($databaseConceptsIds->all() as $key=>$idConceptDatabase){
-                    if(!in_array($idConceptDatabase, $request->conceptsId)){
+            $databaseConceptsIds = SubjectConcept::where('discipline_id', '=', $discipline->id)->pluck('id');
+            if (!isset($request->conceptsId)) {
+                SubjectConcept::where('discipline_id', '=', $discipline->id)->delete();
+            } else {
+                foreach ($databaseConceptsIds->all() as $key => $idConceptDatabase) {
+                    if (!in_array($idConceptDatabase, $request->conceptsId)) {
                         SubjectConcept::destroy($idConceptDatabase);
                     }
                 }
             }
-            
-            if(isset($request->concepts)){
-                foreach($request->concepts as $key=>$concept){
+
+            if (isset($request->concepts)) {
+                foreach ($request->concepts as $key => $concept) {
                     $idConcept = $request->conceptsId[$key];
-                    if($idConcept == -1){
+                    if ($idConcept == -1) {
                         SubjectConcept::create([
                             'value' => $concept,
                             'discipline_id' => $discipline->id
                         ]);
-                    }else{
+                    } else {
                         $subjectConcept = SubjectConcept::find($idConcept);
                         $subjectConcept->{'value'} = $concept;
                         $subjectConcept->save();
@@ -1889,26 +1885,26 @@ class DisciplineController extends Controller
                 }
             }
 
-            $databaseReferencesIds = SubjectReference::where('discipline_id','=',$discipline->id)->pluck('id');
-            if(!isset($request->referencesId)){
-                SubjectReference::where('discipline_id','=',$discipline->id)->delete();
-            }else{
-                foreach($databaseReferencesIds->all() as $key=>$idReferenceDatabase){
-                    if(!in_array($idReferenceDatabase, $request->referencesId)){
+            $databaseReferencesIds = SubjectReference::where('discipline_id', '=', $discipline->id)->pluck('id');
+            if (!isset($request->referencesId)) {
+                SubjectReference::where('discipline_id', '=', $discipline->id)->delete();
+            } else {
+                foreach ($databaseReferencesIds->all() as $key => $idReferenceDatabase) {
+                    if (!in_array($idReferenceDatabase, $request->referencesId)) {
                         SubjectReference::destroy($idReferenceDatabase);
                     }
                 }
             }
-            
-            if(isset($request->references)){
-                foreach($request->references as $key=>$reference){
+
+            if (isset($request->references)) {
+                foreach ($request->references as $key => $reference) {
                     $idReference = $request->referencesId[$key];
-                    if($idReference == -1){
+                    if ($idReference == -1) {
                         SubjectReference::create([
                             'value' => $reference,
                             'discipline_id' => $discipline->id
                         ]);
-                    }else{
+                    } else {
                         $subjectReference = SubjectReference::find($idReference);
                         $subjectReference->{'value'} = $reference;
                         $subjectReference->save();
@@ -2022,11 +2018,11 @@ class DisciplineController extends Controller
             //     );
             // }
 
-            foreach($classification_collection as $col) {
-                foreach($classificationsMap as $class){
-                    ClassificationDiscipline::where('discipline_id',$id)
-                    ->where('classification_id', $class)
-                    ->update(['value' => $request->input('classification-'.$class)]);
+            foreach ($classification_collection as $col) {
+                foreach ($classificationsMap as $class) {
+                    ClassificationDiscipline::where('discipline_id', $id)
+                        ->where('classification_id', $class)
+                        ->update(['value' => $request->input('classification-' . $class)]);
                 }
             }
 
@@ -2066,8 +2062,8 @@ class DisciplineController extends Controller
                         }
                     }
                 }
-            }else{
-                Faq::where('discipline_id',$discipline->id)->delete();
+            } else {
+                Faq::where('discipline_id', $discipline->id)->delete();
             }
 
             /* foreach ($faqsMap as $faqId) {
@@ -2153,30 +2149,29 @@ class DisciplineController extends Controller
      * @param int período em que a turma foi aberta.
      * @return @return \Illuminate\Http\JsonResponse
      */
-    function getDisciplineData(Request $request){
+    function getDisciplineData(Request $request)
+    {
         $apiService = new APISigaaService();
 
         $data = $apiService->getDisciplineData($request['codigo'], $request['idTurma'], $request['ano'], $request['periodo']);
 
-        return response()->json($data,200);
+        return response()->json($data, 200);
     }
 
-    function getCodesAndNames(Request $request){
-        if($request->ajax()){
+    function getCodesAndNames(Request $request)
+    {
+        if ($request->ajax()) {
             $disciplineCodesAndNames = [];
-            $disciplines = Discipline::where("name","like",'%' . $request->disciplineName . '%')->get();
-            foreach($disciplines as $discipline){
-                $disciplineCodeAndName= new stdClass();
+            $disciplines = Discipline::where("name", "like", '%' . $request->disciplineName . '%')->get();
+            foreach ($disciplines as $discipline) {
+                $disciplineCodeAndName = new stdClass();
                 $disciplineCodeAndName->code = $discipline->code;
                 $disciplineCodeAndName->name = $discipline->name;
-                if(in_array($disciplineCodeAndName, $disciplineCodesAndNames) == false){
+                if (in_array($disciplineCodeAndName, $disciplineCodesAndNames) == false) {
                     array_push($disciplineCodesAndNames, $disciplineCodeAndName);
                 }
-
             }
             return response()->json($disciplineCodesAndNames);
         }
     }
-
-
 }

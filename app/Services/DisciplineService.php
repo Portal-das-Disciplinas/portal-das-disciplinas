@@ -11,14 +11,17 @@ use App\Models\SubjectConcept;
 use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Normalizer;
 
 class DisciplineService
 {
     public function filterDisciplines(Request $request)
     {
+        
         $filteredDisciplines = collect([]);
         $disciplines = Discipline::query();
+
         if ($request->name_discipline) {
             $disciplines->where('name', 'like', '%' . $request->name_discipline . '%');
         } else {
@@ -30,7 +33,7 @@ class DisciplineService
         if ($request->professors && $request->professors != "null") {
             $disciplines->where('professor_id', $request->professors);
         }
-        $filteredDisciplines = $disciplines->get();
+        $filteredDisciplines = $disciplines->orderBy('name','asc')->get();
 
         if ($request->{'filtro-livre'}) {
             $filteredByCustomFilter = collect([]);
