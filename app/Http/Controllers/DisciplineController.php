@@ -64,22 +64,10 @@ class DisciplineController extends Controller
      */
     public function index(Request $request)
     {
-        $name_discipline = $request->name_discipline ?? null;
-
         $emphasis = Emphasis::all();
         $classifications = Classification::all()->sortBy('order');
         $studentsData = DisciplinePerformanceData::all();
         $professors_all = Professor::all()->sortBy('name');
-
-        $disciplinesPeriods = collect([]);
-
-        //foreach para juntar todos os anos e periodos numa collection
-        foreach ($studentsData as $student) {
-            $disciplinesPeriods->push("$student->year.$student->period");
-        }
-
-        //Collection com todos os anos.periodo disponíveis
-        $periodsColection = $disciplinesPeriods->unique();
         $emphasis = Emphasis::all();
         $disciplines = Discipline::query()->orderBy('name', 'ASC')->get();
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
@@ -92,7 +80,6 @@ class DisciplineController extends Controller
             ->with('opinionLinkForm', $opinionLinkForm)
             ->with('classifications', $classifications)
             ->with('studentsData', $studentsData)
-            ->with('periodsColection', $periodsColection)
             ->with('professors', $professors_all);
     }
 
