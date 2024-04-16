@@ -87,12 +87,13 @@ class DisciplineController extends Controller
     {
         $disciplineService = new DisciplineService();
         $filteredDisciplines = $disciplineService->filterDisciplines($request);
-
+        $opinionLinkForm = Link::where('name', 'opinionForm')->first();
         $emphasis = Emphasis::all();
         $professors = Professor::all();
         $classifications = Classification::All()->sortBy('order');
         return view('disciplines.index')
             ->with('theme', $this->theme)
+            ->with('opinionLinkForm',$opinionLinkForm)
             ->with('disciplines', $filteredDisciplines->paginate(12)->withQueryString())
             ->with('emphasis', $emphasis)
             ->with('classifications', $classifications)
