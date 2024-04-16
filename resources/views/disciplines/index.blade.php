@@ -58,7 +58,7 @@
                         <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
                             <div class="row mt-3">
                                 <div class="col-md-12">
-                                    <label class="text-white">Digite, alguns tópicos, conceitos ou referências separados por vírgula</label>
+                                    <label class="text-white">Digite, alguns tópicos, conceitos ou referências <span class="text-warning" style="text-decoration: underline;">separados por vírgula</span></label>
                                     <input id="filtro-livre" name="filtro-livre" class="form-control" type="text" placeholder="Busca em Grafos, javascript, Inteligência Artificial">
                                 </div>
                             </div>
