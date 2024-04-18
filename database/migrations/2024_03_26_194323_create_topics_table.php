@@ -16,7 +16,7 @@ class CreateTopicsTable extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->enum('required_level', ['Aceitável', 'Bom', 'Ótimo', 'Notável', 'Excepcional'])->nullable();
+            $table->enum('required_level', ['1', '2', '3', '4', '5'])->nullable();
             $table->unsignedBigInteger('parent_topic_id')->nullable();
             $table->foreign('parent_topic_id')->references('id')
                 ->on('topics')
