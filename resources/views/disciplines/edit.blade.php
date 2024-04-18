@@ -535,6 +535,9 @@ $classificationsJson = json_encode($classifications);
                     'discipline_id': disciplineId,
                     'parent_topic_id': parentTopic
                 },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 error: function(e) {
                     console.log(e);
                 },

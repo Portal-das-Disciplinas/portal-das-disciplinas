@@ -52,7 +52,7 @@ class TopicController extends Controller
 
             $topic->title = $request->title;
             
-            if ($topic->required_level > 0 && $topic->required_level <=5) {
+            if ($topic->required_level != null || $topic->required_level != "0") {
                 $topic->required_level = $request->required_level;
             } else {
                 $topic->required_level = null;
