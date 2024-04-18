@@ -109,7 +109,7 @@ mais.
                 </div>
                 <div class="col-md-4">
                         <div class='classifications'>
-                            <h1 class="">Classificações</h1>
+                            <h1>Classificações</h1>
                             @if (count($classifications)>0)
                             @foreach ( $classifications as $classification)
                             <div class='row mb-0'>
@@ -180,7 +180,7 @@ mais.
 
                         <!-- MATERIAIS -->
 
-                        <div>
+                        <div class="mb-2">
                             <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
                             @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) &&
                             $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
@@ -203,8 +203,8 @@ mais.
                         <hr>
 
                         <!-- Conhecimentos -->
-                        <div class='section'>
-                            <h1 class="mb-3">Conhecimentos/Competências Desejados</h1>
+                        <div class='section mt-3'>
+                            <h1 class="mb-3">Conhecimentos / Competências Desejados</h1>
                             <div>
                                 <div>
                                     @if($discipline->acquirements=='')
