@@ -51,7 +51,12 @@ class TopicController extends Controller
             $topic = Topic::find($topic_id);
 
             $topic->title = $request->title;
-            $topic->required_level = $request->required_level;
+            
+            if ($topic->required_level > 0 && $topic->required_level <=5) {
+                $topic->required_level = $request->required_level;
+            } else {
+                $topic->required_level = null;
+            }
 
             $topic->save();
 
