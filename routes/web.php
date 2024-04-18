@@ -48,11 +48,6 @@ Auth::routes([
     'verify' => false, // Email Verification Routes...
 ]);
 
-Route::get('/discipline/{discipline_id}/topic/{topic_id}/subtopics', [TopicController::class, 'getSubtopicsList']);
-Route::post('/topic/store', [TopicController::class, 'store'])->name('topic.store');
-Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
-Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
-
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/', [DisciplineController::class, 'index'])->name('index');
 Route::post('/search', [DisciplineController::class, 'search'])->name('search');
@@ -76,7 +71,13 @@ Route::get('colaborar', function () {
     return view('collaborate');
 })->name('collaborate');
 
+Route::get('/discipline/{discipline_id}/topic/{topic_id}/subtopics', [TopicController::class, 'getSubtopicsList']);
+
 Route::middleware(['auth'])->group(function () {
+    Route::post('/topic/store', [TopicController::class, 'store'])->name('topic.store');
+    Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
+    Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
+
     Route::get('/perfil', [UsersController::class, 'index'])->name('profile');
     Route::post('/perfil', [UsersController::class, 'update'])->name('updateUser');
 
