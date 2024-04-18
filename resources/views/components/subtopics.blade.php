@@ -1,7 +1,7 @@
-<ul id="topic-{{$topic->id}}-subtopics">
+<ol id="topic-{{$topic->id}}-subtopics">
     @foreach ($subtopics as $subtopic)
         <li class="mb-3" id="topic-{{ $subtopic->id }}">
-            <span class="topic-title">{{ $subtopic->title }}</span>
+            <span class="topic-title" style="font-weight: normal;">{{ $subtopic->title }}</span>
 
             <a 
                 class="ml-3 expand-topic" 
@@ -14,8 +14,8 @@
             <br>
 
             @if ($subtopic->required_level)
-                <small> Nível desejado: {{  $subtopic->required_level }}</small>
+                <small> Domínio desejado: {{  $subtopic->required_level }}</small>
             @endif
         </li>
     @endforeach
-</ul>
+</ol>

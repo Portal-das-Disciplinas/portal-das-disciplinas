@@ -302,7 +302,7 @@ noindex, follow
                         "><i class="far fa-question-circle ml-1"></i></p>
                     </div>
                     <div>
-                        <ul id="discipline-topics">
+                        <ol type="I" id="discipline-topics">
                             @forelse ($discipline->topics as $topic)
                                 @if (is_null($topic->parent_topic_id))
                                     <li class="mb-3" id="topic-{{ $topic->id }}">
@@ -319,14 +319,14 @@ noindex, follow
                                         <br>
 
                                         @if ($topic->required_level)
-                                            <small> Nível desejado: {{  $topic->required_level }}</small>
+                                            <small> Domínio desejado: {{  $topic->required_level }}</small>
                                         @endif
                                     </li>
                                 @endif
                             @empty
-                                <p>No topics</p>
+                                <p>Sem tópicos cadastrados</p>
                             @endforelse
-                        </ul>
+                        </ol>
                         <button type="button" class="mt-2 btn btn-outline-primary add-topic">Adicionar</button>
                     </div>
                 </div>
@@ -630,17 +630,18 @@ $classificationsJson = json_encode($classifications);
                 <div class="form-group">
                     <div class="d-flex">
                         <label for="level">
-                            Nível desejado
+                            Domínio desejado
                         </label>
-                        <p data-toggle="tooltip" data-placement="top" title="Nível de conhecimento que deseja que o aluno possua"><i class="far fa-question-circle ml-1"></i></p>
+                        <p data-toggle="tooltip" data-placement="top" title="Domínio de conhecimento que deseja que o aluno possua"><i class="far fa-question-circle ml-1"></i></p>
                     </div>
                     <div class="input-group mt-2">
                         <select class="form-control" id="level-edit-${counterEdit}">
-                            <option value="Aceitável">Aceitável</option>
-                            <option value="Bom">Bom</option>
-                            <option value="Ótimo">Ótimo</option>
-                            <option value="Notável">Notável</option>
-                            <option value="Excepcional">Excepcional</option>
+                            <option value="0">Não exige domínio</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
                     </div>
                     <div class="d-flex mt-3">
