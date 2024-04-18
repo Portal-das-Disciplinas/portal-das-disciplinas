@@ -38,22 +38,26 @@
                     @csrf
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="input-group search-bar col-md-12">
-                                <input id="name_discipline" type="text" class="form-control col-9" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$name_discipline ?? ''}}" />
-
-                                <select name="emphasis" id="emphasis" class='form-control col-3'>
+                            <div class="col-md-6">
+                                <input id="name_discipline" type="text" class="form-control" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$name_discipline ?? ''}}" />
+                                <div id="autocomplete-results" class="autocomplete-results mt-1 "></div>
+                            </div>
+                            <div class="col-md-4">
+                                <select name="emphasis" id="emphasis" class='form-control'>
                                     <option selected value=""> Todas as ênfases </option>
                                     @foreach($emphasis ?? '' as $emphase)
                                     <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
 
-                                <div class="input-group-append">
+                            <div class="col-md-2">
+                                <div class="d-flex justify-content-end">
                                     <button id="pesquisar" class="btn btn-primary search-button" type="submit"><i class='fas fa-search search-icon'></i>Pesquisar</button>
                                 </div>
                             </div>
                         </div>
-                        <div id="autocomplete-results" class="autocomplete-results mt-1 "></div>
+
                         <small id="texto-mostrar-filtros" class=" btn btn-outline-info btn-sm text-white mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">+ filtros</small>
                         <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
                             <div class="row mt-3">
