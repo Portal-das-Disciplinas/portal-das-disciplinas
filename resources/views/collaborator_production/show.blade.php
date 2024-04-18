@@ -83,7 +83,7 @@
                         <small class="text-secondary">sem detalhes</small>
                         @endif
                         <div class="d-flex justify-content-between mb-1">
-                            <button class="btn btn-outline-primary btn-sm " data-toggle="modal" data-target="#modal-update" onclick="onClickOpenModal('{{$production->id}}','{{$production->brief}}','{{$production->details}}')">Atualizar</button>
+                            <button class="btn btn-outline-primary btn-sm " data-toggle="modal" data-target="#modal-update" onclick="onClickOpenModal('{{$production->id}}','{{$production->brief}}','{{$production->details}}')">Editar</button>
                             <button class="btn btn-outline-danger btn-sm ml-3" onclick="openConfirmDeleteModal('{{$production->id}}')">Deletar</button>
                         </div>
                         @endif

@@ -192,4 +192,15 @@ class Discipline extends Model
     public function topics() {
         return $this->belongsToMany('App\Models\Topic');
     }
+    public function subjectTopics(){
+        return $this->hasMany(SubjectTopic::class);
+    }
+
+    public function subjectConcepts(){
+        return $this->hasMany(SubjectConcept::class);
+    }
+
+    public function subjectReferences(){
+        return $this->hasMany(SubjectReference::class);
+    }
 }

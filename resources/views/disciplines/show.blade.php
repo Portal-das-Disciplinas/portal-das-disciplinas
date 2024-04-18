@@ -61,375 +61,483 @@ mais.
     <!-- ROW Da PAGE -->
     <div class="row mt-5">
         <!-- main -->
-        <div class="main col-md-8">
-            <div class='section'>
-                <h1 class="mb-3">Trailer</h1>
-                @if($discipline->has_trailer_media && $discipline->trailer->view_url != '')
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe style='border-radius: 6px;' class="embed-responsive-item" src="{{ $discipline->trailer->view_url}}" allowfullscreen></iframe>
-                </div>
-                @else
-                <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
-                @endif
-            </div>
-
-            <!-- SINOPSE -->
-            <div class="section mt-3">
-
-                <h1 class="mb-3">Sinopse</h1>
-                <div>
-                    <div>
-                        @if($discipline->description=='')
-                        <div>
-                            <p>Não há sinopse cadastrada.</p>
+        <div class="main col-md-12">
+            <div class="row">
+                <div class='col-md-8'>
+                    <div class="section">
+                        <h1 class="mb-3">Trailer</h1>
+                        @if($discipline->has_trailer_media && $discipline->trailer->view_url != '')
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe style='border-radius: 6px;' class="embed-responsive-item" src="{{ $discipline->trailer->view_url}}" allowfullscreen></iframe>
                         </div>
                         @else
-                        <div>
-                            <p style='text-align: justify; '>{{ $discipline->description}}</p>
-                        </div>
+                        <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo1.png') }}" alt="Sem trailer">
                         @endif
                     </div>
-                </div>
 
-            </div>
+                    <!-- SINOPSE -->
+                    <div class="section mt-3">
 
+                        <h1 class="mb-3">Sinopse</h1>
+                        <div>
+                            <div>
+                                @if($discipline->description=='')
+                                <div>
+                                    <p>Não há sinopse cadastrada.</p>
+                                </div>
+                                @else
+                                <div>
+                                    <p style='text-align: justify; '>{{ $discipline->description}}</p>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div><!--sinopse -->
 
-
-            <!-- VÍDEO -->
-            <div class='section'>
-                <h1 class="mb-3">Vídeo</h1>
-                @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO) &&
-                $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url != '')
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe style='border-radius: 6px;' class="embed-responsive-item " allowfullscreen src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url }}"></iframe>
-                </div>
-                @else
-                <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
-                @endif
-            </div>
-            <!-- OBSTACULOS -->
-            <div class='section'>
-                <h1 class="mb-3">Obstáculos</h1>
-                <div>
-                    <div>
-                        @if($discipline->difficulties=='')
-                        <div class=" p-text">Nenhum obstáculo.</div>
+                    <!-- VÍDEO -->
+                    <div class='section'>
+                        <h1 class="mb-3">Vídeo</h1>
+                        @if($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO) &&
+                        $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url != '')
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe style='border-radius: 6px;' class="embed-responsive-item " allowfullscreen src="{{ $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->view_url }}"></iframe>
+                        </div>
                         @else
-                        <div style="text-align: justify; line-height: normal;">{{ $discipline->difficulties }}</div>
+                        <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
                         @endif
-                    </div>
+                    </div>{{--video--}}
                 </div>
-                <div class="card mt-5 px-2 py-2">
-                    <div class="d-none">{{$actualYear = date("Y")}}</div>
-                    <h1 class="mt-2">Índices de aprovação</h1>
-                    <div class="form">
-                        <div id="semesterSelectFields" class="form-group" style="opacity: 50%" ;>
-                            <div class="row d-flex align-items-end">
-                                <div class="col-md-3">
-                                    <label>Ano Inicial</label>
-                                    <select class="form-control form-control-sm disabled" id="yearStart" name="yearStart" onchange="onChangeSelect(event)" disabled>
-                                        @for($i=$actualYear; $i > 2000;$i--)
-                                        <option value='{{$i}}'>{{$i}}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Período Inicial</label>
-                                    <select id="periodStart" name="periodStart" class="form-control form-control-sm" onchange="onChangeSelect(event)" disabled>
-                                        <option value=1>1</option>
-                                        <option value=2>2</option>
-                                        <option value=3>3</option>
-                                        <option value=4>4</option>
-                                        <option value=5>5</option>
-                                        <option value=6>6</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Ano Final</label>
-                                    <select class="form-control form-control-sm" id="yearEnd" name="yearEnd" onchange="onChangeSelect(event)" disabled>
-                                        @for($i=$actualYear; $i > 2000;$i--)
-                                        <option value='{{$i}}'>{{$i}}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label>Período Final</label>
-                                    <select id="periodEnd" name="periodEnd" class="form-control form-control-sm" onchange="onChangeSelect(event)" disabled>
-                                        <option value=1>1</option>
-                                        <option value=2>2</option>
-                                        <option value=3>3</option>
-                                        <option value=4>4</option>
-                                        <option value=5>5</option>
-                                        <option value=6>6</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <small class="text-danger" id="intervalErrorMessage"></small>
-                                </div>
-                            </div>
-                        </div>
+                <div class="col-md-4">
+                        <div class='classifications'>
+                            <h1 class="">Classificações</h1>
+                            @if (count($classifications)>0)
+                            @foreach ( $classifications as $classification)
+                            <div class='row mb-0'>
+                                <div class="d-flex col-md-12 justify-content-center">
+                                    <label class="">
+                                        <div class="d-flex">
+                                            <h3 style='margin-bottom: 0;' class='smaller-p'>
+                                                {{$classification->name ?? ''}}
 
-                        <div>
-                            <input id="checkAllPeriods" name="checkAllPeriods" type="checkbox" checked onchange="onChangeCheckAllPeriods(event)">
-                            <label for="checkAllPeriods">Todos os períodos</label>
-                        </div>
-                        <div class="mt-1 d-flex flex-column" style="border-bottom: solid 1px rgba(0,0,0,0.2)">
-                            <button id="btnSearchDisciplineData" class="btn btn-primary mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
-                            <small id="infoBtnSearchDisciplineData" class=" ml-3 text-info d-none" style="text-align:center">Altere a data ou marque/desmarque a opção "Todos os períodos" para fazer uma nova busca.</small>
-                        </div>
-
-                        <div class="mt-3 px-1 d-flex flex-column" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
-                            <div>
-                                <input id="checkOnlyProfessorClasses" name="onlyProfessorClasses" type="checkbox" checked onchange="onChangeAllClasses(event)">
-                                <label for="checkOnlyProfessorClasses" style="cursor:pointer"><small>Somente turmas do professor</small></label>
-                            </div>
-                            <div>
-                                <input id="checkAllClasses" name="allClasses" type="checkbox" onchange="onChangeAllClasses(event)">
-                                <label for="checkAllClasses" style="cursor:pointer"><small>Turmas de todos os professores</small></label>
-                            </div>
-                        </div>
-
-                        <div class="mt-3 px-1" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
-                            <div id="form-group-select-class" class="form-group d-none">
-                                <label for="selectClass">Turma</label>
-                                <select id="selectClass" class="form-control form-control-sm" onchange="onSelectClass(event)">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
-                        Buscando dados...
-                    </div>
-                    <div id="dadosDisciplina" class="mt-2 d-none container py-2 d-none" , style="border:solid 1px rgba(0,0,0,0.1); border-radius:5px">
-                        <div class="row">
-                            <div class="col text-secondary">
-                                <h4 id="infoTipoBusca"></h4>
-                                <h4 id="infoNumDiscentes"></h4>
-                                <h4 id="infoProfessoresBusca"></h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="d-flex justify-content-between">
-                                    <strong class="text-success">Aprovados</strong>
-                                    <span class="text-success"><b id="percentagemAprovados">0%</b></span>
-                                </div>
-                                <div class="progress">
-                                    <div id="progressAprovados" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="d-flex justify-content-between">
-                                    <strong class="text-danger">Reprovados</strong>
-                                    <span class="text-danger"><b id="percentagemReprovados">0%</b></span>
-                                </div>
-                                <div class="progress">
-                                    <div id="progressReprovados" class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-2" style="background-color:azure">
-                            <strong class="col-6 mb-0 text-primary">Nota média<small class="text-secondary">&nbsp;(todas as unidades)</small></strong>
-                            <div class="col-6 d-flex justify-content-end">
-                                <strong id="notaMediaComponente" class="text-primary">0</strong>
-                            </div>
-                        </div>
-
-                        <div id="notasPorUnidade"class="row mt-2" style="border: 1px solid rgba(0,0,0,0.2); border-radius:5px" ><!--Notas das unidades-->
-                            <div class="col-md-12">
-                                <strong class="text-secondary">Nota média por unidade</strong>
-                            </div>
-                            <div class="col-md-4 pb-3" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-secondary">Unidade 1</span>
-                                                    <span id="notaUnidade1" class="text-secondary">N/A</span>
-                                                </div>
-                                            </div>
+                                                @if ($classification->description)
+                                                <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle"></i></span>
+                                                @endif
+                                            </h3>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="progress">
-                                                    <div id="progressNotaUnidade1" class="progress-bar bg-primary" role="progressbar" style="width: 10%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    </label>
                                 </div>
                             </div>
-
-                            <div class="col-md-4" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-secondary">Unidade 2</span>
-                                                    <span id="notaUnidade2" class="text-secondary">9.7</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="progress">
-                                                    <div id="progressNotaUnidade2" class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="d-flex justify-content-between">
-                                                    <span class="text-secondary">Unidade 3</span>
-                                                    <span id="notaUnidade3" class="text-secondary">4.2</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="progress">
-                                                    <div id="progressNotaUnidade3" class="progress-bar bg-primary" role="progressbar" style="width: 42%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                </div>
-            </div>
-            <!-- PROFESSOR -->
-        </div>
-
-        <div class="side col-md-4">
-            <div class='classifications'>
-                <h1 class="">Classificações</h1>
-                @if (count($classifications)>0)
-                @foreach ( $classifications as $classification)
-                <div class='row mb-0'>
-                    <div class="d-flex col-md-12 justify-content-center">
-                        <label class="">
-                            <div class="d-flex">
-                                <h3 style='margin-bottom: 0;' class='smaller-p'>
-                                    {{$classification->name ?? ''}}
-
-                                    @if ($classification->description)
-                                    <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle"></i></span>
-                                    @endif
-                                </h3>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-                <div class="row d-flex align-items-center">
-                    <div class="d-flex col-md-12">
-                        <span class='d-flex justify-content-start' style='width:15%'><b>{{
+                            <div class="row d-flex align-items-center">
+                                <div class="d-flex col-md-12">
+                                    <span class='d-flex justify-content-start' style='width:15%'><b>{{
                                 $discipline->getClassificationsValues($classification->id) }}%</b></span>
-                        <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
-                            <div id="{{$classification->classification_id}}" class="classification-color-left progress-bar" role="progressbar" style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                                    <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
+                                        <div id="{{$classification->classification_id}}" class="classification-color-left progress-bar" role="progressbar" style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                                        </div>
+
+                                        <div id="{{$classification->classification_id}}" class="classification-color-right progress-bar" role="progressbar" style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; border-radius: 0 100px 100px 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                                        </div>
+                                    </div>
+                                    <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
+                                </div>
                             </div>
 
-                            <div id="{{$classification->classification_id}}" class="classification-color-right progress-bar" role="progressbar" style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; border-radius: 0 100px 100px 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                            <div class="row ">
+                                <div class="col-md-12 d-flex justify-content-between mt-2">
+                                    <span>
+                                        <h3 style='margin-bottom: 0;' class='classification-text-left smaller-p'>{{
+                                $classification->type_a ?? '' }}</h3>
+                                    </span>
+                                    <span>
+                                        <h3 style='margin-bottom: 0; ' class='classification-text-right smaller-p'>{{
+                                $classification->type_b ?? '' }}</h3>
+                                    </span>
+                                </div>
+                            </div>
+                            @endforeach
+
+                            @else
+                            <strong>Não há classificações cadastradas.</strong>
+                            @endif
+
+                        </div>
+                        <hr>
+                        <!-- PODCAST -->
+                        <div>
+                            <h1 class=" mt-4 mb-2">Podcast</h1>
+                            @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) &&
+                            $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
+                            <audio class="w-100" controls="controls">
+                                <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
+                                seu navegador não suporta HTML5
+                            </audio>
+                            @else
+                            <img class="img-fluid light-border-radius" src="{{asset('img/nopodcast.png') }}" alt="Sem podcast">
+                            @endif
+                        </div>
+                        <hr>
+
+
+                        <!-- MATERIAIS -->
+
+                        <div>
+                            <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
+                            @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) &&
+                            $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
+                            <div class="align-center">
+
+                                <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}" class="text">
+                                    <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
+                                    <button class="btn large-secondary-button my-3 w-100"> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
+                                </a>
+                                <br />
+                            </div>
+                            @else
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-sad-tear fa-7x mr-3"></i>
+                                <strong>Sem materiais disponiveis...</strong>
+                            </div>
+
+                            @endif
+                        </div>
+                        <hr>
+
+                        <!-- Conhecimentos -->
+                        <div class='section'>
+                            <h1 class="mb-3">Conhecimentos/Competências Desejados</h1>
+                            <div>
+                                <div>
+                                    @if($discipline->acquirements=='')
+                                    <div class=" p-text">Nenhum conhecimento.</div>
+                                    @else
+                                    <div style="text-align: justify; line-height: normal;">{{ $discipline->acquirements }}</div>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                        <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
+                        <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class='section'>
+                        <h1 class="mb-3">Obstáculos</h1>
+                        <div>
+                            <div>
+                                @if($discipline->difficulties=='')
+                                <div class=" p-text">Nenhum obstáculo.</div>
+                                @else
+                                <div style="text-align: justify; line-height: normal;">{{ $discipline->difficulties }}</div>
+                                @endif
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="section">
+                        <div class="card mt-5 px-2 py-2">
+                            <div class="d-none">{{$actualYear = date("Y")}}</div>
+                            <h1 class="mt-2">Índices de aprovação</h1>
+                            <div class="form">
+                                <div id="semesterSelectFields" class="form-group" style="opacity: 50%" ;>
+                                    <div class="row d-flex align-items-end">
+                                        <div class="col-md-3">
+                                            <label>Ano Inicial</label>
+                                            <select class="form-control form-control-sm disabled" id="yearStart" name="yearStart" onchange="onChangeSelect(event)" disabled>
+                                                @for($i=$actualYear; $i > 2000;$i--)
+                                                <option value='{{$i}}'>{{$i}}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Período Inicial</label>
+                                            <select id="periodStart" name="periodStart" class="form-control form-control-sm" onchange="onChangeSelect(event)" disabled>
+                                                <option value=1>1</option>
+                                                <option value=2>2</option>
+                                                <option value=3>3</option>
+                                                <option value=4>4</option>
+                                                <option value=5>5</option>
+                                                <option value=6>6</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Ano Final</label>
+                                            <select class="form-control form-control-sm" id="yearEnd" name="yearEnd" onchange="onChangeSelect(event)" disabled>
+                                                @for($i=$actualYear; $i > 2000;$i--)
+                                                <option value='{{$i}}'>{{$i}}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Período Final</label>
+                                            <select id="periodEnd" name="periodEnd" class="form-control form-control-sm" onchange="onChangeSelect(event)" disabled>
+                                                <option value=1>1</option>
+                                                <option value=2>2</option>
+                                                <option value=3>3</option>
+                                                <option value=4>4</option>
+                                                <option value=5>5</option>
+                                                <option value=6>6</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <small class="text-danger" id="intervalErrorMessage"></small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <input id="checkAllPeriods" name="checkAllPeriods" type="checkbox" checked onchange="onChangeCheckAllPeriods(event)">
+                                    <label for="checkAllPeriods">Todos os períodos</label>
+                                </div>
+                                <div class="mt-1 d-flex flex-column" style="border-bottom: solid 1px rgba(0,0,0,0.2)">
+                                    <button id="btnSearchDisciplineData" class="btn btn-primary mb-4" onclick="onSearchDisciplineDataClick('{{$discipline->code}}')">Buscar dados</button>
+                                    <small id="infoBtnSearchDisciplineData" class=" ml-3 text-info d-none" style="text-align:center">Altere a data ou marque/desmarque a opção "Todos os períodos" para fazer uma nova busca.</small>
+                                </div>
+
+                                <div class="mt-3 px-1 d-flex flex-column" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
+                                    <div>
+                                        <input id="checkOnlyProfessorClasses" name="onlyProfessorClasses" type="checkbox" checked onchange="onChangeAllClasses(event)">
+                                        <label for="checkOnlyProfessorClasses" style="cursor:pointer"><small>Somente turmas do professor</small></label>
+                                    </div>
+                                    <div>
+                                        <input id="checkAllClasses" name="allClasses" type="checkbox" onchange="onChangeAllClasses(event)">
+                                        <label for="checkAllClasses" style="cursor:pointer"><small>Turmas de todos os professores</small></label>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 px-1" style="border:solid 1px rgba(0,0,0,0.2); border-radius: 5px;">
+                                    <div id="form-group-select-class" class="form-group d-none">
+                                        <label for="selectClass">Turma</label>
+                                        <select id="selectClass" class="form-control form-control-sm" onchange="onSelectClass(event)">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="infoPesquisaDados" class="alert alert-primary d-none" role="alert">
+                                Buscando dados...
+                            </div>
+                            <div id="dadosDisciplina" class="mt-2 d-none container py-2 d-none" , style="border:solid 1px rgba(0,0,0,0.1); border-radius:5px">
+                                <div class="row">
+                                    <div class="col text-secondary">
+                                        <h4 id="infoTipoBusca"></h4>
+                                        <h4 id="infoNumDiscentes"></h4>
+                                        <h4 id="infoProfessoresBusca"></h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-between">
+                                            <strong class="text-success">Aprovados</strong>
+                                            <span class="text-success"><b id="percentagemAprovados">0%</b></span>
+                                        </div>
+                                        <div class="progress">
+                                            <div id="progressAprovados" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-between">
+                                            <strong class="text-danger">Reprovados</strong>
+                                            <span class="text-danger"><b id="percentagemReprovados">0%</b></span>
+                                        </div>
+                                        <div class="progress">
+                                            <div id="progressReprovados" class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-2" style="background-color:azure">
+                                    <strong class="col-6 mb-0 text-primary">Nota média<small class="text-secondary">&nbsp;(todas as unidades)</small></strong>
+                                    <div class="col-6 d-flex justify-content-end">
+                                        <strong id="notaMediaComponente" class="text-primary">0</strong>
+                                    </div>
+                                </div>
+
+                                <div id="notasPorUnidade" class="row mt-2" style="border: 1px solid rgba(0,0,0,0.2); border-radius:5px"><!--Notas das unidades-->
+                                    <div class="col-md-12">
+                                        <strong class="text-secondary">Nota média por unidade</strong>
+                                    </div>
+                                    <div class="col-md-4 pb-3" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="d-flex justify-content-between">
+                                                            <span class="text-secondary">Unidade 1</span>
+                                                            <span id="notaUnidade1" class="text-secondary">N/A</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="progress">
+                                                            <div id="progressNotaUnidade1" class="progress-bar bg-primary" role="progressbar" style="width: 10%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="d-flex justify-content-between">
+                                                            <span class="text-secondary">Unidade 2</span>
+                                                            <span id="notaUnidade2" class="text-secondary">9.7</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="progress">
+                                                            <div id="progressNotaUnidade2" class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="box-sizing:border-box; border-radius:10px; box-shadow:2px 2px 5px rgba(0,0,0,0.2)">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="d-flex justify-content-between">
+                                                            <span class="text-secondary">Unidade 3</span>
+                                                            <span id="notaUnidade3" class="text-secondary">4.2</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="progress">
+                                                            <div id="progressNotaUnidade3" class="progress-bar bg-primary" role="progressbar" style="width: 42%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="col-md-4">
+                    <div class="section">
+                        @if((isset($discipline->subjectTopics) && (count($discipline->subjectTopics ) > 0)) ||
+                            (isset($discipline->subjectConcepts) && (count($discipline->subjectConcepts) > 0)) ||
+                            (isset($discipline->subjectReferences) && (count($discipline->subjectReferences) > 0)))
+                        <h1>Conteúdos</h1>
+                        @if(isset($discipline->subjectTopics) && (count($discipline->subjectTopics)>0))
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h3 class="text-primary">Temas</h3>
+                                @if(count($discipline->subjectTopics) > 3)
+                                <a id="seeMoreTopics" class="link" data-toggle="collapse" href="#collapseTopics" role="button" aria-expanded="false" aria-controls="collapseTopics">
+                                    ver mais
+                                </a>
+                                @endif
+                            </div>
+                            @if(count($discipline->subjectTopics) <= 3) <ul class="list-group list-group-flush">
+                                @for($i = 0;$i < count($discipline->subjectTopics);$i++)
+                                    <li class="list-group-item"><small>{{$discipline->subjectTopics[$i]->value}}</small></li>
+                                    @endfor
+                                    </ul>
+                                    @else
+                                    <ul class="list-group list-group-flush">
+                                        @for($i = 0;$i < 3;$i++) <li class="list-group-item"><small>{{$discipline->subjectTopics[$i]->value}}</small></li>
+                                            @endfor
+                                    </ul>
+                                    <div class="collapse" id="collapseTopics">
+                                        <ul class="list-group list-group-flush">
+                                            @for($i=3;$i < count($discipline->subjectTopics);$i++)
+                                                <li class="list-group-item"><small>{{$discipline->subjectTopics[$i]->value}}</small></li>
+                                                @endfor
+                                        </ul>
+                                    </div>
+                                    @endif
+                        </div>
+                        @endif
 
-                <div class="row ">
-                    <div class="col-md-12 d-flex justify-content-between mt-2">
-                        <span>
-                            <h3 style='margin-bottom: 0;' class='classification-text-left smaller-p'>{{
-                                $classification->type_a ?? '' }}</h3>
-                        </span>
-                        <span>
-                            <h3 style='margin-bottom: 0; ' class='classification-text-right smaller-p'>{{
-                                $classification->type_b ?? '' }}</h3>
-                        </span>
-                    </div>
-                </div>
-                @endforeach
+                        @if(isset($discipline->subjectConcepts) && (count($discipline->subjectConcepts)>0))
+                        <div class="card mt-2">
+                            <div class="card-header d-flex justify-content-between">
+                                <h3 class="text-primary">Conceitos</h3>
+                                @if(count($discipline->subjectConcepts) > 3)
+                                <a id="seeMoreConcepts" class="link" data-toggle="collapse" href="#collapseConcepts" role="button" aria-expanded="false" aria-controls="collapseConcepts">
+                                    ver mais
+                                </a>
+                                @endif
+                            </div>
+                            @if(count($discipline->subjectConcepts) <= 3) <ul class="list-group list-group-flush">
+                                @for($i = 0;$i < count($discipline->subjectConcepts);$i++)
+                                    <li class="list-group-item"><small>{{$discipline->subjectConcepts[$i]->value}}</small></li>
+                                    @endfor
+                                    </ul>
+                                    @else
+                                    <ul class="list-group list-group-flush">
+                                        @for($i = 0;$i < 3;$i++) <li class="list-group-item"><small>{{$discipline->subjectConcepts[$i]->value}}</small></li>
+                                            @endfor
+                                    </ul>
+                                    <div class="collapse" id="collapseConcepts">
+                                        <ul class="list-group list-group-flush">
+                                            @for($i=3;$i < count($discipline->subjectConcepts);$i++)
+                                                <li class="list-group-item"><small>{{$discipline->subjectConcepts[$i]->value}}</small></li>
+                                                @endfor
+                                        </ul>
+                                    </div>
+                                    @endif
+                        </div>
+                        @endif
 
-                @else
-                <strong>Não há classificações cadastradas.</strong>
-                @endif
-
-
-
-            </div>
-            <hr>
-            <!-- PODCAST -->
-            <div>
-                <h1 class=" mt-4 mb-2">Podcast</h1>
-                @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) &&
-                $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
-                <audio class="w-100" controls="controls">
-                    <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
-                    seu navegador não suporta HTML5
-                </audio>
-                @else
-                <img class="img-fluid light-border-radius" src="{{asset('img/nopodcast.png') }}" alt="Sem podcast">
-                @endif
-            </div>
-            <hr>
-
-
-            <!-- MATERIAIS -->
-
-            <div>
-                <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
-                @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) &&
-                $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
-                <div class="align-center">
-
-                    <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}" class="text">
-                        <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
-                        <button class="btn large-secondary-button my-3 w-100"> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
-                    </a>
-                    <br />
-                </div>
-                @else
-                <div class="d-flex align-items-center">
-                    <i class="fas fa-sad-tear fa-7x mr-3"></i>
-                    <strong>Sem materiais disponiveis...</strong>
-                </div>
-
-                @endif
-            </div>
-            <hr>
-
-            <!-- Conhecimentos -->
-            <div class='section'>
-                <h1 class="mb-3">Conhecimentos/Competências Desejados</h1>
-                <div>
-                    <div>
-                        @if($discipline->acquirements=='')
-                        <div class=" p-text">Nenhum conhecimento.</div>
+                        @if(isset($discipline->subjectReferences) && (count($discipline->subjectReferences)>0))
+                        <div class="card mt-2">
+                            <div class="card-header d-flex justify-content-between">
+                                <h3 class="text-primary">Referências</h3>
+                                @if(count($discipline->subjectReferences) > 3)
+                                <a id="seeMoreReferences" class="link" data-toggle="collapse" href="#collapseReferences" role="button" aria-expanded="false" aria-controls="collapseReferences">
+                                    ver mais
+                                </a>
+                                @endif
+                            </div>
+                            @if(count($discipline->subjectReferences) <= 3) <ul class="list-group list-group-flush">
+                                @for($i = 0;$i < count($discipline->subjectReferences);$i++)
+                                    <li class="list-group-item"><small>{{$discipline->subjectReferences[$i]->value}}</small></li>
+                                    @endfor
+                                    </ul>
+                                    @else
+                                    <ul class="list-group list-group-flush">
+                                        @for($i = 0;$i < 3;$i++) <li class="list-group-item"><small>{{$discipline->subjectReferences[$i]->value}}</small></li>
+                                            @endfor
+                                    </ul>
+                                    <div class="collapse" id="collapseReferences">
+                                        <ul class="list-group list-group-flush">
+                                            @for($i=3;$i < count($discipline->subjectReferences);$i++)
+                                                <li class="list-group-item"><small>{{$discipline->subjectReferences[$i]->value}}</small></li>
+                                                @endfor
+                                        </ul>
+                                    </div>
+                                    @endif
+                        </div>
+                        @endif
                         @else
-                        <div style="text-align: justify; line-height: normal;">{{ $discipline->acquirements }}</div>
+                        <div class="card">
+                            <h1>Conteúdos</h1>
+                            <p1>Nenhum conteúdo cadastrado.</p1>
+                        </div>
                         @endif
                     </div>
                 </div>
@@ -464,14 +572,12 @@ mais.
                     @endforelse
                 </ol>
             </div>
-
+            </div>
         </div>
     </div>
 </div>
 
-</div>
 <!-- FAQ -->
-
 @if($discipline->faqs->count())
 <div class="container">
     <h1 class="container-fluid  text-center mt-5">Perguntas Frequentes</h1>
@@ -887,6 +993,7 @@ mais.
     let professorName = "{{$discipline->professor->name}}".toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "");
 </script>
 <script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
+<script src="{{asset('js/subjectContentsCollapse.js')}}"></script>
 <script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()

@@ -23,8 +23,12 @@ use App\Models\Professor;
 use App\Models\Link;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
+use App\Models\SubjectConcept;
+use App\Models\SubjectReference;
+use App\Models\SubjectTopic;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
+use App\Services\DisciplineService;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -60,1408 +64,54 @@ class DisciplineController extends Controller
      */
     public function index(Request $request)
     {
-        
-        $name_discipline = $request->name_discipline ?? null;
-
         $emphasis = Emphasis::all();
-        $classifications = Classification::all();
+        $classifications = Classification::all()->sortBy('order');
         $studentsData = DisciplinePerformanceData::all();
         $professors_all = Professor::all()->sortBy('name');
-        // dd($professors_all);
-
-        $disciplinesPeriods = collect([]);
-
-        //foreach para juntar todos os anos e periodos numa collection
-        foreach($studentsData as $student) {
-            $disciplinesPeriods->push("$student->year.$student->period");
-        }
-
-        //Collection com todos os anos.periodo disponíveis
-        $periodsColection = $disciplinesPeriods->unique();
-
-        // $disciplines = Discipline::query()
-        //     ->with([
-        //         'professor',
-        //         'medias',
-        //     ])
-        //     ->orderBy('name', 'ASC') 
-        //     ->when(isset($name_discipline), function($query) use($name_discipline) {
-        //         $query->where("name", "like", $name_discipline."%");
-        //     })
-        //     ->when(isset($emphasis), function($query) use($emphasis) {
-        //         $query->where("name", "like", $emphasis."%");
-        //     })
-        //     ->get();
         $emphasis = Emphasis::all();
-        $disciplines = Discipline::query()->orderBy('name','ASC')->get();
-        $opinionLinkForm = Link::where('name','opinionForm')->first();
-       
+        $disciplines = Discipline::query()->orderBy('name', 'ASC')->get();
+        $opinionLinkForm = Link::where('name', 'opinionForm')->first();
+
         return view('disciplines.index')
-            // ->with('name_discipline', $name_discipline)
             ->with('disciplines', $disciplines->paginate(12))
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('showOpinionForm', true)
-            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('opinionLinkForm', $opinionLinkForm)
             ->with('classifications', $classifications)
             ->with('studentsData', $studentsData)
-            ->with('periodsColection', $periodsColection)
             ->with('professors', $professors_all);
     }
 
     public function disciplineFilter(Request $request)
     {
-        // dd($request);
-        $emphasis_all = Emphasis::all();
-        $disciplines_all = Discipline::all();
-        $classifications_all = Classification::all();
-        $studentsData = DisciplinePerformanceData::all();
-        $professors_all = Professor::all()->sortBy('name');;
-
-        $disciplinesPeriods = collect([]);
-
-        //foreach para juntar todos os anos e periodos numa collection
-        foreach($studentsData as $student) {
-            $disciplinesPeriods->push("$student->year.$student->period");
-        }
-
-        //Collection com todos os anos.periodo disponíveis
-        $periodsColection = $disciplinesPeriods->unique();
-
-        $emphasis_id = $request->input('emphasis');
-        $discipline_name = $request->input('name_discipline');
-        $professor_name = $request->input('professors');
-
-        $arrayClassifications = array($request->input());
-        
-        $input;
-        $arrayValues;
-        $arrayValuesRanges;
-        $disciplines = collect([]);
-        
-        // isRangeChosen: variável que checa se os ranges foram enviados
-        // 0 = sim / 1 = não 
-        $isRangeChosen = 1;
-
-        // pega todos os parametros vindos do 
-        // request e salva numa variável
-        foreach($arrayClassifications as $arr) {
-            $arrayValues = $arr;
-            $arrayValuesRanges = $arr;
-        }
-
-        // dd($arrayValues);
-
-        // remove todos os parametros que tenham haver com
-        // os ranges, que seja a emphase ou o nome da disciplina
-        foreach($arrayValues as $key => $value) {
-            if (str_contains($key, "range") == true) {
-                unset($arrayValues[$key]);
-                // array_push($arrayValuesRanges, $key => $value);
-
-                // If para checar se os ranges estão sendo enviados
-                // com qualquer valor diferente de menos 1, significando 
-                // que os ranges foram enviados
-                if ($value != -1) {
-                    $isRangeChosen = 0;
-                } else {
-                    $isRangeChosen = 1;
-                }
-            } else if (str_contains($key, "page") == true) {
-                unset($arrayValues[$key]);
-            } else if ($key == "name_discipline") {
-                unset($arrayValues[$key]);
-            } else if ($key == "emphasis") {
-                unset($arrayValues[$key]);
-            } else if ($key == "_token") {
-                unset($arrayValues[$key]);
-            }
-        }
-
-        // foreach pra tirar qualquer parâmetro que não tenha range
-        // de dentro do arrayValuesRanges
-        foreach($arrayValuesRanges as $key => $value) {
-            if (str_contains($key, "range") == false) {
-                unset($arrayValuesRanges[$key]);
-            }
-        }
-
-        // Foreach pra remover valores nulos do $arrayValuesRanges 
-        foreach ($arrayValuesRanges as $key => $value) {
-            if ($value < 1) {
-                unset($arrayValuesRanges[$key]);
-            }
-        }
-
-        // Mecanismo pra saber se mais parâmetros fora o nome da disciplina e a ênfase foram enviados
-        if (count($arrayValues) > 0 && $request->input('filtro') === "classificacao") {
-            // Mais parâmetros fora o nome, ênfase e os ranges foram enviados
-            if ($discipline_name != null && $emphasis_id != null) {
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
-                ->where("name", "like", "%" . $discipline_name . "%")
-                ->where("emphasis_id", $emphasis_id)
-                ->get();
-                
-                $classifications = Classification::all();
-                $disciplinesResult = collect([]);
-                $finalCollection = collect([]);
-                $arrayClassificationValues = array();
-
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValues as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
-
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
-
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
-
-                            if ($value->name == $noUnderlineString) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == $arrKey) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
-
-                $fieldsToCheck = count($arrayClassificationValues);
-                
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                if ($value == "mais") {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
-                                } else {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if ($fieldsToCheck == $cont) {
-                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($filteredDiscipline);
-                    }
-                }
-
-                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
-
-                return view('disciplines.index')
-                ->with("disciplines", $disciplinesMixed)
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name == null && $emphasis_id == null) {
-                // pesquisa apenas por classificações
-                $disciplines = ClassificationDiscipline::all();
-                $classifications = Classification::all();
-                $arrayClassificationValues = array();
-                $disciplinesResult = collect([]);
-
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValues as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
-
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
-
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
-
-                            if ($value->name == $noUnderlineString) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == $arrKey) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
-
-                $fieldsToCheck = count($arrayClassificationValues);
-
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                if ($value == "mais") {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
-                                } else {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if ($fieldsToCheck == $cont) {
-                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($filteredDiscipline);
-                    }
-                }
-
-                $finalCollection = $disciplinesResult->collapse()->unique()->paginate(12);
-
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection)
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($emphasis_id != null) {
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
-                ->where('emphasis_id', $emphasis_id)
-                ->get();
-                
-                $classifications = Classification::all();
-                $disciplinesResult = collect([]);
-                $finalCollection = collect([]);
-                $arrayClassificationValues = array();
-
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValues as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
-
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
-
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
-
-                            if ($value->name == $noUnderlineString) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == $arrKey) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
-
-                $fieldsToCheck = count($arrayClassificationValues);
-                
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                if ($value == "mais") {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
-                                } else {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if ($fieldsToCheck == $cont) {
-                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($filteredDiscipline);
-                    }
-                }
-
-                $finalCollection = $disciplinesResult->collapse()->unique()->paginate(12);
-
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection)
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name != null) {
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
-                ->where("name", "like", "%" . $discipline_name . "%")
-                ->get();
-
-                $classifications = Classification::all();
-                $disciplinesResult = collect([]);
-                $finalCollection = collect([]);
-                $arrayClassificationValues = array();
-
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValues as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
-
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
-
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
-
-                            if ($value->name == $noUnderlineString) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == $arrKey) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
-
-                $fieldsToCheck = count($arrayClassificationValues);
-                
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                if ($value == "mais") {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", "<=", 50)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
-                                } else {
-                                    $currentDiscipline = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                    ->where("classification_id", $key)
-                                    ->where("value", ">=", 51)
-                                    ->get();
-
-                                    if (count($currentDiscipline) > 0) {
-                                        $cont++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if ($fieldsToCheck == $cont) {
-                        $filteredDiscipline = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($filteredDiscipline);
-                    }
-                }
-
-                $finalCollection = $disciplinesResult->collapse()->unique()->paginate(12);
-                
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection)
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else {
-                return redirect('/')
-                ->with('disciplines', $disciplines_all->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            }
-        } else if (count($arrayValues) > 0 && $request->input('filtro') === "aprovacao") {
-            if ($discipline_name != null && $emphasis_id != null) {
-                // pesquisa pelo filtro de aprovações, nome da disciplina e ênfase
-
-                if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') === null) {
-                    // Pesquisa por periodo
-                    $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                    ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                    ->where("year",substr($request->input('periodo'),0,-2))
-                    ->where("period",substr($request->input('periodo'),-1))
-                    ->where("disciplines.name", "like", "%".$discipline_name."%")
-                    ->where("emphasis_id", $emphasis_id)
-                    ->get();
-                    
-                } else if ($request->input('periodo') === "vazio" && $request->input('porcentagem') !== null) {
-                    // Pesquisa por porcentagem
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    }
-                } else if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') !== null) {
-                    // Pesquisa por periodo e porcentagem
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    }
-                } else {
-                    $disciplinesCombo = Discipline::all();
-                }
-
-                $disciplinesMixedWithProfessor = $disciplinesCombo->unique();
-                $finalCollection = collect([]);
-
-                // Faz a busca final apenas na tabela de disciplina pelo código e o professor
-                foreach ($disciplinesMixedWithProfessor as $professor) {
-                    $finalCollection->push(Discipline::where("professor_id",$professor->id)
-                    ->where("code",$professor->code)
-                    ->get());
-                }
-
-                return view('disciplines.index')
-                ->with("disciplines", $finalCollection->collapse()->unique()->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name === null && $emphasis_id === null) {
-                // pesquisa apenas pelo filtro de aprovações
-                if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') === null) {
-                    // Pesquisa por periodo
-                    $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                    ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                    ->where("year",substr($request->input('periodo'),0,-2))
-                    ->where("period",substr($request->input('periodo'),-1))
-                    ->get();
-                    
-                } else if ($request->input('periodo') === "vazio" && $request->input('porcentagem') !== null) {
-                    // Pesquisa por porcentagem
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->get();
-
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->get();
-
-                    }
-                } else if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') !== null) {
-                    // Pesquisa por periodo e porcentagem
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->get();
-
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->get();
-
-                    }
-                } else {
-                    $disciplinesCombo = Discipline::all();
-                }
-
-                $disciplinesMixedWithProfessor = $disciplinesCombo->unique();
-                $finalCollection = collect([]);
-
-                // Faz a busca final apenas na tabela de disciplina pelo código e o professor
-                foreach ($disciplinesMixedWithProfessor as $professor) {
-                    $finalCollection->push(Discipline::where("professor_id",$professor->id)
-                    ->where("code",$professor->code)
-                    ->get());
-                }
-
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($emphasis_id != null) {
-                if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') === null) {
-                    // Pesquisa por periodo
-                    $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                    ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                    ->where("year",substr($request->input('periodo'),0,-2))
-                    ->where("period",substr($request->input('periodo'),-1))
-                    ->where("emphasis_id", $emphasis_id)
-                    ->get();
-
-                } else if ($request->input('periodo') === "vazio" && $request->input('porcentagem') !== null) {
-                    // Pesquisa por porcentagem
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    }
-                } else if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') !== null) {
-                    // Pesquisa por periodo e porcentagem
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-                       
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("emphasis_id", $emphasis_id)
-                        ->get();
-
-                    }
-                } else {
-                    $disciplinesCombo = Discipline::all();
-                }
-
-                $disciplinesMixedWithProfessor = $disciplinesCombo->unique();
-                $finalCollection = collect([]);
-
-                // Faz a busca final apenas na tabela de disciplina pelo código e o professor
-                foreach ($disciplinesMixedWithProfessor as $professor) {
-                    $finalCollection->push(Discipline::where("professor_id",$professor->id)
-                    ->where("code",$professor->code)
-                    ->get());
-                }
-
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name != null) {
-                if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') === null) {
-                    // Pesquisa por periodo
-                    $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                    ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                    ->where("year",substr($request->input('periodo'),0,-2))
-                    ->where("period",substr($request->input('periodo'),-1))
-                    ->where("disciplines.name", "like", "%".$discipline_name."%")
-                    ->get();
-
-                } else if ($request->input('periodo') === "vazio" && $request->input('porcentagem') !== null) {
-                    // Pesquisa por porcentagem
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->get();
-
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->get();
-
-                    }
-                } else if ($request->input('periodo') !== "vazio" && $request->input('porcentagem') !== null) {
-                    // Pesquisa por periodo e porcentagem
-                    if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("approved_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->get();
-
-                    } else if ($request->input('metodo') === "aprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("approved_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->get();
-                       
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "maior") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("failed_students_percentage", ">", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->get();
-
-                    } else if ($request->input('metodo') === "reprovacao" && $request->input('maiorMenor') === "menor") {
-                        $disciplinesCombo = Discipline::join("discipline_performance_datas","discipline_performance_datas.discipline_code", "=", "disciplines.code")
-                        ->join("professors", "disciplines.professor_id", "=", "professors.id")
-                        ->where("year",substr($request->input('periodo'),0,-2))
-                        ->where("period",substr($request->input('periodo'),-1))
-                        ->where("failed_students_percentage", "<", $request->input('porcentagem'))
-                        ->where("disciplines.name", "like", "%".$discipline_name."%")
-                        ->get();
-
-                    }
-                } else {
-                    $disciplinesCombo = Discipline::all();
-                }
-
-                $disciplinesMixedWithProfessor = $disciplinesCombo->unique();
-                $finalCollection = collect([]);
-
-                // Faz a busca final apenas na tabela de disciplina pelo código e o professor
-                foreach ($disciplinesMixedWithProfessor as $professor) {
-                    $finalCollection->push(Discipline::where("professor_id",$professor->id)
-                    ->where("code",$professor->code)
-                    ->get());
-                }
-
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else {
-                return redirect('/')
-                ->with('disciplines', $disciplines_all->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            }
-        } else if (count($arrayValues) > 0 && $request->input('filtro') === "professor") {
-            if ($discipline_name != null && $emphasis_id != null) {
-                // mandou o name_discipline e a emphasis
-                
-                $finalCollection = collect([]);
-                $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
-                ->where("disciplines.name","like","%".$discipline_name."%")
-                ->where("disciplines.emphasis_id",$emphasis_id)
-                ->where("professors.id", $professor_name)
-                ->get();
-
-                foreach($disciplinesCombo as $ids) {
-                    $finalCollection->push(
-                        Discipline::where("professor_id",$ids->professor_id)
-                        ->where("code",$ids->code)
-                        ->get()
-                    );
-                }
-
-                return view('disciplines.index')
-                ->with("disciplines", $finalCollection->collapse()->unique()->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name === null && $emphasis_id === null) {
-                // pesquisar apenas pelo professor
-
-                $finalCollection = collect([]);
-                $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
-                ->where("professors.id", $professor_name)
-                ->get();
-
-                foreach($disciplinesCombo as $ids) {
-                    $finalCollection->push(
-                        Discipline::where("professor_id",$ids->professor_id)
-                        ->where("code",$ids->code)
-                        ->get()
-                    );
-                }
-
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($emphasis_id != null) {
-                // pesquisar pelo professor e enfase
-
-                $finalCollection = collect([]);
-                $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
-                ->where("disciplines.emphasis_id",$emphasis_id)
-                ->where("professors.id", $professor_name)
-                ->get();
-
-                foreach($disciplinesCombo as $ids) {
-                    $finalCollection->push(
-                        Discipline::where("professor_id",$ids->professor_id)
-                        ->where("code",$ids->code)
-                        ->get()
-                    );
-                }
-                
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name != null) {
-                // pesquisar pelo discipline name e o professor
-
-                $finalCollection = collect([]);
-                $disciplinesCombo = Discipline::join("professors", "disciplines.professor_id", "=", "professors.id")
-                ->where("disciplines.name","like","%".$discipline_name."%")
-                ->where("professors.id", $professor_name)
-                ->get();
-
-                foreach($disciplinesCombo as $ids) {
-                    $finalCollection->push(
-                        Discipline::where("professor_id",$ids->professor_id)
-                        ->where("code",$ids->code)
-                        ->get()
-                    );
-                }
-                
-                return view('disciplines.index')
-                ->with('disciplines', $finalCollection->collapse()->unique()->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else {
-                return redirect('/')
-                ->with('disciplines', $disciplines_all->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            }
-        } else if ($isRangeChosen == 0) {
-            // Ranges foram enviados
-            if ($discipline_name != null && $emphasis_id != null) {
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
-                ->where("name", "like", "%" . $discipline_name . "%")
-                ->where("emphasis_id", $emphasis_id)
-                ->get(); 
-                
-                $classifications = Classification::all();
-                $disciplinesResult = collect([]);
-                $finalCollection = collect([]);
-                $arrayClassificationValues = array();
-                $arrayCollectionDisciplines = collect([]);
-
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValuesRanges as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
-
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
-
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
-
-                            if ($value->name == substr($noUnderlineString, 5)) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == substr($arrKey, 5)) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
-
-                $fieldsToCheck = count($arrayClassificationValues);
-                
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-                        
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                ->where("classification_id", $valueGroup->classification_id)
-                                ->where("value", ">=", $value)
-                                ->get();
-
-                                if (count($disciplineFiltered) == 1) {
-                                    $arrayCollectionDisciplines->push($disciplineFiltered);
-                                    $cont++;
-                                }
-                            }
-                        }
-                    }
-
-                    
-                    if ($fieldsToCheck == $cont) {
-                        $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($result);
-                    }
-                }
-
-                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
-
-                return view('disciplines.index')
-                ->with('disciplines', $disciplinesMixed)
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name == null && $emphasis_id == null) {
-                $disciplines = ClassificationDiscipline::all(); 
-                $classifications = Classification::all();
-                $disciplinesResult = collect([]);
-                $finalCollection = collect([]);
-                $arrayClassificationValues = array();
-                $arrayCollectionDisciplines = collect([]);
-
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValuesRanges as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
-
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
-
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
-
-                            if ($value->name == substr($noUnderlineString, 5)) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == substr($arrKey, 5)) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
-
-                $fieldsToCheck = count($arrayClassificationValues);
-                
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-                        
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                ->where("classification_id", $valueGroup->classification_id)
-                                ->where("value", ">=", $value)
-                                ->get();
-
-                                if (count($disciplineFiltered) == 1) {
-                                    $arrayCollectionDisciplines->push($disciplineFiltered);
-                                    $cont++;
-                                }
-                            }
-                        }
-                    }
-
-                    
-                    if ($fieldsToCheck == $cont) {
-                        $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($result);
-                    }
-                }
-                
-                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
-
-                return view('disciplines.index')
-                ->with('disciplines', $disciplinesMixed)
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($emphasis_id != null) {
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
-                ->where('emphasis_id', $emphasis_id)
-                ->get();
-
-                $classifications = Classification::all();
-                $disciplinesResult = collect([]);
-                $finalCollection = collect([]);
-                $arrayClassificationValues = array();
-                $arrayCollectionDisciplines = collect([]);
-
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValuesRanges as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
-
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
-
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
-
-                            if ($value->name == substr($noUnderlineString, 5)) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == substr($arrKey, 5)) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
-
-                $fieldsToCheck = count($arrayClassificationValues);
-                
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-                        
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                ->where("classification_id", $valueGroup->classification_id)
-                                ->where("value", ">=", $value)
-                                ->get();
-
-                                if (count($disciplineFiltered) == 1) {
-                                    $arrayCollectionDisciplines->push($disciplineFiltered);
-                                    $cont++;
-                                }
-                            }
-                        }
-                    }
-
-                    
-                    if ($fieldsToCheck == $cont) {
-                        $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($result);
-                    }
-                }
-
-                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
-
-                return view('disciplines.index')
-                ->with('disciplines', $disciplinesMixed)
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name != null) {
-                $disciplines = Discipline::join("classifications_disciplines", "id", "=", "discipline_id")
-                ->where("name", "like", "%" . $discipline_name . "%")
-                ->get();
-
-                $classifications = Classification::all();
-                $disciplinesResult = collect([]);
-                $finalCollection = collect([]);
-                $arrayClassificationValues = array();
-                $arrayCollectionDisciplines = collect([]);
-
-                // Fazer um foreach pra pegar o $arrayValues (["Metodologias" => "mais"]) 
-                // e trocar o "Metodologias" pelo respectivo id
-                foreach ($classifications as $key => $value) {
-                    foreach ($arrayValuesRanges as $arrKey => $arrValue) {
-                        if (str_contains($arrKey, "_") == true) {
-                            $charToBeRemoved;
-
-                            for ($i = 0; $i < mb_strlen($arrKey); $i++) {
-                                // Capturar qual a posição da string que tem o undeline
-                                // que vai ser removido
-                                if ($arrKey[$i] === '_') {
-                                    $charToBeRemoved = $i;
-                                }
-                            }
-
-                            $noUnderlineString = str_replace("_", " ", $arrKey);
-
-                            if ($value->name == substr($noUnderlineString, 5)) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        } else {
-                            if ($value->name == substr($arrKey, 5)) {
-                                $arrayClassificationValues += array($value->id => $arrValue);
-                            }
-                        }
-                    }
-                }
-
-                $fieldsToCheck = count($arrayClassificationValues);
-                
-                foreach ($disciplines as $disciplineKey => $disciplineValue) {
-                    $cont = 0;
-                    foreach ($arrayClassificationValues as $key => $value) {
-                        $disciplineGroup = ClassificationDiscipline::where("discipline_id", $disciplineValue->discipline_id)
-                        ->get();
-                        
-                        foreach ($disciplineGroup as $keyGroup => $valueGroup) {
-                            if ($valueGroup->classification_id == $key) {
-                                $disciplineFiltered = ClassificationDiscipline::where("discipline_id", $valueGroup->discipline_id)
-                                ->where("classification_id", $valueGroup->classification_id)
-                                ->where("value", ">=", $value)
-                                ->get();
-
-                                if (count($disciplineFiltered) == 1) {
-                                    $arrayCollectionDisciplines->push($disciplineFiltered);
-                                    $cont++;
-                                }
-                            }
-                        }
-                    }
-                    
-                    if ($fieldsToCheck == $cont) {
-                        $result = Discipline::where("id", $disciplineValue->discipline_id)->get();
-                        $disciplinesResult->push($result);
-                    }
-                }
-
-                $disciplinesMixed = $disciplinesResult->collapse()->unique()->paginate(12);
-
-                return view('disciplines.index')
-                ->with('disciplines', $disciplinesMixed)
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else {
-                return redirect('/')
-                ->with('disciplines', $disciplines_all->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            }
-        } else {
-            // Apenas o nome ou a ênfase foram enviados
-            if ($discipline_name != null && $emphasis_id != null) {
-                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")
-                ->where("emphasis_id",$emphasis_id)
-                ->paginate(12);
-
-                return view('disciplines.index', compact('disciplines'))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($emphasis_id != null) {
-                $disciplines = Discipline::where('emphasis_id', $emphasis_id)->paginate(12);
-
-                return view('disciplines.index', compact('disciplines'))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($discipline_name != null) {
-                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
-
-                return view('disciplines.index', compact('disciplines'))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else if ($emphasis_id == null) {
-                $disciplines = Discipline::where("name", "like", "%" . $discipline_name . "%")->paginate(12);
-
-                return view('disciplines.index', compact('disciplines'))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            } else {
-                return redirect('/')
-                ->with('disciplines', $disciplines_all->paginate(12))
-                ->with('emphasis', $emphasis_all)
-                ->with('theme', $this->theme)
-                ->with('classifications', $classifications_all)
-                ->with('studentsData', $studentsData)
-                ->with('periodsColection', $periodsColection)
-                ->with('professors', $professors_all);
-            }
-        }
+        $disciplineService = new DisciplineService();
+        $filteredDisciplines = $disciplineService->filterDisciplines($request);
+        $opinionLinkForm = Link::where('name', 'opinionForm')->first();
+        $emphasis = Emphasis::all();
+        $professors = Professor::all();
+        $classifications = Classification::All()->sortBy('order');
+        return view('disciplines.index')
+            ->with('theme', $this->theme)
+            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('disciplines', $filteredDisciplines->paginate(12)->withQueryString())
+            ->with('emphasis', $emphasis)
+            ->with('classifications', $classifications)
+            ->with('professors', $professors);
+    }
+
+    /**
+     * O usuário pode visualizar opções enquanto digita por disciplinas, autocomplete.
+     */
+    public function autocomplete(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Realize uma consulta no banco de dados para encontrar disciplinas que correspondam à consulta do usuário
+        $disciplines = Discipline::select('name')->distinct()->where('name', 'like', '%' . $query . '%')->limit(10)->get();
+
+        // Retorne os resultados em um formato adequado, como JSON
+        return response()->json($disciplines);
     }
 
     /**
@@ -1479,13 +129,13 @@ class DisciplineController extends Controller
         if (Auth::user()->isAdmin) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
-        $opinioLinkForm = Link::where('name','opinionForm')->first();
+        $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm',true);
+            ->with('showOpinionForm', true);
     }
     /**
      * Store a newly created resource in storage.
@@ -1502,10 +152,9 @@ class DisciplineController extends Controller
             if ($user->isAdmin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
-            if(!isset($professor)){
+            if (!isset($professor)) {
                 DB::rollBack();
-                return redirect()->back()->withInput()->withErrors(['professor_error'=>'É necessário selecionar um professor para a disciplina.']);
-               
+                return redirect()->back()->withInput()->withErrors(['professor_error' => 'É necessário selecionar um professor para a disciplina.']);
             }
 
             $discipline = Discipline::create([
@@ -1594,10 +243,9 @@ class DisciplineController extends Controller
 
             if ($titles != null) {
                 foreach ($titles as $key => $title) {
-                    if(($title == "" || $title == null)&&($contents[$key] == "" || $contents[$key] == null)){
+                    if (($title == "" || $title == null) && ($contents[$key] == "" || $contents[$key] == null)) {
                         continue;
-                    }
-                    else if($title == "" || $title==null || $contents[$key] == "" || $contents[$key] == null){
+                    } else if ($title == "" || $title == null || $contents[$key] == "" || $contents[$key] == null) {
                         DB::rollBack();
                         return redirect()->back()
                             ->withErrors(['faq_error' => 'Erro ao cadastrar a FAQ.
@@ -1631,24 +279,24 @@ class DisciplineController extends Controller
                     }
                 }
             }
-           
+
             DB::commit();
             $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
 
             $allPerformanceData = DisciplinePerformanceData::all();
             $minYear = $allPerformanceData->min('year');
-            $queryMinYear = $allPerformanceData->where('year','=',$minYear);
+            $queryMinYear = $allPerformanceData->where('year', '=', $minYear);
             $minPeriod = $queryMinYear->min('period');
             $maxYear = $allPerformanceData->max('year');
-            $queryMaxYear = $allPerformanceData->where('year','=',$maxYear);
+            $queryMaxYear = $allPerformanceData->where('year', '=', $maxYear);
             $maxPeriod = $queryMaxYear->max('period');
-            $disciplinePerformanceDataService->saveSchedules(['yearStart'=>$minYear, 'periodStart'=>$minPeriod, 'yearEnd'=>$maxYear, 'periodEnd'=>$maxPeriod]);
+            $disciplinePerformanceDataService->saveSchedules(['yearStart' => $minYear, 'periodStart' => $minPeriod, 'yearEnd' => $maxYear, 'periodEnd' => $maxPeriod]);
 
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error'=>"Erro ao cadastrar a disciplina"])
+            return redirect()->back()->withErrors(['error' => "Erro ao cadastrar a disciplina"])
                 ->withInput();
         }
     }
@@ -1668,27 +316,30 @@ class DisciplineController extends Controller
                 'medias',
                 'faqs',
                 'classificationsDisciplines.classification',
+                'subjectTopics',
+                'subjectConcepts',
+                'subjectReferences'
             ])
             ->findOrFail($id);
         $user = Auth::user();
 
         $classifications = Classification::all()->sortBy('order');
-                
-        $opinioLinkForm = Link::where('name','opinionForm')->first();
+
+        $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
             return view(self::VIEW_PATH . 'show', compact('discipline', 'can'))
                 ->with('classifications', $classifications)
                 ->with('theme', $this->theme)
-                ->with('opinionLinkForm',$opinioLinkForm)
-                ->with('showOpinionForm',true);
+                ->with('opinionLinkForm', $opinioLinkForm)
+                ->with('showOpinionForm', true);
         }
-        
+
         return view(self::VIEW_PATH . 'show', compact('discipline'))
             ->with('classifications', $classifications)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm',true);
+            ->with('showOpinionForm', true);
     }
 
     /**
@@ -1710,23 +361,26 @@ class DisciplineController extends Controller
                 'medias',
                 'faqs',
                 'disciplineParticipants',
+                'subjectTopics',
+                'subjectConcepts',
+                'subjectReferences'
             ])
             ->findOrFail($id);
-        $classifications = Classification::query()->orderBy('order','ASC')->get();
+        $classifications = Classification::query()->orderBy('order', 'ASC')->get();
         $participants = array();
         for ($i = 0; $i < count($discipline->disciplineParticipants()->get()); $i++) {
             array_push($participants, json_decode($discipline->disciplineParticipants()->get()[$i]));
             $participants[$i]->links = json_decode($discipline->disciplineParticipants()->get()[$i]->links);
         }
 
-        $opinioLinkForm = Link::where('name','opinionForm')->first();
+        $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('participants', $participants)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm',true);
+            ->with('showOpinionForm', true);
     }
 
     /**
@@ -1788,7 +442,6 @@ class DisciplineController extends Controller
                     $discipline->disciplineParticipants()->updateOrCreate(['id' => $json->id], $participant->toArray());
                 } else {
                     $participant->save();
-                    //$discipline->disciplineParticipants()->save($participant->toArray());
                 }
                 ParticipantLink::where('discipline_participant_id', $participant->id)->delete();
                 foreach ($json->links as $linkJson) {
@@ -1798,6 +451,88 @@ class DisciplineController extends Controller
                     $participant->links()->save($link);
                 }
             }
+            $databaseTopicsIds = SubjectTopic::where('discipline_id', '=', $discipline->id)->pluck('id');
+            if (!isset($request->topicsId)) {
+                SubjectTopic::where('discipline_id', '=', $discipline->id)->delete();
+            } else {
+                foreach ($databaseTopicsIds->all() as $key => $idTopicDatabase) {
+                    if (!in_array($idTopicDatabase, $request->topicsId)) {
+                        SubjectTopic::destroy($idTopicDatabase);
+                    }
+                }
+            }
+
+            if (isset($request->topics)) {
+                foreach ($request->topics as $key => $topic) {
+                    $idTopic = $request->topicsId[$key];
+                    if ($idTopic == -1) {
+                        SubjectTopic::create([
+                            'value' => $topic,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    } else {
+                        $subjectTopic = SubjectTopic::find($idTopic);
+                        $subjectTopic->{'value'} = $topic;
+                        $subjectTopic->save();
+                    }
+                }
+            }
+
+            $databaseConceptsIds = SubjectConcept::where('discipline_id', '=', $discipline->id)->pluck('id');
+            if (!isset($request->conceptsId)) {
+                SubjectConcept::where('discipline_id', '=', $discipline->id)->delete();
+            } else {
+                foreach ($databaseConceptsIds->all() as $key => $idConceptDatabase) {
+                    if (!in_array($idConceptDatabase, $request->conceptsId)) {
+                        SubjectConcept::destroy($idConceptDatabase);
+                    }
+                }
+            }
+
+            if (isset($request->concepts)) {
+                foreach ($request->concepts as $key => $concept) {
+                    $idConcept = $request->conceptsId[$key];
+                    if ($idConcept == -1) {
+                        SubjectConcept::create([
+                            'value' => $concept,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    } else {
+                        $subjectConcept = SubjectConcept::find($idConcept);
+                        $subjectConcept->{'value'} = $concept;
+                        $subjectConcept->save();
+                    }
+                }
+            }
+
+            $databaseReferencesIds = SubjectReference::where('discipline_id', '=', $discipline->id)->pluck('id');
+            if (!isset($request->referencesId)) {
+                SubjectReference::where('discipline_id', '=', $discipline->id)->delete();
+            } else {
+                foreach ($databaseReferencesIds->all() as $key => $idReferenceDatabase) {
+                    if (!in_array($idReferenceDatabase, $request->referencesId)) {
+                        SubjectReference::destroy($idReferenceDatabase);
+                    }
+                }
+            }
+
+            if (isset($request->references)) {
+                foreach ($request->references as $key => $reference) {
+                    $idReference = $request->referencesId[$key];
+                    if ($idReference == -1) {
+                        SubjectReference::create([
+                            'value' => $reference,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    } else {
+                        $subjectReference = SubjectReference::find($idReference);
+                        $subjectReference->{'value'} = $reference;
+                        $subjectReference->save();
+                    }
+                }
+            }
+
+
 
             $url = $request->input('media-trailer') ?? '';
             $mediaId = YoutubeService::getIdFromUrl($url);
@@ -1902,12 +637,12 @@ class DisciplineController extends Controller
             //         ['value' => $request->input('classification-' . $classificationId)]
             //     );
             // }
-        
-            foreach($classification_collection as $col) {
-                foreach($classificationsMap as $class){
-                    ClassificationDiscipline::where('discipline_id',$id)
-                    ->where('classification_id', $class)
-                    ->update(['value' => $request->input('classification-'.$class)]);
+
+            foreach ($classification_collection as $col) {
+                foreach ($classificationsMap as $class) {
+                    ClassificationDiscipline::where('discipline_id', $id)
+                        ->where('classification_id', $class)
+                        ->update(['value' => $request->input('classification-' . $class)]);
                 }
             }
 
@@ -1947,8 +682,8 @@ class DisciplineController extends Controller
                         }
                     }
                 }
-            }else{
-                Faq::where('discipline_id',$discipline->id)->delete();
+            } else {
+                Faq::where('discipline_id', $discipline->id)->delete();
             }
 
             /* foreach ($faqsMap as $faqId) {
@@ -1964,7 +699,7 @@ class DisciplineController extends Controller
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
-            dd($exception);
+            //dd($exception);
             DB::rollBack();
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina']);
@@ -2034,30 +769,29 @@ class DisciplineController extends Controller
      * @param int período em que a turma foi aberta.
      * @return @return \Illuminate\Http\JsonResponse
      */
-    function getDisciplineData(Request $request){
+    function getDisciplineData(Request $request)
+    {
         $apiService = new APISigaaService();
 
         $data = $apiService->getDisciplineData($request['codigo'], $request['idTurma'], $request['ano'], $request['periodo']);
-        
-        return response()->json($data,200);
+
+        return response()->json($data, 200);
     }
 
-    function getCodesAndNames(Request $request){
-        if($request->ajax()){
+    function getCodesAndNames(Request $request)
+    {
+        if ($request->ajax()) {
             $disciplineCodesAndNames = [];
-            $disciplines = Discipline::where("name","like",'%' . $request->disciplineName . '%')->get();
-            foreach($disciplines as $discipline){
-                $disciplineCodeAndName= new stdClass();
+            $disciplines = Discipline::where("name", "like", '%' . $request->disciplineName . '%')->get();
+            foreach ($disciplines as $discipline) {
+                $disciplineCodeAndName = new stdClass();
                 $disciplineCodeAndName->code = $discipline->code;
                 $disciplineCodeAndName->name = $discipline->name;
-                if(in_array($disciplineCodeAndName, $disciplineCodesAndNames) == false){
+                if (in_array($disciplineCodeAndName, $disciplineCodesAndNames) == false) {
                     array_push($disciplineCodesAndNames, $disciplineCodeAndName);
                 }
-                
             }
             return response()->json($disciplineCodesAndNames);
         }
     }
-
-
 }
