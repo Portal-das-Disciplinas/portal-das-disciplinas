@@ -279,7 +279,7 @@
             @foreach($disciplines as $discipline)
             <div class="col-12 col-sm-6 col-lg-3 mb-5 ">
                 <div class="discipline-card card shadow light-border-radius">
-                    @if(!is_null($discipline['trailer']))
+                    @if(!is_null($discipline['trailer']) && ($discipline->trailer->view_url != ""))
                     <div class="teacher-video-container">
                         <div class="embed-responsive embed-responsive-16by9">
                             <iframe class="embed-responsive-item light-border-radius" src="{{$discipline->trailer->view_url}}" allowfullscreen></iframe>
