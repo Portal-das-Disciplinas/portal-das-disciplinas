@@ -58,7 +58,7 @@
                             </div>
                         </div>
 
-                        <small id="texto-mostrar-filtros" class=" btn btn-outline-info btn-sm text-white mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">+ filtros</small>
+                        <span id="texto-mostrar-filtros" class=" btn btn-outline-info text-warning mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">Busca Avançada  <li class='fa fa-caret-down'></li></span>
                         <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
                             <div class="row mt-3">
                                 <div class="col-md-12">

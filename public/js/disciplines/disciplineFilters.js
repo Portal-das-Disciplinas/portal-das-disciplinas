@@ -69,14 +69,14 @@ window.onload = function () {
 
     $('#collapse-filters').on('shown.bs.collapse', function (event) {
         if (event.target.id == "collapse-filters") {
-            document.querySelector("#texto-mostrar-filtros").innerHTML = "- filtros";
+            document.querySelector("#texto-mostrar-filtros").innerHTML = "Busca Avançada  <li class='fa fa-caret-up'></li>";
         }
     });
 
     $('#collapse-filters').on('hidden.bs.collapse', function (event) {
         $('#collapse-classificacoes').collapse('hide');
         if (event.target.id == "collapse-filters") {
-            document.querySelector("#texto-mostrar-filtros").innerHTML = "+ filtros";
+            document.querySelector("#texto-mostrar-filtros").innerHTML = "Busca Avançada  <li class='fa fa-caret-down'></li>";
             document.querySelector("#filtro-livre").value = null;
         }
     });
