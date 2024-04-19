@@ -542,6 +542,37 @@ mais.
                     </div>
                 </div>
             </div>
+            <hr>
+
+            <div class='section'>
+                <h1 class="mb-3">Tópicos</h1>
+                <ol type="I" id="discipline-topics">
+                    @forelse ($discipline->topics as $topic)
+                        @if (is_null($topic->parent_topic_id))
+                            <li class="mb-3" id="topic-{{ $topic->id }}">
+                                <span class="topic-title">{{ $topic->title }}</span>
+
+                                <a 
+                                    class="ml-3 expand-topic" 
+                                    data-topic_id="{{ $topic->id }}" 
+                                    style="cursor: pointer; font-size: 14px;"
+                                >
+                                    Mostrar mais
+                                </a>
+
+                                <br>
+
+                                @if ($topic->required_level)
+                                    <small> Domínio desejado: {{  $topic->required_level }}</small>
+                                @endif
+                            </li>
+                        @endif
+                    @empty
+                        <p>Sem tópicos cadastrados</p>
+                    @endforelse
+                </ol>
+            </div>
+            </div>
         </div>
     </div>
 </div>
@@ -926,6 +957,33 @@ mais.
 
         document.querySelector("#modal-edit #links").innerHTML = renderLinks('modal-edit');
     }
+
+
+    // Scripts referente aos tópicos    
+    $(document).on('click', '.expand-topic', function() {
+        let topicId = $(this).data('topic_id');
+        let disciplineId = {{ $discipline->id }};
+        let topicElement = $(`#topic-${topicId}`);
+
+        if ($(this).hasClass('expanded')) {
+            $(`#topic-${topicId}-controls`).remove();
+            $(this).html('Mostrar Mais');
+            $(this).removeClass('expanded');
+            $(`#topic-${topicId}-subtopics`).remove();
+        } else {
+            $(this).addClass('expanded');
+
+            $(this).html('Mostrar menos');
+
+            $.ajax({
+                method: "GET",
+                url: `/discipline/${disciplineId}/topic/${topicId}/subtopics`,
+                success: function(html) {
+                    topicElement.append(html);
+                }
+            });
+        }
+    });
 </script>
 
 
