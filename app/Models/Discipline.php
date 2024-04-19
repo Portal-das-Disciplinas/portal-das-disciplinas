@@ -189,6 +189,9 @@ class Discipline extends Model
         return $this->hasMany(DisciplineParticipant::class)->orderBy('name');
     }
 
+    public function topics() {
+        return $this->belongsToMany('App\Models\Topic');
+    }
     public function subjectTopics(){
         return $this->hasMany(SubjectTopic::class);
     }

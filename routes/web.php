@@ -21,6 +21,7 @@ use App\Http\Controllers\LinksController;
 use App\Http\Controllers\ParticipantLinkController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
 use App\Http\Controllers\SemesterPerformanceDataController;
+use App\Http\Controllers\TopicController;
 use App\Models\Collaborator;
 use App\Models\DisciplinePerformanceData;
 use App\Models\Link;
@@ -70,7 +71,13 @@ Route::get('colaborar', function () {
     return view('collaborate');
 })->name('collaborate');
 
+Route::get('/discipline/{discipline_id}/topic/{topic_id}/subtopics', [TopicController::class, 'getSubtopicsList']);
+
 Route::middleware(['auth'])->group(function () {
+    Route::post('/topic/store', [TopicController::class, 'store'])->name('topic.store');
+    Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
+    Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
+
     Route::get('/perfil', [UsersController::class, 'index'])->name('profile');
     Route::post('/perfil', [UsersController::class, 'update'])->name('updateUser');
 
