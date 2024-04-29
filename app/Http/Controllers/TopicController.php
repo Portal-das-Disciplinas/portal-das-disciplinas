@@ -15,12 +15,13 @@ class TopicController extends Controller
         try {
             $request->validate([
                 'title' => 'required|string',
+                'required_level' => 'required',
                 'discipline_id' => 'required'
             ]);
 
             $discipline = Discipline::find($request->discipline_id);
 
-            $topic = new Topic(['title' => $request->title]);
+            $topic = new Topic(['title' => $request->title, 'required_level' => $request->required_level]);
 
             if (!is_null($request->parent_topic_id)) {
                 $topic->parent_topic_id = $request->parent_topic_id;

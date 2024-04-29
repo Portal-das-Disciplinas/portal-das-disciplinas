@@ -10,7 +10,7 @@ class Topic extends Model
     use HasFactory;
 
     protected $table = 'topics';
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'required_level'];
 
     public function disciplines() {
         return $this->belongsToMany('App\Models\Discipline');
