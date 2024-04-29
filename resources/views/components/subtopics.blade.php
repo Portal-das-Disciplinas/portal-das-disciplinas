@@ -1,5 +1,5 @@
 <ol id="topic-{{$topic->id}}-subtopics">
-    @foreach ($subtopics as $subtopic)
+    @forelse ($subtopics as $subtopic)
         <li class="mb-3" id="topic-{{ $subtopic->id }}">
             <span class="topic-title" style="font-weight: normal;">{{ $subtopic->title }}</span>
 
@@ -17,5 +17,7 @@
                 <small> Domínio desejado: {{  $subtopic->required_level }}</small>
             @endif
         </li>
-    @endforeach
+    @empty
+        <small>Sem subtópicos cadastrados</small>
+    @endforelse
 </ol>
