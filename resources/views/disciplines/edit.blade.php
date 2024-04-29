@@ -558,38 +558,66 @@ $classificationsJson = json_encode($classifications);
         }
 
         let newTopicForm = `
-        <div class="mb-3" id="topic-form-${counter}">
-            <div class="d-flex">
-                <input type="text" class="form-control" placeholder="Título do tópico" title="Digite o título do tópico" id="topic-input-${counter}">
-                <div class="d-flex ml-4">
-                    <button type="button" class="remove-topic-form btn border-danger text-danger mr-2" style="width: 42px;" data-target="#topic-form-${counter}">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                    <button type="button" class="save-topic btn border-success text-success" style="width: 42px;" data-input-target="#topic-input-${counter}">
-                        <i class="fa fa-check" aria-hidden="true"></i>
-                    </button>
+        <div class="container" id="topic-form-${counter}">
+            <div class="form-group">
+                <div class="d-flex">
+                    <label for="title-edit">
+                        Título
+                    </label>
+                    <p data-toggle="tooltip" data-placement="top" title="Título do tópico"><i class="far fa-question-circle ml-1"></i></p>
+                </div>
+                <div class="input-group">
+                    <input class="form-control topic-inputs-${counter}" type="text" placeholder="Título do tópico" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="d-flex">
+                    <label for="level">
+                        Domínio desejado
+                    </label>
+                    <p data-toggle="tooltip" data-placement="top" title="Domínio de conhecimento que deseja que o aluno possua"><i class="far fa-question-circle ml-1"></i></p>
+                </div>
+                <div class="input-group mt-2">
+                    <select class="form-control topic-inputs-${counter}">
+                        <option value="0">Não exige domínio</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="d-flex mt-3">
+                    <button type="button" data-target="#topic-form-${counter}" class="remove-topic-form btn text-danger mr-2">Cancelar</button>
+                    <button type="button" class="save-topic btn text-primary" data-inputs-target="topic-inputs-${counter}">Salvar</button>
                 </div>
             </div>
         </div>
-        `;
+        `;        
         
         $(topicsList).append(newTopicForm);
         counter += 1;
 
         // Evitar que o click dispare mais de uma vez
         $('.save-topic').unbind('click').click(function() {
-            let inputId = $(this).data('input-target');
-            let topicTitle = $(inputId).val();
+            let topicData = $(this).data('inputs-target');
+            let [ topicTitle, topicLevel ] = $(`.${topicData}`);
             let disciplineId = "{{ $discipline->id }}";
-
             
             $.ajax({
                 url: "{{route('topic.store')}}",
                 method: 'POST',
                 data: {
-                    'title': topicTitle,
-                    'discipline_id': disciplineId,
-                    'parent_topic_id': parentTopic
+                    title: $(topicTitle).val(),
+                    required_level: $(topicLevel).val(),
+                    discipline_id: disciplineId,
+                    parent_topic_id: parentTopic
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -701,6 +729,11 @@ $classificationsJson = json_encode($classifications);
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
                         </select>
                     </div>
                     <div class="d-flex mt-3">
