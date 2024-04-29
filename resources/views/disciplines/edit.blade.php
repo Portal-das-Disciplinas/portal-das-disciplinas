@@ -374,7 +374,7 @@ noindex, follow
                                         <br>
 
                                         @if ($topic->required_level)
-                                            <small> Domínio desejado: {{  $topic->required_level }}</small>
+                                            <small> Domínio desejado: <span class="topic-level">{{  $topic->required_level }}</span></small>
                                         @endif
                                     </li>
                                 @endif
@@ -696,6 +696,7 @@ $classificationsJson = json_encode($classifications);
             counterEdit += 1;
 
             let topicTitle = $(topicElement).children('span.topic-title').text();
+            let topicLevel = $(topicElement).children('small').children('span.topic-level').text();
 
             // Param true para não remover os eventos
             let initialHtml = $(topicElement).children().clone(true);
@@ -723,17 +724,17 @@ $classificationsJson = json_encode($classifications);
                     </div>
                     <div class="input-group mt-2">
                         <select class="form-control" id="level-edit-${counterEdit}">
-                            <option value="0">Não exige domínio</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                            <option value="9">9</option>
-                            <option value="10">10</option>
+                            <option value="0" ${topicLevel == "0" ? 'selected':''}>Não exige domínio</option>
+                            <option value="1" ${topicLevel == "1" ? 'selected':''}>1</option>
+                            <option value="2" ${topicLevel == "2" ? 'selected':''}>2</option>
+                            <option value="3" ${topicLevel == "3" ? 'selected':''}>3</option>
+                            <option value="4" ${topicLevel == "4" ? 'selected':''}>4</option>
+                            <option value="5" ${topicLevel == "5" ? 'selected':''}>5</option>
+                            <option value="6" ${topicLevel == "6" ? 'selected':''}>6</option>
+                            <option value="7" ${topicLevel == "7" ? 'selected':''}>7</option>
+                            <option value="8" ${topicLevel == "8" ? 'selected':''}>8</option>
+                            <option value="9" ${topicLevel == "9" ? 'selected':''}>9</option>
+                            <option value="10" ${topicLevel == "10" ? 'selected':''}>10</option>
                         </select>
                     </div>
                     <div class="d-flex mt-3">

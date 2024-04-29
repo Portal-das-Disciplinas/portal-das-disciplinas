@@ -14,7 +14,7 @@
             <br>
 
             @if ($subtopic->required_level)
-                <small> Domínio desejado: {{  $subtopic->required_level }}</small>
+                <small> Domínio desejado: <span class="topic-level">{{  $subtopic->required_level }}</span></small>
             @endif
         </li>
     @empty
