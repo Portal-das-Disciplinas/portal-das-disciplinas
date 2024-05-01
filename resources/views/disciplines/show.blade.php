@@ -572,41 +572,39 @@ mais.
             <div class="section">
                 <h1>Metodologias</h1>
                 @if(auth()->user())
-                <div id="metodologias" class='d-flex'>
-                    <strong class="badge badge-pill badge-primary mr-2">Aula invertida</strong>
-                    <strong class="badge badge-pill badge-primary mr-2">Reunião em grupo</strong>
-                </div>
+                <div id="metodologias" class='d-flex'></div>
                 @endif
+
                 @if(!auth()->user())
                 @foreach($professorMethodologies as $professorMethodology)
-                <strong class="badge badge-pfill badge-primary mr-2" style="cursor:help;" data-toggle="modal" data-target="{{'#modal-methodology' . $professorMethodology->id}}">
+                <strong class='badge badge-pfill badge-primary mr-2' style='cursor:help;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
                     {{$professorMethodology->methodology_name}}
                 </strong>
-                <div class="modal fade" tabindex="-1" role="dialog" id="{{'modal-methodology' . $professorMethodology->id}}">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
+                <div class='modal fade' tabindex='-1' role='dialog' id="{{'modal-methodology' . $professorMethodology->id}}">
+                    <div class='modal-dialog' role='document'>
+                        <div class='modal-content'>
                             <div class="modal-header">
-                                <h3 class="modal-title text-primary">{{$professorMethodology->methodology_name}}</h3>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                <h3 class='modal-title text-primary'>{{$professorMethodology->methodology_name}}</h3>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                <div class="flex flex-column">
-                                    <small class="text-secondary">descrição da metodologia</small>
-                                    <p class="text-primary">{{$professorMethodology->methodology_description}}</p>
+                            <div class='modal-body'>
+                                <div class='d-flex flex-column'>
+                                    <small class='text-secondary'>descrição da metodologia</small>
+                                    <p class='text-primary'>{{$professorMethodology->methodology_description}}</p>
                                 </div>
-                                @if($professorMethodology->professor_description && $professorMethodology->professor_description != "")
+                                @if($professorMethodology->professor_description && $professorMethodology->professor_description != '')
                                 <hr>
-                                <div class="flex flex-column">
-                                    <small class="text-secondary">Como o professor aplica a metodologia</small>
-                                    <p class="text-primary">{{$professorMethodology->professor_description}}</p>
+                                <div class='d-flex flex-column'>
+                                    <small class='text-secondary'>Como o professor aplica a metodologia</small>
+                                    <p class='text-primary'>{{$professorMethodology->professor_description}}</p>
                                 </div>
                                 @endif
 
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Fechar</button>
+                            <div class='modal-footer'>
+                                <button type='button' class='btn btn-sm btn-primary' data-dismiss='modal'>Fechar</button>
                             </div>
                         </div>
                     </div>
@@ -1038,7 +1036,17 @@ mais.
 </script>
 <script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
 <script src="{{asset('js/subjectContentsCollapse.js')}}"></script>
+<script>
+    let disciplineCode = "{{$discipline->code}}";
+    let professorId = "{{$discipline->professor->id}}"
+</script>
 <script src="{{asset('js/methodologies.js')}}"></script>
+<script>
+    @if(auth()->user())
+    getProfessorMethodologies();
+    let token = '{{csrf_token()}}';
+    @endif
+</script>
 <script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()

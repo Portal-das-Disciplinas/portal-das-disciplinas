@@ -18,7 +18,9 @@ use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\DisciplinePerformanceDataController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LinksController;
+use App\Http\Controllers\MethodologyController;
 use App\Http\Controllers\ParticipantLinkController;
+use App\Http\Controllers\ProfessorMethodologyController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
 use App\Http\Controllers\SemesterPerformanceDataController;
 use App\Http\Controllers\TopicController;
@@ -137,4 +139,6 @@ Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataCon
 
 Route::get('/semester/performance/data', [SemesterPerformanceDataController::class,'index'])->name('semester_performance_data');
 Route::delete('/semester/performance/data/delete/{id}',[SemesterPerformanceDataController::class,'destroy'])->name('semester_performance_data.destroy');
-
+Route::get('/metodologias/professor/{id_professor}/{codigo_disciplina}',[ProfessorMethodologyController::class,'listProfessorMethodologies'])->name('professor_methodologies.get');
+Route::put('metodologias/update/{idMethodology}',[MethodologyController::class,'update'])->name('methodology.update');
+Route::put('/metodologias/professor/update/{idProfessorMethodology}',[ProfessorMethodologyController::class,'update'])->name('professor_methodology.update');
