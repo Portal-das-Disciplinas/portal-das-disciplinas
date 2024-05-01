@@ -1,0 +1,4 @@
+let methodologies  = [];
+function renderMethodologies(){
+    
+}
