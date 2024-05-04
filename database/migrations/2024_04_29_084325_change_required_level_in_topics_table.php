@@ -15,7 +15,7 @@ class ChangeRequiredLevelInTopicsTable extends Migration
     public function up()
     {
         Schema::table('topics', function (Blueprint $table) {
-            DB::statement("ALTER TABLE topics MODIFY COLUMN required_level ENUM('1', '2', '3', '4', '5', '6', '7', '8', '9', '10') NOT NULL");
+            DB::statement("ALTER TABLE topics MODIFY COLUMN required_level ENUM('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')");
         });
     }
 
