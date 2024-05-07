@@ -38,22 +38,23 @@ function renderProfessorMethodologies() {
         }
         html+=
             element.methodology_description + "</textarea>" +
-            "<span id='feedback-methodology-" + element.methodology_id + "' class='d-none mt-2' style='text-align:center'>Atualizado com sucesso</span>" +
-            "<div class='d-flex justify-content-end my-2'>" +
-            "<button class='btn btn-primary btn-sm' onclick='updateMethodologyDescription(event," + index + ")'>Atualizar</button>" +
-            "</div>" +
+            "<div id='feedback-methodology-" + element.id + "' class='d-none alert  mt-2'>" +
+            "<span id='feedback-methodology-message-" + element.id + "' style='text-align:center'>Erro ao atualizar</span>" +
+            "<button class='close' onclick=\"closeAlert('feedback-methodology-" + element.id + "')\">&times</button>"+
+            "</div>"+
             "</div>" +
             "<hr>" +
             "<div class='d-flex flex-column'>" +
             "<small class='text-secondary'>Como o professor aplica a metodologia</small>" +
             "<textarea id='professor-methodology-description-" + index + "' class='text-primary' rows='10'>" + element.professor_description + "</textarea>" +
-            "<span id='feedback-professor-methodology-" + element.methodology_id + "' class='d-none alert alert-danger mt-2' style='text-align:center'>Erro ao atualizar</span>" +
-            "<div class='d-flex justify-content-end my-2'>" +
-            "<button class='btn btn-primary btn-sm' onclick='updateProfessorMethodologyDescription(event," + index + ")'>Atualizar</button>" +
-            "</div>" +
+            "<div id='feedback-professor-methodology-" + element.id + "' class='d-none alert  mt-2'>" +
+            "<span id='feedback-professor-methodology-message-" + element.id + "' style='text-align:center'>Erro ao atualizar</span>" +
+            "<button class='close' onclick=\"closeAlert('feedback-professor-methodology-" + element.id + "')\">&times</button>"+
+            "</div>"+
             "</div>" +
             "</div>" +
             "<div class='modal-footer'>" +
+            "<button class='btn btn-success btn-sm' onclick='updateMethodologyAndProfessorMethodology(event," + index + ")'>Salvar</button>"+
             "<button type='button' class='btn btn-sm btn-primary' data-dismiss='modal'>Fechar</button>" +
             "</div>" +
             "</div>" +
@@ -62,10 +63,6 @@ function renderProfessorMethodologies() {
     });
 
     document.querySelector('#metodologias').innerHTML = html;
-
-}
-
-function getMethodologies() {
 
 }
 
@@ -78,9 +75,16 @@ function getProfessorMethodologies() {
             renderProfessorMethodologies();
         },
         error: function (xhr,status,error) {
-            console.log('error');
+            alert(error);
         }
     });
+}
+
+function updateMethodologyAndProfessorMethodology(event, professorMethodologiesIndex){
+    if(professorId == professorMethodologies[professorMethodologiesIndex].methodology_owner){
+        updateMethodologyDescription(event, professorMethodologiesIndex);
+    }
+    updateProfessorMethodologyDescription(event, professorMethodologiesIndex);
 }
 
 function updateMethodologyDescription(event, professorMethodologiesIndex) {
@@ -95,22 +99,22 @@ function updateMethodologyDescription(event, professorMethodologiesIndex) {
             'description': newMethodologyDescription
         },
         success: function (data) {
-            let feedback = document
-                .querySelector('#feedback-methodology-' + professorMethodologies[professorMethodologiesIndex].methodology_id);
-            feedback.innerHTML = "Atualizado com sucesso!"
-            feedback.classList.remove('d-none');
-            feedback.classList.add('alert', 'alert-success');
-            feedback.classList.remove('alert-danger');
+            let feedbackAlertDiv = document
+                .querySelector('#feedback-methodology-' + professorMethodologies[professorMethodologiesIndex].id);
+            let feedbackMessage = document
+                .querySelector('#feedback-methodology-message-' + professorMethodologies[professorMethodologiesIndex].id);
+            feedbackMessage.innerHTML = "Atualizado com sucesso!"
+            feedbackAlertDiv.classList.remove('d-none');
+            feedbackAlertDiv.classList.add('alert', 'alert-success');
+            feedbackAlertDiv.classList.remove('alert-danger');
             professorMethodologies[professorMethodologiesIndex].methodology_description = newMethodologyDescription;
 
         },
-        error: function (e) {
-            let feedback = document
-                .querySelector('#feedback-methodology-' + professorMethodologies[professorMethodologiesIndex].methodology_id);
-            feedback.innerHTML = "Erro ao atualizar.";
-            feedback.classList.remove('d-none');
-            feedback.classList.add('alert', 'alert-danger');
-            feedback.classList.remove('alert-success');
+        error: function (xhr,status,error) {
+            feedbackMessage.innerHTML = "Erro ao atualizar.";
+            feedbackAlertDiv.classList.remove('d-none');
+            feedbackAlertDiv.classList.add('alert', 'alert-danger');
+            feedbackAlertDiv.classList.remove('alert-success');
         }
 
     });
@@ -127,22 +131,24 @@ function updateProfessorMethodologyDescription(event, professorMethodologiesInde
             'description': newMethodologyDescription
         },
         success: function (data) {
-            let feedback = document
-                .querySelector('#feedback-professor-methodology-' + professorMethodologies[professorMethodologiesIndex].methodology_id);
-            feedback.innerHTML = "Atualizado com sucesso!"
-            feedback.classList.remove('d-none');
-            feedback.classList.add('alert', 'alert-success');
-            feedback.classList.remove('alert-danger');
+            let feedbackAlertDiv = document
+                .querySelector('#feedback-professor-methodology-' + professorMethodologies[professorMethodologiesIndex].id);
+            let feedbackMessage = document
+                .querySelector('#feedback-professor-methodology-message-' + professorMethodologies[professorMethodologiesIndex].id);
+            feedbackMessage.innerHTML = "Atualizado com sucesso!"
+            feedbackAlertDiv.classList.remove('d-none');
+            feedbackAlertDiv.classList.add('alert', 'alert-success');
+            feedbackAlertDiv.classList.remove('alert-danger');
             professorMethodologies[professorMethodologiesIndex].professor_description = newMethodologyDescription;
 
         },
         error: function (xhr, status, error) {
             let feedback = document
-                .querySelector('#feedback-professor-methodology-' + professorMethodologies[professorMethodologiesIndex].methodology_id);
-            feedback.innerHTML = "Erro ao atualizar.";
-            feedback.classList.remove('d-none');
-            feedback.classList.add('alert', 'alert-danger');
-            feedback.classList.remove('alert-success');
+                .querySelector('#feedback-professor-methodology-' + professorMethodologies[professorMethodologiesIndex].id);
+            feedbackMessage.innerHTML = "Erro ao atualizar.";
+            feedbackAlertDiv.classList.remove('d-none');
+            feedbackAlertDiv.classList.add('alert', 'alert-danger');
+            feedbackAlertDiv.classList.remove('alert-success');
         }
 
     });
@@ -152,13 +158,11 @@ function onClickMethodology(id) {
     let feedBackMethodology = document.querySelector('#feedback-methodology-' + id);
     let feedBackProfessorMethodology = document.querySelector('#feedback-professor-methodology-' + id);
     let feedBackDeleteMethodology = document.querySelector('#feedback-delete-methodology-' + id);
-
     feedBackMethodology.classList.add("d-none");
     feedBackProfessorMethodology.classList.add("d-none");
     feedBackDeleteMethodology.classList.add("d-none");
     feedBackDeleteMethodology.classList.remove("show");
 }
-
 
 let methodologiesToChoose = [];
 function openModalAddMethodologies() {
