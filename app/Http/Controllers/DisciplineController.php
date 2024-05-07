@@ -72,6 +72,7 @@ class DisciplineController extends Controller
         $emphasis = Emphasis::all();
         $disciplines = Discipline::query()->orderBy('name', 'ASC')->get();
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
+        $methodologies = (new MethodologyService())->listAllMethodologies();
 
         return view('disciplines.index')
             ->with('disciplines', $disciplines->paginate(12))
@@ -81,7 +82,8 @@ class DisciplineController extends Controller
             ->with('opinionLinkForm', $opinionLinkForm)
             ->with('classifications', $classifications)
             ->with('studentsData', $studentsData)
-            ->with('professors', $professors_all);
+            ->with('professors', $professors_all)
+            ->with('methodologies',$methodologies);
     }
 
     public function disciplineFilter(Request $request)
@@ -92,13 +94,15 @@ class DisciplineController extends Controller
         $emphasis = Emphasis::all();
         $professors = Professor::all();
         $classifications = Classification::All()->sortBy('order');
+        $methodologies = (new MethodologyService())->listAllMethodologies();
         return view('disciplines.index')
             ->with('theme', $this->theme)
             ->with('opinionLinkForm',$opinionLinkForm)
             ->with('disciplines', $filteredDisciplines->paginate(12)->withQueryString())
             ->with('emphasis', $emphasis)
             ->with('classifications', $classifications)
-            ->with('professors', $professors);
+            ->with('professors', $professors)
+            ->with('methodologies',$methodologies);
     }
 
     /**

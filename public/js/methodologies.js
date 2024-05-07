@@ -3,7 +3,7 @@ function renderProfessorMethodologies() {
     let html = "";
     professorMethodologies.forEach(function (element, index) {
         html +=
-            "<strong class='badge  badge-primary mr-2' style='cursor:help;' data-toggle='modal' data-target='#methodology-" + element.id + "' onclick='onClickMethodology(" + element.id + ")'>" +
+            "<strong class='badge  badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target='#methodology-" + element.id + "' onclick='onClickMethodology(" + element.id + ")'>" +
             element.methodology_name +
             "</strong>";
         html +=

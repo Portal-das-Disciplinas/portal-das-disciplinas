@@ -7,6 +7,7 @@ use App\Models\ClassificationDiscipline;
 use App\Models\Discipline;
 use App\Models\DisciplinePerformanceData;
 use App\Models\Professor;
+use App\Models\ProfessorMethodology;
 use App\Models\SubjectConcept;
 use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
@@ -53,6 +54,25 @@ class DisciplineService
                 }
             }
             $filteredDisciplines = $filteredByCustomFilter;
+        }
+
+        if($request->{'filtered-methodologies'}){
+            $filterByMethodologies = collect([]);
+            $methodologies = json_decode($request->{'filtered-methodologies'});
+            foreach($filteredDisciplines as $filteredDiscipline){
+                $includeToArray = true;
+                foreach($methodologies as $methodology){
+                    $professorMethodologies = ProfessorMethodology::where('methodology_id','=',$methodology->id)->where('discipline_code','=',$filteredDiscipline->code)->where('professor_id','=',$filteredDiscipline->professor->id);
+                    if($professorMethodologies->count() == 0){
+                        $includeToArray = false;
+                        break;
+                    }
+                }
+                if($includeToArray == true){
+                    $filterByMethodologies->push($filteredDiscipline);
+                }
+            }
+            $filteredDisciplines = $filterByMethodologies;   
         }
 
         if ($request->{'check-filtro-classificacoes'} && $request->{'check-filtro-classificacoes'} == "on") {

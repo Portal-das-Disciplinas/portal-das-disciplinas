@@ -66,6 +66,19 @@
                                     <input id="filtro-livre" name="filtro-livre" class="form-control" type="text" placeholder="Busca em Grafos, javascript, Inteligência Artificial">
                                 </div>
                             </div>
+                            @if(count($methodologies) > 0) 
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <span class="text-white">Clique nas metodologias abaixo que você deseja incluir no filtro</span>
+                                    <div class="bg-white d-flex px-0 py-3 flex-wrap justify-content-start" style="border-radius:5px; max-height: 200px; overflow:auto">
+                                        @foreach($methodologies as $methodology)
+                                        <small id="{{'methodology-' . $loop->index }}" class="badge badge-secondary mx-2 my-2" style="cursor:pointer;" onclick="onClickMethodology('{{$loop->index}}')">{{$methodology->name}}</small>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <input id="filteredMethodologies" name='filtered-methodologies' type='hidden'>
+                            </div>
+                            @endif
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <label class="text-white" for="select-professors">Professor</label>
@@ -351,6 +364,26 @@
 
 </section>
 
+<div id="modal-methodology-info" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="methodology-name" class="modal-title text-primary">Nome da metodologia</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="methodology-description">Descrição da metodologia</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-remove-or-select" class="btn btn-primary" onclick="addMethodologyToSelected()">Selecionar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <script src="{{ asset('js/indexClassificationForm.js') }}"></script>
@@ -359,4 +392,9 @@
 @endsection
 @section('scripts-bottom')
 <script src="{{ asset('js/disciplines/disciplineFilters.js')}}"></script>
+<script>
+    let methodologies = @json($methodologies);
+</script>
+<script src="{{asset('js/disciplines/methodologySelect.js')}}"></script>
+
 @endsection
