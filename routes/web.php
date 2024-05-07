@@ -18,13 +18,16 @@ use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\DisciplinePerformanceDataController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LinksController;
+use App\Http\Controllers\MethodologyController;
 use App\Http\Controllers\ParticipantLinkController;
+use App\Http\Controllers\ProfessorMethodologyController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
 use App\Http\Controllers\SemesterPerformanceDataController;
 use App\Http\Controllers\TopicController;
 use App\Models\Collaborator;
 use App\Models\DisciplinePerformanceData;
 use App\Models\Link;
+use App\Models\ProfessorMethodology;
 use App\Models\SemesterPerformanceData;
 use App\Services\DisciplinePerformanceDataService;
 use Illuminate\Http\Request;
@@ -137,4 +140,12 @@ Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataCon
 
 Route::get('/semester/performance/data', [SemesterPerformanceDataController::class,'index'])->name('semester_performance_data');
 Route::delete('/semester/performance/data/delete/{id}',[SemesterPerformanceDataController::class,'destroy'])->name('semester_performance_data.destroy');
+Route::get('/metodologias',[MethodologyController::class,'index'])->name('methodology.index');
+Route::get('/metodologias/professor/{id_professor}/{codigo_disciplina}',[ProfessorMethodologyController::class,'listProfessorMethodologies'])->name('professor_methodologies.get');
+Route::put('metodologias/update/{idMethodology}',[MethodologyController::class,'update'])->name('methodology.update');
+Route::put('/metodologias/professor/update/{idProfessorMethodology}',[ProfessorMethodologyController::class,'update'])->name('professor_methodology.update');
+Route::post('metodologias/store',[MethodologyController::class,'store'])->name('methodology.store');
+Route::post('/metodologias/professor/store/mult',[ProfessorMethodologyController::class, 'addProfessorMethodologies'])->name('professor_methodology.store_mult');
+Route::delete('/metodologias/delete/{id_methodology}',[MethodologyController::class,'destroy'])->name('methodology.destroy');
+Route::delete('/metodologias/professor/delete/{id_professor_methodology}',[ProfessorMethodologyController::class,'destroy'])->name('professor_methodology.destroy');
 
