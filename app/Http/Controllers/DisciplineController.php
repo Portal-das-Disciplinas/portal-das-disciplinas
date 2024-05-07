@@ -29,6 +29,7 @@ use App\Models\SubjectTopic;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
 use App\Services\DisciplineService;
+use App\Services\MethodologyService;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -324,7 +325,8 @@ class DisciplineController extends Controller
         $user = Auth::user();
 
         $classifications = Classification::all()->sortBy('order');
-
+        $methodologyService = new MethodologyService();
+        $professorMethodologies = $methodologyService->getProfessorMethodologies($discipline->{'professor_id'}, $discipline->code);
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
@@ -332,14 +334,16 @@ class DisciplineController extends Controller
                 ->with('classifications', $classifications)
                 ->with('theme', $this->theme)
                 ->with('opinionLinkForm', $opinioLinkForm)
-                ->with('showOpinionForm', true);
+                ->with('showOpinionForm', true)
+                ->with('professorMethodologies',$professorMethodologies);
         }
 
         return view(self::VIEW_PATH . 'show', compact('discipline'))
             ->with('classifications', $classifications)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm', true);
+            ->with('showOpinionForm', true)
+            ->with('professorMethodologies',$professorMethodologies);
     }
 
     /**

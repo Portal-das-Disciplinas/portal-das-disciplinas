@@ -108,114 +108,114 @@ mais.
                     </div>{{--video--}}
                 </div>
                 <div class="col-md-4">
-                        <div class='classifications'>
-                            <h1>Classificações</h1>
-                            @if (count($classifications)>0)
-                            @foreach ( $classifications as $classification)
-                            <div class='row mb-0'>
-                                <div class="d-flex col-md-12 justify-content-center">
-                                    <label class="">
-                                        <div class="d-flex">
-                                            <h3 style='margin-bottom: 0;' class='smaller-p'>
-                                                {{$classification->name ?? ''}}
+                    <div class='classifications'>
+                        <h1>Classificações</h1>
+                        @if (count($classifications)>0)
+                        @foreach ( $classifications as $classification)
+                        <div class='row mb-0'>
+                            <div class="d-flex col-md-12 justify-content-center">
+                                <label class="">
+                                    <div class="d-flex">
+                                        <h3 style='margin-bottom: 0;' class='smaller-p'>
+                                            {{$classification->name ?? ''}}
 
-                                                @if ($classification->description)
-                                                <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle"></i></span>
-                                                @endif
-                                            </h3>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="row d-flex align-items-center">
-                                <div class="d-flex col-md-12">
-                                    <span class='d-flex justify-content-start' style='width:15%'><b>{{
-                                $discipline->getClassificationsValues($classification->id) }}%</b></span>
-                                    <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
-                                        <div id="{{$classification->classification_id}}" class="classification-color-left progress-bar" role="progressbar" style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
-                                        </div>
-
-                                        <div id="{{$classification->classification_id}}" class="classification-color-right progress-bar" role="progressbar" style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; border-radius: 0 100px 100px 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
-                                        </div>
+                                            @if ($classification->description)
+                                            <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle"></i></span>
+                                            @endif
+                                        </h3>
                                     </div>
-                                    <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
-                                </div>
+                                </label>
                             </div>
+                        </div>
+                        <div class="row d-flex align-items-center">
+                            <div class="d-flex col-md-12">
+                                <span class='d-flex justify-content-start' style='width:15%'><b>{{
+                                $discipline->getClassificationsValues($classification->id) }}%</b></span>
+                                <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
+                                    <div id="{{$classification->classification_id}}" class="classification-color-left progress-bar" role="progressbar" style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                                    </div>
 
-                            <div class="row ">
-                                <div class="col-md-12 d-flex justify-content-between mt-2">
-                                    <span>
-                                        <h3 style='margin-bottom: 0;' class='classification-text-left smaller-p'>{{
+                                    <div id="{{$classification->classification_id}}" class="classification-color-right progress-bar" role="progressbar" style="width: {{(100-$discipline->getClassificationsValues($classification->id))}}% ; border-radius: 0 100px 100px 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                                    </div>
+                                </div>
+                                <span class='d-flex justify-content-end' style='width:15%'><b>{{(100-number_format(($discipline->getClassificationsValues($classification->id)),1))}}%</b></span>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-md-12 d-flex justify-content-between mt-2">
+                                <span>
+                                    <h3 style='margin-bottom: 0;' class='classification-text-left smaller-p'>{{
                                 $classification->type_a ?? '' }}</h3>
-                                    </span>
-                                    <span>
-                                        <h3 style='margin-bottom: 0; ' class='classification-text-right smaller-p'>{{
+                                </span>
+                                <span>
+                                    <h3 style='margin-bottom: 0; ' class='classification-text-right smaller-p'>{{
                                 $classification->type_b ?? '' }}</h3>
-                                    </span>
-                                </div>
+                                </span>
                             </div>
-                            @endforeach
-
-                            @else
-                            <strong>Não há classificações cadastradas.</strong>
-                            @endif
-
                         </div>
-                        <hr>
-                        <!-- PODCAST -->
+                        @endforeach
+
+                        @else
+                        <strong>Não há classificações cadastradas.</strong>
+                        @endif
+
+                    </div>
+                    <hr>
+                    <!-- PODCAST -->
+                    <div>
+                        <h1 class=" mt-4 mb-2">Podcast</h1>
+                        @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) &&
+                        $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
+                        <audio class="w-100" controls="controls">
+                            <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
+                            seu navegador não suporta HTML5
+                        </audio>
+                        @else
+                        <img class="img-fluid light-border-radius" src="{{asset('img/nopodcast.png') }}" alt="Sem podcast">
+                        @endif
+                    </div>
+                    <hr>
+
+
+                    <!-- MATERIAIS -->
+
+                    <div class="mb-2">
+                        <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
+                        @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) &&
+                        $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
+                        <div class="align-center">
+
+                            <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}" class="text">
+                                <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
+                                <button class="btn large-secondary-button my-3 w-100"> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
+                            </a>
+                            <br />
+                        </div>
+                        @else
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-sad-tear fa-7x mr-3"></i>
+                            <strong>Sem materiais disponiveis...</strong>
+                        </div>
+
+                        @endif
+                    </div>
+                    <hr>
+
+                    <!-- Conhecimentos -->
+                    <div class='section mt-3'>
+                        <h1 class="mb-3">Conhecimentos / Competências Desejados</h1>
                         <div>
-                            <h1 class=" mt-4 mb-2">Podcast</h1>
-                            @if($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) &&
-                            $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
-                            <audio class="w-100" controls="controls">
-                                <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url}}" type="audio/mp3" />
-                                seu navegador não suporta HTML5
-                            </audio>
-                            @else
-                            <img class="img-fluid light-border-radius" src="{{asset('img/nopodcast.png') }}" alt="Sem podcast">
-                            @endif
-                        </div>
-                        <hr>
-
-
-                        <!-- MATERIAIS -->
-
-                        <div class="mb-2">
-                            <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
-                            @if($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) &&
-                            $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
-                            <div class="align-center">
-
-                                <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url}}" class="text">
-                                    <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
-                                    <button class="btn large-secondary-button my-3 w-100"> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
-                                </a>
-                                <br />
-                            </div>
-                            @else
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-sad-tear fa-7x mr-3"></i>
-                                <strong>Sem materiais disponiveis...</strong>
-                            </div>
-
-                            @endif
-                        </div>
-                        <hr>
-
-                        <!-- Conhecimentos -->
-                        <div class='section mt-3'>
-                            <h1 class="mb-3">Conhecimentos / Competências Desejados</h1>
                             <div>
-                                <div>
-                                    @if($discipline->acquirements=='')
-                                    <div class=" p-text">Nenhum conhecimento.</div>
-                                    @else
-                                    <div style="text-align: justify; line-height: normal;">{{ $discipline->acquirements }}</div>
-                                    @endif
-                                </div>
+                                @if($discipline->acquirements=='')
+                                <div class=" p-text">Nenhum conhecimento.</div>
+                                @else
+                                <div style="text-align: justify; line-height: normal;">{{ $discipline->acquirements }}</div>
+                                @endif
                             </div>
                         </div>
-                        <hr>
+                    </div>
+                    <hr>
                 </div>
             </div>
             <div class="row">
@@ -438,8 +438,8 @@ mais.
                 <div class="col-md-4">
                     <div class="section">
                         @if((isset($discipline->subjectTopics) && (count($discipline->subjectTopics ) > 0)) ||
-                            (isset($discipline->subjectConcepts) && (count($discipline->subjectConcepts) > 0)) ||
-                            (isset($discipline->subjectReferences) && (count($discipline->subjectReferences) > 0)))
+                        (isset($discipline->subjectConcepts) && (count($discipline->subjectConcepts) > 0)) ||
+                        (isset($discipline->subjectReferences) && (count($discipline->subjectReferences) > 0)))
                         <h1>Conteúdos</h1>
                         @if(isset($discipline->subjectTopics) && (count($discipline->subjectTopics)>0))
                         <div class="card">
@@ -540,6 +540,7 @@ mais.
                         </div>
                         @endif
                     </div>
+
                 </div>
             </div>
             <hr>
@@ -548,33 +549,122 @@ mais.
                 <h1 class="mb-3">Tópicos</h1>
                 <ol type="I" id="discipline-topics">
                     @forelse ($discipline->topics as $topic)
-                        @if (is_null($topic->parent_topic_id))
-                            <li class="mb-3" id="topic-{{ $topic->id }}">
-                                <span class="topic-title">{{ $topic->title }}</span>
+                    @if (is_null($topic->parent_topic_id))
+                    <li class="mb-3" id="topic-{{ $topic->id }}">
+                        <span class="topic-title">{{ $topic->title }}</span>
 
-                                <a 
-                                    class="ml-3 expand-topic" 
-                                    data-topic_id="{{ $topic->id }}" 
-                                    style="cursor: pointer; font-size: 14px;"
-                                >
-                                    Mostrar mais
-                                </a>
+                        <a class="ml-3 expand-topic" data-topic_id="{{ $topic->id }}" style="cursor: pointer; font-size: 14px;">
+                            Mostrar mais
+                        </a>
 
-                                <br>
+                        <br>
 
-                                @if ($topic->required_level)
-                                    <small> Domínio desejado: {{  $topic->required_level }}</small>
-                                @endif
-                            </li>
+                        @if ($topic->required_level)
+                        <small> Domínio desejado: {{ $topic->required_level }}</small>
                         @endif
+                    </li>
+                    @endif
                     @empty
-                        <p>Sem tópicos cadastrados</p>
+                    <p>Sem tópicos cadastrados</p>
                     @endforelse
                 </ol>
             </div>
+            <div class="section">
+                <h1>Metodologias</h1>
+                @if(auth()->user())
+                <div id="metodologias" class='d-flex'><span>carregando...</span></div>
+                @if(Auth::user() && Auth::user()->professor && Auth::user()->professor->id == $discipline->professor->id)
+                <button class="btn btn-success btn-sm mt-4" data-toggle="modal" data-target="#modal-cadastro-metodologia" onclick="openModalAddMethodologies()">
+                    <i class="fas fa-solid fa-plus mr-2"></i>Adicionar nova metodologia
+                </button>
+                @endif
+                <div id="modal-cadastro-metodologia" class="modal large fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Cadastro de metodologia</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class='col-md-12'>
+                                            <button class="btn btn-primary btn-sm mb-2" style='cursor:pointer;' data-toggle="collapse" data-target="#collapse-criar-metodologia" onclick="clearCreateMethodologyInputs()">
+                                                <i class="fas fa-solid fa-plus mr-1"></i>
+                                                Criar metodologia
+                                            </button>
+                                        </div>
+                                        <div class='col-md-12 mb-4'>
+                                            <div id='collapse-criar-metodologia' class='collapse' class='form-group'>
+                                                <label class="text-secondary" for="nome-nova-metodologia">Nome da metodologia</label>
+                                                <input id="nome-nova-metodologia" type='text' class='form-control mb-1'>
+                                                <label class="text-secondary" for="descricao-nova-metodologia">Descrição da metodologia</label>
+                                                <textarea id="descricao-nova-metodologia" class='form-control mb-1' rows='6'></textarea>
+                                                <p><small id="feedback-cadastro-methodology" class="d-none text-success form-text" class="form-label">* Metodologia adicionada</small></p>
+                                                <button class="btn btn-sm btn-outline-primary" onclick="btnCreateMethodology()">Criar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-12 card pt-2' id="methodologiesToChoose">
+                                            <span class="text-info">carregando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-success" onclick="addSelectedMethodologies()">Adicionar selecionados</button>
+                                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                @if(!auth()->user())
+                @foreach($professorMethodologies as $professorMethodology)
+                <strong class='badge badge-primary mr-2' style='cursor:help;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
+                    {{$professorMethodology->methodology_name}}
+                </strong>
+                <div class='modal fade' tabindex='-1' role='dialog' id="{{'modal-methodology' . $professorMethodology->id}}">
+                    <div class='modal-dialog' role='document'>
+                        <div class='modal-content'>
+                            <div class="modal-header">
+                                <h3 class='modal-title text-primary'>{{$professorMethodology->methodology_name}}</h3>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                            </div>
+                            <div class='modal-body'>
+                                <div class='d-flex flex-column'>
+                                    <small class='text-secondary'>descrição da metodologia</small>
+                                    <p class='text-primary'>{{$professorMethodology->methodology_description}}</p>
+                                </div>
+                                @if($professorMethodology->professor_description && $professorMethodology->professor_description != '')
+                                <hr>
+                                <div class='d-flex flex-column'>
+                                    <small class='text-secondary'>Como o professor aplica a metodologia</small>
+                                    <p class='text-primary'>{{$professorMethodology->professor_description}}</p>
+                                </div>
+                                @endif
+
+                            </div>
+                            <div class='modal-footer'>
+                                <button type='button' class='btn btn-sm btn-primary' data-dismiss='modal'>Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+                @endif
+
+
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- FAQ -->
@@ -962,7 +1052,7 @@ mais.
     // Scripts referente aos tópicos    
     $(document).on('click', '.expand-topic', function() {
         let topicId = $(this).data('topic_id');
-        let disciplineId = {{ $discipline->id }};
+        let disciplineId = '{{$discipline->id}}';
         let topicElement = $(`#topic-${topicId}`);
 
         if ($(this).hasClass('expanded')) {
@@ -994,6 +1084,17 @@ mais.
 </script>
 <script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
 <script src="{{asset('js/subjectContentsCollapse.js')}}"></script>
+<script>
+    let disciplineCode = "{{$discipline->code}}";
+    let professorId = "{{$discipline->professor->id}}"
+</script>
+<script src="{{asset('js/methodologies.js')}}"></script>
+<script>
+    @if(auth()->user())
+    getProfessorMethodologies();
+    let token = '{{csrf_token()}}';
+    @endif
+</script>
 <script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()
