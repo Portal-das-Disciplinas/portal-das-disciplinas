@@ -25,7 +25,6 @@ class MethodologyController extends Controller
         $methodologyService = new MethodologyService();
         $methodology = $methodologyService
             ->saveMethodology($request->methodology['name'], $request->methodology['description'], $request->methodology['professor_id']);
-        Log::info($request->methodology);
         if ($request->ajax()) {
 
             return response()->json($methodology);
