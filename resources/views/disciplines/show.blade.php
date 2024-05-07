@@ -572,12 +572,60 @@ mais.
             <div class="section">
                 <h1>Metodologias</h1>
                 @if(auth()->user())
-                <div id="metodologias" class='d-flex'></div>
+                <div id="metodologias" class='d-flex'><span>carregando...</span></div>
+                @if(Auth::user() && Auth::user()->professor && Auth::user()->professor->id == $discipline->professor->id)
+                <button class="btn btn-success btn-sm mt-4" data-toggle="modal" data-target="#modal-cadastro-metodologia" onclick="openModalAddMethodologies()">
+                    <i class="fas fa-solid fa-plus mr-2"></i>Adicionar nova metodologia
+                </button>
+                @endif
+                <div id="modal-cadastro-metodologia" class="modal large fade" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title">Cadastro de metodologia</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class='col-md-12'>
+                                            <button class="btn btn-primary btn-sm mb-2" style='cursor:pointer;' data-toggle="collapse" data-target="#collapse-criar-metodologia" onclick="clearCreateMethodologyInputs()">
+                                                <i class="fas fa-solid fa-plus mr-1"></i>
+                                                Criar metodologia
+                                            </button>
+                                        </div>
+                                        <div class='col-md-12 mb-4'>
+                                            <div id='collapse-criar-metodologia' class='collapse' class='form-group'>
+                                                <label class="text-secondary" for="nome-nova-metodologia">Nome da metodologia</label>
+                                                <input id="nome-nova-metodologia" type='text' class='form-control mb-1'>
+                                                <label class="text-secondary" for="descricao-nova-metodologia">Descrição da metodologia</label>
+                                                <textarea id="descricao-nova-metodologia" class='form-control mb-1' rows='6'></textarea>
+                                                <p><small id="feedback-cadastro-methodology" class="d-none text-success form-text" class="form-label">* Metodologia adicionada</small></p>
+                                                <button class="btn btn-sm btn-outline-primary" onclick="btnCreateMethodology()">Criar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-md-12 card pt-2' id="methodologiesToChoose">
+                                            <span class="text-info">carregando...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-sm btn-success" onclick="addSelectedMethodologies()">Adicionar selecionados</button>
+                                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 @endif
 
                 @if(!auth()->user())
                 @foreach($professorMethodologies as $professorMethodology)
-                <strong class='badge badge-pfill badge-primary mr-2' style='cursor:help;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
+                <strong class='badge badge-primary mr-2' style='cursor:help;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
                     {{$professorMethodology->methodology_name}}
                 </strong>
                 <div class='modal fade' tabindex='-1' role='dialog' id="{{'modal-methodology' . $professorMethodology->id}}">
@@ -1004,7 +1052,7 @@ mais.
     // Scripts referente aos tópicos    
     $(document).on('click', '.expand-topic', function() {
         let topicId = $(this).data('topic_id');
-        let disciplineId = {{ $discipline->id}};
+        let disciplineId = '{{$discipline->id}}';
         let topicElement = $(`#topic-${topicId}`);
 
         if ($(this).hasClass('expanded')) {

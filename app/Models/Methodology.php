@@ -13,7 +13,6 @@ class Methodology extends Model
     public $fillable = [
         'name',
         'professor_id',
-        'discipline_code',
         'description'
     ];
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\MethodologyService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProfessorMethodologyController extends Controller
 {
@@ -18,10 +19,22 @@ class ProfessorMethodologyController extends Controller
     public function update(Request $request){
         $methodologyService = new MethodologyService();
         $description = isset($request->description) ? $request->description : "";
-        $professorMethodology = $methodologyService->updateProfessorMethodology($request->idProfessorMethodology, $description);
+        $professorMethodology = $methodologyService
+            ->updateProfessorMethodology($request->idProfessorMethodology, $description, $request->discipline_code);
         if($request->ajax()){
             return response()->json($professorMethodology);
         }
 
-    } 
+    }
+    
+    public function addProfessorMethodologies(Request $request){
+        $arrayMethodologies = $request->methodologies_array;
+        $methodologyService = new MethodologyService();
+        if($request->ajax()){
+            foreach($arrayMethodologies as $methodology){
+                $methodologyService
+                    ->addMethodologiesToProfessorDiscipline($methodology['id'],$methodology['professor_methodology_id'],$methodology['discipline_code']);
+            }
+        }
+    }
 }

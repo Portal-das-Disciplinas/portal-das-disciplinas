@@ -14,7 +14,8 @@ class ProfessorMethodology extends Model
     protected $fillable = [
         'description',
         'professor_id',
-        'methodology_id'
+        'methodology_id',
+        'discipline_code'
     ];
 
     public function professor(){
