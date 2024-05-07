@@ -625,7 +625,7 @@ mais.
 
                 @if(!auth()->user())
                 @foreach($professorMethodologies as $professorMethodology)
-                <strong class='badge badge-primary mr-2' style='cursor:help;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
+                <strong class='badge badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
                     {{$professorMethodology->methodology_name}}
                 </strong>
                 <div class='modal fade' tabindex='-1' role='dialog' id="{{'modal-methodology' . $professorMethodology->id}}">
