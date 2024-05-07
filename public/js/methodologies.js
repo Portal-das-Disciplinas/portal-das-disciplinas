@@ -18,30 +18,30 @@ function renderProfessorMethodologies() {
             "</div>" +
             "<div class='modal-body'>" +
             "<div class='d-flex flex-column'>" +
-            "<div class='d-flex justify-content-end'>"+
+            "<div class='d-flex justify-content-end'>" +
             "<button class='btn btn-outline-danger btn-sm' onclick='deleteProfessorMethodology(" + element.id + ")'> Remover metodologia</button>";
-        if(professorId == element.methodology_owner){
-            html+=
-            "<button class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology(" + element.methodology_id + ","+ element.id + ")'>Apagar metodologia</button>";
+        if (professorId == element.methodology_owner) {
+            html +=
+                "<button class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology(" + element.methodology_id + "," + element.id + ")'>Apagar metodologia</button>";
         }
-        html+=
-            "</div>"+
-            "<div id='feedback-delete-methodology-" + element.id + "' class='alert alert-dismissible  d-none mt-2'>"+
-            "<small id='feedback-delete-methodology-message-" + element.id + "'>Não foi deletar a metodologia</small>"+
-            "<button class='close' onclick=\"closeAlert('feedback-delete-methodology-" + element.id + "')\">&times</button></small></div>"+
+        html +=
+            "</div>" +
+            "<div id='feedback-delete-methodology-" + element.id + "' class='alert alert-dismissible  d-none mt-2'>" +
+            "<small id='feedback-delete-methodology-message-" + element.id + "'>Não foi deletar a metodologia</small>" +
+            "<button class='close' onclick=\"closeAlert('feedback-delete-methodology-" + element.id + "')\">&times</button></small></div>" +
             "<small class='text-secondary'>descrição da metodologia</small>" +
             "<textarea id='methodology-description-" + index + "' rows='4' ";
-        if(professorId != element.methodology_owner){
-            html+="readonly class='text-primary' style='background-color: #F8F8F8FF; resize: none' > ";
-        }else{
-            html+= "class='text-primary'> "
+        if (professorId != element.methodology_owner) {
+            html += "readonly class='text-primary' style='background-color: #F8F8F8FF; resize: none' > ";
+        } else {
+            html += "class='text-primary'> "
         }
-        html+=
+        html +=
             element.methodology_description + "</textarea>" +
             "<div id='feedback-methodology-" + element.id + "' class='d-none alert  mt-2'>" +
             "<span id='feedback-methodology-message-" + element.id + "' style='text-align:center'>Erro ao atualizar</span>" +
-            "<button class='close' onclick=\"closeAlert('feedback-methodology-" + element.id + "')\">&times</button>"+
-            "</div>"+
+            "<button class='close' onclick=\"closeAlert('feedback-methodology-" + element.id + "')\">&times</button>" +
+            "</div>" +
             "</div>" +
             "<hr>" +
             "<div class='d-flex flex-column'>" +
@@ -49,12 +49,12 @@ function renderProfessorMethodologies() {
             "<textarea id='professor-methodology-description-" + index + "' class='text-primary' rows='10'>" + element.professor_description + "</textarea>" +
             "<div id='feedback-professor-methodology-" + element.id + "' class='d-none alert  mt-2'>" +
             "<span id='feedback-professor-methodology-message-" + element.id + "' style='text-align:center'>Erro ao atualizar</span>" +
-            "<button class='close' onclick=\"closeAlert('feedback-professor-methodology-" + element.id + "')\">&times</button>"+
-            "</div>"+
+            "<button class='close' onclick=\"closeAlert('feedback-professor-methodology-" + element.id + "')\">&times</button>" +
+            "</div>" +
             "</div>" +
             "</div>" +
             "<div class='modal-footer'>" +
-            "<button class='btn btn-success btn-sm' onclick='updateMethodologyAndProfessorMethodology(event," + index + ")'>Salvar</button>"+
+            "<button class='btn btn-success btn-sm' onclick='updateMethodologyAndProfessorMethodology(event," + index + ")'>Salvar</button>" +
             "<button type='button' class='btn btn-sm btn-primary' data-dismiss='modal'>Fechar</button>" +
             "</div>" +
             "</div>" +
@@ -74,14 +74,14 @@ function getProfessorMethodologies() {
             professorMethodologies = data;
             renderProfessorMethodologies();
         },
-        error: function (xhr,status,error) {
+        error: function (xhr, status, error) {
             alert(error);
         }
     });
 }
 
-function updateMethodologyAndProfessorMethodology(event, professorMethodologiesIndex){
-    if(professorId == professorMethodologies[professorMethodologiesIndex].methodology_owner){
+function updateMethodologyAndProfessorMethodology(event, professorMethodologiesIndex) {
+    if (professorId == professorMethodologies[professorMethodologiesIndex].methodology_owner) {
         updateMethodologyDescription(event, professorMethodologiesIndex);
     }
     updateProfessorMethodologyDescription(event, professorMethodologiesIndex);
@@ -89,6 +89,11 @@ function updateMethodologyAndProfessorMethodology(event, professorMethodologiesI
 
 function updateMethodologyDescription(event, professorMethodologiesIndex) {
     let newMethodologyDescription = document.querySelector('#methodology-description-' + professorMethodologiesIndex).value;
+    let feedbackAlertDiv = document
+        .querySelector('#feedback-methodology-' + professorMethodologies[professorMethodologiesIndex].id);
+    let feedbackMessage = document
+        .querySelector('#feedback-methodology-message-' + professorMethodologies[professorMethodologiesIndex].id);
+
     $.ajax({
         url: '/metodologias/update/' + professorMethodologies[professorMethodologiesIndex].methodology_id,
         method: 'PUT',
@@ -99,10 +104,6 @@ function updateMethodologyDescription(event, professorMethodologiesIndex) {
             'description': newMethodologyDescription
         },
         success: function (data) {
-            let feedbackAlertDiv = document
-                .querySelector('#feedback-methodology-' + professorMethodologies[professorMethodologiesIndex].id);
-            let feedbackMessage = document
-                .querySelector('#feedback-methodology-message-' + professorMethodologies[professorMethodologiesIndex].id);
             feedbackMessage.innerHTML = "Atualizado com sucesso!"
             feedbackAlertDiv.classList.remove('d-none');
             feedbackAlertDiv.classList.add('alert', 'alert-success');
@@ -110,7 +111,7 @@ function updateMethodologyDescription(event, professorMethodologiesIndex) {
             professorMethodologies[professorMethodologiesIndex].methodology_description = newMethodologyDescription;
 
         },
-        error: function (xhr,status,error) {
+        error: function (xhr, status, error) {
             feedbackMessage.innerHTML = "Erro ao atualizar.";
             feedbackAlertDiv.classList.remove('d-none');
             feedbackAlertDiv.classList.add('alert', 'alert-danger');
@@ -122,6 +123,11 @@ function updateMethodologyDescription(event, professorMethodologiesIndex) {
 
 function updateProfessorMethodologyDescription(event, professorMethodologiesIndex) {
     let newMethodologyDescription = document.querySelector('#professor-methodology-description-' + professorMethodologiesIndex).value;
+    let feedbackAlertDiv = document
+        .querySelector('#feedback-professor-methodology-' + professorMethodologies[professorMethodologiesIndex].id);
+    let feedbackMessage = document
+        .querySelector('#feedback-professor-methodology-message-' + professorMethodologies[professorMethodologiesIndex].id);
+
     $.ajax({
         url: '/metodologias/professor/update/' + professorMethodologies[professorMethodologiesIndex].id,
         method: 'PUT',
@@ -131,10 +137,6 @@ function updateProfessorMethodologyDescription(event, professorMethodologiesInde
             'description': newMethodologyDescription
         },
         success: function (data) {
-            let feedbackAlertDiv = document
-                .querySelector('#feedback-professor-methodology-' + professorMethodologies[professorMethodologiesIndex].id);
-            let feedbackMessage = document
-                .querySelector('#feedback-professor-methodology-message-' + professorMethodologies[professorMethodologiesIndex].id);
             feedbackMessage.innerHTML = "Atualizado com sucesso!"
             feedbackAlertDiv.classList.remove('d-none');
             feedbackAlertDiv.classList.add('alert', 'alert-success');
@@ -143,8 +145,6 @@ function updateProfessorMethodologyDescription(event, professorMethodologiesInde
 
         },
         error: function (xhr, status, error) {
-            let feedback = document
-                .querySelector('#feedback-professor-methodology-' + professorMethodologies[professorMethodologiesIndex].id);
             feedbackMessage.innerHTML = "Erro ao atualizar.";
             feedbackAlertDiv.classList.remove('d-none');
             feedbackAlertDiv.classList.add('alert', 'alert-danger');
@@ -187,7 +187,7 @@ function openModalAddMethodologies() {
             renderMethodologiesToChoose();
 
         },
-        error: function (xhr,status,error) {
+        error: function (xhr, status, error) {
             console.log('error');
         }
     });
@@ -238,7 +238,7 @@ function addSelectedMethodologies() {
             $('#modal-cadastro-metodologia').modal('hide');
             getProfessorMethodologies();
         },
-        error: function (xhr,status,error) {
+        error: function (xhr, status, error) {
             console.log("error");
         }
     });
@@ -247,56 +247,56 @@ function addSelectedMethodologies() {
 
 function deleteMethodology(idMethodology, idModal) {
     $.ajax({
-        url: '/metodologias/delete/'+ idMethodology,
+        url: '/metodologias/delete/' + idMethodology,
         method: 'delete',
         data: {
             '_token': token,
         },
         success: function (data) {
-            $('#methodology-'+idModal).modal('hide');
+            $('#methodology-' + idModal).modal('hide');
             getProfessorMethodologies();
         },
-        error: function (xhr, status,error) {
+        error: function (xhr, status, error) {
             errorJSON = JSON.parse(xhr.responseText);
-            if(errorJSON){
-                document.querySelector('#feedback-delete-methodology-message-'+idModal).innerHTML = errorJSON.error;
+            if (errorJSON) {
+                document.querySelector('#feedback-delete-methodology-message-' + idModal).innerHTML = errorJSON.error;
             }
-            document.querySelector('#feedback-delete-methodology-'+idModal).classList.remove('alert-success');
-            document.querySelector('#feedback-delete-methodology-'+idModal).classList.add('alert-danger');
-            document.querySelector('#feedback-delete-methodology-'+idModal).classList.remove('d-none');
-            
+            document.querySelector('#feedback-delete-methodology-' + idModal).classList.remove('alert-success');
+            document.querySelector('#feedback-delete-methodology-' + idModal).classList.add('alert-danger');
+            document.querySelector('#feedback-delete-methodology-' + idModal).classList.remove('d-none');
+
 
         }
     });
 
 }
 
-function deleteProfessorMethodology(idProfessorMethodology){
+function deleteProfessorMethodology(idProfessorMethodology) {
     $.ajax({
-        url: '/metodologias/professor/delete/'+ idProfessorMethodology,
+        url: '/metodologias/professor/delete/' + idProfessorMethodology,
         method: 'delete',
         data: {
             '_token': token,
         },
         success: function (data) {
-            $('#methodology-'+idProfessorMethodology).modal('hide');
+            $('#methodology-' + idProfessorMethodology).modal('hide');
             getProfessorMethodologies();
         },
-        error: function (xhr, status,error) {
+        error: function (xhr, status, error) {
             errorJSON = JSON.parse(xhr.responseText);
-            if(errorJSON){
-                document.querySelector('#feedback-delete-methodology-message-'+idProfessorMethodology).innerHTML = errorJSON.error;
+            if (errorJSON) {
+                document.querySelector('#feedback-delete-methodology-message-' + idProfessorMethodology).innerHTML = errorJSON.error;
             }
             document.querySelector('#feedback-delete-methodology-' + idProfessorMethodology).classList.remove('alert-success');
             document.querySelector('#feedback-delete-methodology-' + idProfessorMethodology).classList.add('alert-danger');
             document.querySelector('#feedback-delete-methodology-' + idProfessorMethodology).classList.remove('d-none');
-            
+
 
         }
     });
 }
 
-function closeAlert(idAlert){
+function closeAlert(idAlert) {
     document.querySelector('#' + idAlert).classList.add('d-none');
 }
 
@@ -322,7 +322,7 @@ function btnCreateMethodology() {
             feedbackRegisterMethodology.classList.add('text-success');
             openModalAddMethodologies();
         },
-        error: function (xhr,status,error) {
+        error: function (xhr, status, error) {
             let feedbackRegisterMethodology = document.querySelector('#feedback-cadastro-methodology');
             feedbackRegisterMethodology.innerHTML = 'Erro ao cadastrar';
             feedbackRegisterMethodology.classList.remove('text-success');
