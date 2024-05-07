@@ -147,4 +147,5 @@ Route::put('/metodologias/professor/update/{idProfessorMethodology}',[ProfessorM
 Route::post('metodologias/store',[MethodologyController::class,'store'])->name('methodology.store');
 Route::post('/metodologias/professor/store/mult',[ProfessorMethodologyController::class, 'addProfessorMethodologies'])->name('professor_methodology.store_mult');
 Route::delete('/metodologias/delete/{id_methodology}',[MethodologyController::class,'destroy'])->name('methodology.destroy');
+Route::delete('/metodologias/professor/delete/{id_professor_methodology}',[ProfessorMethodologyController::class,'destroy'])->name('professor_methodology.destroy');
 

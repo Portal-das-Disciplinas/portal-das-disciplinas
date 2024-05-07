@@ -130,4 +130,19 @@ class MethodologyService
             throw $e;
         }
     }
+
+    function deleteProfessorMethodology($idProfessorMethodology)
+    {
+        if (Auth::user() && Auth::user()->professor) {
+            $professorMethodology = ProfessorMethodology::findOrFail($idProfessorMethodology);
+            if ($professorMethodology->{'professor_id'} != Auth::user()->professor->id) {
+                throw new NotAuthorizedException('Você não tem permissão para executar esta operação.');
+            } else {
+                $professorMethodology->delete();
+                return $professorMethodology;
+            }
+        } else {
+            throw new NotAuthorizedException('Você não tem permissão para executar esta operação.');
+        }
+    }
 }

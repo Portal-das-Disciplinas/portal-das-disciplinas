@@ -19,7 +19,8 @@ function renderProfessorMethodologies() {
             "<div class='modal-body'>" +
             "<div class='d-flex flex-column'>" +
             "<div class='d-flex justify-content-end'>"+
-            "<button class='btn btn-danger btn-sm' onclick='deleteMethodology(" + element.methodology_id + ","+ element.id + ")'>Apagar metodologia</button>"+
+            "<button class='btn btn-outline-danger btn-sm' onclick='deleteProfessorMethodology(" + element.id + ")'> Remover metodologia</button>"+
+            "<button class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology(" + element.methodology_id + ","+ element.id + ")'>Apagar metodologia</button>"+
             "</div>"+
             "<div id='feedback-delete-methodology-" + element.id + "' class='alert alert-dismissible  d-none mt-2'>"+
             "<small id='feedback-delete-methodology-message-" + element.id + "'>Não foi deletar a metodologia</small>"+
@@ -253,6 +254,31 @@ function deleteMethodology(idMethodology, idModal) {
         }
     });
 
+}
+
+function deleteProfessorMethodology(idProfessorMethodology){
+    $.ajax({
+        url: '/metodologias/professor/delete/'+ idProfessorMethodology,
+        method: 'delete',
+        data: {
+            '_token': token,
+        },
+        success: function (data) {
+            $('#methodology-'+idProfessorMethodology).modal('hide');
+            getProfessorMethodologies();
+        },
+        error: function (xhr, status,error) {
+            errorJSON = JSON.parse(xhr.responseText);
+            if(errorJSON){
+                document.querySelector('#feedback-delete-methodology-message-'+idProfessorMethodology).innerHTML = errorJSON.error;
+            }
+            document.querySelector('#feedback-delete-methodology-' + idProfessorMethodology).classList.remove('alert-success');
+            document.querySelector('#feedback-delete-methodology-' + idProfessorMethodology).classList.add('alert-danger');
+            document.querySelector('#feedback-delete-methodology-' + idProfessorMethodology).classList.remove('d-none');
+            
+
+        }
+    });
 }
 
 function closeAlert(idAlert){
