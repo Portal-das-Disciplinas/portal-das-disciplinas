@@ -35,6 +35,7 @@ class MethodologyService
                 'professor_methodologies.description as professor_description',
                 'methodology_id',
                 'methodologies.name as methodology_name',
+                'methodologies.professor_id as methodology_owner',
                 'methodologies.description as methodology_description',
                 'professor_methodologies.discipline_code'
             )

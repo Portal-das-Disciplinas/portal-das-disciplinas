@@ -19,14 +19,25 @@ function renderProfessorMethodologies() {
             "<div class='modal-body'>" +
             "<div class='d-flex flex-column'>" +
             "<div class='d-flex justify-content-end'>"+
-            "<button class='btn btn-outline-danger btn-sm' onclick='deleteProfessorMethodology(" + element.id + ")'> Remover metodologia</button>"+
-            "<button class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology(" + element.methodology_id + ","+ element.id + ")'>Apagar metodologia</button>"+
+            "<button class='btn btn-outline-danger btn-sm' onclick='deleteProfessorMethodology(" + element.id + ")'> Remover metodologia</button>";
+        if(professorId == element.methodology_owner){
+            html+=
+            "<button class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology(" + element.methodology_id + ","+ element.id + ")'>Apagar metodologia</button>";
+        }
+        html+=
             "</div>"+
             "<div id='feedback-delete-methodology-" + element.id + "' class='alert alert-dismissible  d-none mt-2'>"+
             "<small id='feedback-delete-methodology-message-" + element.id + "'>Não foi deletar a metodologia</small>"+
             "<button class='close' onclick=\"closeAlert('feedback-delete-methodology-" + element.id + "')\">&times</button></small></div>"+
             "<small class='text-secondary'>descrição da metodologia</small>" +
-            "<textarea id='methodology-description-" + index + "' class='text-primary' rows='4'>" + element.methodology_description + "</textarea>" +
+            "<textarea id='methodology-description-" + index + "' rows='4' ";
+        if(professorId != element.methodology_owner){
+            html+="readonly class='text-primary' style='background-color: #F8F8F8FF; resize: none' > ";
+        }else{
+            html+= "class='text-primary'> "
+        }
+        html+=
+            element.methodology_description + "</textarea>" +
             "<span id='feedback-methodology-" + element.methodology_id + "' class='d-none mt-2' style='text-align:center'>Atualizado com sucesso</span>" +
             "<div class='d-flex justify-content-end my-2'>" +
             "<button class='btn btn-primary btn-sm' onclick='updateMethodologyDescription(event," + index + ")'>Atualizar</button>" +
