@@ -782,6 +782,19 @@ class DisciplineController extends Controller
         return response()->json($data, 200);
     }
 
+    function getDisciplineTurmas(Request $request) 
+    {
+        $service = new APISigaaService();
+
+        $data = $service->getDisciplineTurmas($request['codigo']);
+
+        if ($data instanceof Exception) {
+            return response()->json("Não foi possível obter os dados de matrículas", 500);
+        }
+
+        return response()->json($data, 200);
+    }
+
     function getCodesAndNames(Request $request)
     {
         if ($request->ajax()) {
