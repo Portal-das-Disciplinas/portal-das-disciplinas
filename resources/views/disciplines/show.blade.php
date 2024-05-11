@@ -1088,9 +1088,11 @@ mais.
     let disciplineId = "{{$discipline->id}}";
     let disciplineCode = "{{$discipline->code}}";
     let professorId = "{{$discipline->professor->id}}";
+    let userIdProfessor = null;
     @if(auth()->user() && auth()->user()->isProfessor)
-    let userIdProfessor = '{{Auth::user()->professor->id}}';
+    userIdProfessor = '{{Auth::user()->professor->id}}';
     @endif
+    
 </script>
 <script src="{{asset('js/methodologies.js')}}"></script>
 <script>
