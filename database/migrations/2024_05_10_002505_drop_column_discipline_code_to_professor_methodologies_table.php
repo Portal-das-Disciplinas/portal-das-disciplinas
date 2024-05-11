@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
-class ChangeRequiredLevelInTopicsTable extends Migration
+class DropColumnDisciplineCodeToProfessorMethodologiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,8 +13,8 @@ class ChangeRequiredLevelInTopicsTable extends Migration
      */
     public function up()
     {
-        Schema::table('topics', function (Blueprint $table) {
-            DB::statement("ALTER TABLE topics MODIFY COLUMN required_level ENUM('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')");
+        Schema::table('professor_methodologies', function (Blueprint $table) {
+            $table->dropColumn('discipline_code');
         });
     }
 
@@ -26,8 +25,8 @@ class ChangeRequiredLevelInTopicsTable extends Migration
      */
     public function down()
     {
-        Schema::table('topics', function (Blueprint $table) {
-            //
+        Schema::table('professor_methodologies', function (Blueprint $table) {
+            $table->string('discipline_code',64);
         });
     }
 }

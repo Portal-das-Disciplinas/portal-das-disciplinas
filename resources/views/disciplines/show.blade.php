@@ -624,15 +624,15 @@ mais.
                 @endif
 
                 @if(!auth()->user())
-                @foreach($professorMethodologies as $professorMethodology)
+                @foreach($discipline->professor_methodologies as $professorMethodology)
                 <strong class='badge badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
-                    {{$professorMethodology->methodology_name}}
+                    {{$professorMethodology->methodology->name}}
                 </strong>
                 <div class='modal fade' tabindex='-1' role='dialog' id="{{'modal-methodology' . $professorMethodology->id}}">
                     <div class='modal-dialog' role='document'>
                         <div class='modal-content'>
                             <div class="modal-header">
-                                <h3 class='modal-title text-primary'>{{$professorMethodology->methodology_name}}</h3>
+                                <h3 class='modal-title text-primary'>{{$professorMethodology->methodology->name}}</h3>
                                 <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                                     <span aria-hidden='true'>&times;</span>
                                 </button>
@@ -640,13 +640,13 @@ mais.
                             <div class='modal-body'>
                                 <div class='d-flex flex-column'>
                                     <small class='text-secondary'>descrição da metodologia</small>
-                                    <p class='text-primary'>{{$professorMethodology->methodology_description}}</p>
+                                    <p class='text-primary'>{{$professorMethodology->methodology->description}}</p>
                                 </div>
-                                @if($professorMethodology->professor_description && $professorMethodology->professor_description != '')
+                                @if($professorMethodology->methodology_use_description && $professorMethodology->methodology_use_description != '')
                                 <hr>
                                 <div class='d-flex flex-column'>
                                     <small class='text-secondary'>Como o professor aplica a metodologia</small>
-                                    <p class='text-primary'>{{$professorMethodology->professor_description}}</p>
+                                    <p class='text-primary'>{{$professorMethodology->methodology_use_description}}</p>
                                 </div>
                                 @endif
 
@@ -1085,8 +1085,12 @@ mais.
 <script src="{{asset('js/disciplinePerfomanceDataFormPortal.js')}}"></script>
 <script src="{{asset('js/subjectContentsCollapse.js')}}"></script>
 <script>
+    let disciplineId = "{{$discipline->id}}";
     let disciplineCode = "{{$discipline->code}}";
-    let professorId = "{{$discipline->professor->id}}"
+    let professorId = "{{$discipline->professor->id}}";
+    @if(auth()->user() && auth()->user()->isProfessor)
+    let userIdProfessor = '{{Auth::user()->professor->id}}';
+    @endif
 </script>
 <script src="{{asset('js/methodologies.js')}}"></script>
 <script>

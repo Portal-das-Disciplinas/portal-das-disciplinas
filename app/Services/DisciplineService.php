@@ -62,7 +62,7 @@ class DisciplineService
             foreach($filteredDisciplines as $filteredDiscipline){
                 $includeToArray = true;
                 foreach($methodologies as $methodology){
-                    $professorMethodologies = ProfessorMethodology::where('methodology_id','=',$methodology->id)->where('discipline_code','=',$filteredDiscipline->code)->where('professor_id','=',$filteredDiscipline->professor->id);
+                    $professorMethodologies = $filteredDiscipline->professor_methodologies()->where('methodology_id','=',$methodology->id);
                     if($professorMethodologies->count() == 0){
                         $includeToArray = false;
                         break;

@@ -327,10 +327,7 @@ class DisciplineController extends Controller
             ])
             ->findOrFail($id);
         $user = Auth::user();
-
-        $classifications = Classification::all()->sortBy('order');
-        $methodologyService = new MethodologyService();
-        $professorMethodologies = $methodologyService->getProfessorMethodologies($discipline->{'professor_id'}, $discipline->code);
+        $classifications = Classification::all()->sortBy('order');       
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
@@ -339,7 +336,7 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('opinionLinkForm', $opinioLinkForm)
                 ->with('showOpinionForm', true)
-                ->with('professorMethodologies',$professorMethodologies);
+                ->with('professorMethodologies',$discipline->professor_methodologies);
         }
 
         return view(self::VIEW_PATH . 'show', compact('discipline'))
@@ -347,7 +344,7 @@ class DisciplineController extends Controller
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
             ->with('showOpinionForm', true)
-            ->with('professorMethodologies',$professorMethodologies);
+            ->with('professorMethodologies',$discipline->professor_methodologies);
     }
 
     /**
@@ -801,5 +798,23 @@ class DisciplineController extends Controller
             }
             return response()->json($disciplineCodesAndNames);
         }
+    }
+
+    public function addMethodologiesToDiscipline(Request $request)
+    {
+        $disciplineId = $request->discipline_id;
+        $arrayMethodologies = $request->methodologies_array;
+        $methodologyService = new MethodologyService();
+        if ($request->ajax()) {
+            foreach ($arrayMethodologies as $methodology) {
+                $methodologyService
+                    ->addMethodologiesToDiscipline($methodology['id'], $disciplineId);
+            }
+        }
+    }
+
+    public function removeMethodologyFromDiscipline(Request $request){
+        $methodologyService = new MethodologyService();
+        $methodologyService->removeProfessorMethodologyFromDiscipline($request->discipline_id, $request->professor_methodology_id);
     }
 }
