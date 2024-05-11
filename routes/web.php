@@ -141,11 +141,12 @@ Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataCon
 Route::get('/semester/performance/data', [SemesterPerformanceDataController::class,'index'])->name('semester_performance_data');
 Route::delete('/semester/performance/data/delete/{id}',[SemesterPerformanceDataController::class,'destroy'])->name('semester_performance_data.destroy');
 Route::get('/metodologias',[MethodologyController::class,'index'])->name('methodology.index');
-Route::get('/metodologias/professor/{id_professor}/{codigo_disciplina}',[ProfessorMethodologyController::class,'listProfessorMethodologies'])->name('professor_methodologies.get');
+Route::get('/metodologias/professor/{professor_id}/{discipline_id}',[ProfessorMethodologyController::class,'listProfessorMethodologies'])->name('discipline_professor_methodologies.get');
 Route::put('metodologias/update/{idMethodology}',[MethodologyController::class,'update'])->name('methodology.update');
 Route::put('/metodologias/professor/update/{idProfessorMethodology}',[ProfessorMethodologyController::class,'update'])->name('professor_methodology.update');
 Route::post('metodologias/store',[MethodologyController::class,'store'])->name('methodology.store');
-Route::post('/metodologias/professor/store/mult',[ProfessorMethodologyController::class, 'addProfessorMethodologies'])->name('professor_methodology.store_mult');
-Route::delete('/metodologias/delete/{id_methodology}',[MethodologyController::class,'destroy'])->name('methodology.destroy');
+Route::post('/disciplinas/metodologias/adicionar/',[DisciplineController::class, 'addMethodologiesToDiscipline'])->name('discipline_add_methodologies.store_mult');
+Route::delete('/metodologias/delete/{id_methodology}',[MethodologyController::class,'destroy'])->name('methodology.destroyd');
 Route::delete('/metodologias/professor/delete/{id_professor_methodology}',[ProfessorMethodologyController::class,'destroy'])->name('professor_methodology.destroy');
+Route::delete('/disciplinas/metodologias/remove/{discipline_id}/{professor_methodology_id}',[DisciplineController::class,'removeMethodologyFromDiscipline'])->name('discipline.remove_methodology');
 

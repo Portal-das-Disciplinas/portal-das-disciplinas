@@ -12,7 +12,7 @@ class ProfessorMethodology extends Model
     protected $table = "professor_methodologies";
 
     protected $fillable = [
-        'description',
+        'methodology_use_description',
         'professor_id',
         'methodology_id',
         'discipline_code'
@@ -24,5 +24,9 @@ class ProfessorMethodology extends Model
 
     public function methodology(){
         return $this->belongsTo(Methodology::class);
+    }
+
+    public function disciplines(){
+        return $this->belongsToMany(Discipline::class,'discipline_professor_methodology','prof_methodology_id','discipline_id');
     }
 }
