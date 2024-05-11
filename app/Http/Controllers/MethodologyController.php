@@ -50,6 +50,7 @@ class MethodologyController extends Controller
             } catch (NotAuthorizedException $e) {
                 return response()->json(['error'=>$e->getMessage()], 403);
             } catch(Exception $e){
+                Log::info($e->getMessage());
                 return response()->json(['error'=>'Um erro aconteceu'], 500);
             }
         }

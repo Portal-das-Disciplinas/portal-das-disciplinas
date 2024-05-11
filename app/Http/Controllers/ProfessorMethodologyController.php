@@ -13,7 +13,7 @@ class ProfessorMethodologyController extends Controller
     {
         $methodologyService = new MethodologyService();
         if ($request->ajax()) {
-            $professorMethodologies = $methodologyService->getProfessorMethodologies($request['id_professor'], $request['codigo_disciplina']);
+            $professorMethodologies = $methodologyService->getProfessorMethodologies($request['professor_id'], $request['discipline_id']);
             return response()->json($professorMethodologies->toArray());
         }
     }
@@ -26,18 +26,6 @@ class ProfessorMethodologyController extends Controller
             ->updateProfessorMethodology($request->idProfessorMethodology, $description, $request->discipline_code);
         if ($request->ajax()) {
             return response()->json($professorMethodology);
-        }
-    }
-
-    public function addProfessorMethodologies(Request $request)
-    {
-        $arrayMethodologies = $request->methodologies_array;
-        $methodologyService = new MethodologyService();
-        if ($request->ajax()) {
-            foreach ($arrayMethodologies as $methodology) {
-                $methodologyService
-                    ->addMethodologiesToProfessorDiscipline($methodology['id'], $methodology['professor_methodology_id'], $methodology['discipline_code']);
-            }
         }
     }
 
