@@ -79,7 +79,7 @@ class MethodologyService
         $professorId = Auth::user()->professor->id;
         $discipline = Discipline::findOrFail($idDiscipline);
         $methodology = Methodology::findOrFail($idMethodology);
-        $professorMethodologyQuery = $discipline->professor_methodologies()->where('methodology_id', '=', $idMethodology)->where('professor_id','=',$professorId);
+        $professorMethodologyQuery = ProfessorMethodology::where('professor_id',$professorId)->where('methodology_id','=',$idMethodology);
         if ($professorMethodologyQuery->exists()) {
             $professorMethodology = $professorMethodologyQuery->first();
             $disciplinesWithProfessorMethodology = $professorMethodology->disciplines();
@@ -160,13 +160,21 @@ class MethodologyService
 
     function removeProfessorMethodologyFromDiscipline($disciplineId, $professorMethodologyId)
     {
-        $professor = Auth::user()->professor;
-        $professorMethodology = ProfessorMethodology::findOrFail($professorMethodologyId);
-        $discipline = Discipline::findOrFail($disciplineId);
-        if (($professor->id != $professorMethodology->professor->id) || ($professor->id != $discipline->professor->id)) {
-            throw new NotAuthorizedException("Você não tem autorização para realizar esta operação");
+        if (Auth::user() && Auth::user()->isAdmin) {
+            $professorMethodology = ProfessorMethodology::findOrFail($professorMethodologyId);
+            $discipline = Discipline::findOrFail($disciplineId);
+            $discipline->professor_methodologies()->detach($professorMethodologyId);
+
+        } elseif (Auth::user() && Auth::user()->isProfessor) {
+            $professor = Auth::user()->professor;
+            $professorMethodology = ProfessorMethodology::findOrFail($professorMethodologyId);
+            $discipline = Discipline::findOrFail($disciplineId);
+            if (($professor->id != $professorMethodology->professor->id) || ($professor->id != $discipline->professor->id)) {
+                throw new NotAuthorizedException("Você não tem autorização para realizar esta operação");
+            }
+            $discipline->professor_methodologies()->detach($professorMethodologyId);
         }
-        $discipline->professor_methodologies()->detach($professorMethodologyId);
+
         return $professorMethodology;
     }
 }

@@ -1,4 +1,5 @@
 let professorMethodologies = [];
+console.log('professorid: ' + userIdProfessor);
 function renderProfessorMethodologies() {
     let html = "";
     professorMethodologies.forEach(function (element, index) {
@@ -19,10 +20,10 @@ function renderProfessorMethodologies() {
             "<div class='modal-body'>" +
             "<div class='d-flex flex-column'>" +
             "<div class='d-flex justify-content-end'>";
-        if (userIdProfessor == element.professor_methodology_id) {
+        if (userIdProfessor==null || (userIdProfessor == element.professor_methodology_id)) {
             html += "<button class='btn btn-outline-danger btn-sm' onclick='removeProfessorMethodology(" + disciplineId + ',' + element.id + ")'> Remover metodologia</button>";
         }
-        if (userIdProfessor == element.methodology_owner && userIdProfessor == professorId) {
+        if ((userIdProfessor==null) || (userIdProfessor == element.methodology_owner && userIdProfessor == professorId)) {
             html +=
                 "<button class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology(" + element.methodology_id + "," + element.id + ")'>Apagar metodologia</button>";
         }
@@ -33,7 +34,7 @@ function renderProfessorMethodologies() {
             "<button class='close' onclick=\"closeAlert('feedback-delete-methodology-" + element.id + "')\">&times</button></small></div>" +
             "<small class='text-secondary'>descrição da metodologia</small>" +
             "<textarea id='methodology-description-" + index + "' rows='4' ";
-        if (userIdProfessor != element.methodology_owner) {
+        if (userIdProfessor != null && (userIdProfessor != element.methodology_owner)) {
             html += "readonly class='text-primary' style='background-color: #F8F8F8FF; resize: none' > ";
         } else {
             html += "class='text-primary'> "
@@ -50,7 +51,7 @@ function renderProfessorMethodologies() {
             "<div class='d-flex flex-column'>" +
             "<small class='text-secondary'>Como o professor aplica a metodologia</small>" +
             "<textarea id='professor-methodology-description-" + index + "' class='text-primary' rows='10' ";
-        if (userIdProfessor != professorId) {
+        if (userIdProfessor != null && (userIdProfessor != professorId)) {
             html += "readonly class='text-primary' style='background-color: #F8F8F8FF; resize: none' > ";
         } else {
             html += "class='text-primary'> "
@@ -91,11 +92,11 @@ function getProfessorMethodologies() {
 }
 
 function updateMethodologyAndProfessorMethodology(event, professorMethodologiesIndex) {
-    if (userIdProfessor == professorMethodologies[professorMethodologiesIndex].methodology_owner) {
+    if (userIdProfessor == null || (userIdProfessor == professorMethodologies[professorMethodologiesIndex].methodology_owner)) {
         updateMethodologyDescription(event, professorMethodologiesIndex);
     }
 
-    if (userIdProfessor == professorMethodologies[professorMethodologiesIndex].professor_methodology_id) {
+    if (userIdProfessor == null || userIdProfessor == professorMethodologies[professorMethodologiesIndex].professor_methodology_id) {
         updateProfessorMethodologyDescription(event, professorMethodologiesIndex);
     }
 
