@@ -666,13 +666,24 @@ mais.
                 <div class="card p-4 col-12 col-md-8">
                     <h1>Oferta/Matrícula</h1>
                     <hr class="py-2">
-                    <div class="d-flex flex-column gap-3">
-                        <h2>Ofertas</h2>
-                        <p>
-                            <strong class="text-primary">Última oferta:</strong>
-                            <!-- Gerado via JS -->
-                            <span id="ultima-oferta">Buscando...</span>
-                        </p>
+                    <div class="d-flex flex-column">
+                        <h2 class="pb-3">Ofertas</h2>
+                        <div class="accordion" id="ofertas">
+                            <div class="card" style="cursor: pointer" data-toggle="collapse" data-target="#collapUltimaOferta" aria-expanded="false" aria-controls="collapUltimaOferta">
+                                <div class="card-header" id="headingUltimaOferta">
+                                    <h3 class="mb-0" style="font-size: 1.75rem;">
+                                        <span class="text-primary">Última oferta: </span>
+                                        <span id="ultima-oferta">Buscando...</span>
+                                    </h3>
+                                </div>
+                          
+                                <div id="collapUltimaOferta" class="collapse" aria-labelledby="headingUltimaOferta" data-parent="#ofertas">
+                                    <div class="card-body" id="collapUltimaOfertaBody">
+                                        <p class="font-weight-bold">Turmas</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1088,24 +1099,6 @@ mais.
             });
         }
     });
-
-    // Scripts de oferta
-    $(document).ready(function() {
-        // Busca última oferta
-        $.ajax({
-            method: "GET",
-            url: "{{ route('disciplinas.turmas') }}",
-            data: {
-                codigo: "{{ $discipline->code }}"
-            }
-        }).always(function(data, textStatus) {
-            if (textStatus === "success") {
-                $('#ultima-oferta').html(`${data[0].ano}.${data[0].periodo}`);
-            } else {
-                $('#ultima-oferta').html("Infelizmente não conseguimos buscar os dados de oferta");
-            }
-        });
-    });
 </script>
 
 
@@ -1133,6 +1126,12 @@ mais.
     })
 
     searchDisciplineData("{{$discipline->code}}");
+</script>
+
+<script src="{{asset('js/offers.js')}}"></script>
+<script>
+    // let disciplineCode = "{{ $discipline->code }}";
+    getOffersData(disciplineCode);
 </script>
 
 @endsection
