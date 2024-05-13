@@ -14,8 +14,10 @@ class MethodologyController extends Controller
 {
     public function index(Request $request)
     {
-        $methodologies = Methodology::all();
+        $methodologyService = new MethodologyService();
+        
         if ($request->ajax()) {
+            $methodologies = $methodologyService->listAllMethodologies();
             return response()->json($methodologies);
         }
     }
