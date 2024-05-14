@@ -683,6 +683,22 @@ mais.
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="card" style="cursor: pointer" data-toggle="collapse" data-target="#collapOfertasPassadas" aria-expanded="false" aria-controls="collapOfertasPassadas">
+                                <div class="card-header" id="headingOfertasPassadas">
+                                    <h3 class="mb-0" style="font-size: 1.75rem;">
+                                        <span class="text-primary">Ofertas passadas </span>
+                                        <br>
+                                        <small>Últimos 5 anos</small>
+                                    </h3>
+                                </div>
+                          
+                                <div id="collapOfertasPassadas" class="collapse" aria-labelledby="headingOfertasPassadas" data-parent="#ofertas">
+                                    <div class="card-body" id="collapOfertasPassadasBody">
+                                        <p class="font-weight-bold">Turmas</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1130,7 +1146,6 @@ mais.
 
 <script src="{{asset('js/offers.js')}}"></script>
 <script>
-    // let disciplineCode = "{{ $discipline->code }}";
     getOffersData(disciplineCode);
 </script>
 

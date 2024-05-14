@@ -15,28 +15,34 @@ async function getDisciplineClasses(disciplineCode) {
 async function getDisciplineTeacher(imdClass) {
     const response = await fetch(`/disciplinas/turmas/${imdClass['id-turma']}/docente`);
 
-    let data = null;
+    let teacherName = "Não encontrado";
 
     if (response.status === 200) {
-        data = await response.json();
+        let teacherResponse = await response.json();
+
+        if (teacherResponse != null && teacherResponse.length > 0) {
+            teacherName = teacherResponse[0]['nome-docente'];
+        }
     }
 
     return {
-        docente: data[0]["nome-docente"],
+        docente: teacherName,
         turma: imdClass['id-turma']
     };
 }
 
-async function getDisciplineTeachers(classes) {
+async function getDisciplineTeachers(classes, sort = false) {
     const promises = classes.map(getDisciplineTeacher);
     const responses = await Promise.all(promises);
 
-    return responses.sort((a, b) => a.docente.localeCompare(b.docente));
+    if (sort) {
+        return responses.sort((a, b) => a.docente.localeCompare(b.docente));
+    }
+
+    return responses;
 }
 
-async function getOffersData() {
-    let classes = await getDisciplineClasses(disciplineCode);
-
+async function handleLastOffer(classes) {
     if (classes[0] != null) {
         let latestYear = classes[0].ano, latestPeriod = classes[0].periodo;
         $('#ultima-oferta').html(`${latestYear}.${latestPeriod}`);
@@ -47,14 +53,25 @@ async function getOffersData() {
             return c.ano === latestYear;
         });
 
-        let latestTeachers = await getDisciplineTeachers(latestClasses);
+        let latestTeachers = await getDisciplineTeachers(latestClasses, true);
         let lastOfferList = $('<ul class="d-flex flex-column gap-3"></ul>');
 
         if (latestTeachers.length > 0) {
             latestTeachers.forEach(data => {
                 let [imdClass,] = latestClasses.filter(c => c['id-turma'] === data.turma);
 
-                $(lastOfferList).append(`<li>Prof: <span style="text-transform: capitalize;">${data.docente.toLowerCase()}</span> - Turma: ${imdClass['codigo-turma']}</li>`);
+                $(lastOfferList).append(`
+                <li class="d-flex flex-column">
+                    <hr class="p-2">
+                    <div>
+                        <span>${imdClass.ano}.${imdClass.periodo} -</span> 
+                        <span style="text-transform: capitalize;">${data.docente.toLowerCase()} -</span>
+                        <span>Turma ${imdClass['codigo-turma']}</span>
+                    </div>
+                    <div>
+                        <span class="small">${imdClass['descricao-horario']}</span>
+                    </div>
+                </li>`);
             });
 
             $('#collapUltimaOfertaBody').html(lastOfferList);
@@ -64,5 +81,53 @@ async function getOffersData() {
     } else {
         $('#ultima-oferta').html("Infelizmente não conseguimos buscar estes dados :(");
     }
+}
 
+async function handleOffersHistory(classes) {
+    if (classes.length > 0) {
+        $('#collapOfertasPassadasBody').html("Buscando...");
+
+        const currentYear = new Date().getFullYear();
+
+        let classesIn5Years = classes.filter(c => {
+            return c.ano >= currentYear - 5;
+        });
+        
+        let offersHistoryList = $('<ul class="d-flex flex-column gap-3 list-unstyled" id="offers-history"></ul>');
+        let teachers = await getDisciplineTeachers(classesIn5Years);
+
+
+        if (teachers.length > 0) {
+            teachers.forEach(data => {
+                let [imdClass,] = classes.filter(c => c['id-turma'] === data.turma);
+
+                $(offersHistoryList).append(`
+                <li class="d-flex flex-column">
+                    <hr class="p-2">
+                    <div>
+                        <span>${imdClass.ano}.${imdClass.periodo} -</span> 
+                        <span style="text-transform: capitalize;">${data.docente.toLowerCase()} -</span>
+                        <span>Turma ${imdClass['codigo-turma']}</span>
+                    </div>
+                    <div>
+                        <span class="small">${imdClass['descricao-horario']}</span>
+                    </div>
+                </li>
+                `);
+            });
+
+            $('#collapOfertasPassadasBody').html(offersHistoryList);
+        } else {
+            $('#collapOfertasPassadasBody').html("Dados não encontrados :(");
+        }
+    }
+}
+
+async function getOffersData(disciplineCode) {
+    let classes = await getDisciplineClasses(disciplineCode);
+
+    await Promise.all([
+        handleLastOffer(classes),
+        handleOffersHistory(classes)
+    ]);
 }
