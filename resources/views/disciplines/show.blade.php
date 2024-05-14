@@ -602,7 +602,7 @@ mais.
                                                 <input id="nome-nova-metodologia" type='text' class='form-control mb-1'>
                                                 <label class="text-secondary" for="descricao-nova-metodologia">Descrição da metodologia</label>
                                                 <textarea id="descricao-nova-metodologia" class='form-control mb-1' rows='6'></textarea>
-                                                <p><small id="feedback-cadastro-methodology" class="d-none text-success form-text" class="form-label">* Metodologia adicionada</small></p>
+                                                <p><small id="feedback-cadastro-methodology" class="d-none text-success form-text">Metodologia adicionada</small></p>
                                                 <button class="btn btn-sm btn-outline-primary" onclick="btnCreateMethodology()">Criar</button>
                                             </div>
                                         </div>
@@ -611,12 +611,17 @@ mais.
                                         <div class='col-md-12 card pt-2' id="methodologiesToChoose">
                                             <span class="text-info">carregando...</span>
                                         </div>
+                                        <div class='col-md-12'>
+                                            <small><strong id="feedback-add-methodology" class="d-none text-danger form-text">
+                                                Selecione pelo menos uma metodologia.
+                                            </strong></small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-sm btn-success" onclick="addSelectedMethodologies()">Adicionar selecionados</button>
                                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-sm btn-success" onclick="addSelectedMethodologies()">Adicionar selecionados</button>
                             </div>
                         </div>
                     </div>
@@ -660,6 +665,58 @@ mais.
                 @endforeach
                 @endif
 
+                <div class='modal fade' tabindex='-1' role='dialog' id='methodology-professor-view'>
+                    <div class='modal-dialog' role='document'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h3 id='methodology-name' class='modal-title text-primary'></h3>
+                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                    <span aria-hidden='true'>&times;</span>
+                                </button>
+                            </div>
+                            <div class='modal-body'>
+                                <div class='d-flex flex-column'>
+                                    <div class='d-flex justify-content-end'>
+                                        <button id="btn-remove-methodology" class='btn btn-outline-danger btn-sm' onclick='removeProfessorMethodology()'>
+                                            Remover metodologia
+                                        </button>
+
+                                        <button id="btn-delete-methodology" class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology()'>
+                                            Apagar metodologia
+                                        </button>
+
+                                    </div>
+                                    <div id='feedback-delete-methodology' class='alert alert-dismissible  d-none mt-2'>
+                                        <small id='feedback-delete-methodology-message'>Não foi deletar a
+                                            metodologia</small>
+                                        <button class='close' onclick="closeAlert('feedback-delete-methodology')">&times</button>
+                                        </small>
+                                    </div>
+                                    <small class='text-secondary'>descrição da metodologia</small>
+                                    <textarea id='methodology-description' rows='9' class='text-primary'></textarea>
+                                    <div id='feedback-methodology' class='d-none alert  mt-2'>
+                                        <span id='feedback-methodology-message' style='text-align:center'>Erro ao
+                                            atualizar</span>
+                                        <button class='close' onclick="closeAlert('feedback-methodology')">&times</button>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class='d-flex flex-column'>
+                                    <small class='text-secondary'>Como o professor aplica a metodologia</small>
+                                    <textarea id='methodology-use-description' class='text-primary' rows='10' class="text-primary"></textarea>
+                                    <div id='feedback-professor-methodology' class='d-none alert  mt-2'>
+                                        <span id='feedback-professor-methodology-message' style='text-align:center'>Erro ao atualizar</span>
+                                        <button class='close' onclick="closeAlert('feedback-professor-methodology')">&times</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='modal-footer'>
+                                <button class='btn btn-success btn-sm' onclick='updateMethodologyAndProfessorMethodology(event)'>Salvar</button>
+                                <button type='button' class='btn btn-sm btn-primary' data-dismiss='modal'>Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -1092,7 +1149,6 @@ mais.
     @if(auth()->user() && auth()->user()->isProfessor)
     userIdProfessor = '{{Auth::user()->professor->id}}';
     @endif
-    
 </script>
 <script src="{{asset('js/methodologies.js')}}"></script>
 <script>

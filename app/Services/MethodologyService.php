@@ -22,6 +22,9 @@ class MethodologyService
     public function saveMethodology($name, $description, $idProfessor)
     {
         $methodology = new Methodology();
+        if(Methodology::where('name','=',$name)->exists()){
+            throw new ExistingDataException('Já existe uma metodologia com este nome cadastrada.');
+        }
         $methodology->name = $name;
         $methodology->description = $description;
         $methodology->{'professor_id'} = $idProfessor;
@@ -87,6 +90,7 @@ class MethodologyService
                 throw new ExistingDataException('Já esiste esta metodologia na disciplina');
             }
             $professorMethodology->disciplines()->attach($idDiscipline);
+            return $professorMethodology;
         } else {
             $newProfessorMethodology = ProfessorMethodology::create([
                 'professor_id' => $professorId,
@@ -94,6 +98,7 @@ class MethodologyService
 
             ]);
             $discipline->professor_methodologies()->attach($newProfessorMethodology->id);
+            return $newProfessorMethodology;
         }
     }
 
