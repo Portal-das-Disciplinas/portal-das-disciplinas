@@ -692,8 +692,17 @@ mais.
                                         <button class='close' onclick="closeAlert('feedback-delete-methodology')">&times</button>
                                         </small>
                                     </div>
+                                    <ul id="methodology-description-tabs" class="nav nav-tabs mt-2">
+                                        <li class="nav-item" style="cursor:pointer">
+                                            <a id="tab-default-description" class="nav-link active">Descrição padrão</a>  
+                                        </li>
+                                        <li class="nav-item" style="cursor:pointer">
+                                            <a id="tab-professor-description" class="nav-link">Sua descrição</a>  
+                                        </li>
+                                    </ul>
                                     <small class='text-secondary'>descrição da metodologia</small>
                                     <textarea id='methodology-description' rows='9' class='text-primary'></textarea>
+                                    <textarea id='professor-methodology-description' rows='9' class='text-primary d-none'></textarea>
                                     <div id='feedback-methodology' class='d-none alert  mt-2'>
                                         <span id='feedback-methodology-message' style='text-align:center'>Erro ao
                                             atualizar</span>
