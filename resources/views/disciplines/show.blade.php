@@ -629,6 +629,7 @@ mais.
                 @endif
 
                 @if(!auth()->user())
+                @if(count($discipline->professor_methodologies) > 0)
                 @foreach($discipline->professor_methodologies as $professorMethodology)
                 <strong class='badge badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
                     {{$professorMethodology->methodology->name}}
@@ -667,6 +668,9 @@ mais.
                     </div>
                 </div>
                 @endforeach
+                @else
+                <p>Não há metodologias cadastradas</p>
+                @endif
                 @endif
 
                 <div class='modal fade' tabindex='-1' role='dialog' id='methodology-professor-view'>
@@ -704,9 +708,9 @@ mais.
                                             <a id="tab-professor-description" class="nav-link">Sua descrição</a>  
                                         </li>
                                     </ul>
-                                    <small class='text-secondary'>descrição da metodologia</small>
-                                    <textarea id='methodology-description' rows='9' class='text-primary'></textarea>
-                                    <textarea id='professor-methodology-description' rows='9' class='text-primary d-none'></textarea>
+                                    <small class='text-secondary'>Descrição da metodologia</small>
+                                    <textarea id='methodology-description' rows='9' class='text-primary' placeholder="Descreva como é essa metodologia"></textarea>
+                                    <textarea id='professor-methodology-description' rows='9' class='text-primary d-none' placeholder="Descreva como é esta metodologia"></textarea>
                                     <div id='feedback-methodology' class='d-none alert  mt-2'>
                                         <span id='feedback-methodology-message' style='text-align:center'>Erro ao
                                             atualizar</span>
@@ -716,7 +720,7 @@ mais.
                                 <hr>
                                 <div class='d-flex flex-column'>
                                     <small class='text-secondary'>Como o professor aplica a metodologia</small>
-                                    <textarea id='methodology-use-description' class='text-primary' rows='10' class="text-primary"></textarea>
+                                    <textarea id='methodology-use-description' class='text-primary' rows='10' class="text-primary" placeholder="Descreva como você aplica esta metodologia"></textarea>
                                     <div id='feedback-professor-methodology' class='d-none alert  mt-2'>
                                         <span id='feedback-professor-methodology-message' style='text-align:center'>Erro ao atualizar</span>
                                         <button class='close' onclick="closeAlert('feedback-professor-methodology')">&times</button>

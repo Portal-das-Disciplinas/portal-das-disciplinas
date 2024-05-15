@@ -2,12 +2,16 @@ let professorMethodologies = [];
 let professorMethodologiesIndex = -1;
 function renderProfessorMethodologies() {
     let html = "";
-    professorMethodologies.forEach(function (element, index) {
-        html +=
-            "<strong class='badge  badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target='#methodology-professor-view" + "' onclick='onClickMethodology(" + index + ")'>" +
-            element.methodology_name +
-            "</strong>";
-    });
+    if (professorMethodologies.length > 0) {
+        professorMethodologies.forEach(function (element, index) {
+            html +=
+                "<strong class='badge  badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target='#methodology-professor-view" + "' onclick='onClickMethodology(" + index + ")'>" +
+                element.methodology_name +
+                "</strong>";
+        });
+    }else{
+        html = "Não há metodologias cadastradas.";
+    }
 
     document.querySelector('#metodologias').innerHTML = html;
 }
