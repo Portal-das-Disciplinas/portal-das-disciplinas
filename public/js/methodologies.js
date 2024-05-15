@@ -9,7 +9,7 @@ function renderProfessorMethodologies() {
                 element.methodology_name +
                 "</strong>";
         });
-    }else{
+    } else {
         html = "Não há metodologias cadastradas.";
     }
 
@@ -404,6 +404,8 @@ function btnCreateMethodology() {
             feedbackRegisterMethodology.classList.remove('d-none');
             feedbackRegisterMethodology.classList.remove('text-danger');
             feedbackRegisterMethodology.classList.add('text-success');
+            document.querySelector('#nome-nova-metodologia').value = "";
+            document.querySelector('#descricao-nova-metodologia').value = "";
             openModalAddMethodologies();
         },
         error: function (xhr, status, error) {

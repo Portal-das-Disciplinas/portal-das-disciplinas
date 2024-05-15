@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use LengthException;
 
 class MethodologyService
 {
@@ -21,6 +22,13 @@ class MethodologyService
 
     public function saveMethodology($name, $description, $idProfessor)
     {
+        if(!isset($name) ||strlen($name) < 3){
+            throw new LengthException('Nome da disciplina muito curto.');
+        }
+        if(!isset($description) || strlen($description) < 3){
+            throw new LengthException('Descrição da metodologia muito curta.');
+        }
+
         $methodology = new Methodology();
         if(Methodology::where('name','=',$name)->exists()){
             throw new ExistingDataException('Já existe uma metodologia com este nome cadastrada.');

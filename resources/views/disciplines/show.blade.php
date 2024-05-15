@@ -582,7 +582,7 @@ mais.
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title">Cadastro de metodologia</h3>
+                                <h3 class="modal-title">Cadastro e seleção metodologias</h3>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -608,7 +608,11 @@ mais.
                                         </div>
                                     </div>
                                     <div class='row'>
-                                        <div class='col-md-12 card pt-2' id="methodologiesToChoose">
+                                        <div class="col-md-12">
+                                            <hr>
+                                            <span class="text-primary">Selecione as metodologias abaixo</span>
+                                        </div>
+                                        <div class='col-md-12 pt-2' id="methodologiesToChoose" style="border:solid 1px rgba(0,0,0,0.2); border-radius:10px; max-height:400px; overflow:auto">
                                             <span class="text-info">carregando...</span>
                                         </div>
                                         <div class='col-md-12'>
