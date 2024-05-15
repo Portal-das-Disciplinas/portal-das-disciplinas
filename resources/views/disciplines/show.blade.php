@@ -645,7 +645,11 @@ mais.
                             <div class='modal-body'>
                                 <div class='d-flex flex-column'>
                                     <small class='text-secondary'>descrição da metodologia</small>
+                                    @if(isset($professorMethodology->professor_description) && $professorMethodology->professor_description != "")
+                                    <p class='text-primary'>{{$professorMethodology->professor_description}}</p>
+                                    @else
                                     <p class='text-primary'>{{$professorMethodology->methodology->description}}</p>
+                                    @endif
                                 </div>
                                 @if($professorMethodology->methodology_use_description && $professorMethodology->methodology_use_description != '')
                                 <hr>
