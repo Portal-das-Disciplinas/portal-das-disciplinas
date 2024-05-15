@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ExistingDataException;
 use App\Exceptions\NotAuthorizedException;
 use App\Models\Methodology;
 use App\Services\MethodologyService;
@@ -14,8 +15,10 @@ class MethodologyController extends Controller
 {
     public function index(Request $request)
     {
-        $methodologies = Methodology::all();
+        $methodologyService = new MethodologyService();
+
         if ($request->ajax()) {
+            $methodologies = $methodologyService->listAllMethodologies();
             return response()->json($methodologies);
         }
     }
@@ -23,11 +26,19 @@ class MethodologyController extends Controller
     public function store(Request $request)
     {
         $methodologyService = new MethodologyService();
-        $methodology = $methodologyService
-            ->saveMethodology($request->methodology['name'], $request->methodology['description'], $request->methodology['professor_id']);
-        if ($request->ajax()) {
 
-            return response()->json($methodology);
+        if ($request->ajax()) {
+            try{
+                $methodology = $methodologyService
+                ->saveMethodology($request->methodology['name'], $request->methodology['description'], $request->methodology['professor_id']);
+                return response()->json($methodology);
+            } catch(ExistingDataException $e){
+                return response()->json(['error' => 'Já existe uma metodologia cadastrada com o mesmo nome.'],409);
+            } catch(Exception $e){
+                return response()->json(['error' => 'Erro desconhecido'],500);
+            }
+            
+            
         }
     }
 
@@ -48,10 +59,10 @@ class MethodologyController extends Controller
                 $methodology = $methodologyService->deleteMethodology($request->id_methodology);
                 return response()->json($methodology);
             } catch (NotAuthorizedException $e) {
-                return response()->json(['error'=>$e->getMessage()], 403);
-            } catch(Exception $e){
+                return response()->json(['error' => $e->getMessage()], 403);
+            } catch (Exception $e) {
                 Log::info($e->getMessage());
-                return response()->json(['error'=>'Um erro aconteceu'], 500);
+                return response()->json(['error' => 'Um erro aconteceu'], 500);
             }
         }
     }
