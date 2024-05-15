@@ -83,7 +83,7 @@ class DisciplineController extends Controller
             ->with('classifications', $classifications)
             ->with('studentsData', $studentsData)
             ->with('professors', $professors_all)
-            ->with('methodologies',$methodologies);
+            ->with('methodologies', $methodologies);
     }
 
     public function disciplineFilter(Request $request)
@@ -97,12 +97,12 @@ class DisciplineController extends Controller
         $methodologies = (new MethodologyService())->listAllMethodologies();
         return view('disciplines.index')
             ->with('theme', $this->theme)
-            ->with('opinionLinkForm',$opinionLinkForm)
+            ->with('opinionLinkForm', $opinionLinkForm)
             ->with('disciplines', $filteredDisciplines->paginate(12)->withQueryString())
             ->with('emphasis', $emphasis)
             ->with('classifications', $classifications)
             ->with('professors', $professors)
-            ->with('methodologies',$methodologies);
+            ->with('methodologies', $methodologies);
     }
 
     /**
@@ -327,7 +327,7 @@ class DisciplineController extends Controller
             ])
             ->findOrFail($id);
         $user = Auth::user();
-        $classifications = Classification::all()->sortBy('order');       
+        $classifications = Classification::all()->sortBy('order');
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         if (!is_null($user)) {
             $can = $user->canDiscipline($discipline);
@@ -336,7 +336,7 @@ class DisciplineController extends Controller
                 ->with('theme', $this->theme)
                 ->with('opinionLinkForm', $opinioLinkForm)
                 ->with('showOpinionForm', true)
-                ->with('professorMethodologies',$discipline->professor_methodologies);
+                ->with('professorMethodologies', $discipline->professor_methodologies);
         }
 
         return view(self::VIEW_PATH . 'show', compact('discipline'))
@@ -344,7 +344,7 @@ class DisciplineController extends Controller
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
             ->with('showOpinionForm', true)
-            ->with('professorMethodologies',$discipline->professor_methodologies);
+            ->with('professorMethodologies', $discipline->professor_methodologies);
     }
 
     /**
@@ -803,17 +803,24 @@ class DisciplineController extends Controller
     public function addMethodologiesToDiscipline(Request $request)
     {
         $disciplineId = $request->discipline_id;
-        $arrayMethodologies = $request->methodologies_array;
+        $methodologies = [];
         $methodologyService = new MethodologyService();
         if ($request->ajax()) {
-            foreach ($arrayMethodologies as $methodology) {
-                $methodologyService
-                    ->addMethodologiesToDiscipline($methodology['id'], $disciplineId);
+            if ($request->methodologies_array) {
+                $arrayMethodologies = $request->methodologies_array;
+                foreach ($arrayMethodologies as $methodology) {
+                    $addedMethodology = $methodologyService->addMethodologiesToDiscipline($methodology['id'], $disciplineId);
+                    array_push($methodologies, $addedMethodology);
+                }
+                return response()->json($methodologies, 201);
+            } else {
+                return response()->json(['error'=>'Não há disciplinas para serem adicionadas'], 400);
             }
         }
     }
 
-    public function removeMethodologyFromDiscipline(Request $request){
+    public function removeMethodologyFromDiscipline(Request $request)
+    {
         $methodologyService = new MethodologyService();
         $methodologyService->removeProfessorMethodologyFromDiscipline($request->discipline_id, $request->professor_methodology_id);
     }

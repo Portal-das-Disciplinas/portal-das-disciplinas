@@ -22,6 +22,9 @@ class MethodologyService
     public function saveMethodology($name, $description, $idProfessor)
     {
         $methodology = new Methodology();
+        if(Methodology::where('name','=',$name)->exists()){
+            throw new ExistingDataException('Já existe uma metodologia com este nome cadastrada.');
+        }
         $methodology->name = $name;
         $methodology->description = $description;
         $methodology->{'professor_id'} = $idProfessor;
@@ -41,6 +44,7 @@ class MethodologyService
                 'methodologies.name as methodology_name',
                 'methodologies.professor_id as methodology_owner',
                 'methodologies.description as methodology_description',
+                'professor_methodologies.professor_description'
             )
             ->join('methodologies', 'methodologies.id', '=', 'professor_methodologies.methodology_id')->orderBy('methodology_name')->get();
         return $professorMethodologies;
@@ -60,13 +64,13 @@ class MethodologyService
         }
     }
 
-    public function updateProfessorMethodology($idProfessorMethodology, $description, $disciplineCode)
+    public function updateProfessorMethodology($idProfessorMethodology, $description, $professor_methodology_description)
     {
         $professorMethodology = ProfessorMethodology::find($idProfessorMethodology);
         if (Auth::user()->isAdmin || ($professorMethodology->professor_id == Auth::user()->professor->id)) {
             $professorMethodology = ProfessorMethodology::find($idProfessorMethodology);
             $professorMethodology->methodology_use_description = $description;
-            $professorMethodology->$disciplineCode;
+            $professorMethodology->professor_description = $professor_methodology_description;
             $professorMethodology->save();
             return $professorMethodology;
         } else {
@@ -87,6 +91,7 @@ class MethodologyService
                 throw new ExistingDataException('Já esiste esta metodologia na disciplina');
             }
             $professorMethodology->disciplines()->attach($idDiscipline);
+            return $professorMethodology;
         } else {
             $newProfessorMethodology = ProfessorMethodology::create([
                 'professor_id' => $professorId,
@@ -94,6 +99,7 @@ class MethodologyService
 
             ]);
             $discipline->professor_methodologies()->attach($newProfessorMethodology->id);
+            return $newProfessorMethodology;
         }
     }
 

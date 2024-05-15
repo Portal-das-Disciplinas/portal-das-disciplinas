@@ -22,8 +22,9 @@ class ProfessorMethodologyController extends Controller
     {
         $methodologyService = new MethodologyService();
         $description = isset($request->description) ? $request->description : "";
+        $professorMethodologyDescription = isset($request->professor_methodology_description) ? $request->professor_methodology_description : "";
         $professorMethodology = $methodologyService
-            ->updateProfessorMethodology($request->idProfessorMethodology, $description, $request->discipline_code);
+            ->updateProfessorMethodology($request->idProfessorMethodology, $description,$professorMethodologyDescription);
         if ($request->ajax()) {
             return response()->json($professorMethodology);
         }
