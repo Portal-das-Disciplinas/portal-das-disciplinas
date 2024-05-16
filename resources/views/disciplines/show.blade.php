@@ -695,7 +695,7 @@ mais.
                           
                                 <div id="collapOfertasPassadas" class="collapse" aria-labelledby="headingOfertasPassadas" data-parent="#ofertas">
                                     <div class="card-body" id="collapOfertasPassadasBody">
-                                        <p class="font-weight-bold">Turmas</p>
+                                        <ul class="d-flex flex-column gap-3 list-unstyled" id="offers-history"></ul>
                                     </div>
                                 </div>
                             </div>
@@ -1146,7 +1146,7 @@ mais.
 
 <script src="{{asset('js/offers.js')}}"></script>
 <script>
-    getOffersData(disciplineCode);
+    getOffersData("{{$discipline->code}}");
 </script>
 
 @endsection
