@@ -85,7 +85,8 @@ async function handleLastOffer(classes) {
 
 async function handleOffersHistory(classes) {
     if (classes.length > 0) {
-        $('#collapOfertasPassadasBody').html("Buscando...");
+        let stateElement = '<p class="font-weight-bold" id="history-state">Buscando...</p>';
+        $('#collapOfertasPassadasBody').prepend(stateElement);
 
         const currentYear = new Date().getFullYear();
 
@@ -93,30 +94,63 @@ async function handleOffersHistory(classes) {
             return c.ano >= currentYear - 5;
         });
         
-        let offersHistoryList = $('<ul class="d-flex flex-column gap-3 list-unstyled" id="offers-history"></ul>');
-        let teachers = await getDisciplineTeachers(classesIn5Years);
-
+        let offersHistoryList = $('#offers-history');
+        let teachers = await getDisciplineTeachers(classesIn5Years, true);
 
         if (teachers.length > 0) {
-            teachers.forEach(data => {
-                let [imdClass,] = classes.filter(c => c['id-turma'] === data.turma);
+            let indexFrom = 0, indexTo = 2, showingAll = false;
 
-                $(offersHistoryList).append(`
-                <li class="d-flex flex-column">
-                    <hr class="p-2">
-                    <div>
-                        <span>${imdClass.ano}.${imdClass.periodo} -</span> 
-                        <span style="text-transform: capitalize;">${data.docente.toLowerCase()} -</span>
-                        <span>Turma ${imdClass['codigo-turma']}</span>
-                    </div>
-                    <div>
-                        <span class="small">${imdClass['descricao-horario']}</span>
-                    </div>
-                </li>
-                `);
+            function render() {
+                $(offersHistoryList).html("");
+
+                for (let i = indexFrom; i <= indexTo; i++) {
+                    let data = teachers[i];
+    
+                    let [imdClass,] = classes.filter(c => c['id-turma'] === data.turma);
+        
+                    $(offersHistoryList).append(`
+                    <li class="d-flex flex-column">
+                        <hr class="p-2">
+                        <div>
+                            <span>${imdClass.ano}.${imdClass.periodo} -</span> 
+                            <span style="text-transform: capitalize;">${data.docente.toLowerCase()} -</span>
+                            <span>Turma ${imdClass['codigo-turma']}</span>
+                        </div>
+                        <div>
+                            <span class="small">${imdClass['descricao-horario']}</span>
+                        </div>
+                    </li>
+                    `);
+    
+                }
+            }
+
+            render();
+            $('#history-state').html(`
+            <div class="w-full d-flex align-items-center justify-content-between" id="history-controls">
+                <span>Turmas</span>
+                <button type="button" class="btn btn-link" id="load-more">Ver mais</button>
+            </div>
+            `);
+
+
+            $("#load-more").on("click", function(event) {
+                event.stopPropagation();
+
+                if (!showingAll) {
+                    indexFrom = 3;
+                    indexTo = teachers.length - 1;
+                    $(this).html("Ver menos");
+                } else {
+                    indexFrom = 0;
+                    indexTo = 2;
+                    $(this).html("Ver mais");
+                }
+
+                showingAll = !showingAll;
+
+                render();
             });
-
-            $('#collapOfertasPassadasBody').html(offersHistoryList);
         } else {
             $('#collapOfertasPassadasBody').html("Dados não encontrados :(");
         }
@@ -124,7 +158,7 @@ async function handleOffersHistory(classes) {
 }
 
 async function getOffersData(disciplineCode) {
-    let classes = await getDisciplineClasses(disciplineCode);
+    let classes = await getDisciplineClasses("IMD1001");
 
     await Promise.all([
         handleLastOffer(classes),
