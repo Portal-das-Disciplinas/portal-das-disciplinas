@@ -56,7 +56,7 @@ async function handleLastOffer(classes) {
         });
 
         let latestTeachers = await getDisciplineTeachers(latestClasses, true);
-        let lastOfferList = $('<ul class="d-flex flex-column gap-3"></ul>');
+        let lastOfferList = $('<ul class="d-flex flex-column gap-3 list-unstyled"></ul>');
 
         if (latestTeachers.length > 0) {
             latestTeachers.forEach(data => {

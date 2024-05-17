@@ -668,8 +668,8 @@ mais.
                     <hr class="py-2">
                     <div class="d-flex flex-column">
                         <h2 class="pb-3">Ofertas</h2>
-                        <div class="accordion" id="ofertas">
-                            <div class="card" style="cursor: pointer" data-toggle="collapse" data-target="#collapUltimaOferta" aria-expanded="false" aria-controls="collapUltimaOferta">
+                        <div id="ofertas">
+                            <div class="card">
                                 <div class="card-header" id="headingUltimaOferta">
                                     <h3 class="mb-0" style="font-size: 1.75rem;">
                                         <span class="text-primary">Última oferta: </span>
@@ -677,14 +677,14 @@ mais.
                                     </h3>
                                 </div>
                           
-                                <div id="collapUltimaOferta" class="collapse" aria-labelledby="headingUltimaOferta" data-parent="#ofertas">
-                                    <div class="card-body" id="collapUltimaOfertaBody">
+                                <div id="collapUltimaOferta" class="card-body">
+                                    <div id="collapUltimaOfertaBody">
                                         <p class="font-weight-bold">Turmas</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="card" style="cursor: pointer" data-toggle="collapse" data-target="#collapOfertasPassadas" aria-expanded="false" aria-controls="collapOfertasPassadas">
+                            <div class="card mt-3">
                                 <div class="card-header" id="headingOfertasPassadas">
                                     <h3 class="mb-0" style="font-size: 1.75rem;">
                                         <span class="text-primary">Ofertas passadas </span>
@@ -693,8 +693,8 @@ mais.
                                     </h3>
                                 </div>
                           
-                                <div id="collapOfertasPassadas" class="collapse" aria-labelledby="headingOfertasPassadas" data-parent="#ofertas">
-                                    <div class="card-body" id="collapOfertasPassadasBody">
+                                <div id="collapOfertasPassadas" class="card-body">
+                                    <div id="collapOfertasPassadasBody">
                                         <ul class="d-flex flex-column gap-3 list-unstyled" id="offers-history"></ul>
                                     </div>
                                 </div>
