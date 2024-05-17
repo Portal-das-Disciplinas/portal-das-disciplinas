@@ -45,7 +45,7 @@ async function getDisciplineTeachers(classes, sort = false) {
 }
 
 async function handleLastOffer(classes) {
-    if (classes[0] != null) {
+    if (classes.length > 0) {
         let latestYear = classes[0].ano, latestPeriod = classes[0].periodo;
         $('#ultima-oferta').html(`${latestYear}.${latestPeriod}`);
 
@@ -95,14 +95,17 @@ async function handleOffersHistory(classes) {
         let classesIn5Years = classes.filter(c => {
             return c.ano >= currentYear - 5;
         });
-        
-        let offersHistoryList = $('#offers-history');
+
         let teachers = await getDisciplineTeachers(classesIn5Years, true);
+
 
         if (teachers.length > 0) {
             let showingAll = false;
+            let offersHistoryList = $('#offers-history');
 
             function render(teacherArray, indexFrom = null, indexTo = null) {
+
+                $(offersHistoryList).html(""); // Clear list content
 
                 if (indexFrom === null) {
                     indexFrom = 0;
@@ -112,13 +115,12 @@ async function handleOffersHistory(classes) {
                     indexTo = teacherArray.length - 1;
                 }
 
-                $(offersHistoryList).html("");
 
                 for (let i = indexFrom; i <= indexTo; i++) {
                     let data = teacherArray[i];
-    
+
                     let [imdClass,] = classes.filter(c => c['id-turma'] === data.turma);
-        
+
                     $(offersHistoryList).append(`
                     <li class="d-flex flex-column">
                         <hr class="p-2">
@@ -132,72 +134,65 @@ async function handleOffersHistory(classes) {
                         </div>
                     </li>
                     `);
-    
+
                 }
             }
 
-            render(teachers, 0 ,2);
+            render(teachers, 0, 2);
 
             $('#history-state').html(`
             <div class="w-full d-flex align-items-center justify-content-between" id="history-controls">
                 <span>Turmas</span>
                 <button type="button" class="btn btn-link" id="load-more">Ver mais</button>
             </div>
-            <div class="my-3 teacher-filter" style="display: none;">
+            <div class="my-3 teacher-filter">
                 <label class="form-label" for="teacher-select">Professor</label>
             </div>
             `);
 
-            let executedFlag = 0;
+            /* Set up teacher select */
+            let teachersSelect = $('<select class="form-control mb-3" style="cursor: pointer;" id="teacher-select"></select>');
+            teachersSelect.append('<option value="null" default>Todos os professores</option>');
 
-            $("#load-more").on("click", function(event) {
+            let teachersIncludedAtSelect = [];
+
+            teachers.forEach(teacher => {
+                if (teacher.id != null && !teachersIncludedAtSelect.includes(teacher.id)) {
+                    teachersIncludedAtSelect.push(teacher.id);
+                    teachersSelect.append(`<option value="${teacher.id}">${teacher.docente}</option>`);
+                }
+            });
+
+            $('.teacher-filter').append(teachersSelect).on("click", function (event) {
+                event.stopPropagation();
+            });
+
+            let nonFilteredTeachers = teachers;
+            
+            $('#teacher-select').on("change", function () {
+                let selectedId = $(this).val();
+
+                if (selectedId === "null") {
+                    teachers = nonFilteredTeachers;
+                } else {
+                    teachers = nonFilteredTeachers.filter(t => String(t.id) === selectedId);
+                }
+
+                render(teachers, 0, 2);
+            });
+
+
+            $("#load-more").on("click", function (event) {
                 event.stopPropagation();
 
                 let indexFrom = null, indexTo = null;
 
                 if (!showingAll) {
-
                     $(this).html("Ver menos");
-
-                    $('.teacher-filter').show();
-
-                    if (executedFlag === 0) {
-                        let teachersSelect = $('<select class="form-control mb-3" style="cursor: pointer;" id="teacher-select"></select>');
-                        teachersSelect.append('<option value="null" default>Todos os professores</option>');
-
-                        let teachersIncludedAtSelect = [];
-
-                        teachers.forEach(teacher => {
-                            if (teacher.id != null &&!teachersIncludedAtSelect.includes(teacher.id)) {
-                                teachersIncludedAtSelect.push(teacher.id);
-                                teachersSelect.append(`<option value="${teacher.id}">${teacher.docente}</option>`);
-                            }
-                        });
-
-                        $('.teacher-filter').append(teachersSelect).on("click", function(event) {
-                            event.stopPropagation();
-                        });
-
-                        executedFlag = 1;
-                    }
-
-                    $('#teacher-select').on("change", function() {
-                        let selectedId = $(this).val();
-
-                        if (selectedId === "null") {
-                            render(teachers);
-                        } else {
-                            let filteredTeachers = teachers.filter(t => String(t.id) === selectedId);
-
-                            render(filteredTeachers);
-                        }
-                    });
-
                 } else {
                     indexFrom = 0;
                     indexTo = 2;
                     $(this).html("Ver mais");
-                    $('.teacher-filter').hide();
                 }
 
                 showingAll = !showingAll;
@@ -211,7 +206,7 @@ async function handleOffersHistory(classes) {
 }
 
 async function getOffersData(disciplineCode) {
-    let classes = await getDisciplineClasses(disciplineCode);
+    let classes = await getDisciplineClasses("IMD1001");
 
     await Promise.all([
         handleLastOffer(classes),
