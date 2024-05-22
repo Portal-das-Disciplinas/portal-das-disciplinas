@@ -1,5 +1,5 @@
 async function getDisciplineClasses(disciplineCode) {
-    const response = await fetch("/disciplinas/dados/turmas/" + "IMD1001", {
+    const response = await fetch("/disciplinas/dados/turmas/" + disciplineCode, {
         method: "GET"
     });
 
@@ -29,7 +29,8 @@ async function getDisciplineTeacher(imdClass) {
     return {
         id: id,
         docente: teacherName,
-        turma: imdClass['id-turma']
+        turma: imdClass['id-turma'],
+        horario: imdClass['descricao-horario']
     };
 }
 
@@ -187,8 +188,18 @@ async function handleOffersHistory(classes) {
             render(teachers, 0, 2);
 
             $('#history-state').html(`
-            <div class="my-3 teacher-filter">
-                <label class="form-label" for="teacher-select">Professor</label>
+            <div class="d-flex flex-column gap-3">
+                <div class="row">
+                    <div class="my-3 col teacher-filter">
+                        <label class="form-label" for="teacher-select">Professor</label>
+                    </div>
+                    <div class="my-3 col">
+                        <label class="form-label" for="schedule-input">Horário</label>
+                        <input type="text" class="form-control" placeholder="Exemplo: 24M12" id="schedule-input" />
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary col-md-4 mb-3" id="filter-classes">Filtrar</button>
             </div>
             <div class="w-full d-flex align-items-center justify-content-between" id="history-controls">
                 <span>Turmas</span>
@@ -215,16 +226,25 @@ async function handleOffersHistory(classes) {
 
             let nonFilteredTeachers = teachers;
 
-            $('#teacher-select').on("change", function () {
-                let selectedId = $(this).val();
+            $('#filter-classes').on("click", function () {
+                let selectedId = $('#teacher-select').val();
+                let schedule = $('#schedule-input').val().toUpperCase().trim();
 
-                if (selectedId === "null") {
+                if (selectedId === "null" && schedule === "") {
                     teachers = nonFilteredTeachers;
                 } else {
-                    teachers = nonFilteredTeachers.filter(t => String(t.id) === selectedId);
+                    if (!schedule && selectedId === "null") {
+                        teachers = nonFilteredTeachers;
+                    } else if (selectedId === "null" && schedule) {
+                        teachers = nonFilteredTeachers.filter(t => t.horario.includes(schedule));
+                    } else if (selectedId !== "null" && !schedule) {
+                        teachers = nonFilteredTeachers.filter(t => String(t.id) === selectedId);
+                    } else {
+                        teachers = nonFilteredTeachers.filter(t => t.horario.includes(schedule) && String(t.id) === selectedId);
+                    }
                 }
 
-                render(teachers, 0, 2);
+                showingAll ? render(teachers) : render(teachers, 0, 2);;
             });
 
 
