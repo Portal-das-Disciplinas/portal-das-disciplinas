@@ -9,6 +9,7 @@
 .materiais-off {
     color: #c0c0c0;
 }
+
 .section {
     margin-bottom: 2.4rem;
 }
@@ -20,6 +21,7 @@
 .classification-color-left {
     background-color: var(--primary-color);
 }
+
 .classification-text-left {
     color: var(--primary-color);
 }
@@ -30,4 +32,10 @@
 
 .classification-text-right {
     color: var(--secondary-color-darker);
+}
+
+@media only screen and (hover:none) and (pointer:coarse) {
+    .click-me {
+        display: none;
+    }
 }

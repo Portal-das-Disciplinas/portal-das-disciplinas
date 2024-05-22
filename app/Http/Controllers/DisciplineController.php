@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use App\Enums\ClassificationID;
 use App\Enums\MediaType;
+use App\Exceptions\NotAuthorizedException;
 use App\Http\Requests\Discipline\CreateRequest;
 use App\Http\Requests\Discipline\StoreRequest;
 use App\Http\Requests\Discipline\UpdateRequest;
@@ -30,6 +31,7 @@ use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
 use App\Services\DisciplineService;
 use App\Services\MethodologyService;
+use Barryvdh\Debugbar\Twig\Extension\Debug;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -806,15 +808,21 @@ class DisciplineController extends Controller
         $methodologies = [];
         $methodologyService = new MethodologyService();
         if ($request->ajax()) {
-            if ($request->methodologies_array) {
-                $arrayMethodologies = $request->methodologies_array;
-                foreach ($arrayMethodologies as $methodology) {
-                    $addedMethodology = $methodologyService->addMethodologiesToDiscipline($methodology['id'], $disciplineId);
-                    array_push($methodologies, $addedMethodology);
+            try {
+                if ($request->methodologies_array) {
+                    $arrayMethodologies = $request->methodologies_array;
+                    foreach ($arrayMethodologies as $methodology) {
+                        $addedMethodology = $methodologyService->addMethodologiesToDiscipline($request['professor_id'], $methodology['id'], $disciplineId);
+                        array_push($methodologies, $addedMethodology);
+                    }
+                    return response()->json($methodologies, 201);
+                } else {
+                    return response()->json(['error' => 'Não há disciplinas para serem adicionadas'], 400);
                 }
-                return response()->json($methodologies, 201);
-            } else {
-                return response()->json(['error'=>'Não há disciplinas para serem adicionadas'], 400);
+            } catch (NotAuthorizedException $e) {
+                return response()->json(['error' => $e->getMessage()], 401);
+            } catch (Exception $e) {
+                return response()->json(['error' => 'Ocorreu um erro desconhecido'], 500);
             }
         }
     }

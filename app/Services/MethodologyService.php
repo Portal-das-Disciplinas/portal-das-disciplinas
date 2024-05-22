@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use LengthException;
 
 class MethodologyService
 {
@@ -21,6 +22,13 @@ class MethodologyService
 
     public function saveMethodology($name, $description, $idProfessor)
     {
+        if(!isset($name) ||strlen($name) < 3){
+            throw new LengthException('Nome da disciplina muito curto.');
+        }
+        if(!isset($description) || strlen($description) < 3){
+            throw new LengthException('Descrição da metodologia muito curta.');
+        }
+
         $methodology = new Methodology();
         if(Methodology::where('name','=',$name)->exists()){
             throw new ExistingDataException('Já existe uma metodologia com este nome cadastrada.');
@@ -78,9 +86,15 @@ class MethodologyService
         }
     }
 
-    public function addMethodologiesToDiscipline($idMethodology, $idDiscipline)
+    public function addMethodologiesToDiscipline($idProfessor, $idMethodology, $idDiscipline)
     {
-        $professorId = Auth::user()->professor->id;
+        if(Auth::user() && Auth::user()->isAdmin){
+            $professorId = $idProfessor;
+        }elseif(Auth::user() && Auth::user()->isProfessor && Auth::user()->professor->id == $idProfessor){
+            $professorId = Auth::user()->professor->id;
+        }else{
+            throw new NotAuthorizedException("Não autorizado.");
+        }  
         $discipline = Discipline::findOrFail($idDiscipline);
         $methodology = Methodology::findOrFail($idMethodology);
         $professorMethodologyQuery = ProfessorMethodology::where('professor_id',$professorId)->where('methodology_id','=',$idMethodology);
@@ -140,12 +154,8 @@ class MethodologyService
                 }
             }
         } else if (Auth::user() && Auth::user()->isAdmin) {
-            $professorMethodologies = ProfessorMethodology::where('methodology_id', '=', $idMethodology);
-            if (!$professorMethodologies->exists()) {
-                return Methodology::find($idMethodology)->delete();
-            } else {
-                throw new NotAuthorizedException('Não é possível apagar esta metodologia. Disciplinas de outros professores estão usando.');
-            }
+            ProfessorMethodology::where('methodology_id', '=', $idMethodology)->delete();
+            return Methodology::find($idMethodology)->delete();
         }
     }
 
