@@ -636,7 +636,7 @@ mais.
                 @if(count($discipline->professor_methodologies) > 0)
                 @foreach($discipline->professor_methodologies as $professorMethodology)
                 <strong class='badge badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
-                    {{$professorMethodology->methodology->name}}
+                <i class="fas fa-regular fa-hand-pointer click-me"></i> {{$professorMethodology->methodology->name}}
                 </strong>
                 <div class='modal fade' tabindex='-1' role='dialog' id="{{'modal-methodology' . $professorMethodology->id}}">
                     <div class='modal-dialog' role='document'>
