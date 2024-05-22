@@ -573,16 +573,16 @@ mais.
                 <h1>Metodologias</h1>
                 @if(auth()->user())
                 <div id="metodologias" class='d-flex'><span>carregando...</span></div>
-                @if(Auth::user() && Auth::user()->professor && Auth::user()->professor->id == $discipline->professor->id)
+                @if((Auth::user() && Auth::user()->professor && Auth::user()->professor->id == $discipline->professor->id) || Auth::user())
                 <button class="btn btn-success btn-sm mt-4" data-toggle="modal" data-target="#modal-cadastro-metodologia" onclick="openModalAddMethodologies()">
-                    <i class="fas fa-solid fa-plus mr-2"></i>Adicionar nova metodologia
+                    <i class="fas fa-solid fa-plus mr-2"></i>Adicionar ou Criar
                 </button>
                 @endif
                 <div id="modal-cadastro-metodologia" class="modal large fade" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h3 class="modal-title">Cadastro de metodologia</h3>
+                                <h3 class="modal-title">Cadastro e seleção metodologias</h3>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -608,7 +608,11 @@ mais.
                                         </div>
                                     </div>
                                     <div class='row'>
-                                        <div class='col-md-12 card pt-2' id="methodologiesToChoose">
+                                        <div class="col-md-12">
+                                            <hr>
+                                            <span class="text-primary">Selecione as metodologias abaixo</span>
+                                        </div>
+                                        <div class='col-md-12 pt-2' id="methodologiesToChoose" style="border:solid 1px rgba(0,0,0,0.2); border-radius:10px; max-height:400px; overflow:auto">
                                             <span class="text-info">carregando...</span>
                                         </div>
                                         <div class='col-md-12'>
@@ -629,9 +633,10 @@ mais.
                 @endif
 
                 @if(!auth()->user())
+                @if(count($discipline->professor_methodologies) > 0)
                 @foreach($discipline->professor_methodologies as $professorMethodology)
                 <strong class='badge badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target="{{'#modal-methodology' . $professorMethodology->id}}">
-                    {{$professorMethodology->methodology->name}}
+                <i class="fas fa-regular fa-hand-pointer click-me"></i> {{$professorMethodology->methodology->name}}
                 </strong>
                 <div class='modal fade' tabindex='-1' role='dialog' id="{{'modal-methodology' . $professorMethodology->id}}">
                     <div class='modal-dialog' role='document'>
@@ -667,6 +672,9 @@ mais.
                     </div>
                 </div>
                 @endforeach
+                @else
+                <p>Não há metodologias cadastradas</p>
+                @endif
                 @endif
 
                 <div class='modal fade' tabindex='-1' role='dialog' id='methodology-professor-view'>
@@ -704,9 +712,9 @@ mais.
                                             <a id="tab-professor-description" class="nav-link">Sua descrição</a>  
                                         </li>
                                     </ul>
-                                    <small class='text-secondary'>descrição da metodologia</small>
-                                    <textarea id='methodology-description' rows='9' class='text-primary'></textarea>
-                                    <textarea id='professor-methodology-description' rows='9' class='text-primary d-none'></textarea>
+                                    <small class='text-secondary'>Descrição da metodologia</small>
+                                    <textarea id='methodology-description' rows='9' class='text-primary' placeholder="Descreva como é essa metodologia"></textarea>
+                                    <textarea id='professor-methodology-description' rows='9' class='text-primary d-none' placeholder="Descreva como é esta metodologia"></textarea>
                                     <div id='feedback-methodology' class='d-none alert  mt-2'>
                                         <span id='feedback-methodology-message' style='text-align:center'>Erro ao
                                             atualizar</span>
@@ -716,7 +724,7 @@ mais.
                                 <hr>
                                 <div class='d-flex flex-column'>
                                     <small class='text-secondary'>Como o professor aplica a metodologia</small>
-                                    <textarea id='methodology-use-description' class='text-primary' rows='10' class="text-primary"></textarea>
+                                    <textarea id='methodology-use-description' class='text-primary' rows='10' class="text-primary" placeholder="Descreva como você aplica esta metodologia"></textarea>
                                     <div id='feedback-professor-methodology' class='d-none alert  mt-2'>
                                         <span id='feedback-professor-methodology-message' style='text-align:center'>Erro ao atualizar</span>
                                         <button class='close' onclick="closeAlert('feedback-professor-methodology')">&times</button>
