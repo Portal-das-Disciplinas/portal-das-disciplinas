@@ -297,6 +297,7 @@ function addSelectedMethodologies() {
         method: 'post',
         data: {
             '_token': token,
+            'professor_id': professorId,
             'discipline_id': disciplineId,
             'methodologies_array': methodologiesToSave
         },
@@ -324,6 +325,21 @@ function addSelectedMethodologies() {
 
 function deleteMethodology() {
     idMethodology = professorMethodologies[professorMethodologiesIndex].methodology_id;
+    let deleteConfirm = false;
+    if (userIdProfessor == null) {
+        deleteConfirm = confirm("Tem certeza que deseja apagar esta metodologia?\n" +
+            "Ao realizar esta operação, essa metodologia será apagada de todas as páginas que contém esta metodologia."
+        );
+    }
+    else{
+        deleteConfirm = confirm("Tem certeza que deseja apagar esta metodologia?\n"+
+        "Ao realizar esta operação, as metodologias de todas as suas páginas que contém esta metodologia serão apagadas."
+        );
+    }
+
+    if (!deleteConfirm) {
+        return;
+    }
     $.ajax({
         url: '/metodologias/delete/' + idMethodology,
         method: 'delete',

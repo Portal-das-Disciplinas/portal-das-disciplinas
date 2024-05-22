@@ -573,9 +573,9 @@ mais.
                 <h1>Metodologias</h1>
                 @if(auth()->user())
                 <div id="metodologias" class='d-flex'><span>carregando...</span></div>
-                @if(Auth::user() && Auth::user()->professor && Auth::user()->professor->id == $discipline->professor->id)
+                @if((Auth::user() && Auth::user()->professor && Auth::user()->professor->id == $discipline->professor->id) || Auth::user())
                 <button class="btn btn-success btn-sm mt-4" data-toggle="modal" data-target="#modal-cadastro-metodologia" onclick="openModalAddMethodologies()">
-                    <i class="fas fa-solid fa-plus mr-2"></i>Adicionar nova metodologia
+                    <i class="fas fa-solid fa-plus mr-2"></i>Adicionar ou Criar
                 </button>
                 @endif
                 <div id="modal-cadastro-metodologia" class="modal large fade" tabindex="-1" role="dialog">
