@@ -679,7 +679,7 @@ mais.
                           
                                 <div id="collapUltimaOferta" class="card-body">
                                     <div id="collapUltimaOfertaBody">
-                                        <p class="font-weight-bold">Turmas</p>
+                                        <ul class="d-flex flex-column gap-3 list-unstyled" id="last-offers-list"></ul>
                                     </div>
                                 </div>
                             </div>

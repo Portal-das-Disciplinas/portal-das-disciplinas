@@ -46,37 +46,83 @@ async function getDisciplineTeachers(classes, sort = false) {
 
 async function handleLastOffer(classes) {
     if (classes.length > 0) {
+        let showingAll = false;
+
         let latestYear = classes[0].ano, latestPeriod = classes[0].periodo;
         $('#ultima-oferta').html(`${latestYear}.${latestPeriod}`);
 
-        $('#collapUltimaOfertaBody').append("Buscando...");
+        let stateElement = '<p class="font-weight-bold" id="last-offer-state">Buscando...</p>';
+        $('#collapUltimaOfertaBody').prepend(stateElement);
 
         let latestClasses = classes.filter(c => {
             return c.ano === latestYear;
         });
 
         let latestTeachers = await getDisciplineTeachers(latestClasses, true);
-        let lastOfferList = $('<ul class="d-flex flex-column gap-3 list-unstyled"></ul>');
+
+        let lastOfferList = $('#last-offers-list');
 
         if (latestTeachers.length > 0) {
-            latestTeachers.forEach(data => {
-                let [imdClass,] = latestClasses.filter(c => c['id-turma'] === data.turma);
+          
+            function render(teacherArray, indexFrom = null, indexTo = null) {
+                $(lastOfferList).html("");
 
-                $(lastOfferList).append(`
-                <li class="d-flex flex-column">
-                    <hr class="p-2">
-                    <div>
-                        <span>${imdClass.ano}.${imdClass.periodo} -</span> 
-                        <span style="text-transform: capitalize;">${data.docente.toLowerCase()} -</span>
-                        <span>Turma ${imdClass['codigo-turma']}</span>
-                    </div>
-                    <div>
-                        <span class="small">${imdClass['descricao-horario']}</span>
-                    </div>
-                </li>`);
+                if (indexFrom === null) {
+                    indexFrom = 0;
+                }
+
+                if (indexTo === null) {
+                    indexTo = teacherArray.length - 1;
+                }
+
+
+                for (let i = indexFrom; i <= indexTo; i++) {
+                    let data = teacherArray[i];
+
+                    let [imdClass,] = latestClasses.filter(c => c['id-turma'] === data.turma);
+
+                    $(lastOfferList).append(`
+                    <li class="d-flex flex-column">
+                        <hr class="p-2">
+                        <div>
+                            <span>${imdClass.ano}.${imdClass.periodo} -</span> 
+                            <span style="text-transform: capitalize;">${data.docente.toLowerCase()} -</span>
+                            <span>Turma ${imdClass['codigo-turma']}</span>
+                        </div>
+                        <div>
+                            <span class="small">${imdClass['descricao-horario']}</span>
+                        </div>
+                    </li>
+                    `);
+
+                }
+
+            }
+
+            render(latestTeachers, 0, 2);
+
+            $('#last-offer-state').html(`
+            <div class="w-full d-flex align-items-center justify-content-between" id="last-offer-controls">
+                <span>Turmas</span>
+                <button type="button" class="btn btn-link" id="last_load-more">Ver mais</button>
+            </div>
+            `);
+
+            $("#last_load-more").on("click", function (event) {
+                let indexFrom = null, indexTo = null;
+
+                if (!showingAll) {
+                    $(this).html("Ver menos");
+                } else {
+                    indexFrom = 0;
+                    indexTo = 2;
+                    $(this).html("Ver mais");
+                }
+
+                showingAll = !showingAll;
+
+                render(latestTeachers, indexFrom, indexTo);
             });
-
-            $('#collapUltimaOfertaBody').html(lastOfferList);
         } else {
             $('#collapUltimaOfertaBody').html("Dados não encontrados :(");
         }
@@ -141,12 +187,12 @@ async function handleOffersHistory(classes) {
             render(teachers, 0, 2);
 
             $('#history-state').html(`
+            <div class="my-3 teacher-filter">
+                <label class="form-label" for="teacher-select">Professor</label>
+            </div>
             <div class="w-full d-flex align-items-center justify-content-between" id="history-controls">
                 <span>Turmas</span>
                 <button type="button" class="btn btn-link" id="load-more">Ver mais</button>
-            </div>
-            <div class="my-3 teacher-filter">
-                <label class="form-label" for="teacher-select">Professor</label>
             </div>
             `);
 
@@ -163,12 +209,12 @@ async function handleOffersHistory(classes) {
                 }
             });
 
-            $('.teacher-filter').append(teachersSelect).on("click", function (event) {
-                event.stopPropagation();
-            });
+
+            $('.teacher-filter').append(teachersSelect);
+
 
             let nonFilteredTeachers = teachers;
-            
+
             $('#teacher-select').on("change", function () {
                 let selectedId = $(this).val();
 
@@ -182,9 +228,7 @@ async function handleOffersHistory(classes) {
             });
 
 
-            $("#load-more").on("click", function (event) {
-                event.stopPropagation();
-
+            $("#load-more").on("click", function () {
                 let indexFrom = null, indexTo = null;
 
                 if (!showingAll) {
