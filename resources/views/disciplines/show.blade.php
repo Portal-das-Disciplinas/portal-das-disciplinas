@@ -740,6 +740,47 @@ mais.
                 </div>
 
             </div>
+            <div class="section">
+                <div class="card p-4 col-12 col-md-8">
+                    <h1>Oferta/Matrícula</h1>
+                    <hr class="py-2">
+                    <div class="d-flex flex-column">
+                        <h2 class="pb-3">Ofertas</h2>
+                        <div id="ofertas">
+                            <div class="card">
+                                <div class="card-header" id="headingUltimaOferta">
+                                    <h3 class="mb-0" style="font-size: 1.75rem;">
+                                        <span class="text-primary">Última oferta: </span>
+                                        <span id="ultima-oferta">Buscando...</span>
+                                    </h3>
+                                </div>
+                          
+                                <div id="collapUltimaOferta" class="card-body">
+                                    <div id="collapUltimaOfertaBody">
+                                        <ul class="d-flex flex-column gap-3 list-unstyled" id="last-offers-list"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card mt-3">
+                                <div class="card-header" id="headingOfertasPassadas">
+                                    <h3 class="mb-0" style="font-size: 1.75rem;">
+                                        <span class="text-primary">Ofertas passadas </span>
+                                        <br>
+                                        <small>Últimos 5 anos</small>
+                                    </h3>
+                                </div>
+                          
+                                <div id="collapOfertasPassadas" class="card-body">
+                                    <div id="collapOfertasPassadasBody">
+                                        <ul class="d-flex flex-column gap-3 list-unstyled" id="offers-history"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1184,6 +1225,11 @@ mais.
     })
 
     searchDisciplineData("{{$discipline->code}}");
+</script>
+
+<script src="{{asset('js/offers.js')}}"></script>
+<script>
+    getOffersData("{{$discipline->code}}");
 </script>
 
 @endsection
