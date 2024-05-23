@@ -320,4 +320,35 @@ class APISigaaService
         );
         return $dados;
     }
+
+    public function getDisciplineTurmas($codigo) 
+    {
+        try {
+            if ($this->tokenData == null) {
+                $this->getToken();
+            }
+    
+            $url = "turma/v1/turmas?sigla-nivel=G&limit=100&order-desc=ano&codigo-componente=" . $codigo;
+            $classes = $this->fetch($url, "GET");
+
+            return $classes;
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function getClassTeacher($class_id) {
+        try {
+            if ($this->tokenData == null) {
+                $this->getToken();
+            }
+    
+            $url = "turma/v1/turmas/". $class_id . "/docentes";
+            $teacher = $this->fetch($url, "GET");
+
+            return $teacher;
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
 }
