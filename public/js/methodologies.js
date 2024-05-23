@@ -413,7 +413,7 @@ function btnCreateMethodology() {
         'professor_id': professorId
     }
     $.ajax({
-        url: '/metodologias/store/',
+        url: '/metodologias/store',
         method: 'post',
         data: {
             '_token': token,
