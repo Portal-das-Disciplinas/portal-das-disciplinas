@@ -15,7 +15,7 @@ async function getDisciplineClasses(disciplineCode) {
 async function getDisciplineTeacher(imdClass) {
     const response = await fetch(`/disciplinas/turmas/${imdClass['id-turma']}/docente`);
 
-    let teacherName = "Não encontrado", id = null;
+    let teacherName = "Docente não encontrado", id = null;
 
     if (response.status === 200) {
         let teacherResponse = await response.json();
@@ -38,8 +38,14 @@ async function getDisciplineTeachers(classes, sort = false) {
     const promises = classes.map(getDisciplineTeacher);
     const responses = await Promise.all(promises);
 
-    if (sort) {
-        return responses.sort((a, b) => a.docente.localeCompare(b.docente));
+    if (sort && responses.length > 1) {
+        return responses.sort((a, b) => {
+            if (a.docente === null || b.docente === null) {
+                a.docente = "Docente não encontrado";
+            }
+
+            return a.docente.localeCompare(b.docente);
+        });
     }
 
     return responses;
@@ -72,8 +78,10 @@ async function handleLastOffer(classes) {
                     indexFrom = 0;
                 }
 
-                if (indexTo === null) {
-                    indexTo = teacherArray.length - 1;
+                let teacherArrayLastIndex = teacherArray.length - 1;
+
+                if (indexTo === null || indexTo > teacherArrayLastIndex) {
+                    indexTo = teacherArrayLastIndex;
                 }
 
 
@@ -270,7 +278,7 @@ async function handleOffersHistory(classes) {
 }
 
 async function getOffersData(disciplineCode) {
-    let classes = await getDisciplineClasses(disciplineCode);
+    let classes = await getDisciplineClasses("IMD1101");
 
     await Promise.all([
         handleLastOffer(classes),
