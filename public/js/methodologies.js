@@ -293,7 +293,7 @@ function addSelectedMethodologies() {
         }
     });
     $.ajax({
-        url: '/disciplinas/metodologias/adicionar/',
+        url: '/disciplinas/metodologias/adicionar',
         method: 'post',
         data: {
             '_token': token,
