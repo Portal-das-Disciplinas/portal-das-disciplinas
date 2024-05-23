@@ -278,7 +278,7 @@ async function handleOffersHistory(classes) {
 }
 
 async function getOffersData(disciplineCode) {
-    let classes = await getDisciplineClasses("IMD1101");
+    let classes = await getDisciplineClasses(disciplineCode);
 
     await Promise.all([
         handleLastOffer(classes),
