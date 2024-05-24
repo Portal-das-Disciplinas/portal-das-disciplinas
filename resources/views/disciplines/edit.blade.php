@@ -391,7 +391,7 @@ noindex, follow
                 <h3>Perguntas Frequentes</h3>
             </div>
             <div id="faqs"><!-- Conteúdo gerado por javascript --></div>
-            <button class="btn btn-primary" onclick="addFaqField(event)">Adicionar Faq</button>
+            <button class="btn btn-primary" onclick="addFaqField(event)">Adicionar FAQ</button>
 
 
 
