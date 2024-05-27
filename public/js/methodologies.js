@@ -292,6 +292,15 @@ function addSelectedMethodologies() {
             delete methodology.markedToAdd;
         }
     });
+    let btnCloseModal = document.querySelector('#btn-close-modal-add-methodologies');
+    let btnAddSelected = document.querySelector('#btn-add-methodologies');
+    btnAddText = btnAddSelected.innerHTML;
+    btnAddSelected.innerHTML = "Adicionando metodologias";
+    btnAddSelected.disabled = true;
+    btnCloseModal.disabled = true;
+    btnAddSelected.classList.remove("btn-success");
+    btnAddSelected.classList.add("btn-info");
+
     $.ajax({
         url: '/disciplinas/metodologias/adicionar',
         method: 'post',
@@ -302,6 +311,11 @@ function addSelectedMethodologies() {
             'methodologies_array': methodologiesToSave
         },
         success: function (data) {
+            btnAddSelected.disabled = false;
+            btnCloseModal.disabled = false;
+            btnAddSelected.innerHTML = btnAddText;
+            btnAddSelected.classList.remove("btn-info");
+            btnAddSelected.classList.add("btn-success");
             $('#modal-cadastro-metodologia').modal('hide');
             getProfessorMethodologies();
         },
@@ -318,6 +332,11 @@ function addSelectedMethodologies() {
             else {
                 feedbackElement.innerHTML = 'Não foi possível adicionar as metodologias.';
             }
+            btnAddSelected.disabled = false;
+            btnCloseModal.disabled = false;
+            btnAddSelected.innerHTML = btnAddText;
+            btnAddSelected.classList.remove("btn-info");
+            btnAddSelected.classList.add("btn-success");
 
         }
     });
@@ -330,9 +349,9 @@ function deleteMethodology() {
             "Ao realizar esta operação, essa metodologia será apagada de todas as páginas que contém esta metodologia."
         );
     }
-    else{
-        deleteConfirm = confirm("Tem certeza que deseja apagar esta metodologia?\n"+
-        "Ao realizar esta operação, as metodologias de todas as suas páginas que contém esta metodologia serão apagadas."
+    else {
+        deleteConfirm = confirm("Tem certeza que deseja apagar esta metodologia?\n" +
+            "Ao realizar esta operação, as metodologias de todas as suas páginas que contém esta metodologia serão apagadas."
         );
     }
 
@@ -340,6 +359,15 @@ function deleteMethodology() {
         return;
     }
     idMethodology = professorMethodologies[professorMethodologiesIndex].methodology_id;
+    let feedback = document.querySelector('#feedback-remove-delete-methodology');
+    let feedbackMessage = feedback.querySelector('small');
+    let btnSaveMethodology = document.querySelector('#btn-save-methodology');
+    let btnCloseModal = document.querySelector('#close-modal-save-methodology');
+    feedback.classList.remove('d-none');
+    feedback.classList.add('alert-info');
+    feedbackMessage.innerHTML = "Apagando metodologia...";
+    btnSaveMethodology.disabled = true;
+    btnCloseModal.disabled = true;
     $.ajax({
         url: '/metodologias/delete/' + idMethodology,
         method: 'delete',
@@ -349,6 +377,11 @@ function deleteMethodology() {
         success: function (data) {
             $('#methodology-professor-view').modal('hide');
             getProfessorMethodologies();
+            feedback.classList.add('d-none');
+            feedback.classList.remove('alert-info');
+            feedbackMessage.innerHTML = "";
+            btnSaveMethodology.disabled = false;
+            btnCloseModal.disabled = false;
         },
         error: function (xhr, status, error) {
             errorJSON = JSON.parse(xhr.responseText);
@@ -358,19 +391,32 @@ function deleteMethodology() {
             document.querySelector('#feedback-delete-methodology').classList.remove('alert-success');
             document.querySelector('#feedback-delete-methodology').classList.add('alert-danger');
             document.querySelector('#feedback-delete-methodology').classList.remove('d-none');
-
+            feedback.classList.add('d-none');
+            feedback.classList.remove('alert-info');
+            feedbackMessage.innerHTML = "";
+            btnSaveMethodology.disabled = false;
+            btnCloseModal.disabled = false;
 
         }
     });
 }
 
 function removeProfessorMethodology() {
-    
+
     let removeConfirm = confirm('Tem certeza que deseja remover esta metodologia?');
-    if(!removeConfirm){
+    if (!removeConfirm) {
         return;
     }
     let idProfessorMethodology = professorMethodologies[professorMethodologiesIndex].id;
+    let feedback = document.querySelector('#feedback-remove-delete-methodology');
+    let feedbackMessage = feedback.querySelector('small');
+    let btnSaveMethodology = document.querySelector('#btn-save-methodology');
+    let btnCloseModal = document.querySelector('#close-modal-save-methodology');
+    feedback.classList.remove('d-none');
+    feedback.classList.add('alert-info');
+    feedbackMessage.innerHTML = "Removendo metodologia...";
+    btnSaveMethodology.disabled = true;
+    btnCloseModal.disabled = true;
     $.ajax({
         url: '/disciplinas/metodologias/remove/' + disciplineId + '/' + idProfessorMethodology,
         method: 'delete',
@@ -380,6 +426,11 @@ function removeProfessorMethodology() {
         success: function (data) {
             $('#methodology-professor-view').modal('hide');
             getProfessorMethodologies();
+            feedback.classList.add('d-none');
+            feedback.classList.remove('alert-info');
+            feedbackMessage.innerHTML = "";
+            btnSaveMethodology.disabled = false;
+            btnCloseModal.disabled = false;
         },
         error: function (xhr, status, error) {
             errorJSON = JSON.parse(xhr.responseText);
@@ -389,6 +440,11 @@ function removeProfessorMethodology() {
             document.querySelector('#feedback-delete-methodology').classList.remove('alert-success');
             document.querySelector('#feedback-delete-methodology').classList.add('alert-danger');
             document.querySelector('#feedback-delete-methodology').classList.remove('d-none');
+            feedback.classList.add('d-none');
+            feedback.classList.remove('alert-info');
+            feedbackMessage.innerHTML = "";
+            btnSaveMethodology.disabled = false;
+            btnCloseModal.disabled = false;
         }
     });
 }
@@ -412,6 +468,12 @@ function btnCreateMethodology() {
         'description': document.querySelector('#descricao-nova-metodologia').value,
         'professor_id': professorId
     }
+    let btnCreate = document.querySelector("#btn-create-methodology");
+    let btnText = btnCreate.innerHTML;
+    btnCreate.innerHTML = "Cadastrando metodologia";
+    btnCreate.disabled = true;
+
+
     $.ajax({
         url: '/metodologias/store',
         method: 'post',
@@ -428,6 +490,8 @@ function btnCreateMethodology() {
             document.querySelector('#nome-nova-metodologia').value = "";
             document.querySelector('#descricao-nova-metodologia').value = "";
             openModalAddMethodologies();
+            btnCreate.disabled = false;
+            btnCreate.innerHTML = btnText;
         },
         error: function (xhr, status, error) {
             let feedbackRegisterMethodology = document.querySelector('#feedback-cadastro-methodology');
@@ -440,6 +504,8 @@ function btnCreateMethodology() {
             } else {
                 feedbackRegisterMethodology.innerHTML = jsonError.error;
             }
+            btnCreate.disabled = false;
+            btnCreate.innerHTML = btnText;
 
         }
     });
