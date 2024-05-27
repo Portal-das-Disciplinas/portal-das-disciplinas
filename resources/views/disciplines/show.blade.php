@@ -237,6 +237,35 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div>
+                            <h2 class="mb-3">Tópicos</h2>
+                            <ol type="I" id="discipline-topics">
+                                @forelse ($discipline->topics as $topic)
+                                    @if (is_null($topic->parent_topic_id))
+                                        <li class="mb-3" id="topic-{{ $topic->id }}">
+                                            <span class="topic-title">{{ $topic->title }}</span>
+
+                                            @if (count($topic->subtopics) > 0)
+                                                <a class="ml-3 expand-topic" data-topic_id="{{ $topic->id }}"
+                                                    style="cursor: pointer; font-size: 14px;">
+                                                    Subtópicos
+                                                </a>    
+                                            @endif
+            
+                                            <br>
+            
+                                            @if ($topic->required_level)
+                                                <small> Domínio desejado: {{ $topic->required_level }}</small>
+                                            @endif
+                                        </li>
+                                    @endif
+                                @empty
+                                    <p>Sem tópicos cadastrados</p>
+                                @endforelse
+                            </ol>
+                        </div>
+
                         <hr>
                     </div>
                 </div>
@@ -674,31 +703,7 @@
             </div>
             <hr>
 
-            <div class='section'>
-                <h1 class="mb-3">Tópicos</h1>
-                <ol type="I" id="discipline-topics">
-                    @forelse ($discipline->topics as $topic)
-                        @if (is_null($topic->parent_topic_id))
-                            <li class="mb-3" id="topic-{{ $topic->id }}">
-                                <span class="topic-title">{{ $topic->title }}</span>
-
-                                <a class="ml-3 expand-topic" data-topic_id="{{ $topic->id }}"
-                                    style="cursor: pointer; font-size: 14px;">
-                                    Mostrar mais
-                                </a>
-
-                                <br>
-
-                                @if ($topic->required_level)
-                                    <small> Domínio desejado: {{ $topic->required_level }}</small>
-                                @endif
-                            </li>
-                        @endif
-                    @empty
-                        <p>Sem tópicos cadastrados</p>
-                    @endforelse
-                </ol>
-            </div>
+            
             <div class="section">
                 <h1>Metodologias</h1>
                 @if (auth()->user())
