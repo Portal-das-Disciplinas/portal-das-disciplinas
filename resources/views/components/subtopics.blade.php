@@ -3,13 +3,15 @@
         <li class="mb-3" id="topic-{{ $subtopic->id }}">
             <span class="topic-title" style="font-weight: normal;">{{ $subtopic->title }}</span>
 
-            <a 
-                class="ml-3 expand-topic" 
-                data-topic_id="{{ $subtopic->id }}" 
-                style="cursor: pointer; font-size: 14px;"
-            >
-                Mostrar mais
-            </a>
+            @if (count($subtopic->subtopics) > 0)
+                <a 
+                    class="ml-3 expand-topic" 
+                    data-topic_id="{{ $subtopic->id }}" 
+                    style="cursor: pointer; font-size: 14px;"
+                >
+                    Subtópicos
+                </a>
+            @endif
 
             <br>
 
