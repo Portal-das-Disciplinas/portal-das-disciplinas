@@ -743,7 +743,7 @@
                                                     <p><small id="feedback-cadastro-methodology"
                                                             class="d-none text-success form-text">Metodologia
                                                             adicionada</small></p>
-                                                    <button class="btn btn-sm btn-outline-primary"
+                                                    <button id="btn-create-methodology" class="btn btn-sm btn-outline-primary"
                                                         onclick="btnCreateMethodology()">Criar</button>
                                                 </div>
                                             </div>
@@ -755,7 +755,7 @@
                                             </div>
                                             <div class='col-md-12 pt-2' id="methodologiesToChoose"
                                                 style="border:solid 1px rgba(0,0,0,0.2); border-radius:10px; max-height:400px; overflow:auto">
-                                                <span class="text-info">carregando...</span>
+                                                <small class="text-info">carregando metodologias...</small>
                                             </div>
                                             <div class='col-md-12'>
                                                 <small><strong id="feedback-add-methodology"
@@ -767,10 +767,10 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-sm btn-secondary"
+                                    <button id="btn-close-modal-add-methodologies" type="button" class="btn btn-sm btn-secondary"
                                         data-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-sm btn-success"
-                                        onclick="addSelectedMethodologies()">Adicionar selecionados</button>
+                                    <button id="btn-add-methodologies" type="button" class="btn btn-sm btn-success"
+                                        onclick="addSelectedMethodologies()">Adicionar selecionadas</button>
                                 </div>
                             </div>
                         </div>
@@ -856,11 +856,17 @@
                                         </button>
 
                                     </div>
-                                    <div id='feedback-delete-methodology' class='alert alert-dismissible  d-none mt-2'>
+                                    <div id='feedback-delete-methodology' class='alert alert-dismissible d-none mt-2'>
                                         <small id='feedback-delete-methodology-message'>Não foi deletar a
                                             metodologia</small>
                                         <button class='close'
                                             onclick="closeAlert('feedback-delete-methodology')">&times</button>
+                                        </small>
+                                    </div>
+                                    <div id='feedback-remove-delete-methodology' class='alert alert-dismissible mt-2'>
+                                        <small></small>
+                                        <button class='close'
+                                            onclick="closeAlert('feedback-remove-delete-methodology')">&times</button>
                                         </small>
                                     </div>
                                     <ul id="methodology-description-tabs" class="nav nav-tabs mt-2">
@@ -897,9 +903,9 @@
                                 </div>
                             </div>
                             <div class='modal-footer'>
-                                <button class='btn btn-success btn-sm'
+                                <button id='btn-save-methodology' class='btn btn-success btn-sm'
                                     onclick='updateMethodologyAndProfessorMethodology(event)'>Salvar</button>
-                                <button type='button' class='btn btn-sm btn-primary'
+                                <button id="close-modal-save-methodology" type='button' class='btn btn-sm btn-primary'
                                     data-dismiss='modal'>Fechar</button>
                             </div>
                         </div>
