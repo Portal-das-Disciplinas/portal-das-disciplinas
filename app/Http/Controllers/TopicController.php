@@ -6,6 +6,7 @@ use App\Models\Discipline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Topic;
+use Illuminate\Support\Facades\Route;
 
 class TopicController extends Controller
 {
@@ -88,11 +89,12 @@ class TopicController extends Controller
         }
     }
 
-    public function getSubtopicsList($discipline_id, $topic_id) {
+    public function getSubtopicsList(Request $request, $discipline_id, $topic_id) {
         $discipline = Discipline::find($discipline_id);
         $topic = Topic::find($topic_id);
         $subtopics = $topic->subtopics;
+        $callerRoute = $request['caller'];
 
-        return view('components.subtopics', compact('subtopics', 'topic'))->render();
+        return view('components.subtopics', compact('subtopics', 'topic', 'callerRoute'))->render();
     }
 }
