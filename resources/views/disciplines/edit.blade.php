@@ -669,6 +669,9 @@ $classificationsJson = json_encode($classifications);
             $.ajax({
                 method: "GET",
                 url: `/discipline/${disciplineId}/topic/${topicId}/subtopics`,
+                data: {
+                        caller: "{{ Route::currentRouteName() }}"
+                },
                 success: function(html) {
                     topicElement.append(html);
                 }

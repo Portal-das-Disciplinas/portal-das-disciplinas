@@ -1345,7 +1345,7 @@
 
             if ($(this).hasClass('expanded')) {
                 $(`#topic-${topicId}-controls`).remove();
-                $(this).html('Mostrar Mais');
+                $(this).html('Subtópicos');
                 $(this).removeClass('expanded');
                 $(`#topic-${topicId}-subtopics`).remove();
             } else {
@@ -1356,6 +1356,9 @@
                 $.ajax({
                     method: "GET",
                     url: `/discipline/${disciplineId}/topic/${topicId}/subtopics`,
+                    data: {
+                        caller: "{{ Route::currentRouteName() }}"
+                    },
                     success: function(html) {
                         topicElement.append(html);
                     }

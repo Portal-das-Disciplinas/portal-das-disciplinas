@@ -3,7 +3,7 @@
         <li class="mb-3" id="topic-{{ $subtopic->id }}">
             <span class="topic-title" style="font-weight: normal;">{{ $subtopic->title }}</span>
 
-            @if (count($subtopic->subtopics) > 0 && Route::currentRouteName() != "disciplines.edit")
+            @if (count($subtopic->subtopics) > 0 && $callerRoute == "disciplinas.show")
                 <a 
                     class="ml-3 expand-topic" 
                     data-topic_id="{{ $subtopic->id }}" 
@@ -11,10 +11,12 @@
                 >
                     Subtópicos
                 </a>
-            @else
+            @endif
+
+            @if ($callerRoute == "disciplinas.edit")
                 <a 
                     class="ml-3 expand-topic" 
-                    data-topic_id="{{ $topic->id }}" 
+                    data-topic_id="{{ $subtopic->id }}" 
                     style="cursor: pointer; font-size: 14px;"
                 >
                     Mostrar mais
