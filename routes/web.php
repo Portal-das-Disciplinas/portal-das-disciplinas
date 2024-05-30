@@ -23,6 +23,9 @@ use App\Http\Controllers\ParticipantLinkController;
 use App\Http\Controllers\ProfessorMethodologyController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
 use App\Http\Controllers\SemesterPerformanceDataController;
+use App\Http\Controllers\SubjectConceptController;
+use App\Http\Controllers\SubjectReferenceController;
+use App\Http\Controllers\SubjectTopicController;
 use App\Http\Controllers\TopicController;
 use App\Models\Collaborator;
 use App\Models\Discipline;
@@ -152,4 +155,12 @@ Route::post('/disciplinas/metodologias/adicionar/',[DisciplineController::class,
 Route::delete('/metodologias/delete/{id_methodology}',[MethodologyController::class,'destroy'])->name('methodology.destroyd');
 Route::delete('/metodologias/professor/delete/{id_professor_methodology}',[ProfessorMethodologyController::class,'destroy'])->name('professor_methodology.destroy');
 Route::delete('/disciplinas/metodologias/remove/{discipline_id}/{professor_methodology_id}',[DisciplineController::class,'removeMethodologyFromDiscipline'])->name('discipline.remove_methodology');
+Route::post('/conteudos/temas/salvar',[SubjectTopicController::class,'store'])->name('subject_topic.store');
+Route::post('/conteudos/conceitos/salvar',[SubjectConceptController::class,'store'])->name('subject_concept.store');
+Route::post('/conteudos/referencias/salvar',[SubjectReferenceController::class,'store'])->name('subject_reference.store');
+Route::delete('conteudos/temas/delete/{id}',[SubjectTopicController::class,'destroy'])->name('subject_topic.destroy');
+Route::delete('conteudos/conceitos/delete/{id}',[SubjectConceptController::class,'destroy'])->name('subject_concept.destroy');
+Route::delete('conteudos/referencias/delete/{id}',[SubjectReferenceController::class,'destroy'])->name('subject_reference.destroy');
+
+
 
