@@ -124,6 +124,68 @@ function renderDisciplineContents(elementId){
             " </div>";
     }
     html += "</div>";
+
+    html+= "<div class='card mt-2'>" +
+        "<div class='card-header d-flex justify-content-between'>" +
+        "<div>"+
+        "<h3 class='text-primary'>Referências</h3>"+
+        "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-reference'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
+        "</div>";
+
+    if (subjectReferences.length > 3) {
+        html += "<a id='seeMoreReferences' class='link' data-toggle='collapse' href='#collapseReferences' role='button' " +
+            " aria-expanded='false' aria-controls='collapseReferences'>" +
+            "ver mais " +
+            "</a>";
+    }
+    html+= "</div>";
+    if (subjectReferences.length <= 3) {
+        html +=
+            "<ul class='list-group list-group-flush'>";
+        for (i = 0; i < subjectReferences.length; i++) {
+            html +=
+                "<li class='list-group-item'>" +
+                "<div class='d-flex flex-column'>"+
+                    "<small>" + subjectReferences[i].value + "</small>" +
+                    "<div class='d-flex justify-content-end'>"+
+                    "<small style='cursor:pointer' class='text-danger' onclick='deleteReference(event," + i + ")'>excluir</small>"+
+                    "</div>"+
+                "</div>"+
+                "</li>";
+        }
+        html += "</ul>"
+    } else {
+        html +=
+            "<ul class='list-group list-group-flush'>";
+        for (i = 0; i < 3; i++) {
+            html +=
+                "<li class='list-group-item'>" +
+                "<div class='d-flex flex-column'>"+
+                    "<small>" + subjectReferences[i].value + "</small>" +
+                    "<div class='d-flex justify-content-end'>"+
+                    "<small style='cursor:pointer' class='text-danger' onclick='deleteReference(event, " + i + ")'>excluir</small>"+
+                    "</div>"+
+                "</div>"+
+                "</li>";
+        }
+        html += "</ul>";
+        html+= "<div class='collapse' id='collapseReferences'>" +
+            "<ul class='list-group list-group-flush'>";
+        for (i = 3; i < subjectReferences.length; i++) {
+            html +=
+                "<li class='list-group-item'>" +
+                "<div class='d-flex flex-column'>"+
+                    "<small>" + subjectReferences[i].value + "</small>" +
+                    "<div class='d-flex justify-content-end'>"+
+                    "<small style='cursor:pointer' class='text-danger' onclick='deleteReference(event, " + i + ")'>excluir</small>"+
+                    "</div>"+
+                "</div>"+
+            "</li>";
+        }
+        html += "</ul>" +
+            " </div>";
+    }
+    html += "</div>";
     
     
 
@@ -137,6 +199,11 @@ $('#modal-new-subject-topic').on('show.bs.modal',function(e){
 
 $('#modal-new-subject-concept').on('show.bs.modal',function(e){
     let feedbackDiv = document.querySelector('#feedback-new-concept');
+    feedbackDiv.classList.add('d-none');
+});
+
+$('#modal-new-subject-reference').on('show.bs.modal',function(e){
+    let feedbackDiv = document.querySelector('#feedback-new-reference');
     feedbackDiv.classList.add('d-none');
 });
 
@@ -202,6 +269,37 @@ function saveConcept(event){
     });
 }
 
+function saveReference(event){
+    let modal = document.querySelector('#modal-new-subject-reference');
+    let inputReferenceName = document.querySelector('#new-reference-name');
+    let feedbackDiv = document.querySelector('#feedback-new-reference');
+    let feedbackMessage = document.querySelector('#feedback-new-reference-message');
+    event.target.disabled = true;
+    $.ajax({
+        url:'/conteudos/referencias/salvar',
+        method:'POST',
+        data:{
+            '_token':token,
+            'reference':inputReferenceName.value,
+            'discipline_id':disciplineId
+        },
+        success:function(data){
+            event.target.disabled = false;
+            inputReferenceName.value = "";
+            subjectReferences.push(data);
+            renderDisciplineContents('#discipline-contents');
+            $('#modal-new-subject-reference').modal('hide');
+        },
+        error:function(xhr,status,error){
+            event.target.disabled = false;
+            inputReferenceName.value = "";
+            feedbackDiv.classList.remove('alert-success','d-none')
+            feedbackDiv.classList.add('show','alert-danger');
+            feedbackMessage.innerHTML = JSON.parse(xhr.responseText).error;
+        }
+    });
+}
+
 function deleteTopic(event, elementIndex){
     let id = subjectTopics[elementIndex].id;
     event.target.disabled = true;
@@ -225,7 +323,6 @@ function deleteTopic(event, elementIndex){
             alert("Um erro aconteceu");
         }
     });
-
 }
 
 function deleteConcept(event, elementIndex){
@@ -251,7 +348,31 @@ function deleteConcept(event, elementIndex){
             alert("Um erro aconteceu");
         }
     });
+}
 
+function deleteReference(event, elementIndex){
+    let id = subjectReferences[elementIndex].id;
+    event.target.disabled = true;
+    $.ajax({
+        url:'/conteudos/referencias/delete/' + id,
+        method:'DELETE',
+        data:{
+            '_token': token
+        },
+
+        success:function(data){
+            event.target.disabled = false;
+            subjectReferences = subjectReferences.filter(function(element){
+                return element.id != id;
+            });
+            renderDisciplineContents('#discipline-contents');
+        },
+
+        error:function(xhr,status,error){
+            event.target.disabled = false;
+            alert("Um erro aconteceu");
+        }
+    });
 }
 
 renderDisciplineContents('#discipline-contents');

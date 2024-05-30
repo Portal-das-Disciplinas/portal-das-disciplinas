@@ -1196,6 +1196,33 @@ mais.
     </div>
 </div>
 
+<div id="modal-new-subject-reference" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Nova Referência</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="feedback-new-reference" class="d-none alert alert-dismissible  fade" role="alert">
+                    <small id="feedback-new-reference-message">Um erro aconteceu</small>
+                </div>
+                <div class="form">
+                    <div class="form-group">
+                        <input id="new-reference-name" type="text" class="form-control" placeholder="Digite a referência a ser adicionada">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveReference(event)">Salvar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     let links = [];
 
