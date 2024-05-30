@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Exceptions\InvalidInputException;
 use App\Exceptions\NotImplementedException;
 use App\Models\Discipline;
-use App\Models\SubjectTopic;
+use App\Models\SubjectConcept;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
-class SubjectTopicController extends Controller
+class SubjectConceptController extends Controller
 {
-
+    
     function store(Request $request)
     {
         $discipline = Discipline::find($request->{'discipline_id'});
@@ -24,22 +25,22 @@ class SubjectTopicController extends Controller
             if ($request->ajax()) {
                 try {
                     DB::beginTransaction();
-                    if (!isset($request->{'topic'}) || (strlen($request->{'topic'}) == 0)) {
-                        throw new InvalidInputException("Nome do tema muito curto.");
+                    if(!isset($request->{'concept'}) || (strlen($request->{'concept'}) == 0)){
+                        throw new InvalidInputException("Nome do conceito muito curto.");
                     }
-                    $subjectTopic = SubjectTopic::create([
-                        'value' => $request->{'topic'},
+                    $subjectConcept = SubjectConcept::create([
+                        'value' => $request->{'concept'},
                         'discipline_id' => $request->{'discipline_id'}
                     ]);
                     DB::commit();
-                    return response()->json($subjectTopic, 201);
+                    return response()->json($subjectConcept, 201);
                 } catch (InvalidInputException $e) {
                     DB::rollBack();
-                    return response()->json(['error' => $e->getMessage()], 400);
-                } catch (Exception $e) {
+                    return response()->json(['error' => $e->getMessage()],400);
+                }catch(Exception $e){
                     DB::rollBack();
                     Log::error($e->getMessage());
-                    return response()->json(['error' => "Um erro aconteceu"], 500);
+                    return response()->json(['error' => 'Um erro aconteceu'],500);
                 }
             } else {
                 throw new NotImplementedException();
@@ -55,22 +56,22 @@ class SubjectTopicController extends Controller
 
     function destroy(Request $request, $id)
     {
-        $subjectTopic = SubjectTopic::find($id);
-        $discipline = Discipline::find($subjectTopic->{'discipline_id'});
+        $subjectConcept = SubjectConcept::find($id);
+        $discipline = Discipline::find($subjectConcept->{'discipline_id'});
         if ((Auth::user() && Auth::user()->isAdmin) ||
             (Auth::user() && Auth::user()->isProfessor && Auth::user()->professor->id == $discipline->professor->id)
         ) {
             if ($request->ajax()) {
-                $subjectTopic->delete();
+                $subjectConcept->delete();
                 return response()->json(['message' => 'OK'], 200);
             } else {
                 throw new NotImplementedException();
             }
         } else {
             if($request->ajax()){
-                return response()->json(['error' => 'Operação não permitida'], 403);
+                return response()->json(['error' => 'Operação não permitida'],403);
             }else{
-                throw new NotImplementedException();
+               throw new NotImplementedException();
             }
             
         }
