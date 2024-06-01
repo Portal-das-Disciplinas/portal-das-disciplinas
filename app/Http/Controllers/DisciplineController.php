@@ -31,7 +31,6 @@ use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
 use App\Services\DisciplineService;
 use App\Services\MethodologyService;
-use Barryvdh\Debugbar\Twig\Extension\Debug;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -173,6 +172,41 @@ class DisciplineController extends Controller
                 'acquirements' => $request->input('acquirements'),
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
+
+            if($request->topics){
+                foreach($request->topics as $topicName){
+                    if($topicName != ""){
+                        SubjectTopic::create([
+                            'value' => $topicName,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }
+                }
+            }
+
+            if($request->concepts){
+                foreach($request->concepts as $conceptName){
+                    if($conceptName != ""){
+                        SubjectConcept::create([
+                            'value' => $conceptName,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }
+                }
+            }
+
+            if($request->references){
+                foreach($request->references as $referenceName){
+                    if($referenceName != ""){
+                        SubjectReference::create([
+                            'value' => $referenceName,
+                            'discipline_id' => $discipline->id
+                        ]);
+                    }
+                }
+            }
+
+            
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
 
