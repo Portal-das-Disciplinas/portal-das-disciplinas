@@ -5,7 +5,7 @@ function renderDisciplineContents(elementId){
         "<div class='card-header d-flex justify-content-between'>" +
         "<div>"+
         "<h3 class='text-primary'>Temas</h3>"+
-        "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-topic'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
+        "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-topic' onclick='addContentClickEvent(event)'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
         "</div>";
 
     if (subjectTopics.length > 3) {
@@ -67,7 +67,7 @@ function renderDisciplineContents(elementId){
         "<div class='card-header d-flex justify-content-between'>" +
         "<div>"+
         "<h3 class='text-primary'>Conceitos</h3>"+
-        "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-concept'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
+        "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-concept' onclick='addContentClickEvent(event)'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
         "</div>";
 
     if (subjectConcepts.length > 3) {
@@ -129,7 +129,7 @@ function renderDisciplineContents(elementId){
         "<div class='card-header d-flex justify-content-between'>" +
         "<div>"+
         "<h3 class='text-primary'>Referências</h3>"+
-        "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-reference'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
+        "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-reference' onclick='addContentClickEvent(event)'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
         "</div>";
 
     if (subjectReferences.length > 3) {
@@ -206,6 +206,10 @@ $('#modal-new-subject-reference').on('show.bs.modal',function(e){
     let feedbackDiv = document.querySelector('#feedback-new-reference');
     feedbackDiv.classList.add('d-none');
 });
+
+function addContentClickEvent(event){
+    event.preventDefault();
+}
 
 function saveTopic(event){
     let modal = document.querySelector('#modal-new-subject-topic');
