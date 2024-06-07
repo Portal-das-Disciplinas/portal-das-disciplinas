@@ -41,6 +41,7 @@ function updateMethodologyAndProfessorMethodology(event) {
 }
 
 function updateMethodologyDescription(event, professorMethodologiesIndex) {
+    let methodologyName = document.querySelector('#methodology-name').value;
     let newMethodologyDescription = document.querySelector('#methodology-description').value;
     let feedbackAlertDiv = document.querySelector('#feedback-methodology');
     let feedbackMessage = document.querySelector('#feedback-methodology-message');
@@ -51,7 +52,7 @@ function updateMethodologyDescription(event, professorMethodologiesIndex) {
         dataType: 'json',
         data: {
             '_token': token,
-            'name': professorMethodologies[professorMethodologiesIndex].methodology_name,
+            'name': methodologyName,
             'description': newMethodologyDescription
         },
         success: function (data) {
@@ -59,11 +60,13 @@ function updateMethodologyDescription(event, professorMethodologiesIndex) {
             feedbackAlertDiv.classList.remove('d-none');
             feedbackAlertDiv.classList.add('alert', 'alert-success');
             feedbackAlertDiv.classList.remove('alert-danger');
+            professorMethodologies[professorMethodologiesIndex].methodology_name = methodologyName;
             professorMethodologies[professorMethodologiesIndex].methodology_description = newMethodologyDescription;
+            renderProfessorMethodologies();
 
         },
         error: function (xhr, status, error) {
-            feedbackMessage.innerHTML = "Erro ao atualizar.";
+            feedbackMessage.innerHTML = JSON.parse(xhr.responseText).error;
             feedbackAlertDiv.classList.remove('d-none');
             feedbackAlertDiv.classList.add('alert', 'alert-danger');
             feedbackAlertDiv.classList.remove('alert-success');
@@ -144,7 +147,7 @@ function onClickMethodology(index) {
     let defaultDescriptionTab = document.querySelector('#tab-default-description');
     let professorDescriptionTab = document.querySelector('#tab-professor-description');
     let professorMethodologyDescription = document.querySelector('#professor-methodology-description');
-    methodologyName.innerHTML = professorMethodology.methodology_name;
+    methodologyName.value = professorMethodology.methodology_name;
     methodologyDescription.value = professorMethodology.methodology_description;
     methodologyUseDescription.value = professorMethodology.methodology_use_description;
     professorMethodologyDescription.value = professorMethodology.professor_description;
@@ -153,12 +156,14 @@ function onClickMethodology(index) {
         methodologyDescription.classList.remove('text-secondary');
         methodologyDescription.classList.add('text-primary');
         btnDeleteMethodology.classList.remove('d-none');
+        methodologyName.disabled = false;
 
     } else {
         methodologyDescription.readOnly = true;
         methodologyDescription.classList.remove('text-primary');
         methodologyDescription.classList.add('text-secondary');
         btnDeleteMethodology.classList.add('d-none');
+        methodologyName.disabled = true;
     }
 
     if (userIdProfessor == null || professorId == userIdProfessor) {

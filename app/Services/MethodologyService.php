@@ -35,7 +35,9 @@ class MethodologyService
         }
         $methodology->name = $name;
         $methodology->description = $description;
-        $methodology->{'professor_id'} = $idProfessor;
+        if(!Auth::user()->isAdmin){
+            $methodology->{'professor_id'} = $idProfessor;
+        }
         return $methodology->save();
     }
 
@@ -60,6 +62,13 @@ class MethodologyService
 
     public function update($idMethodology, $name, $description)
     {
+        if(!isset($name) ||strlen($name) < 3){
+            throw new LengthException('Nome da disciplina muito curto.');
+        }
+        if(!isset($description) || strlen($description) < 3){
+            throw new LengthException('Descrição da metodologia muito curta.');
+        }
+
         $methodology = Methodology::find($idMethodology);
         if (Auth::user()->isAdmin || ($methodology->professor_id == Auth::user()->professor->id)) {
             $methodology = Methodology::find($idMethodology);

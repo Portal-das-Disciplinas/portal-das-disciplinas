@@ -53,8 +53,16 @@ class MethodologyController extends Controller
     {
         $methodologyService = new MethodologyService();
         if ($request->ajax()) {
+            try{
             $methodology =  $methodologyService->update($request->idMethodology, $request->name, $request->description);
             return response()->json($methodology);
+            }catch(LengthException $e){
+                return response()->json(['error'=>$e->getMessage()],400);
+            }catch(ExistingDataException $e){
+                return response()->json(['error'=> 'Já existe uma metodologia cadastrada com o mesmo nome.'],409);
+            }catch(Exception $e){
+                return response()->json(['error' => 'Erro no servidor'],500);
+            }
         }
     }
 
