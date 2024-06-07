@@ -770,9 +770,8 @@ mais.
                 <div class='modal fade' tabindex='-1' role='dialog' id='methodology-professor-view'>
                     <div class='modal-dialog' role='document'>
                         <div class='modal-content'>
-
                             <div class='modal-header'>
-                                <h3 id='methodology-name' class='modal-title text-primary'></h3>
+                                <h3 class='modal-title text-primary'>Metodologia</h3>
                                 <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                                     <span aria-hidden='true'>&times;</span>
                                 </button>
@@ -788,6 +787,11 @@ mais.
                                             Apagar metodologia
                                         </button>
 
+                                    </div>
+                                    <hr class = 'mt-3'>
+                                    <div class="flex-group">
+                                        <label>Nome da disciplina</label>
+                                        <input id='methodology-name' class='form-control text-primary'>
                                     </div>
                                     <div id='feedback-delete-methodology' class='alert alert-dismissible d-none mt-2'>
                                         <small id='feedback-delete-methodology-message'>Não foi deletar a
