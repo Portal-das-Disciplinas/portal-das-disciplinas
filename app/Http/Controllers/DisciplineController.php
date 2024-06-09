@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use App\Enums\ClassificationID;
 use App\Enums\MediaType;
 use App\Exceptions\NotAuthorizedException;
+use App\Exceptions\NotImplementedException;
 use App\Http\Requests\Discipline\CreateRequest;
 use App\Http\Requests\Discipline\StoreRequest;
 use App\Http\Requests\Discipline\UpdateRequest;
@@ -173,9 +174,9 @@ class DisciplineController extends Controller
                 'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
             ]);
 
-            if($request->topics){
-                foreach($request->topics as $topicName){
-                    if($topicName != ""){
+            if ($request->topics) {
+                foreach ($request->topics as $topicName) {
+                    if ($topicName != "") {
                         SubjectTopic::create([
                             'value' => $topicName,
                             'discipline_id' => $discipline->id
@@ -184,9 +185,9 @@ class DisciplineController extends Controller
                 }
             }
 
-            if($request->concepts){
-                foreach($request->concepts as $conceptName){
-                    if($conceptName != ""){
+            if ($request->concepts) {
+                foreach ($request->concepts as $conceptName) {
+                    if ($conceptName != "") {
                         SubjectConcept::create([
                             'value' => $conceptName,
                             'discipline_id' => $discipline->id
@@ -195,9 +196,9 @@ class DisciplineController extends Controller
                 }
             }
 
-            if($request->references){
-                foreach($request->references as $referenceName){
-                    if($referenceName != ""){
+            if ($request->references) {
+                foreach ($request->references as $referenceName) {
+                    if ($referenceName != "") {
                         SubjectReference::create([
                             'value' => $referenceName,
                             'discipline_id' => $discipline->id
@@ -206,7 +207,7 @@ class DisciplineController extends Controller
                 }
             }
 
-            
+
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
 
@@ -819,7 +820,7 @@ class DisciplineController extends Controller
         return response()->json($data, 200);
     }
 
-    function getDisciplineTurmas(Request $request, $codigo) 
+    function getDisciplineTurmas(Request $request, $codigo)
     {
         $service = new APISigaaService();
 
@@ -832,7 +833,8 @@ class DisciplineController extends Controller
         return response()->json($data, 200);
     }
 
-    function getDisciplineClassTeacher(Request $request, $codigo) {
+    function getDisciplineClassTeacher(Request $request, $codigo)
+    {
         $service = new APISigaaService();
 
         $data = $service->getClassTeacher($codigo);
@@ -889,6 +891,17 @@ class DisciplineController extends Controller
     public function removeMethodologyFromDiscipline(Request $request)
     {
         $methodologyService = new MethodologyService();
-        $methodologyService->removeProfessorMethodologyFromDiscipline($request->discipline_id, $request->professor_methodology_id);
+        if ($request->ajax()) {
+            try {
+                $methodologyService
+                    ->removeProfessorMethodologyFromDiscipline($request->discipline_id, $request->professor_methodology_id);
+            } catch (NotAuthorizedException $e) {
+                return response()->json(['error' => $e->getMessage()], 401);
+            } catch (Exception $e){
+                return response()->json(['error' => 'Erro no servidor'],500);
+            }
+        } else{
+            throw new NotImplementedException();
+        }
     }
 }
