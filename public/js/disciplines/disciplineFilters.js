@@ -77,7 +77,7 @@ window.onload = function () {
         $('#collapse-classificacoes').collapse('hide');
         if (event.target.id == "collapse-filters") {
             document.querySelector("#texto-mostrar-filtros").innerHTML = "Busca Avançada  <li class='fa fa-caret-down'></li>";
-            document.querySelector("#filtro-livre").value = null;
+            //document.querySelector("#filtro-livre").value = null;
         }
     });
 };
