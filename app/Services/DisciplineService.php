@@ -23,7 +23,7 @@ class DisciplineService
     {
 
         $filteredDisciplines = collect([]);
-        $disciplines = Discipline::query();
+        $disciplines = Discipline::distinct('id');
         $disciplines->leftJoin('subject_topics', 'disciplines.id', '=', 'subject_topics.discipline_id')
             ->leftJoin('subject_concepts', 'disciplines.id', '=', 'subject_concepts.discipline_id')
             ->leftJoin('subject_references', 'disciplines.id', '=', 'subject_references.discipline_id')
