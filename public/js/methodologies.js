@@ -132,7 +132,7 @@ function updateProfessorMethodologyDescription(event, professorMethodologiesInde
 function onClickMethodology(index) {
     let feedBackMethodology = document.querySelector('#feedback-methodology');
     let feedBackProfessorMethodology = document.querySelector('#feedback-professor-methodology');
-    let feedBackDeleteMethodology = document.querySelector('#feedback-delete-methodology');
+    let feedBackDeleteMethodology = document.querySelector('#feedback-delete-remove-methodology');
     feedBackMethodology.classList.add("d-none");
     feedBackProfessorMethodology.classList.add("d-none");
     feedBackDeleteMethodology.classList.add("d-none");
@@ -364,11 +364,12 @@ function deleteMethodology() {
         return;
     }
     idMethodology = professorMethodologies[professorMethodologiesIndex].methodology_id;
-    let feedback = document.querySelector('#feedback-remove-delete-methodology');
+    let feedback = document.querySelector('#feedback-delete-remove-methodology');
     let feedbackMessage = feedback.querySelector('small');
     let btnSaveMethodology = document.querySelector('#btn-save-methodology');
     let btnCloseModal = document.querySelector('#close-modal-save-methodology');
     feedback.classList.remove('d-none');
+    feedback.classList.remove('alert-danger');
     feedback.classList.add('alert-info');
     feedbackMessage.innerHTML = "Apagando metodologia...";
     btnSaveMethodology.disabled = true;
@@ -391,14 +392,15 @@ function deleteMethodology() {
         error: function (xhr, status, error) {
             errorJSON = JSON.parse(xhr.responseText);
             if (errorJSON) {
-                document.querySelector('#feedback-delete-methodology-message').innerHTML = errorJSON.error;
+               feedbackMessage.innerHTML = errorJSON.error;
+            }else{
+                feedbackMessage.innerHTML = "Erro ao deletar";
             }
-            document.querySelector('#feedback-delete-methodology').classList.remove('alert-success');
-            document.querySelector('#feedback-delete-methodology').classList.add('alert-danger');
-            document.querySelector('#feedback-delete-methodology').classList.remove('d-none');
-            feedback.classList.add('d-none');
+            document.querySelector('#feedback-delete-remove-methodology').classList.remove('alert-success');
+            document.querySelector('#feedback-delete-remove-methodology').classList.add('alert-danger');
+            document.querySelector('#feedback-delete-remove-methodology').classList.remove('d-none');
+            feedback.classList.remove('d-none');
             feedback.classList.remove('alert-info');
-            feedbackMessage.innerHTML = "";
             btnSaveMethodology.disabled = false;
             btnCloseModal.disabled = false;
 
@@ -413,11 +415,12 @@ function removeProfessorMethodology() {
         return;
     }
     let idProfessorMethodology = professorMethodologies[professorMethodologiesIndex].id;
-    let feedback = document.querySelector('#feedback-remove-delete-methodology');
+    let feedback = document.querySelector('#feedback-delete-remove-methodology');
     let feedbackMessage = feedback.querySelector('small');
     let btnSaveMethodology = document.querySelector('#btn-save-methodology');
     let btnCloseModal = document.querySelector('#close-modal-save-methodology');
     feedback.classList.remove('d-none');
+    feedback.classList.remove('alert-danger');
     feedback.classList.add('alert-info');
     feedbackMessage.innerHTML = "Removendo metodologia...";
     btnSaveMethodology.disabled = true;
@@ -440,14 +443,15 @@ function removeProfessorMethodology() {
         error: function (xhr, status, error) {
             errorJSON = JSON.parse(xhr.responseText);
             if (errorJSON) {
-                document.querySelector('#feedback-delete-methodology-message').innerHTML = errorJSON.error;
+                feedbackMessage.innerHTML = errorJSON.error;
+            }else{
+                feedbackMessage.innerHTML = "Erro ao remover";
             }
-            document.querySelector('#feedback-delete-methodology').classList.remove('alert-success');
-            document.querySelector('#feedback-delete-methodology').classList.add('alert-danger');
-            document.querySelector('#feedback-delete-methodology').classList.remove('d-none');
-            feedback.classList.add('d-none');
+            document.querySelector('#feedback-delete-remove-methodology').classList.remove('alert-success');
+            document.querySelector('#feedback-delete-remove-methodology').classList.add('alert-danger');
+            document.querySelector('#feedback-delete-remove-methodology').classList.remove('d-none');
+            feedback.classList.remove('d-none');
             feedback.classList.remove('alert-info');
-            feedbackMessage.innerHTML = "";
             btnSaveMethodology.disabled = false;
             btnCloseModal.disabled = false;
         }
