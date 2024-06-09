@@ -793,17 +793,13 @@ mais.
                                         <label>Nome da disciplina</label>
                                         <input id='methodology-name' class='form-control text-primary'>
                                     </div>
-                                    <div id='feedback-delete-methodology' class='alert alert-dismissible d-none mt-2'>
-                                        <small id='feedback-delete-methodology-message'>Não foi deletar a
+                                    <div id='feedback-delete-remove-methodology' class='alert alert-dismissible d-none mt-2'>
+                                        <small id='feedback-delete-remove-methodology-message'>Não foi deletar a
                                             metodologia</small>
-                                        <button class='close' onclick="closeAlert('feedback-delete-methodology')">&times</button>
+                                        <button class='close' onclick="closeAlert('feedback-delete-remove-methodology')">&times</button>
                                         </small>
                                     </div>
-                                    <div id='feedback-remove-delete-methodology' class='alert alert-dismissible mt-2'>
-                                        <small></small>
-                                        <button class='close' onclick="closeAlert('feedback-remove-delete-methodology')">&times</button>
-                                        </small>
-                                    </div>
+
                                     <ul id="methodology-description-tabs" class="nav nav-tabs mt-2">
                                         <li class="nav-item" style="cursor:pointer">
                                             <a id="tab-default-description" class="nav-link active">Descrição padrão</a>

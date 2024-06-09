@@ -22,20 +22,20 @@ class MethodologyService
 
     public function saveMethodology($name, $description, $idProfessor)
     {
-        if(!isset($name) ||strlen($name) < 3){
+        if (!isset($name) || strlen($name) < 3) {
             throw new LengthException('Nome da disciplina muito curto.');
         }
-        if(!isset($description) || strlen($description) < 3){
+        if (!isset($description) || strlen($description) < 3) {
             throw new LengthException('Descrição da metodologia muito curta.');
         }
 
         $methodology = new Methodology();
-        if(Methodology::where('name','=',$name)->exists()){
+        if (Methodology::where('name', '=', $name)->exists()) {
             throw new ExistingDataException('Já existe uma metodologia com este nome cadastrada.');
         }
         $methodology->name = $name;
         $methodology->description = $description;
-        if(!Auth::user()->isAdmin){
+        if (!Auth::user()->isAdmin) {
             $methodology->{'professor_id'} = $idProfessor;
         }
         return $methodology->save();
@@ -62,10 +62,10 @@ class MethodologyService
 
     public function update($idMethodology, $name, $description)
     {
-        if(!isset($name) ||strlen($name) < 3){
+        if (!isset($name) || strlen($name) < 3) {
             throw new LengthException('Nome da disciplina muito curto.');
         }
-        if(!isset($description) || strlen($description) < 3){
+        if (!isset($description) || strlen($description) < 3) {
             throw new LengthException('Descrição da metodologia muito curta.');
         }
 
@@ -97,16 +97,16 @@ class MethodologyService
 
     public function addMethodologiesToDiscipline($idProfessor, $idMethodology, $idDiscipline)
     {
-        if(Auth::user() && Auth::user()->isAdmin){
+        if (Auth::user() && Auth::user()->isAdmin) {
             $professorId = $idProfessor;
-        }elseif(Auth::user() && Auth::user()->isProfessor && Auth::user()->professor->id == $idProfessor){
+        } elseif (Auth::user() && Auth::user()->isProfessor && Auth::user()->professor->id == $idProfessor) {
             $professorId = Auth::user()->professor->id;
-        }else{
+        } else {
             throw new NotAuthorizedException("Não autorizado.");
-        }  
+        }
         $discipline = Discipline::findOrFail($idDiscipline);
         $methodology = Methodology::findOrFail($idMethodology);
-        $professorMethodologyQuery = ProfessorMethodology::where('professor_id',$professorId)->where('methodology_id','=',$idMethodology);
+        $professorMethodologyQuery = ProfessorMethodology::where('professor_id', $professorId)->where('methodology_id', '=', $idMethodology);
         if ($professorMethodologyQuery->exists()) {
             $professorMethodology = $professorMethodologyQuery->first();
             $disciplinesWithProfessorMethodology = $professorMethodology->disciplines();
@@ -130,41 +130,47 @@ class MethodologyService
     {
         if (Auth::user() && Auth::user()->isProfessor) {
             $professorId = Auth::user()->professor->id;
-            $professorMethodology = ProfessorMethodology::where('methodology_id', '=', $idMethodology)->first();
-            if ($professorMethodology != null) {
-                if (!$professorMethodology->disciplines()->exists()) {
-                    $professorMethodology->delete();
-                    Methodology::find($idMethodology)->delete();
+            $methodology = Methodology::findOrFail($idMethodology);
+            if ($methodology->professor_id != $professorId) {
+                throw new NotAuthorizedException('Você não tem permissão para realizar esta operação');
+            }
+            $professorMethodologyQuery = ProfessorMethodology::where('methodology_id', '=', $idMethodology);
+            if ($professorMethodologyQuery->exists()) {
+                $linkedToDiscipline = false;
+                foreach ($professorMethodologyQuery->get() as $professorMethodology) {
+                    if ($professorMethodology->disciplines()->count() > 0) {
+                        $linkedToDiscipline = true;
+                        break;
+                    }
+                }
+                if ($linkedToDiscipline == false) {
+                    $professorMethodologyQuery->delete();
+                    return $methodology->delete();
                 } else {
                     $canDelete = true;
-                    $disciplinesWithThisMethodology = $professorMethodology->disciplines;
-                    foreach ($disciplinesWithThisMethodology as $discipline) {
-                        if ($discipline->professor->id != $professorId) {
-                            $canDelete = false;
-                            break;
+                    foreach ($professorMethodologyQuery->get() as $professorMethodology) {
+                        foreach ($professorMethodology->disciplines()->get() as $discipline) {
+                            if ($discipline->professor->id != $professorId) {
+                                $canDelete = false;
+                                break;
+                            }
                         }
                     }
                     if ($canDelete) {
-                        foreach ($disciplinesWithThisMethodology as $discipline) {
-                            $discipline->professor_methodologies()->detach($professorMethodology->id);
-                        }
-                        $professorMethodology->delete();
-                        return Methodology::find($idMethodology)->delete();
+                        $professorMethodologyQuery->delete();
+                        return $methodology->delete();
                     } else {
                         throw new NotAuthorizedException('Não é possível apagar esta metodologia. Disciplinas de outros professores estão usando.');
                     }
                 }
             } else {
-                $methodology = Methodology::find($idMethodology);
-                if ($methodology->professor_id == $professorId) {
-                    return $methodology->delete();
-                } else {
-                    throw new NotAuthorizedException('Você não tem permissão para executar esta operação.');
-                }
+                return $methodology->delete();
             }
         } else if (Auth::user() && Auth::user()->isAdmin) {
             ProfessorMethodology::where('methodology_id', '=', $idMethodology)->delete();
             return Methodology::find($idMethodology)->delete();
+        } else {
+            return new NotAuthorizedException("Usuário não logado.");
         }
     }
 
@@ -189,7 +195,6 @@ class MethodologyService
             $professorMethodology = ProfessorMethodology::findOrFail($professorMethodologyId);
             $discipline = Discipline::findOrFail($disciplineId);
             $discipline->professor_methodologies()->detach($professorMethodologyId);
-
         } elseif (Auth::user() && Auth::user()->isProfessor) {
             $professor = Auth::user()->professor;
             $professorMethodology = ProfessorMethodology::findOrFail($professorMethodologyId);

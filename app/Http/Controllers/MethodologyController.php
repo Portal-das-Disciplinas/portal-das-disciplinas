@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ExistingDataException;
 use App\Exceptions\NotAuthorizedException;
+use App\Exceptions\NotImplementedException;
 use App\Models\Methodology;
 use App\Services\MethodologyService;
 use Exception;
@@ -76,8 +77,11 @@ class MethodologyController extends Controller
             } catch (NotAuthorizedException $e) {
                 return response()->json(['error' => $e->getMessage()], 403);
             } catch (Exception $e) {
+                Log::error($e);
                 return response()->json(['error' => 'Um erro aconteceu'], 500);
             }
+        }else{
+            throw new NotImplementedException();
         }
     }
 }
