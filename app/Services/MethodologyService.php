@@ -20,7 +20,7 @@ class MethodologyService
         return Methodology::query()->orderBy('name')->get();
     }
 
-    public function saveMethodology($name, $description, $idProfessor)
+    public function saveMethodology($name, $description, $idProfessor = null)
     {
         if(!isset($name) ||strlen($name) < 3){
             throw new LengthException('Nome da disciplina muito curto.');
@@ -35,7 +35,11 @@ class MethodologyService
         }
         $methodology->name = $name;
         $methodology->description = $description;
-        $methodology->{'professor_id'} = $idProfessor;
+        
+        if(!is_null($idProfessor)) {
+            $methodology->{'professor_id'} = $idProfessor;
+        }
+
         return $methodology->save();
     }
 
