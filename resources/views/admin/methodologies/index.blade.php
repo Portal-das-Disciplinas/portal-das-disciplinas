@@ -26,7 +26,7 @@
 
         <div class="row mb-4">
             <div class="col-12 col-sm-6 col-lg-3 mt-2 mb-2">
-                <button class="btn btn-block btn-primary" onclick="clearInputs()" data-toggle="modal" data-target="#modal-cadastro-metodologia">
+                <button class="btn btn-block btn-primary" id="btn-open-modal" data-toggle="modal" data-target="#modal-cadastro-metodologia">
                     Cadastrar metodologia
                 </button>
 
@@ -63,7 +63,7 @@
                             <div class="modal-footer">
                                 <button id="btn-close-modal-add-methodologies" type="button"
                                     class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <button class="btn btn-sm btn-primary" id="btn-new-methodology">Criar</button>
+                                <button class="btn btn-sm btn-primary" id="btn-save-methodology">Salvar</button>
                             </div>
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                         <tr>
                             <td>{{ $methodology->name }}</td>
                             <td>
-                                <button type="button" class="btn text-success border-success" title="Editar metodologia">
+                                <button type="button" class="btn text-success border-success edit-methodology" title="Editar metodologia" data-methodology="{{ json_encode($methodology) }}">
                                     <i class="fa fa-wrench" aria-hidden="true"></i>
                                 </button>
                             </td>
@@ -126,9 +126,10 @@
             methodologiesHandler.inputs.description.val('');
         }
 
-        const btnCreate = $('#btn-new-methodology');
-        const btnDelete = $('.delete-methodology');
+        const btnSave = $('#btn-save-methodology');
+        const btnOpenModal = $('#btn-open-modal');
         const token = '{{ csrf_token() }}';
+        const methodologyModal = $('#modal-cadastro-metodologia');
 
         const methodologiesHandler = {
             inputs: {
@@ -137,9 +138,9 @@
                 professor_id: null
             },
             store: function() {
-                let btnText = btnCreate.innerHTML;
-                btnCreate.innerHTML = "Cadastrando metodologia";
-                btnCreate.disabled = true;
+                let btnText = btnSave.innerHTML;
+                btnSave.innerHTML = "Cadastrando metodologia";
+                btnSave.disabled = true;
 
                 let methodology = {
                     name: methodologiesHandler.inputs.name.val(),
@@ -160,8 +161,8 @@
                         feedbackRegisterMethodology.classList.remove('text-danger');
                         feedbackRegisterMethodology.classList.add('text-success');
 
-                        btnCreate.disabled = false;
-                        btnCreate.innerHTML = btnText;
+                        btnSave.disabled = false;
+                        btnSave.innerHTML = btnText;
 
                         clearInputs();
 
@@ -183,8 +184,8 @@
                             feedbackRegisterMethodology.innerHTML = jsonError.error;
                         }
 
-                        btnCreate.disabled = false;
-                        btnCreate.innerHTML = btnText;
+                        btnSave.disabled = false;
+                        btnSave.innerHTML = btnText;
                     }
                 });
             },
@@ -207,10 +208,80 @@
                         $('#methodologies-container').load(document.URL +  ' #methodologies-table');
                     }
                 });
+            },
+            update: function() {
+                if (selectedMethodology === null) {
+                    return;
+                }
+
+                let newName = methodologiesHandler.inputs.name.val();
+                let newDescription = methodologiesHandler.inputs.description.val();
+
+                let feedbackAlertDiv = document.querySelector('#feedback-methodology');
+                let feedbackRegisterMethodology = document.querySelector('#feedback-cadastro-methodology');
+
+                $.ajax({
+                    url: '/metodologias/update/' + selectedMethodology.id,
+                    method: 'PUT',
+                    data: {
+                        '_token': token,
+                        'name': newName,
+                        'description': newDescription
+                    },
+                    success: function (data) {
+                        let feedbackRegisterMethodology = document.querySelector('#feedback-cadastro-methodology');
+                        feedbackRegisterMethodology.innerHTML = 'Metodologia atualizada!';
+                        feedbackRegisterMethodology.classList.remove('d-none');
+                        feedbackRegisterMethodology.classList.remove('text-danger');
+                        feedbackRegisterMethodology.classList.add('text-success');
+
+                        $('#methodologies-container').load(document.URL +  ' #methodologies-table');
+                        feedbackRegisterMethodology.classList.add('d-none');
+
+                    },
+                    error: function (xhr, status, error) {
+                        let feedbackRegisterMethodology = document.querySelector('#feedback-cadastro-methodology');
+                        feedbackRegisterMethodology.classList.remove('text-success');
+                        feedbackRegisterMethodology.classList.add('text-danger');
+                        feedbackRegisterMethodology.classList.remove('d-none');
+
+                        feedbackRegisterMethodology.innerHTML = "Erro ao atualizar.";
+                    }
+                });
             }
         };
 
-        btnCreate.click(methodologiesHandler.store);
+        btnOpenModal.click(function() {
+            clearInputs();
+
+            methodologyModal.data('op', 'create');
+        });
+
+        let selectedMethodology = null;
+
+        methodologyModal.on('shown.bs.modal', function() {
+            let operation = $(this).data('op');
+
+            btnSave.off("click");
+
+            if (operation === "create") {
+                btnSave.click(methodologiesHandler.store);
+            } else if (operation === "update") {
+                btnSave.click(methodologiesHandler.update);
+            }
+        });
+
+        
         $('.table-responsive').on('click', '.delete-methodology', methodologiesHandler.destroy);
+        $('.table-responsive').on('click', '.edit-methodology', function() {
+            methodologyModal.data('op', 'update');
+
+            selectedMethodology = $(this).data('methodology');
+                
+            methodologiesHandler.inputs.name.val(selectedMethodology.name);
+            methodologiesHandler.inputs.description.val(selectedMethodology.description);
+
+            methodologyModal.modal('show');
+        });
     </script>
 @endsection
