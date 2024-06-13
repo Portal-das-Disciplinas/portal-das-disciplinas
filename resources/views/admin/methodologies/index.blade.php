@@ -236,7 +236,10 @@
                         feedbackRegisterMethodology.classList.add('text-success');
 
                         $('#methodologies-container').load(document.URL +  ' #methodologies-table');
-                        feedbackRegisterMethodology.classList.add('d-none');
+
+                        setTimeout(() => {
+                            feedbackRegisterMethodology.classList.add('d-none');
+                        }, 1000);
 
                     },
                     error: function (xhr, status, error) {
