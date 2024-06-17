@@ -98,7 +98,7 @@
                                                   de
                                                   Classificações</div>
                                           </a>
-                                          <a href="{{ route('methodology.index') }}">
+                                          <a href="{{ route('methodology.painel') }}">
                                             <div class="dropdown-item py-3"> <i class="fas fa-lightbulb mr-2 "></i>Painel
                                                 de
                                                 Metodoloigias</div>
