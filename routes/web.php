@@ -98,7 +98,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('configuracoes', ThemeController::class);
 
-    Route::get('/metodologias',[MethodologyController::class,'index'])->name('methodology.index');
+    Route::get('/painel-metodologias',[MethodologyController::class,'painel'])->name('methodology.painel');
 });
 
 Route::resource('collaborators',CollaboratorController::class);
@@ -143,6 +143,7 @@ Route::delete('/performance/data/code/year/period',[DisciplinePerformanceDataCon
 
 Route::get('/semester/performance/data', [SemesterPerformanceDataController::class,'index'])->name('semester_performance_data');
 Route::delete('/semester/performance/data/delete/{id}',[SemesterPerformanceDataController::class,'destroy'])->name('semester_performance_data.destroy');
+Route::get('/metodologias',[MethodologyController::class,'index'])->name('methodology.index');
 Route::get('/metodologias/professor/{professor_id}/{discipline_id}',[ProfessorMethodologyController::class,'listProfessorMethodologies'])->name('discipline_professor_methodologies.get');
 Route::put('metodologias/update/{idMethodology}',[MethodologyController::class,'update'])->name('methodology.update');
 Route::put('/metodologias/professor/update/{idProfessorMethodology}',[ProfessorMethodologyController::class,'update'])->name('professor_methodology.update');
