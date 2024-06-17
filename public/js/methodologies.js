@@ -151,7 +151,7 @@ function onClickMethodology(index) {
     methodologyDescription.value = professorMethodology.methodology_description;
     methodologyUseDescription.value = professorMethodology.methodology_use_description;
     professorMethodologyDescription.value = professorMethodology.professor_description;
-    if (userIdProfessor == null || (userIdProfessor == professorMethodology.methodology_owner)) {
+    if (userIdProfessor == null) {
         methodologyDescription.readOnly = false;
         methodologyDescription.classList.remove('text-secondary');
         methodologyDescription.classList.add('text-primary');
