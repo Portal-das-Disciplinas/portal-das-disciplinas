@@ -25,7 +25,7 @@ class MethodologyController extends Controller
         $this->theme = json_decode($contents, true);
     }
 
-    public function index() 
+    public function painel() 
     {
         $methodologyService = new MethodologyService();
         $methodologies = $methodologyService->listAllMethodologies();
@@ -33,7 +33,7 @@ class MethodologyController extends Controller
         return view(self::VIEW_PATH.'index', compact('methodologies'))->with('theme', $this->theme);
     }
 
-    public function list(Request $request)
+    public function index(Request $request)
     {
         $methodologyService = new MethodologyService();
 
