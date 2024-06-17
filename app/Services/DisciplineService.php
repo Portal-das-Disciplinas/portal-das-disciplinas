@@ -49,26 +49,6 @@ class DisciplineService
         }
         $filteredDisciplines = $disciplines->orderBy('name', 'asc')->get();
 
-        /*if ($request->{'filtro-livre'}) {
-            $filteredByCustomFilter = collect([]);
-            $requestText = $request->{'filtro-livre'};
-            $words = explode(",", $requestText);
-            foreach ($filteredDisciplines as $discipline) {
-                $topicsCount = SubjectTopic::where('discipline_id', '=', $discipline->id);
-                $conceptsCount = SubjectConcept::where('discipline_id', '=', $discipline->id);
-                $referencesCount = SubjectReference::where('discipline_id', '=', $discipline->id);
-                foreach ($words as $word) {
-                    $topicsCount->where('value', 'like', '%' . $word . '%');
-                    $conceptsCount->where('value', 'like', '%' . $word . '%');
-                    $referencesCount->where('value', 'like', '%' . $word . '%');
-                }
-                if (($topicsCount->count() + $conceptsCount->count() + $referencesCount->count()) > 0) {
-                    $filteredByCustomFilter->push($discipline);
-                }
-            }
-            $filteredDisciplines = $filteredByCustomFilter;
-        } */
-
         if ($request->{'filtered-methodologies'}) {
             $filterByMethodologies = collect([]);
             $methodologies = json_decode($request->{'filtered-methodologies'});

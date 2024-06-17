@@ -25,6 +25,7 @@ use App\Models\Professor;
 use App\Models\Link;
 use App\Models\Faq;
 use App\Models\ParticipantLink;
+use App\Models\ProfessorMethodology;
 use App\Models\SubjectConcept;
 use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
@@ -207,6 +208,25 @@ class DisciplineController extends Controller
                 }
             }
 
+            if($request->{'selected-professor-methodologies'}){
+                $professorMethodologiesToSave = json_decode($request->{'selected-professor-methodologies'});
+                Log::info($professorMethodologiesToSave);
+                foreach($professorMethodologiesToSave as $professorMethodology){
+                    $newProfessorMethodology = new ProfessorMethodology();
+                    $newProfessorMethodology->{'methodology_id'} = $professorMethodology->{'methodology_id'};
+                    if(Auth::user()->isProfessor && $professorMethodology->{'professor_methodology_id'} != Auth::user()->professor->id){
+                        throw new NotAuthorizedException("O professor não pode criar metodologias de outros professores.");
+                    }
+                    $newProfessorMethodology->{'professor_id'} = $professorMethodology->{'professor_methodology_id'};
+                    $newProfessorMethodology->{'professor_description'} = $professorMethodology->{'professor_description'};
+                    $newProfessorMethodology->{'methodology_use_description'} = $professorMethodology->{'methodology_use_description'};
+                    $value = $newProfessorMethodology->save();
+                    $newProfessorMethodology->disciplines()->attach($discipline->id);
+                    Log::info($value);
+                    Log::info($newProfessorMethodology);
+                }
+            }
+
 
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
@@ -338,6 +358,7 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
+            Log::error($exception);
             return redirect()->back()->withErrors(['error' => "Erro ao cadastrar a disciplina"])
                 ->withInput();
         }
@@ -743,6 +764,7 @@ class DisciplineController extends Controller
         } catch (\Exception $exception) {
             //dd($exception);
             DB::rollBack();
+            Log::error($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina']);
         }
