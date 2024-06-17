@@ -39,8 +39,9 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <input id="name_discipline" type="text" class="form-control" placeholder="Nome da disciplina" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$name_discipline ?? ''}}" />
-                                <div id="autocomplete-results" class="autocomplete-results mt-1 "></div>
+                                <input id="name_discipline" type="text" class="form-control" placeholder="Nome da disciplina, temas, conceitos ou referências" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$name_discipline ?? ''}}" />
+                                <label for="name_discipline" class="text-white"><small>Digite, o nome da disciplina, temas, conceitos ou referências <span class="text-warning">separados por vírgula</span></small></label>
+                                {{--<div id="autocomplete-results" class="autocomplete-results mt-1 "></div> --}}
                             </div>
                             <div class="col-md-4">
                                 <select name="emphasis" id="emphasis" class='form-control'>
@@ -60,12 +61,12 @@
 
                         <span id="texto-mostrar-filtros" class=" btn btn-outline-info text-warning mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">Busca Avançada  <li class='fa fa-caret-down'></li></span>
                         <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
-                            <div class="row mt-3">
+                            {{--<div class="row mt-3">
                                 <div class="col-md-12">
                                     <label class="text-white">Digite, alguns tópicos, conceitos ou referências <span class="text-warning" style="text-decoration: underline;">separados por vírgula</span></label>
                                     <input id="filtro-livre" name="filtro-livre" class="form-control" type="text" placeholder="Busca em Grafos, javascript, Inteligência Artificial">
                                 </div>
-                            </div>
+                            </div> --}}
                             @if(count($methodologies) > 0) 
                             <div class="row mt-3">
                                 <div class="col-md-12">
@@ -388,7 +389,7 @@
 
 <script src="{{ asset('js/indexClassificationForm.js') }}"></script>
 <script src="{{ asset('js/indexSlider.js') }}"></script>
-<script src="{{ asset('js/disciplineAutoComplete.js') }}"></script>
+{{--<script src="{{ asset('js/disciplineAutoComplete.js') }}"></script>--}}
 @endsection
 @section('scripts-bottom')
 <script src="{{ asset('js/disciplines/disciplineFilters.js')}}"></script>

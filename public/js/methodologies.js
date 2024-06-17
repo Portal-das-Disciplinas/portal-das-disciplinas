@@ -41,6 +41,7 @@ function updateMethodologyAndProfessorMethodology(event) {
 }
 
 function updateMethodologyDescription(event, professorMethodologiesIndex) {
+    let methodologyName = document.querySelector('#methodology-name').value;
     let newMethodologyDescription = document.querySelector('#methodology-description').value;
     let feedbackAlertDiv = document.querySelector('#feedback-methodology');
     let feedbackMessage = document.querySelector('#feedback-methodology-message');
@@ -51,7 +52,7 @@ function updateMethodologyDescription(event, professorMethodologiesIndex) {
         dataType: 'json',
         data: {
             '_token': token,
-            'name': professorMethodologies[professorMethodologiesIndex].methodology_name,
+            'name': methodologyName,
             'description': newMethodologyDescription
         },
         success: function (data) {
@@ -59,11 +60,13 @@ function updateMethodologyDescription(event, professorMethodologiesIndex) {
             feedbackAlertDiv.classList.remove('d-none');
             feedbackAlertDiv.classList.add('alert', 'alert-success');
             feedbackAlertDiv.classList.remove('alert-danger');
+            professorMethodologies[professorMethodologiesIndex].methodology_name = methodologyName;
             professorMethodologies[professorMethodologiesIndex].methodology_description = newMethodologyDescription;
+            renderProfessorMethodologies();
 
         },
         error: function (xhr, status, error) {
-            feedbackMessage.innerHTML = "Erro ao atualizar.";
+            feedbackMessage.innerHTML = JSON.parse(xhr.responseText).error;
             feedbackAlertDiv.classList.remove('d-none');
             feedbackAlertDiv.classList.add('alert', 'alert-danger');
             feedbackAlertDiv.classList.remove('alert-success');
@@ -129,7 +132,7 @@ function updateProfessorMethodologyDescription(event, professorMethodologiesInde
 function onClickMethodology(index) {
     let feedBackMethodology = document.querySelector('#feedback-methodology');
     let feedBackProfessorMethodology = document.querySelector('#feedback-professor-methodology');
-    let feedBackDeleteMethodology = document.querySelector('#feedback-delete-methodology');
+    let feedBackDeleteMethodology = document.querySelector('#feedback-delete-remove-methodology');
     feedBackMethodology.classList.add("d-none");
     feedBackProfessorMethodology.classList.add("d-none");
     feedBackDeleteMethodology.classList.add("d-none");
@@ -144,7 +147,7 @@ function onClickMethodology(index) {
     let defaultDescriptionTab = document.querySelector('#tab-default-description');
     let professorDescriptionTab = document.querySelector('#tab-professor-description');
     let professorMethodologyDescription = document.querySelector('#professor-methodology-description');
-    methodologyName.innerHTML = professorMethodology.methodology_name;
+    methodologyName.value = professorMethodology.methodology_name;
     methodologyDescription.value = professorMethodology.methodology_description;
     methodologyUseDescription.value = professorMethodology.methodology_use_description;
     professorMethodologyDescription.value = professorMethodology.professor_description;
@@ -153,12 +156,14 @@ function onClickMethodology(index) {
         methodologyDescription.classList.remove('text-secondary');
         methodologyDescription.classList.add('text-primary');
         btnDeleteMethodology.classList.remove('d-none');
+        methodologyName.disabled = false;
 
     } else {
         methodologyDescription.readOnly = true;
         methodologyDescription.classList.remove('text-primary');
         methodologyDescription.classList.add('text-secondary');
         btnDeleteMethodology.classList.add('d-none');
+        methodologyName.disabled = true;
     }
 
     if (userIdProfessor == null || professorId == userIdProfessor) {
@@ -359,11 +364,12 @@ function deleteMethodology() {
         return;
     }
     idMethodology = professorMethodologies[professorMethodologiesIndex].methodology_id;
-    let feedback = document.querySelector('#feedback-remove-delete-methodology');
+    let feedback = document.querySelector('#feedback-delete-remove-methodology');
     let feedbackMessage = feedback.querySelector('small');
     let btnSaveMethodology = document.querySelector('#btn-save-methodology');
     let btnCloseModal = document.querySelector('#close-modal-save-methodology');
     feedback.classList.remove('d-none');
+    feedback.classList.remove('alert-danger');
     feedback.classList.add('alert-info');
     feedbackMessage.innerHTML = "Apagando metodologia...";
     btnSaveMethodology.disabled = true;
@@ -386,14 +392,15 @@ function deleteMethodology() {
         error: function (xhr, status, error) {
             errorJSON = JSON.parse(xhr.responseText);
             if (errorJSON) {
-                document.querySelector('#feedback-delete-methodology-message').innerHTML = errorJSON.error;
+               feedbackMessage.innerHTML = errorJSON.error;
+            }else{
+                feedbackMessage.innerHTML = "Erro ao deletar";
             }
-            document.querySelector('#feedback-delete-methodology').classList.remove('alert-success');
-            document.querySelector('#feedback-delete-methodology').classList.add('alert-danger');
-            document.querySelector('#feedback-delete-methodology').classList.remove('d-none');
-            feedback.classList.add('d-none');
+            document.querySelector('#feedback-delete-remove-methodology').classList.remove('alert-success');
+            document.querySelector('#feedback-delete-remove-methodology').classList.add('alert-danger');
+            document.querySelector('#feedback-delete-remove-methodology').classList.remove('d-none');
+            feedback.classList.remove('d-none');
             feedback.classList.remove('alert-info');
-            feedbackMessage.innerHTML = "";
             btnSaveMethodology.disabled = false;
             btnCloseModal.disabled = false;
 
@@ -408,11 +415,12 @@ function removeProfessorMethodology() {
         return;
     }
     let idProfessorMethodology = professorMethodologies[professorMethodologiesIndex].id;
-    let feedback = document.querySelector('#feedback-remove-delete-methodology');
+    let feedback = document.querySelector('#feedback-delete-remove-methodology');
     let feedbackMessage = feedback.querySelector('small');
     let btnSaveMethodology = document.querySelector('#btn-save-methodology');
     let btnCloseModal = document.querySelector('#close-modal-save-methodology');
     feedback.classList.remove('d-none');
+    feedback.classList.remove('alert-danger');
     feedback.classList.add('alert-info');
     feedbackMessage.innerHTML = "Removendo metodologia...";
     btnSaveMethodology.disabled = true;
@@ -435,14 +443,15 @@ function removeProfessorMethodology() {
         error: function (xhr, status, error) {
             errorJSON = JSON.parse(xhr.responseText);
             if (errorJSON) {
-                document.querySelector('#feedback-delete-methodology-message').innerHTML = errorJSON.error;
+                feedbackMessage.innerHTML = errorJSON.error;
+            }else{
+                feedbackMessage.innerHTML = "Erro ao remover";
             }
-            document.querySelector('#feedback-delete-methodology').classList.remove('alert-success');
-            document.querySelector('#feedback-delete-methodology').classList.add('alert-danger');
-            document.querySelector('#feedback-delete-methodology').classList.remove('d-none');
-            feedback.classList.add('d-none');
+            document.querySelector('#feedback-delete-remove-methodology').classList.remove('alert-success');
+            document.querySelector('#feedback-delete-remove-methodology').classList.add('alert-danger');
+            document.querySelector('#feedback-delete-remove-methodology').classList.remove('d-none');
+            feedback.classList.remove('d-none');
             feedback.classList.remove('alert-info');
-            feedbackMessage.innerHTML = "";
             btnSaveMethodology.disabled = false;
             btnCloseModal.disabled = false;
         }
