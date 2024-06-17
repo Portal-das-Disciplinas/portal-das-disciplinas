@@ -78,13 +78,8 @@ Route::get('colaborar', function () {
     return view('collaborate');
 })->name('collaborate');
 
-Route::get('/discipline/{discipline_id}/topic/{topic_id}/subtopics', [TopicController::class, 'getSubtopicsList']);
-
 Route::middleware(['auth'])->group(function () {
-    Route::post('/topic/store', [TopicController::class, 'store'])->name('topic.store');
-    Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
-    Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
-
+    
     Route::get('/perfil', [UsersController::class, 'index'])->name('profile');
     Route::post('/perfil', [UsersController::class, 'update'])->name('updateUser');
 
@@ -102,6 +97,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('classificacoes/update/ordem', [ClassificationController::class, 'updateClassificationOrder'])->name('updateOrder');
 
     Route::resource('configuracoes', ThemeController::class);
+
+    Route::get('/painel-metodologias',[MethodologyController::class,'painel'])->name('methodology.painel');
 });
 
 Route::resource('collaborators',CollaboratorController::class);
@@ -161,6 +158,11 @@ Route::post('/conteudos/referencias/salvar',[SubjectReferenceController::class,'
 Route::delete('conteudos/temas/delete/{id}',[SubjectTopicController::class,'destroy'])->name('subject_topic.destroy');
 Route::delete('conteudos/conceitos/delete/{id}',[SubjectConceptController::class,'destroy'])->name('subject_concept.destroy');
 Route::delete('conteudos/referencias/delete/{id}',[SubjectReferenceController::class,'destroy'])->name('subject_reference.destroy');
+
+Route::get('/discipline/{discipline_id}/topic/{topic_id}/subtopics', [TopicController::class, 'getSubtopicsList']);
+Route::post('/topic/store', [TopicController::class, 'store'])->name('topic.store');
+Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
+Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
 
 
 
