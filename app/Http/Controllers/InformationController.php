@@ -37,7 +37,7 @@ class InformationController extends Controller
     public function index(Request $request)
     {
 
-        $collaborators = Collaborator::All();
+        $collaborators = Collaborator::query()->orderBy('name')->get();
         $hasManagers = false;
         $hasCurrentCollaborators = false;
         $hasFormerCollaborators = false;
