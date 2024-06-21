@@ -27,6 +27,8 @@ class DisciplineService
         $disciplines->leftJoin('subject_topics', 'disciplines.id', '=', 'subject_topics.discipline_id')
             ->leftJoin('subject_concepts', 'disciplines.id', '=', 'subject_concepts.discipline_id')
             ->leftJoin('subject_references', 'disciplines.id', '=', 'subject_references.discipline_id')
+            ->leftJoin('discipline_topic','discipline_topic.discipline_id','=','disciplines.id')
+            ->leftJoin('topics','topics.id','=','discipline_topic.topic_id')
             ->select('disciplines.*');
         if ($request->name_discipline) {
             $searchValues = array_map('trim', explode(',', $request->name_discipline));
@@ -36,8 +38,10 @@ class DisciplineService
                     $query->orWhere('subject_topics.value', 'like', '%' . $value . '%');
                     $query->orWhere('subject_concepts.value', 'like', '%' . $value . '%');
                     $query->orWhere('subject_references.value', 'like', '%' . $value . '%');
+                    $query->orWhere('topics.title','like','%' . $value . '%');
                 }
             });
+
         } else {
             $disciplines->where('name', 'like', '%' . "" . '%');
         }
