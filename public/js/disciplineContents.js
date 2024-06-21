@@ -4,7 +4,7 @@ function renderDisciplineContents(elementId){
         "<div class='card'>" +
         "<div class='card-header d-flex justify-content-between'>" +
         "<div>"+
-        "<h3 class='text-primary'>Temas</h3>"+
+        "<h3 class='text-primary'>Ementa</h3>"+
         "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-topic' onclick='addContentClickEvent(event)'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
         "</div>";
 
