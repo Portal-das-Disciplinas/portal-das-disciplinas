@@ -378,5 +378,6 @@ function deleteReference(event, elementIndex){
         }
     });
 }
-
-renderDisciplineContents('#discipline-contents');
+if(document.querySelector('#discipline-contents')){
+    renderDisciplineContents('#discipline-contents');
+}
