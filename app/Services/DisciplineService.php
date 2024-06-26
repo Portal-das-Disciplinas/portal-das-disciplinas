@@ -29,21 +29,25 @@ class DisciplineService
             ->leftJoin('subject_references', 'disciplines.id', '=', 'subject_references.discipline_id')
             ->leftJoin('discipline_topic','discipline_topic.discipline_id','=','disciplines.id')
             ->leftJoin('topics','topics.id','=','discipline_topic.topic_id')
+            ->leftJoin('discipline_professor_methodology','discipline_professor_methodology.discipline_id','=','disciplines.id')
+            ->leftJoin('professor_methodologies','professor_methodologies.id','=','discipline_professor_methodology.prof_methodology_id')
+            ->leftJoin('methodologies','methodologies.id','=','professor_methodologies.methodology_id')
             ->select('disciplines.*');
         if ($request->name_discipline) {
             $searchValues = array_map('trim', explode(',', $request->name_discipline));
             $disciplines->where(function (Builder $query) use ($searchValues) {
                 foreach ($searchValues as $value) {
-                    $query->orWhere('name', 'like', '%' . $value . '%');
+                    $query->orWhere('disciplines.name', 'like', '%' . $value . '%');
                     $query->orWhere('subject_topics.value', 'like', '%' . $value . '%');
                     $query->orWhere('subject_concepts.value', 'like', '%' . $value . '%');
                     $query->orWhere('subject_references.value', 'like', '%' . $value . '%');
                     $query->orWhere('topics.title','like','%' . $value . '%');
+                    $query->orWhere('methodologies.name','like','%' . $value . '%');
                 }
             });
 
         } else {
-            $disciplines->where('name', 'like', '%' . "" . '%');
+            $disciplines->where('disciplines.name', 'like', '%' . "" . '%');
         }
         if ($request->emphasis) {
             $disciplines->where('emphasis_id', $request->emphasis);
