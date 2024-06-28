@@ -39,8 +39,8 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <input id="name_discipline" type="text" class="form-control" placeholder="Nome da disciplina, temas, conceitos ou referências" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$name_discipline ?? ''}}" />
-                                <label for="name_discipline" class="text-white"><small>Digite, o nome da disciplina, temas, conceitos ou referências <span class="text-warning">separados por vírgula</span></small></label>
+                                <input id="name_discipline" type="text" class="form-control" placeholder="Nome da disciplina, temas, conceitos metodologias ou referências" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$name_discipline ?? ''}}" />
+                                <label for="name_discipline" class="text-white"><small>Digite, o nome da disciplina, temas, conceitos, metodologias ou referências <span class="text-warning">separados por vírgula</span></small></label>
                                 {{--<div id="autocomplete-results" class="autocomplete-results mt-1 "></div> --}}
                             </div>
                             <div class="col-md-4">
