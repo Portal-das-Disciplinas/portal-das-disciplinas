@@ -61,12 +61,6 @@
 
                         <span id="texto-mostrar-filtros" class=" btn btn-outline-info text-warning mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">Busca Avançada  <li class='fa fa-caret-down'></li></span>
                         <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
-                            {{--<div class="row mt-3">
-                                <div class="col-md-12">
-                                    <label class="text-white">Digite, alguns tópicos, conceitos ou referências <span class="text-warning" style="text-decoration: underline;">separados por vírgula</span></label>
-                                    <input id="filtro-livre" name="filtro-livre" class="form-control" type="text" placeholder="Busca em Grafos, javascript, Inteligência Artificial">
-                                </div>
-                            </div> --}}
                             @if(count($methodologies) > 0) 
                             <div class="row mt-3">
                                 <div class="col-md-12">
@@ -92,7 +86,6 @@
                                         @endif
                                     </select>
                                 </div>
-
                             </div>
 
                             <div class="row mt-1 ">
@@ -271,6 +264,14 @@
                                 </div>
 
                             </div>
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <div class="d-flex justify-content-start">
+                                        <button id="pesquisar-bottom" class="btn btn-primary search-button" type="submit"><i class='fas fa-search search-icon'></i>Pesquisar</button>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </form>
