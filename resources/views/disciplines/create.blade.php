@@ -759,9 +759,9 @@ $classificationsJson = json_encode($classifications);
 <script src="{{ asset('js/disciplines/componentesCurriculares.js') }}"></script>
 
 <script>
-    let codigo = $('#code').val();
-
     function importComponents(event) {
+        let codigo = $('#code').val();
+
         if (!codigo) {
             alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
             return;
@@ -778,13 +778,14 @@ $classificationsJson = json_encode($classifications);
     }
 
     function importReferences(event) {
+        let codigo = $('#code').val();
+        
         if (!codigo) {
             alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
             return;
         }
 
         getReferenciasBibliograficas(codigo).then((data) => {
-            console.log(data);
             if (data) {
                 addReferenceField(data);
             } else {
