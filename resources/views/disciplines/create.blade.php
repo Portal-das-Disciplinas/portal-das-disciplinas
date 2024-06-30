@@ -117,10 +117,11 @@ noindex, follow
                         <label>Conteúdos da disciplina</label>
                         <div class="card p-2 mt-2" style="background-color: #F0F8FF">
                             <div id="area-edit-topics" class="card">
-                                <span>Edição dos Tópicos</span>
+                                <span>Edição da ementa</span>
                                 <div id="area-fields-topics">
                                 </div>
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="btn-link" onclick="importComponents(event)" style="cursor: pointer;">Importar do SIGAA</small>
                                     <span class="btn btn-primary btn-sm" onclick="addTopicField()">Adicionar campo</span>
                                 </div>
                             </div>
@@ -139,7 +140,8 @@ noindex, follow
                                 <div id="area-fields-references">
 
                                 </div>
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="btn-link" onclick="importReferences(event)" style="cursor: pointer;">Importar do SIGAA</small>
                                     <span class="btn btn-primary btn-sm" onclick="addReferenceField()">Adicionar campo</span>
                                 </div>
                             </div>
@@ -753,6 +755,45 @@ $classificationsJson = json_encode($classifications);
     @endif
 </script>
 <script src="{{ asset('js/disciplines/methodology-create.js') }}"></script>
+
+<script src="{{ asset('js/disciplines/componentesCurriculares.js') }}"></script>
+
+<script>
+    let codigo = $('#code').val();
+
+    function importComponents(event) {
+        if (!codigo) {
+            alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
+            return;
+        }
+
+        getComponentesCurriculares(codigo).then((data) => {
+            if (data) {
+                addTopicField(data);
+            } else {
+                event.target.style.color = "red";
+                event.target.innerHTML = "Infelizmente não conseguimos buscar esses dados";
+            }
+        });
+    }
+
+    function importReferences(event) {
+        if (!codigo) {
+            alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
+            return;
+        }
+
+        getReferenciasBibliograficas(codigo).then((data) => {
+            console.log(data);
+            if (data) {
+                addReferenceField(data);
+            } else {
+                event.target.style.color = "red";
+                event.target.innerHTML = "Infelizmente não conseguimos buscar esses dados";
+            }
+        });
+    }
+</script>
 
 
 <style scoped>
