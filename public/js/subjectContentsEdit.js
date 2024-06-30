@@ -1,4 +1,4 @@
-function addTopicField(){
+function addTopicField(defaultValue = null){
     let element = document.getElementById('area-fields-topics');
     let div1 = document.createElement('div');
     div1.classList.add('form-group');
@@ -6,6 +6,12 @@ function addTopicField(){
     textArea.classList.add('form-control');
     textArea.name = 'topics[]';
     textArea.required = true;
+
+    if (defaultValue) {
+        textArea.value = defaultValue;
+        textArea.rows = 5;
+    }
+
     let inputHidden = document.createElement('input');
     inputHidden.type = 'hidden';
     inputHidden.name = 'topicsId[]';
@@ -64,7 +70,7 @@ function removeConceptField(event){
     parent.parentElement.remove();
 }
 
-function addReferenceField(){
+function addReferenceField(defaultValue = null){
     let element = document.getElementById('area-fields-references');
     let div1 = document.createElement('div');
     div1.classList.add('form-group');
@@ -72,6 +78,12 @@ function addReferenceField(){
     textArea.classList.add('form-control');
     textArea.name = 'references[]';
     textArea.required = true;
+
+    if (defaultValue) {
+        textArea.value = defaultValue;
+        textArea.rows = 5;
+    }
+
     let inputHidden = document.createElement('input');
     inputHidden.type = 'hidden';
     inputHidden.name = 'referencesId[]';
