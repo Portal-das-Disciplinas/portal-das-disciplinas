@@ -373,7 +373,7 @@ noindex, follow
 
 <div class="row d-flex mt-3 justify-content-center">
     <div class="col-12 d-flex justify-content-end">
-        <button type="submit" class="btn btn-success">Registrar</button>
+        <button type="submit" class="btn btn-success">Salvar</button>
         <a href="{{ route('home') }}" class="btn btn-danger ml-5">Cancelar</a>
     </div>
 
@@ -767,12 +767,15 @@ $classificationsJson = json_encode($classifications);
             return;
         }
 
+        event.target.innerHTML = "Buscando dados...";
+
         getComponentesCurriculares(codigo).then((data) => {
             if (data) {
                 addTopicField(data);
+                event.target.innerHTML = "Importar do SIGAA";
             } else {
                 event.target.style.color = "red";
-                event.target.innerHTML = "Infelizmente não conseguimos buscar esses dados";
+                event.target.innerHTML = "Infelizmente não conseguimos buscar a ementa desta disciplina";
             }
         });
     }
@@ -785,12 +788,15 @@ $classificationsJson = json_encode($classifications);
             return;
         }
 
+        event.target.innerHTML = "Buscando dados...";
+
         getReferenciasBibliograficas(codigo).then((data) => {
             if (data) {
                 addReferenceField(data);
+                event.target.innerHTML = "Importar do SIGAA";
             } else {
                 event.target.style.color = "red";
-                event.target.innerHTML = "Infelizmente não conseguimos buscar esses dados";
+                event.target.innerHTML = "Infelizmente não conseguimos obter as referências desta disciplina";
             }
         });
     }
