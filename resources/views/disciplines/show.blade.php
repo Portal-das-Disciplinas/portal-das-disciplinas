@@ -1154,8 +1154,9 @@ mais.
                     <small id="feedback-new-topic-message">Um erro aconteceu</small>
                 </div>
                 <div class="form">
+                    <small class="btn-link" onclick="importComponents(event, '{{ $discipline->code }}')" style="cursor: pointer;">Importar do SIGAA</small>
                     <div class="form-group">
-                        <input id="new-topic-name" type="text" class="form-control" placeholder="Digite o tema a ser adicionado">
+                        <textarea id="new-topic-name" class="form-control" placeholder="Digite o tema a ser adicionado" rows="5"></textarea>
                     </div>
                 </div>
             </div>
@@ -1208,8 +1209,9 @@ mais.
                     <small id="feedback-new-reference-message">Um erro aconteceu</small>
                 </div>
                 <div class="form">
+                    <small class="btn-link" onclick="importReferences(event, '{{ $discipline->code }}')" style="cursor: pointer;">Importar do SIGAA</small>
                     <div class="form-group">
-                        <input id="new-reference-name" type="text" class="form-control" placeholder="Digite a referência a ser adicionada">
+                        <textarea id="new-reference-name" class="form-control" placeholder="Digite a referência a ser adicionada" rows="5"></textarea>
                     </div>
                 </div>
             </div>
@@ -1382,5 +1384,50 @@ mais.
 <script src="{{ asset('js/offers.js') }}"></script>
 <script>
     getOffersData("{{ $discipline->code }}");
+</script>
+<script src="{{asset('js/subjectContentsEdit.js')}}"></script>
+<script src="{{ asset('js/disciplines/componentesCurriculares.js') }}"></script>
+<script>
+    function importComponents(event) {
+        let codigo = "{{ $discipline->code }}";
+
+        if (!codigo) {
+            alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
+            return;
+        }
+
+        event.target.innerHTML = "Buscando dados...";
+
+        getComponentesCurriculares(codigo).then((data) => {
+            if (data) {
+                $('#new-topic-name').val(data);
+                event.target.innerHTML = "Importar do SIGAA";
+            } else {
+                event.target.style.color = "red";
+                event.target.innerHTML = "Infelizmente não conseguimos buscar a ementa desta disciplina";
+            }
+        });
+    }
+
+    function importReferences(event) {
+        let codigo = "{{ $discipline->code }}";;
+        
+        if (!codigo) {
+            alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
+            return;
+        }
+
+        event.target.innerHTML = "Buscando dados...";
+
+        getReferenciasBibliograficas(codigo).then((data) => {
+            if (data) {
+                $('#new-reference-name').val(data);
+                event.target.innerHTML = "Importar do SIGAA";
+            } else {
+                event.target.style.color = "red";
+                event.target.innerHTML = "Infelizmente não conseguimos obter as referências desta disciplina";
+            }
+        });
+    }
 </script>
 @endsection

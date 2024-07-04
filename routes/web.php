@@ -127,6 +127,8 @@ Route::get('/disciplinas/dados/turmas/{codigo}', [DisciplineController::class, '
 Route::get('/disciplinas/turmas/{codigo}/docente', [DisciplineController::class, 'getDisciplineClassTeacher'])->name('disciplinas.turma-docente');
 Route::get('/apisistemas/turmas',[ApiSistemasController::class,'getTurmasPorComponente'])->name("apisistemas.turmas");
 Route::get('/autocomplete_disciplinas', [DisciplineController::class, 'autocomplete'])->name('autocomplete_disciplinas');
+Route::get('/disciplinas/{codigo}/componentes-curriculares', [DisciplineController::class, 'getComponentesCurriculares'])->name('disciplinas.componentes-curriculares');
+Route::get('/disciplinas/{codigo}/bibliografia', [DisciplineController::class, 'getReferenciasBibliograficas'])->name('disciplinas.bibliografia');
 
 Route::get('/agendamento_busca_dados',[SchedulingDisciplinePerformanceUpdateController::class,'index'])->name('scheduling.index');
 Route::post('/agendamentos_busca_dados/store',[SchedulingDisciplinePerformanceUpdateController::class,'store'])->name('scheduling.store');

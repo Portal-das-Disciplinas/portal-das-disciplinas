@@ -926,4 +926,28 @@ class DisciplineController extends Controller
             throw new NotImplementedException();
         }
     }
+
+    public function getComponentesCurriculares(Request $request, $codigo) {
+        $service = new APISigaaService();
+
+        $data = $service->getComponentesCurriculares($codigo);
+
+        if ($data instanceof Exception) {
+            return response()->json("Não foi possível obter os componentes o curriculares desta disciplina", 500);
+        }
+
+        return response()->json($data, 200);   
+    }
+
+    public function getReferenciasBibliograficas(Request $request, $codigo) {
+        $service = new APISigaaService();
+
+        $data = $service->getReferenciasBibliograficas($codigo);
+
+        if ($data instanceof Exception) {
+            return response()->json("Não foi possível obter os componentes as referencias desta disciplina", 500);
+        }
+
+        return response()->json($data, 200);   
+    }
 }
