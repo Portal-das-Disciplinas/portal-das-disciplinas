@@ -117,10 +117,11 @@ noindex, follow
                         <label>Conteúdos da disciplina</label>
                         <div class="card p-2 mt-2" style="background-color: #F0F8FF">
                             <div id="area-edit-topics" class="card">
-                                <span>Edição dos Tópicos</span>
+                                <span>Edição da ementa</span>
                                 <div id="area-fields-topics">
                                 </div>
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="btn-link" onclick="importComponents(event)" style="cursor: pointer;">Importar do SIGAA</small>
                                     <span class="btn btn-primary btn-sm" onclick="addTopicField()">Adicionar campo</span>
                                 </div>
                             </div>
@@ -139,7 +140,8 @@ noindex, follow
                                 <div id="area-fields-references">
 
                                 </div>
-                                <div class="d-flex justify-content-end">
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <small class="btn-link" onclick="importReferences(event)" style="cursor: pointer;">Importar do SIGAA</small>
                                     <span class="btn btn-primary btn-sm" onclick="addReferenceField()">Adicionar campo</span>
                                 </div>
                             </div>
@@ -371,7 +373,7 @@ noindex, follow
 
 <div class="row d-flex mt-3 justify-content-center">
     <div class="col-12 d-flex justify-content-end">
-        <button type="submit" class="btn btn-success">Registrar</button>
+        <button type="submit" class="btn btn-success">Salvar</button>
         <a href="{{ route('home') }}" class="btn btn-danger ml-5">Cancelar</a>
     </div>
 
@@ -753,6 +755,52 @@ $classificationsJson = json_encode($classifications);
     @endif
 </script>
 <script src="{{ asset('js/disciplines/methodology-create.js') }}"></script>
+
+<script src="{{ asset('js/disciplines/componentesCurriculares.js') }}"></script>
+
+<script>
+    function importComponents(event) {
+        let codigo = $('#code').val();
+
+        if (!codigo) {
+            alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
+            return;
+        }
+
+        event.target.innerHTML = "Buscando dados...";
+
+        getComponentesCurriculares(codigo).then((data) => {
+            if (data) {
+                addTopicField(data);
+                event.target.innerHTML = "Importar do SIGAA";
+            } else {
+                event.target.style.color = "red";
+                event.target.innerHTML = "Infelizmente não conseguimos buscar a ementa desta disciplina";
+            }
+        });
+    }
+
+    function importReferences(event) {
+        let codigo = $('#code').val();
+        
+        if (!codigo) {
+            alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
+            return;
+        }
+
+        event.target.innerHTML = "Buscando dados...";
+
+        getReferenciasBibliograficas(codigo).then((data) => {
+            if (data) {
+                addReferenceField(data);
+                event.target.innerHTML = "Importar do SIGAA";
+            } else {
+                event.target.style.color = "red";
+                event.target.innerHTML = "Infelizmente não conseguimos obter as referências desta disciplina";
+            }
+        });
+    }
+</script>
 
 
 <style scoped>
