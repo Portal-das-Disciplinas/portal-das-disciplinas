@@ -862,7 +862,7 @@ class DisciplineController extends Controller
         $data = $service->getClassTeacher($codigo);
 
         if ($data instanceof Exception) {
-            return response()->json("Não foi possível obter os dados da turma", 500);
+            return response()->json(["Não foi possível obter os dados da turma", $data], 500);
         }
 
         return response()->json($data, 200);
