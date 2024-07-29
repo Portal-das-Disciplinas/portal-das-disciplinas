@@ -351,4 +351,53 @@ class APISigaaService
             return $e;
         }
     }
+
+    public function getComponentesCurriculares($codigo) {
+        try {
+            if ($this->tokenData == null) {
+                $this->getToken();
+            }
+
+            $disciplineComponenteId = $this->getDisciplineComponenteId($codigo);
+    
+            $url = "curso/v1/componentes-curriculares/".$disciplineComponenteId;
+            $data = $this->fetch($url, "GET");
+
+            return $data;
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function getReferenciasBibliograficas($codigo) {
+        try {
+            if ($this->tokenData == null) {
+                $this->getToken();
+            }
+    
+            $disciplineComponenteId = $this->getDisciplineComponenteId($codigo);
+
+            $url = "curso/v1/componentes-curriculares/".$disciplineComponenteId."/referencias-bibliograficas?limit=100";
+            $data = $this->fetch($url, "GET");
+
+            return $data;
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    private function getDisciplineComponenteId($codigo) {
+        try {
+            if ($this->tokenData == null) {
+                $this->getToken();
+            }
+    
+            $url = "curso/v1/componentes-curriculares?nivel=G&codigo=".$codigo;
+            $data = $this->fetch($url, "GET");
+
+            return $data[0]["id-componente"];
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
 }

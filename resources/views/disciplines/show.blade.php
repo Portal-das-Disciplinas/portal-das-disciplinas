@@ -267,13 +267,13 @@ mais.
                         </div>
 
                     </div>
-                    <div class="section my-3">
+                    <div class="section">
                         <h1>Metodologias</h1>
                         @if (auth()->user())
                         <div id="metodologias" class='d-flex'><span>carregando...</span></div>
                         @if (
                         (Auth::user() && Auth::user()->professor && Auth::user()->professor->id == $discipline->professor->id) ||
-                        Auth::user())
+                        Auth::user()->isAdmin)
                         <button class="btn btn-success btn-sm mt-4" data-toggle="modal" data-target="#modal-cadastro-metodologia" onclick="openModalAddMethodologies()">
                             <i class="fas fa-solid fa-plus mr-2"></i>Adicionar ou Criar
                         </button>
@@ -333,7 +333,7 @@ mais.
                             </div>
                         </div>
                         @endif
-        
+
                         @if (!auth()->user())
                         @if (count($discipline->professor_methodologies) > 0)
                         @foreach ($discipline->professor_methodologies as $professorMethodology)
@@ -375,7 +375,7 @@ mais.
                                             </p>
                                         </div>
                                         @endif
-        
+
                                     </div>
                                     <div class='modal-footer'>
                                         <button type='button' class='btn btn-sm btn-primary' data-dismiss='modal'>Fechar</button>
@@ -388,13 +388,12 @@ mais.
                         <p>Não há metodologias cadastradas</p>
                         @endif
                         @endif
-        
+
                         <div class='modal fade' tabindex='-1' role='dialog' id='methodology-professor-view'>
                             <div class='modal-dialog' role='document'>
                                 <div class='modal-content'>
-        
                                     <div class='modal-header'>
-                                        <h3 id='methodology-name' class='modal-title text-primary'></h3>
+                                        <h3 class='modal-title text-primary'>Metodologia</h3>
                                         <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                                             <span aria-hidden='true'>&times;</span>
                                         </button>
@@ -405,23 +404,24 @@ mais.
                                                 <button id="btn-remove-methodology" class='btn btn-outline-danger btn-sm' onclick='removeProfessorMethodology()'>
                                                     Remover metodologia
                                                 </button>
-        
+
                                                 <button id="btn-delete-methodology" class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology()'>
                                                     Apagar metodologia
                                                 </button>
-        
+
                                             </div>
-                                            <div id='feedback-delete-methodology' class='alert alert-dismissible d-none mt-2'>
-                                                <small id='feedback-delete-methodology-message'>Não foi deletar a
+                                            <hr class='mt-3'>
+                                            <div class="flex-group">
+                                                <label>Nome da disciplina</label>
+                                                <input id='methodology-name' class='form-control text-primary'>
+                                            </div>
+                                            <div id='feedback-delete-remove-methodology' class='alert alert-dismissible d-none mt-2'>
+                                                <small id='feedback-delete-remove-methodology-message'>Não foi deletar a
                                                     metodologia</small>
-                                                <button class='close' onclick="closeAlert('feedback-delete-methodology')">&times</button>
+                                                <button class='close' onclick="closeAlert('feedback-delete-remove-methodology')">&times</button>
                                                 </small>
                                             </div>
-                                            <div id='feedback-remove-delete-methodology' class='alert alert-dismissible mt-2'>
-                                                <small></small>
-                                                <button class='close' onclick="closeAlert('feedback-remove-delete-methodology')">&times</button>
-                                                </small>
-                                            </div>
+
                                             <ul id="methodology-description-tabs" class="nav nav-tabs mt-2">
                                                 <li class="nav-item" style="cursor:pointer">
                                                     <a id="tab-default-description" class="nav-link active">Descrição padrão</a>
@@ -457,7 +457,7 @@ mais.
                                 </div>
                             </div>
                         </div>
-        
+
                     </div>
                     <!-- FAQ -->
                     @if ($discipline->faqs->count())
@@ -718,7 +718,7 @@ mais.
                         @if (isset($discipline->subjectTopics) && count($discipline->subjectTopics) > 0)
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
-                                <h3 class="text-primary">Temas</h3>
+                                <h3 class="text-primary">Ementa</h3>
                                 @if (count($discipline->subjectTopics) > 3)
                                 <a id="seeMoreTopics" class="link" data-toggle="collapse" href="#collapseTopics" role="button" aria-expanded="false" aria-controls="collapseTopics">
                                     ver mais
@@ -835,199 +835,6 @@ mais.
                 </div>
             </div>
             <hr>
-
-            <div class="section">
-                <h1>Metodologias</h1>
-                @if (auth()->user())
-                <div id="metodologias" class='d-flex'><span>carregando...</span></div>
-                @if (
-                (Auth::user() && Auth::user()->professor && Auth::user()->professor->id == $discipline->professor->id) ||
-                Auth::user())
-                <button class="btn btn-success btn-sm mt-4" data-toggle="modal" data-target="#modal-cadastro-metodologia" onclick="openModalAddMethodologies()">
-                    <i class="fas fa-solid fa-plus mr-2"></i>Adicionar ou Criar
-                </button>
-                @endif
-                <div id="modal-cadastro-metodologia" class="modal large fade" tabindex="-1" role="dialog">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title">Cadastro e seleção metodologias</h3>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class='col-md-12'>
-                                            <button class="btn btn-primary btn-sm mb-2" style='cursor:pointer;' data-toggle="collapse" data-target="#collapse-criar-metodologia" onclick="clearCreateMethodologyInputs()">
-                                                <i class="fas fa-solid fa-plus mr-1"></i>
-                                                Criar metodologia
-                                            </button>
-                                        </div>
-                                        <div class='col-md-12 mb-4'>
-                                            <div id='collapse-criar-metodologia' class='collapse' class='form-group'>
-                                                <label class="text-secondary" for="nome-nova-metodologia">Nome da
-                                                    metodologia</label>
-                                                <input id="nome-nova-metodologia" type='text' class='form-control mb-1'>
-                                                <label class="text-secondary" for="descricao-nova-metodologia">Descrição da metodologia</label>
-                                                <textarea id="descricao-nova-metodologia" class='form-control mb-1' rows='6'></textarea>
-                                                <p><small id="feedback-cadastro-methodology" class="d-none text-success form-text">Metodologia
-                                                        adicionada</small></p>
-                                                <button id="btn-create-methodology" class="btn btn-sm btn-outline-primary" onclick="btnCreateMethodology()">Criar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class='row'>
-                                        <div class="col-md-12">
-                                            <hr>
-                                            <span class="text-primary">Selecione as metodologias abaixo</span>
-                                        </div>
-                                        <div class='col-md-12 pt-2' id="methodologiesToChoose" style="border:solid 1px rgba(0,0,0,0.2); border-radius:10px; max-height:400px; overflow:auto">
-                                            <small class="text-info">carregando metodologias...</small>
-                                        </div>
-                                        <div class='col-md-12'>
-                                            <small><strong id="feedback-add-methodology" class="d-none text-danger form-text">
-                                                    Selecione pelo menos uma metodologia.
-                                                </strong></small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="btn-close-modal-add-methodologies" type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <button id="btn-add-methodologies" type="button" class="btn btn-sm btn-success" onclick="addSelectedMethodologies()">Adicionar selecionadas</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
-
-                @if (!auth()->user())
-                @if (count($discipline->professor_methodologies) > 0)
-                @foreach ($discipline->professor_methodologies as $professorMethodology)
-                <strong class='badge badge-primary mr-2' style='cursor:pointer;' data-toggle='modal' data-target="{{ '#modal-methodology' . $professorMethodology->id }}">
-                    <i class="fas fa-regular fa-hand-pointer click-me"></i>
-                    {{ $professorMethodology->methodology->name }}
-                </strong>
-                <div class='modal fade' tabindex='-1' role='dialog' id="{{ 'modal-methodology' . $professorMethodology->id }}">
-                    <div class='modal-dialog' role='document'>
-                        <div class='modal-content'>
-                            <div class="modal-header">
-                                <h3 class='modal-title text-primary'>
-                                    {{ $professorMethodology->methodology->name }}
-                                </h3>
-                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                                    <span aria-hidden='true'>&times;</span>
-                                </button>
-                            </div>
-                            <div class='modal-body'>
-                                <div class='d-flex flex-column'>
-                                    <small class='text-secondary'>descrição da metodologia</small>
-                                    @if (isset($professorMethodology->professor_description) && $professorMethodology->professor_description != '')
-                                    <p class='text-primary'>
-                                        {{ $professorMethodology->professor_description }}
-                                    </p>
-                                    @else
-                                    <p class='text-primary'>
-                                        {{ $professorMethodology->methodology->description }}
-                                    </p>
-                                    @endif
-                                </div>
-                                @if ($professorMethodology->methodology_use_description && $professorMethodology->methodology_use_description != '')
-                                <hr>
-                                <div class='d-flex flex-column'>
-                                    <small class='text-secondary'>Como o professor aplica a
-                                        metodologia</small>
-                                    <p class='text-primary'>
-                                        {{ $professorMethodology->methodology_use_description }}
-                                    </p>
-                                </div>
-                                @endif
-
-                            </div>
-                            <div class='modal-footer'>
-                                <button type='button' class='btn btn-sm btn-primary' data-dismiss='modal'>Fechar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-                @else
-                <p>Não há metodologias cadastradas</p>
-                @endif
-                @endif
-
-                <div class='modal fade' tabindex='-1' role='dialog' id='methodology-professor-view'>
-                    <div class='modal-dialog' role='document'>
-                        <div class='modal-content'>
-                            <div class='modal-header'>
-                                <h3 class='modal-title text-primary'>Metodologia</h3>
-                                <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                                    <span aria-hidden='true'>&times;</span>
-                                </button>
-                            </div>
-                            <div class='modal-body'>
-                                <div class='d-flex flex-column'>
-                                    <div class='d-flex justify-content-end'>
-                                        <button id="btn-remove-methodology" class='btn btn-outline-danger btn-sm' onclick='removeProfessorMethodology()'>
-                                            Remover metodologia
-                                        </button>
-
-                                        <button id="btn-delete-methodology" class='btn btn-danger btn-sm ml-2' onclick='deleteMethodology()'>
-                                            Apagar metodologia
-                                        </button>
-
-                                    </div>
-                                    <hr class = 'mt-3'>
-                                    <div class="flex-group">
-                                        <label>Nome da disciplina</label>
-                                        <input id='methodology-name' class='form-control text-primary'>
-                                    </div>
-                                    <div id='feedback-delete-remove-methodology' class='alert alert-dismissible d-none mt-2'>
-                                        <small id='feedback-delete-remove-methodology-message'>Não foi deletar a
-                                            metodologia</small>
-                                        <button class='close' onclick="closeAlert('feedback-delete-remove-methodology')">&times</button>
-                                        </small>
-                                    </div>
-
-                                    <ul id="methodology-description-tabs" class="nav nav-tabs mt-2">
-                                        <li class="nav-item" style="cursor:pointer">
-                                            <a id="tab-default-description" class="nav-link active">Descrição padrão</a>
-                                        </li>
-                                        <li class="nav-item" style="cursor:pointer">
-                                            <a id="tab-professor-description" class="nav-link">Sua descrição</a>
-                                        </li>
-                                    </ul>
-                                    <small class='text-secondary'>Descrição da metodologia</small>
-                                    <textarea id='methodology-description' rows='9' class='text-primary' placeholder="Descreva como é essa metodologia"></textarea>
-                                    <textarea id='professor-methodology-description' rows='9' class='text-primary d-none' placeholder="Descreva como é esta metodologia"></textarea>
-                                    <div id='feedback-methodology' class='d-none alert  mt-2'>
-                                        <span id='feedback-methodology-message' style='text-align:center'>Erro ao
-                                            atualizar</span>
-                                        <button class='close' onclick="closeAlert('feedback-methodology')">&times</button>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class='d-flex flex-column'>
-                                    <small class='text-secondary'>Como o professor aplica a metodologia</small>
-                                    <textarea id='methodology-use-description' class='text-primary' rows='10' class="text-primary" placeholder="Descreva como você aplica esta metodologia"></textarea>
-                                    <div id='feedback-professor-methodology' class='d-none alert  mt-2'>
-                                        <span id='feedback-professor-methodology-message' style='text-align:center'>Erro
-                                            ao atualizar</span>
-                                        <button class='close' onclick="closeAlert('feedback-professor-methodology')">&times</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='modal-footer'>
-                                <button id='btn-save-methodology' class='btn btn-success btn-sm' onclick='updateMethodologyAndProfessorMethodology(event)'>Salvar</button>
-                                <button id="close-modal-save-methodology" type='button' class='btn btn-sm btn-primary' data-dismiss='modal'>Fechar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
             <div class="section">
                 <div class="card p-4 col-12 col-md-8">
                     <h1>Oferta/Matrícula</h1>
@@ -1337,7 +1144,7 @@ mais.
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Novo Tema</h2>
+                <h2 class="modal-title">Nova Ementa</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1347,8 +1154,9 @@ mais.
                     <small id="feedback-new-topic-message">Um erro aconteceu</small>
                 </div>
                 <div class="form">
+                    <small class="btn-link" onclick="importComponents(event, '{{ $discipline->code }}')" style="cursor: pointer;">Importar do SIGAA</small>
                     <div class="form-group">
-                        <input id="new-topic-name" type="text" class="form-control" placeholder="Digite o tema a ser adicionado">
+                        <textarea id="new-topic-name" class="form-control" placeholder="Digite o tema a ser adicionado" rows="5"></textarea>
                     </div>
                 </div>
             </div>
@@ -1401,8 +1209,9 @@ mais.
                     <small id="feedback-new-reference-message">Um erro aconteceu</small>
                 </div>
                 <div class="form">
+                    <small class="btn-link" onclick="importReferences(event, '{{ $discipline->code }}')" style="cursor: pointer;">Importar do SIGAA</small>
                     <div class="form-group">
-                        <input id="new-reference-name" type="text" class="form-control" placeholder="Digite a referência a ser adicionada">
+                        <textarea id="new-reference-name" class="form-control" placeholder="Digite a referência a ser adicionada" rows="5"></textarea>
                     </div>
                 </div>
             </div>
@@ -1552,7 +1361,7 @@ mais.
     let subjectConcepts = @json($discipline->subjectConcepts);
     let subjectReferences = @json($discipline->subjectReferences);
     let userIdProfessor = null;
-    @if(auth()->user() && auth()->user()->isProfessor)
+    @if(auth()->user() && auth()-> user()->isProfessor)
     userIdProfessor = '{{ Auth::user()->professor->id }}';
     @endif
 </script>
@@ -1575,5 +1384,50 @@ mais.
 <script src="{{ asset('js/offers.js') }}"></script>
 <script>
     getOffersData("{{ $discipline->code }}");
+</script>
+<script src="{{asset('js/subjectContentsEdit.js')}}"></script>
+<script src="{{ asset('js/disciplines/componentesCurriculares.js') }}"></script>
+<script>
+    function importComponents(event) {
+        let codigo = "{{ $discipline->code }}";
+
+        if (!codigo) {
+            alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
+            return;
+        }
+
+        event.target.innerHTML = "Buscando dados...";
+
+        getComponentesCurriculares(codigo).then((data) => {
+            if (data) {
+                $('#new-topic-name').val(data);
+                event.target.innerHTML = "Importar do SIGAA";
+            } else {
+                event.target.style.color = "red";
+                event.target.innerHTML = "Infelizmente não conseguimos buscar a ementa desta disciplina";
+            }
+        });
+    }
+
+    function importReferences(event) {
+        let codigo = "{{ $discipline->code }}";;
+        
+        if (!codigo) {
+            alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
+            return;
+        }
+
+        event.target.innerHTML = "Buscando dados...";
+
+        getReferenciasBibliograficas(codigo).then((data) => {
+            if (data) {
+                $('#new-reference-name').val(data);
+                event.target.innerHTML = "Importar do SIGAA";
+            } else {
+                event.target.style.color = "red";
+                event.target.innerHTML = "Infelizmente não conseguimos obter as referências desta disciplina";
+            }
+        });
+    }
 </script>
 @endsection
