@@ -53,7 +53,7 @@ class DisciplineService
             $disciplines->where('emphasis_id', $request->emphasis);
         }
         if ($request->professors && $request->professors != "null") {
-            $disciplines->where('professor_id', $request->professors);
+            $disciplines->where('disciplines.professor_id', $request->professors);
         }
         $filteredDisciplines = $disciplines->orderBy('name', 'asc')->get();
 
