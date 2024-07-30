@@ -8,6 +8,7 @@ use App\Enums\ClassificationID;
 use App\Enums\MediaType;
 use App\Exceptions\NotAuthorizedException;
 use App\Exceptions\NotImplementedException;
+use App\Http\Middleware\PortalAccessInfoMiddleware;
 use App\Http\Requests\Discipline\CreateRequest;
 use App\Http\Requests\Discipline\StoreRequest;
 use App\Http\Requests\Discipline\UpdateRequest;
@@ -58,6 +59,7 @@ class DisciplineController extends Controller
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
+        $this->middleware(PortalAccessInfoMiddleware::class)->only(['index','disciplineFilter','show']);
     }
 
     /**
