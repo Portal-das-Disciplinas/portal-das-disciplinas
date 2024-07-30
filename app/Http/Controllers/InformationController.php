@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\PortalAccessInfoMiddleware;
 use App\Models\Collaborator;
 use App\Models\DisciplineParticipant;
 use App\Models\Information;
@@ -27,6 +28,7 @@ class InformationController extends Controller
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
         $this->middleware('admin')->except('index');
+        $this->middleware(PortalAccessInfoMiddleware::class)->only('index');
     }
 
     /**
