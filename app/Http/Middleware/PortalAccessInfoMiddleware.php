@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\PortalAccessInfoService;
 use Closure;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -17,7 +19,8 @@ class PortalAccessInfoMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        Log::info($request->path());
+        $service = new PortalAccessInfoService();
+        $service->registerAccess($request->ip(),$request->path(),new DateTime());
         return $next($request);
     }
 }
