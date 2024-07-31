@@ -94,6 +94,14 @@ h6 {
     font-size: 1.8rem;
 }
 
+.text-suppressed {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* RESPONSIVE */
 
 @media only all and (max-width: 768px) {
