@@ -728,21 +728,28 @@ mais.
                             @if (count($discipline->subjectTopics) <= 3) <ul class="list-group list-group-flush">
                                 @for ($i = 0; $i < count($discipline->subjectTopics); $i++)
                                     <li class="list-group-item">
-                                        <small>{{ $discipline->subjectTopics[$i]->value }}</small>
+                                        <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectReferences[$i]->value }}>{{ $discipline->subjectTopics[$i]->value }}</small>
+                                        <br>
+                                        <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
                                     </li>
                                     @endfor
                                     </ul>
                                     @else
                                     <ul class="list-group list-group-flush">
                                         @for ($i = 0; $i < 3; $i++) <li class="list-group-item">
-                                            <small>{{ $discipline->subjectTopics[$i]->value }}</small></li>
+                                            <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectReferences[$i]->value }}>{{ $discipline->subjectTopics[$i]->value }}</small>
+                                            <br>
+                                            <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
+                                        </li>
                                             @endfor
                                     </ul>
                                     <div class="collapse" id="collapseTopics">
                                         <ul class="list-group list-group-flush">
                                             @for ($i = 3; $i < count($discipline->subjectTopics); $i++)
                                                 <li class="list-group-item">
-                                                    <small>{{ $discipline->subjectTopics[$i]->value }}</small>
+                                                    <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectReferences[$i]->value }}>{{ $discipline->subjectTopics[$i]->value }}</small>
+                                                    <br>
+                                                    <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
                                                 </li>
                                                 @endfor
                                         </ul>
@@ -764,21 +771,28 @@ mais.
                             @if (count($discipline->subjectConcepts) <= 3) <ul class="list-group list-group-flush">
                                 @for ($i = 0; $i < count($discipline->subjectConcepts); $i++)
                                     <li class="list-group-item">
-                                        <small>{{ $discipline->subjectConcepts[$i]->value }}</small>
+                                        <small class="text-suppressed" id="con_{{ $i }}">{{ $discipline->subjectConcepts[$i]->value }}</small>
+                                        <br>
+                                        <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
                                     </li>
                                     @endfor
                                     </ul>
                                     @else
                                     <ul class="list-group list-group-flush">
                                         @for ($i = 0; $i < 3; $i++) <li class="list-group-item">
-                                            <small>{{ $discipline->subjectConcepts[$i]->value }}</small></li>
+                                            <small class="text-suppressed" id="con_{{ $i }}">{{ $discipline->subjectConcepts[$i]->value }}</small>
+                                            <br>
+                                            <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
+                                        </li>
                                             @endfor
                                     </ul>
                                     <div class="collapse" id="collapseConcepts">
                                         <ul class="list-group list-group-flush">
                                             @for ($i = 3; $i < count($discipline->subjectConcepts); $i++)
                                                 <li class="list-group-item">
-                                                    <small>{{ $discipline->subjectConcepts[$i]->value }}</small>
+                                                    <small class="text-suppressed" id="con_{{ $i }}">{{ $discipline->subjectConcepts[$i]->value }}</small>
+                                                    <br>
+                                                    <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
                                                 </li>
                                                 @endfor
                                         </ul>
@@ -800,21 +814,28 @@ mais.
                             @if (count($discipline->subjectReferences) <= 3) <ul class="list-group list-group-flush">
                                 @for ($i = 0; $i < count($discipline->subjectReferences); $i++)
                                     <li class="list-group-item">
-                                        <small>{{ $discipline->subjectReferences[$i]->value }}</small>
+                                        <small class="text-suppressed" id="ref_{{ $i }}">{{ $discipline->subjectReferences[$i]->value }}</small>
+                                        <br>
+                                        <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#ref_{{ $i }}">Mostrar tudo</button>
                                     </li>
                                     @endfor
                                     </ul>
                                     @else
                                     <ul class="list-group list-group-flush">
                                         @for ($i = 0; $i < 3; $i++) <li class="list-group-item">
-                                            <small>{{ $discipline->subjectReferences[$i]->value }}</small></li>
+                                            <small class="text-suppressed" id="ref_{{ $i }}">{{ $discipline->subjectReferences[$i]->value }}>{{ $discipline->subjectReferences[$i]->value }}</small>
+                                            <br>
+                                            <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#ref_{{ $i }}">Mostrar tudo</button>
+                                        </li>
                                             @endfor
                                     </ul>
                                     <div class="collapse" id="collapseReferences">
                                         <ul class="list-group list-group-flush">
                                             @for ($i = 3; $i < count($discipline->subjectReferences); $i++)
                                                 <li class="list-group-item">
-                                                    <small>{{ $discipline->subjectReferences[$i]->value }}</small>
+                                                    <small class="text-suppressed" id="ref_{{ $i }}">{{ $discipline->subjectReferences[$i]->value }}>{{ $discipline->subjectReferences[$i]->value }}</small>
+                                                    <br>
+                                                    <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#ref_{{ $i }}">Mostrar tudo</button>
                                                 </li>
                                                 @endfor
                                         </ul>
@@ -1342,6 +1363,18 @@ mais.
             });
         }
     });
+
+    function toggleContent(event) {
+        const target = $(event.target).data('target')
+
+        $(target).toggleClass('text-suppressed')
+
+        if ($(target).hasClass('text-suppressed')) {
+            $(event.target).html('Mostrar tudo')
+        } else {
+            $(event.target).html('Mostrar menos')
+        }
+    }
 </script>
 
 
