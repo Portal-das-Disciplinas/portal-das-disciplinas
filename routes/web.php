@@ -20,6 +20,7 @@ use App\Http\Controllers\InformationController;
 use App\Http\Controllers\LinksController;
 use App\Http\Controllers\MethodologyController;
 use App\Http\Controllers\ParticipantLinkController;
+use App\Http\Controllers\PortalAccessInfoController;
 use App\Http\Controllers\ProfessorMethodologyController;
 use App\Http\Controllers\SchedulingDisciplinePerformanceUpdateController;
 use App\Http\Controllers\SemesterPerformanceDataController;
@@ -166,5 +167,6 @@ Route::post('/topic/store', [TopicController::class, 'store'])->name('topic.stor
 Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
 Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
 
-
+Route::get('/acessos',[PortalAccessInfoController::class,'index'])->name('portal_access_info.index');
+//Route::get('acessos/')
 
