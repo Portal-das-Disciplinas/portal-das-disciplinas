@@ -20,7 +20,7 @@ class PortalAccessInfoMiddleware
     public function handle(Request $request, Closure $next)
     {
         $service = new PortalAccessInfoService();
-        //$service->registerAccess($request->ip(),$request->path(),new DateTime());
+        $service->registerAccess($request->ip(),$request->path(),new DateTime());
         return $next($request);
     }
 }
