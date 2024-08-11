@@ -59,7 +59,7 @@ class DisciplineController extends Controller
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
-        //$this->middleware(PortalAccessInfoMiddleware::class)->only(['index','disciplineFilter','show']);
+        $this->middleware(PortalAccessInfoMiddleware::class)->only(['index','disciplineFilter','show']);
     }
 
     /**
