@@ -17,13 +17,11 @@ async function getDisciplineTeacher(imdClass) {
 
     let teacherName = "Docente não encontrado", id = null;
 
-    if (response.status === 200) {
-        let teacherResponse = await response.json();
+    let teacherResponse = await response.json();
 
-        if (teacherResponse != null && teacherResponse.length > 0) {
-            teacherName = teacherResponse[0]['nome-docente'];
-            id = teacherResponse[0]['id-docente'];
-        }
+    if (teacherResponse != null && teacherResponse.length > 0) {
+        teacherName = teacherResponse[0]['nome-docente'];
+        id = teacherResponse[0]['id-docente'];
     }
 
     return {
@@ -38,15 +36,15 @@ async function getDisciplineTeachers(classes, sort = false) {
     const promises = classes.map(getDisciplineTeacher);
     const responses = await Promise.all(promises);
 
-    if (sort && responses.length > 1) {
-        return responses.sort((a, b) => {
-            if (a.docente === null || b.docente === null) {
-                a.docente = "Docente não encontrado";
-            }
+    // if (sort && responses.length > 1) {
+    //     return responses.sort((a, b) => {
+    //         if (a.docente === null || b.docente === null) {
+    //             a.docente = "Docente não encontrado";
+    //         }
 
-            return a.docente.localeCompare(b.docente);
-        });
-    }
+    //         return a.docente.localeCompare(b.docente);
+    //     });
+    // }
 
     return responses;
 }
