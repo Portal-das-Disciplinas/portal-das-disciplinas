@@ -25,7 +25,7 @@ noindex, follow
     @endforeach
     @endif
 
-    <form action="{{ route('disciplinas.store') }}" method="post">
+    <form action="{{ route('disciplinas.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-row">
             <div class="form-group col-md-10">
@@ -275,8 +275,8 @@ noindex, follow
                         </label>
                         <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina."><i class="far fa-question-circle ml-1"></i></p>
                     </div>
-                    <div class="input-group">
-                        <input type="text" class="form-control {{ $errors->has('media-podcast') ? 'is-invalid' : ''}}" name="media-podcast" id="media-podcast" value="{{old('media-podcast')}}" aria-describedby="basic-addon3" placeholder="Link para podcast no Google Drive">
+                    <div class="form-group">
+                        <input type="file" class="form-control {{ $errors->has('media-podcast') ? 'is-invalid' : ''}}" name="media-podcast" id="media-podcast" >
                         @error('media-podcast')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -310,6 +310,7 @@ noindex, follow
                     @enderror
                 </div>
             </div>
+            
 
 
         </div>
