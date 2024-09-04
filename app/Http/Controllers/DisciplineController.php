@@ -657,6 +657,28 @@ class DisciplineController extends Controller
                 ]);
             }*/
 
+            if($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()){
+                if($request->file('media-podcast')->getClientOriginalExtension() != 'mp3'){
+                    return redirect()->back()->withInput()->withErrors(['media-podcast' => 'Formato de inválido.']);
+                }
+                if(Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.' . 'mp3')){
+                    Storage::disk('public')->delete('/podcasts/' . $discipline->id . '.' . 'mp3');
+                }
+
+                $podcastUrl = $request->file('media-podcast')
+                    ->storeAs('podcasts',$discipline->id .'.'. $request->file('media-podcast')
+                    ->getClientOriginalExtension(),'public');
+                
+                $discipline->podcast_url = $podcastUrl;
+                $discipline->save();
+            } else if($request->delete_podcast){
+                if(Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.' . 'mp3')){
+                    Storage::disk('public')->delete('/podcasts/' . $discipline->id . '.' . 'mp3');
+                }
+                $discipline->podcast_url = null;
+            }
+
+
             $url = $request->input('media-video') ?? '';
             $mediaId = YoutubeService::getIdFromUrl($url);
             if (!$discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO)) {
