@@ -245,7 +245,7 @@ class DisciplineController extends Controller
                 ]);
             }
 
-            if ($request->filled('media-podcast') && GoogleDriveService::match($request->input('media-podcast'))) {
+            /*if ($request->filled('media-podcast') && GoogleDriveService::match($request->input('media-podcast'))) {
                 $url = $request->input('media-podcast');
                 $mediaId = GoogleDriveService::getIdFromUrl($url);
                 Media::create([
@@ -256,6 +256,18 @@ class DisciplineController extends Controller
                     'is_trailer' => false,
                     'discipline_id' => $discipline->id
                 ]);
+            } */
+
+            if($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()){
+                if($request->file('media-podcast')->getClientOriginalExtension() != 'mp3'){
+                    return redirect()->back()->withInput()->withErrors(['media-podcast' => 'Formato de inválido.']);
+                }
+                $podcastUrl = $request->file('media-podcast')
+                    ->storeAs('podcasts',$discipline->id .'.'. $request->file('media-podcast')
+                    ->getClientOriginalExtension(),'public');
+                
+                $discipline->podcast_url = $podcastUrl;
+                $discipline->save();
             }
 
             if ($request->filled('media-video') && YoutubeService::match($request->input('media-video'))) {
@@ -623,7 +635,7 @@ class DisciplineController extends Controller
             }
 
 
-            $url = $request->input('media-podcast') ?? '';
+            /*$url = $request->input('media-podcast') ?? '';
             $mediaId = GoogleDriveService::getIdFromUrl($url);
             if (!$discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST)) {
                 Media::create([
@@ -643,7 +655,7 @@ class DisciplineController extends Controller
                     'view_url' => $view_url,
                     'url' => $url,
                 ]);
-            }
+            }*/
 
             $url = $request->input('media-video') ?? '';
             $mediaId = YoutubeService::getIdFromUrl($url);

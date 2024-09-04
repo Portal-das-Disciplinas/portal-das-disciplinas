@@ -25,6 +25,7 @@ class Discipline extends Model
      * difficulties: Texto aborda as dificuldades da disciplina.\n
      * professor_id: ID do professor que leciona a discipilina.\n
      * acquirements: Texto que aborda as competências desejadas para cursar a disciplina.\n
+     * podcast_url: Caminho do arquivo de áudio do podcast
      */
     protected $fillable = [
         'code',
@@ -35,6 +36,7 @@ class Discipline extends Model
         'difficulties',
         'professor_id',
         'acquirements',
+        'podcast_url'
     ];
 
     /**

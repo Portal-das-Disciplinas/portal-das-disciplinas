@@ -33,7 +33,7 @@ class StoreRequest extends FormRequest
             'acquirements' => ['nullable', 'max:5000',],
             'media-trailer' => ['nullable', 'max:250',],
             'media-video' => ['nullable', 'max:250',],
-            'media-podcast' => ['nullable', 'max:250',],
+           /* 'media-podcast' => ['nullable', 'max:250',], */
             'media-material' => ['nullable', 'max:250',],
         ];
     }
