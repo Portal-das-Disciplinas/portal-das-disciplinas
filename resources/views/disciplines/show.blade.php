@@ -166,13 +166,20 @@ mais.
                     <!-- PODCAST -->
                     <div>
                         <h1 class=" mt-4 mb-2">Podcast</h1>
-                        @if (
+                        
+                       {{-- @if (
                         $discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) &&
-                        $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '')
-                        <audio class="w-100" controls="controls">
+                        $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '') --}}
+
+                        @if(isset($discipline->podcast_url) && ($discipline->podcast_url != '') )
+                        <audio class="w-100" controls>
+                            <source src="/storage/{{$discipline->podcast_url}}" type="audio/mp3"/>
+                        </audio>
+
+                        {{--<audio class="w-100" controls="controls">
                             <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url }}" type="audio/mp3" />
                             seu navegador não suporta HTML5
-                        </audio>
+                        </audio> --}}
                         @else
                         <img class="img-fluid light-border-radius" src="{{ asset('img/nopodcast.png') }}" alt="Sem podcast">
                         @endif
