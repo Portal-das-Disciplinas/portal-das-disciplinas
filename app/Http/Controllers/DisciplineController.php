@@ -816,6 +816,9 @@ class DisciplineController extends Controller
         Discipline::query()
             ->where('id', $id)
             ->delete();
+        if(Storage::disk('public')->exists('/podcasts/' . $id . '.' . 'mp3')){
+            Storage::disk('public')->delete('/podcasts/' . $id . '.' . 'mp3');
+        }
 
         return redirect()->route('index');
     }

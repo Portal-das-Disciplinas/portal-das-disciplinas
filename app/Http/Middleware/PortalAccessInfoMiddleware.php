@@ -6,6 +6,7 @@ use App\Services\PortalAccessInfoService;
 use Closure;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PortalAccessInfoMiddleware
@@ -20,6 +21,9 @@ class PortalAccessInfoMiddleware
     public function handle(Request $request, Closure $next)
     {
         $service = new PortalAccessInfoService();
+        if(Auth::user() && Auth::user()->isAdmin){
+            return $next($request);
+        }
         $service->registerAccess($request->ip(),$request->path(),new DateTime());
         return $next($request);
     }
