@@ -666,8 +666,7 @@ class DisciplineController extends Controller
                 }
 
                 $podcastUrl = $request->file('media-podcast')
-                    ->storeAs('podcasts',$discipline->id .'.'. $request->file('media-podcast')
-                    ->getClientOriginalExtension(),'public');
+                    ->storeAs('podcasts',$discipline->id .'.mp3','public');
                 
                 $discipline->podcast_url = $podcastUrl;
                 $discipline->save();
