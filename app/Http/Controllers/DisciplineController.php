@@ -260,11 +260,10 @@ class DisciplineController extends Controller
 
             if($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()){
                 if($request->file('media-podcast')->getClientOriginalExtension() != 'mp3'){
-                    return redirect()->back()->withInput()->withErrors(['media-podcast' => 'Formato de inválido.']);
+                    return redirect()->back()->withInput()->withErrors(['media-podcast' => 'Formato do arquivo de podcast inválido.']);
                 }
                 $podcastUrl = $request->file('media-podcast')
-                    ->storeAs('podcasts',$discipline->id .'.'. $request->file('media-podcast')
-                    ->getClientOriginalExtension(),'public');
+                    ->storeAs('podcasts',$discipline->id .'.mp3','public');
                 
                 $discipline->podcast_url = $podcastUrl;
                 $discipline->save();
@@ -659,10 +658,11 @@ class DisciplineController extends Controller
 
             if($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()){
                 if($request->file('media-podcast')->getClientOriginalExtension() != 'mp3'){
-                    return redirect()->back()->withInput()->withErrors(['media-podcast' => 'Formato de inválido.']);
+                    return redirect()->back()->withInput()->withErrors(
+                        ['media-podcast' => 'Formato do arquivo de podcast inválido.']);
                 }
-                if(Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.' . 'mp3')){
-                    Storage::disk('public')->delete('/podcasts/' . $discipline->id . '.' . 'mp3');
+                if(Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.mp3')){
+                    Storage::disk('public')->delete('/podcasts/' . $discipline->id . '.mp3');
                 }
 
                 $podcastUrl = $request->file('media-podcast')
