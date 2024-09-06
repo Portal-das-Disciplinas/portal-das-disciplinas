@@ -304,7 +304,7 @@ noindex, follow
                             </label>
                             <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
-                        <div class="input-group">
+                        <div class="form-group">
                             <input type="file" class="mb-1" {{ $errors->has('media-podcast') ? 'is-invalid' : ''}}" name="media-podcast" id="media-podcast"
                             {{-- @if ($discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST))
                             value="{{$discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->url}}"
@@ -313,14 +313,15 @@ noindex, follow
                             
                             aria-describedby="basic-addon3"
                             placeholder="Selecione um arquivo para alterar">
+                            <small class="d-block text-primary">* Arquivo no formato .mp3</small>
                             
                             @error('media-podcast')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="form-control">
-                            <input type="checkbox" id="delete_podcast" name="delete_podcast">
-                            <label class="text-danger">Apagar podcast</label>
+                        <div class="form-group">
+                            <input id="checkbox-apagar-podcast" type="checkbox" id="delete_podcast" name="delete_podcast">
+                            <label for="checkbox-apagar-podcast" class="text-danger" style="cursor: pointer;">Apagar podcast</label>
                         </div>
                     </div>
                     <div class="form-group">

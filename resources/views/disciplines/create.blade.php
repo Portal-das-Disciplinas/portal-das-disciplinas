@@ -276,7 +276,8 @@ noindex, follow
                         <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Pode ser ouvido com o celular travado. Bate papo entre professores e alunos sobre a disciplina."><i class="far fa-question-circle ml-1"></i></p>
                     </div>
                     <div class="form-group">
-                        <input type="file" class="form-control {{ $errors->has('media-podcast') ? 'is-invalid' : ''}}" name="media-podcast" id="media-podcast" >
+                        <input type="file" class="{{ $errors->has('media-podcast') ? 'is-invalid' : ''}}" name="media-podcast" id="media-podcast" >
+                        <small class="d-block text-primary">* Arquivo no formato .mp3</small>
                         @error('media-podcast')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
