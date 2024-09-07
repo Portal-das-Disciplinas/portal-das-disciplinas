@@ -350,13 +350,13 @@
                         @endif
                     </b>
                     @endif
-                    @guest
+                    @if(!Auth::user() || (Auth::user() && !Auth::user()->isAdmin))
                     @if(count($videoAboutProducers)>0 && (isset($videoUrl)))
                     <b class="pl-0" style="cursor:pointer" data-toggle="collapse" data-target="#collapseCreditos">
                         créditos <li name="caret-icon" class="fa fa-caret-down"></li>
                     </b>
                     @endif
-                    @endguest
+                    @endif
                     @if(Auth::user() && Auth::user()->isAdmin)
                     <span class="text-primary" style="cursor:pointer" onclick="openModalVideoProducers()">editar</span>
                     @endif
