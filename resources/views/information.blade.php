@@ -342,9 +342,9 @@
             <div class="row-fluid mb-5 d-flex flex-column">
                 <div class="d-flex justify-content-between">
                     @if(Auth::user() && Auth::user()->isAdmin)
-                    <b class="pl-0" data-toggle="collapse" data-target="#collapseCreditos">
+                    <b class="pl-0" style="cursor:pointer;" data-toggle="collapse" data-target="#collapseCreditos">
                         @if(count($videoAboutProducers) >0)
-                        créditos <li class="fa fa-caret-down"></li>
+                        créditos <li name="caret-icon" class="fa fa-caret-down"></li>
                         @else
                         <span class='text-secondary'>Não há créditos</span>
                         @endif

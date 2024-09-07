@@ -1011,20 +1011,21 @@ mais.
             <div class="d-flex flex-column shadow p-2 align-items-start">
                 <div class="d-flex flex-row justify-content-start align-items-baseline">
                     <h1 style="cursor:pointer" data-toggle="collapse" data-target="#collapseCreditos">Créditos
-                        <li class="fa fa-caret-down"></li>
+                        <li name="caret-icon-creditos" class="fa fa-caret-down"></li>
                     </h1>
                     @if (Auth::user() && Auth::user()->isAdmin)
                     <button class="btn btn-success btn-sm ml-3 mb-4" data-toggle="modal" data-target="#modal-add"> &nbsp;+&nbsp; </button>
                     @endif
                 </div>
-                @foreach ($discipline->disciplineParticipants as $participant)
+               
                 <div id="collapseCreditos" class="collapse w-100">
-                    <div id="" class="d-flex flex-column mb-4" style="line-height:1.2">
+                @foreach ($discipline->disciplineParticipants as $participant)
+                    <div id="{{$loop->index}}" class="d-flex flex-column mb-4" style="line-height:1.2;">
                         <div class="d-flex flex-row align-items-center justify-content-between w-100 bg-pridmary">
                             <span class=" d-flex w-100 justify-content-between">
                                 <strong class="" style="cursor:pointer" data-toggle="collapse" data-target="#linksCollapse{{ $participant->id }}">
                                     {{ $participant->name }}
-                                    <li class="fas fa-caret-down"></li>
+                                    <li name="linksCollapse{{ $participant->id }}" class="fas fa-caret-down"></li>
                                 </strong>
 
                             </span>
@@ -1041,7 +1042,7 @@ mais.
 
                         </div>
 
-                        <div class="collapse card" id="linksCollapse{{ $participant->id }}">
+                        <div name="collapse-participant" class="collapse card" id="linksCollapse{{ $participant->id }}">
                             <small>
                                 <strong><i>{{ $participant->role }}</i></strong>
                                 @if (isset($participant->email) && $participant->email != '')
@@ -1061,8 +1062,9 @@ mais.
                             </small>
                         </div>
                     </div>
-                </div><!--collapse-->
                 @endforeach
+                </div><!--collapse-->
+               
             </div><!--Seção créditos -->
         </div> <!--col-->
         @endif
@@ -1387,6 +1389,7 @@ mais.
 
 @endsection
 @section('scripts-bottom')
+<script src="{{ asset('js/disciplineShow.js') }}"></script>
 <script>
     let professorName = "{{ $discipline->professor->name }}".toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,
         "");
