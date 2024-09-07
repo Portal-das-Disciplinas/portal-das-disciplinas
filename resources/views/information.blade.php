@@ -352,8 +352,8 @@
                     @endif
                     @guest
                     @if(count($videoAboutProducers)>0 && (isset($videoUrl)))
-                    <b class="pl-0" data-toggle="collapse" data-target="#collapseCreditos">
-                        créditos <li class="fa fa-caret-down"></li>
+                    <b class="pl-0" style="cursor:pointer" data-toggle="collapse" data-target="#collapseCreditos">
+                        créditos <li name="caret-icon" class="fa fa-caret-down"></li>
                     </b>
                     @endif
                     @endguest

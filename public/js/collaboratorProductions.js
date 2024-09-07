@@ -131,3 +131,12 @@ function btnCloseModal() {
     idCollaboratorToSave = null;
     productions = [];
 }
+$('#collapseCreditos').on('show.bs.collapse',function(){
+    $('li[name=caret-icon]').removeClass('fa fa-caret-down');
+    $('li[name=caret-icon]').addClass('fa fa-caret-up');
+});
+$('#collapseCreditos').on('hide.bs.collapse',function(){
+    $('li[name=caret-icon]').removeClass('fa fa-caret-up');
+    $('li[name=caret-icon]').addClass('fa fa-caret-down');
+});
+
