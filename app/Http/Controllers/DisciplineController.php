@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use App\Enums\ClassificationID;
 use App\Enums\MediaType;
+use App\Exceptions\InvalidFileFormatException;
 use App\Exceptions\NotAuthorizedException;
 use App\Exceptions\NotImplementedException;
 use App\Http\Middleware\PortalAccessInfoMiddleware;
@@ -658,8 +659,7 @@ class DisciplineController extends Controller
 
             if($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()){
                 if($request->file('media-podcast')->getClientOriginalExtension() != 'mp3'){
-                    return redirect()->back()->withInput()->withErrors(
-                        ['media-podcast' => 'Formato do arquivo de podcast inválido.']);
+                    throw new InvalidFileFormatException("Formato do arquivo de podcast inválido.");
                 }
                 if(Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.mp3')){
                     Storage::disk('public')->delete('/podcasts/' . $discipline->id . '.mp3');
@@ -796,8 +796,12 @@ class DisciplineController extends Controller
             $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
             return redirect()->route("disciplinas.show", $discipline->id);
-        } catch (\Exception $exception) {
-            //dd($exception);
+        }catch(InvalidFileFormatException $exception){
+            DB::rollBack();
+            return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['media-podcast' => $exception->getMessage()]);
+        }catch (\Exception $exception) {
             DB::rollBack();
             Log::error($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)

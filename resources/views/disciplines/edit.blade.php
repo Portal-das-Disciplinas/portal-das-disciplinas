@@ -409,7 +409,13 @@ noindex, follow
             <h3 class="page-title">Créditos</h3>
             <div class="container-fluid card pt-3 pb-3">
                 <div class="row">
-                    <div class="col" id="participants"></div>
+                    @if($errors->any())
+                        <div>tem erros</div>            
+                    @endif
+
+                    <div class="col" id="participants">
+                        
+                    </div>
 
                 </div>
                 <div class="row">
@@ -419,7 +425,7 @@ noindex, follow
                         </button>
                     </div>
                 </div>
-                <input id="participantsList" name="participantList" hidden>
+                <input id="participantsList" name="participantList"  value="{{old('participantList')}}" hidden>
 
             </div>
             <div id="modalLinksLimit" class="modal fade">
@@ -548,10 +554,21 @@ $classificationsJson = json_encode($classifications);
     renderFaqs('#faqs');
 
     //Scripts relacionados com a adição de participantes da disciplina
-    let data = @json($participants);
-    setParticipants(data);
-    sendParticipantsToFormInput();
-    renderParticipants('#participants');
+        if(document.querySelector('#participantsList').value == ''){
+            let data = @json($participants);
+            setParticipants(data);
+            sendParticipantsToFormInput();
+            renderParticipants('#participants');
+        }
+        else{
+            let data = JSON.parse((document.querySelector('#participantsList').value));
+            setParticipants(data);
+            renderParticipants('#participants');
+        }
+        
+        
+    
+    
 
 
     // Scripts referente á adição de tópicos
