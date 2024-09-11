@@ -402,6 +402,7 @@ noindex, follow
                 <h3>Perguntas Frequentes</h3>
             </div>
             <div id="faqs"><!-- Conteúdo gerado por javascript --></div>
+            <input type='text' id='input-faqs' name='input-faqs' value="{{old('input-faqs')}}" hidden>
             <button class="btn btn-primary" onclick="addFaqField(event)">Adicionar FAQ</button>
 
 
@@ -409,10 +410,6 @@ noindex, follow
             <h3 class="page-title">Créditos</h3>
             <div class="container-fluid card pt-3 pb-3">
                 <div class="row">
-                    @if($errors->any())
-                        <div>tem erros</div>            
-                    @endif
-
                     <div class="col" id="participants">
                         
                     </div>
@@ -501,8 +498,16 @@ $classificationsJson = json_encode($classifications);
 
 
     /*scripts relacionados com a adição das faqs */
-
-    let faqs = @json($discipline->faqs);
+    let faqs = [];
+    if(document.querySelector('#input-faqs').value == ''){
+        faqs = @json($discipline->faqs);
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
+        
+    }else{
+        faqs = JSON.parse(document.querySelector('#input-faqs').value);
+        document.querySelector('#input-faqs').value == "[]";
+    }
+    
 
     function addFaqField(event) {
         event.preventDefault();
@@ -518,16 +523,19 @@ $classificationsJson = json_encode($classifications);
         faqs = faqs.filter(function(faq, idx) {
             return idx != index;
         });
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
 
         renderFaqs("#faqs");
     }
 
     function onchangeTitle(event, index) {
         faqs[index].title = event.target.value;
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
     }
 
     function onchangeContent(event, index) {
         faqs[index].content = event.target.value;
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
     }
 
 
