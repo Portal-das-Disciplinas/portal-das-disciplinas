@@ -119,7 +119,15 @@ noindex, follow
                         <div id="area-edit-topics" class="card">
                             <span>Edição da ementa</span>
                             <div id="area-fields-topics">
-                                @foreach($discipline->subjectTopics as $key=>$topic)
+                                @php
+                                    if(session('oldTopicsInput')){
+                                        $topicsList = session('oldTopicsInput');
+                                    }else{
+                                        
+                                        $topicsList = $discipline->subjectTopics;
+                                    }
+                                @endphp
+                                @foreach($topicsList as $key=>$topic)
                                 <div id="{{'topic-' . $key}}" class="form-group">
                                     <textarea name="topics[]" type="text" class="form-control">{{$topic->value}}</textarea>
                                     <input name="topicsId[]" type="hidden" value="{{$topic->id}}">
@@ -138,7 +146,15 @@ noindex, follow
                         <div id="area-edit-concepts" class="px-1 mt-2 card">
                             <span>Edição dos conceitos</span>
                             <div id="area-fields-concepts">
-                                @foreach($discipline->subjectConcepts as $key=>$concept)
+                                @php
+                                    if(session('oldConceptsInput')){
+                                        $conceptsList = session('oldConceptsInput');
+                                    }else{
+                                        
+                                        $conceptsList = $discipline->subjectConcepts;
+                                    }
+                                @endphp
+                                @foreach($conceptsList as $key=>$concept)
                                 <div id="{{'concept-' . $key}}" class="form-group">
                                     <textarea name="concepts[]" type="text" class="form-control">{{$concept->value}}</textarea>
                                     <input name="conceptsId[]" type="hidden" value="{{$concept->id}}">
@@ -156,7 +172,14 @@ noindex, follow
                         <div id="area-edit-references" class="px-1 mt-2 card">
                             <span>Edição das referências</span>
                             <div id="area-fields-references">
-                                @foreach($discipline->subjectReferences as $key=>$reference)
+                            @php
+                                if(session('oldReferencesInput')){
+                                    $referencesList = session('oldReferencesInput');
+                                }else{       
+                                    $referencesList = $discipline->subjectReferences;
+                                }
+                                @endphp
+                                @foreach($referencesList as $key=>$reference)
                                 <div id="{{'reference-' . $key}}" class="form-group">
                                     <textarea name="references[]" type="text" class="form-control">{{$reference->value}}</textarea>
                                     <input name="referencesId[]" type="hidden" value="{{$reference->id}}">
