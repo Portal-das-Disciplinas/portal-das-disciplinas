@@ -735,7 +735,7 @@ mais.
                             @if (count($discipline->subjectTopics) <= 3) <ul class="list-group list-group-flush">
                                 @for ($i = 0; $i < count($discipline->subjectTopics); $i++)
                                     <li class="list-group-item">
-                                        <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectTopics[$i]->value }}>{{ $discipline->subjectTopics[$i]->value }}</small>
+                                        <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectTopics[$i]->value }}</small>
                                         <br>
                                         <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
                                     </li>
@@ -744,7 +744,7 @@ mais.
                                     @else
                                     <ul class="list-group list-group-flush">
                                         @for ($i = 0; $i < 3; $i++) <li class="list-group-item">
-                                            <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectTopics[$i]->value }}>{{ $discipline->subjectTopics[$i]->value }}</small>
+                                            <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectTopics[$i]->value }}</small>
                                             <br>
                                             <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
                                         </li>
@@ -754,7 +754,7 @@ mais.
                                         <ul class="list-group list-group-flush">
                                             @for ($i = 3; $i < count($discipline->subjectTopics); $i++)
                                                 <li class="list-group-item">
-                                                    <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectTopics[$i]->value }}>{{ $discipline->subjectTopics[$i]->value }}</small>
+                                                    <small class="text-suppressed" id="top_{{ $i }}">{{ $discipline->subjectTopics[$i]->value }}</small>
                                                     <br>
                                                     <button class="btn btn-link" style="font-size: 14px;" onclick="toggleContent(event)" data-target="#top_{{ $i }}">Mostrar tudo</button>
                                                 </li>
