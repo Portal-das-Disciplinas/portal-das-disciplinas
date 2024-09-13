@@ -314,8 +314,8 @@ class DisciplineController extends Controller
                 ]);
             }
 
-            $titles = $request->input('title');
-            $contents = $request->input('content');
+            $titles = $request->input('faqTitle');
+            $contents = $request->input('faqContent');
 
             if ($titles != null) {
                 foreach ($titles as $key => $title) {

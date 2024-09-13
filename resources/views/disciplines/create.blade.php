@@ -318,9 +318,9 @@ noindex, follow
         <div class='page-title'>
             <h3>Perguntas Frequentes</h3>
         </div>
-        <div id="faqs">
-        </div>
-        <a id="add-faq" class="btn btn-primary">Adicionar FAQ</a>
+        <div id="faqs">{{-- Conteúdo gerado por javascript --}}</div>
+        <input id="input-faqs" name="input-faqs" value="{{ old('input-faqs')}}" hidden>
+        <a class="btn btn-primary" onclick="addFaqField(event)">Adicionar FAQ</a>
 
         <div class='d-flex page-title align-items-center'>
             <h3>Cadastro de créditos</h3>
@@ -547,75 +547,65 @@ $classificationsJson = json_encode($classifications);
         $('[data-toggle="tooltip"]').tooltip()
     })
 
-    var addButton = document.getElementById('add-faq');
+    /*var addButton = document.getElementById('add-faq');
     var faqs = document.getElementById('faqs');
-    let counter = 0;
+    let counter = 0; */
 
-    addButton.addEventListener('click', function(event) {
+    let faqs = [];
+    if(document.querySelector('#input-faqs').value != ''){
+        faqs = JSON.parse(document.querySelector('#input-faqs').value);  
+    }
+    
+
+    function addFaqField(event) {
         event.preventDefault();
-        counter++;
+        faqs.push({
+            title: "",
+            content: ""
+        });
+        renderFaqs("#faqs");
+    }
 
-        // Create new elements
-        let newDiv = document.createElement('div');
-        newDiv.classList.add('modal-body');
+    function removeFaqField(index) {
+        event.preventDefault();
+        faqs = faqs.filter(function(faq, idx) {
+            return idx != index;
+        });
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
 
-        // Create form group for title
-        let formGroupTitle = document.createElement('div');
-        formGroupTitle.classList.add('form-group');
+        renderFaqs("#faqs");
+    }
 
-        let titleLabel = document.createElement('label');
-        titleLabel.setAttribute('for', `title${counter}`);
-        titleLabel.classList.add('col-form-label');
-        titleLabel.textContent = "Pergunta";
+    function onchangeTitle(event, index) {
+        faqs[index].title = event.target.value;
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
+    }
 
-        let titleInput = document.createElement('input');
-        titleInput.type = "text";
-        titleInput.classList.add('form-control');
-        titleInput.id = `title${counter}`;
-        titleInput.name = `title[${counter}]`;
+    function onchangeContent(event, index) {
+        faqs[index].content = event.target.value;
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
+    }
 
-        // Append title elements
-        formGroupTitle.appendChild(titleLabel);
-        formGroupTitle.appendChild(titleInput);
-
-        // Create form group for content
-        let formGroupContent = document.createElement('div');
-        formGroupContent.classList.add('form-group');
-
-        let contentLabel = document.createElement('label');
-        contentLabel.setAttribute('for', `content${counter}`);
-        contentLabel.classList.add('col-form-label');
-        contentLabel.textContent = "Resposta";
-
-        let contentTextarea = document.createElement('textarea');
-        contentTextarea.classList.add('form-control');
-        contentTextarea.id = `content${counter}`;
-        contentTextarea.name = `content[${counter}]`;
-
-        // Append content elements
-        formGroupContent.appendChild(contentLabel);
-        formGroupContent.appendChild(contentTextarea);
-
-        // Create delete button
-        let deleteButton = document.createElement('button');
-        deleteButton.classList.add('btn');
-        deleteButton.classList.add('delete-button');
-        deleteButton.classList.add('btn-danger');
-        deleteButton.textContent = "Deletar FAQ";
-
-        // Add event listener to delete button
-        deleteButton.addEventListener('click', function() {
-            newDiv.remove();
+    function renderFaqs(target) {
+        let html = "";
+        faqs.forEach(function(faq, index) {
+            html += "<div class='form card p-1 mb-2' style='background-color:#f2f2f2'>" +
+                "<input name='faqId[]' hidden value='" + faq.id + "'>" +
+                "<label>Pergunta</label>" +
+                "<input class='form-control mb-1' name='faqTitle[]' type='text' value='" + faq.title + "' onchange='onchangeTitle(event," + index + ")' required>" +
+                "<label>Resposta</label>" +
+                "<textarea class='form-control' name='faqContent[]' onchange='onchangeContent(event," + index + ")' required>" + faq.content + "</textarea>" +
+                "<div class='d-flex justify-content-end'>" +
+                "<label onclick='removeFaqField(" + index + ")' class='text-danger' style='cursor:pointer'>remover</label>" +
+                "</div>" +
+                "</div>";
         });
 
-        // Append form groups, delete button to newDiv
-        newDiv.appendChild(formGroupTitle);
-        newDiv.appendChild(formGroupContent);
-        newDiv.appendChild(deleteButton);
+        document.querySelector(target).innerHTML = html;
 
-        // Append newDiv to faqs
-        faqs.appendChild(newDiv);
-    });
+    }
+
+    renderFaqs('#faqs');
 
     if(!document.querySelector('#participantsList').value == ''){
         let data = JSON.parse((document.querySelector('#participantsList').value));
