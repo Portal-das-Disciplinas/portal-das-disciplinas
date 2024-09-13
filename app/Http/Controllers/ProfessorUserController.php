@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -125,75 +126,39 @@ class ProfessorUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $rules = [
-        //     'name' => 'required|max:255',
-        //     'email' => 'required|string|email|max:255|unique:users,email,' . Auth::user()->id,
-        //     'current_password' => 'required',
-        //     'new_password' => 'nullable|min:8|max:12',
-        //     'password_confirmation' => 'nullable|required_with:new_password|same:new_password',
-        // ];
 
-        // $request->validate($rules);
-        //dd($request);
-        $professor = Professor::find($id);
-        $user = User::join('professors', 'professors.user_id', 'users.id')
-            ->where('professors.id', $id)
-            ->first();
+        $professor = Professor::where('id', $id)->first();
+        $user = User::where('id', $professor->user_id)->first();
 
+        if (!empty($request->input('new_password'))) {
+            if ($request->input('new_password') == $request->input('password_confirmation')) {
+                $user->password = bcrypt($request->input('new_password'));
+            } else {
+                return redirect()->back()->withInput()->withErrors(['password_confirmation' => 'As senhas estão diferentes']);
+            }
+        }
+        
+        if ($user->email != $request->input('email')) {
+            $user->email = $request->input('email');
+        }
 
+        $user->updated_at = now();
+        $user->save();
 
-        $professor->name = $request->name;
-        $professor->public_email = $request->public_email;
-       //$professor->user->email = $request->email;
-        $professor->link_rsocial1 = $request->link_rsocial1;
-        $professor->link_rsocial2 = $request->link_rsocial2;
-        $professor->link_rsocial3 = $request->link_rsocial3;
-        $professor->link_rsocial4 = $request->link_rsocial4;
-        $professor->rede_social1 = $request->rede_social1;
-        $professor->rede_social2 = $request->rede_social2;
-        $professor->rede_social3 = $request->rede_social3;
-        $professor->rede_social4 = $request->rede_social4;
+        $professor->public_email = $request->input('public_email');
+        $professor->public_link = $request->input('public_link');
+        $professor->rede_social1 = $request->input('rede_social1');
+        $professor->link_rsocial1 = $request->input('link_rsocial1');
+        $professor->rede_social2 = $request->input('rede_social2');
+        $professor->link_rsocial2 = $request->input('link_rsocial2');
+        $professor->rede_social3 = $request->input('rede_social3');
+        $professor->link_rsocial3 = $request->input('link_rsocial3');
+        $professor->rede_social4 = $request->input('rede_social4');
+        $professor->link_rsocial4 = $request->input('link_rsocial4');
         $professor->save();
-
-        //dd("update");
-        $professor->user->name = $request->name;
-        $professor->user->email = $request->email;
-        $professor->user->password = bcrypt($request->new_password);
-        $professor->user->save();
-
-
-
-
-        // if (Hash::check($request->input('current_password'), $user->password)) {
-        //     if (!empty($request->input('new_password'))) {
-        //         $user->password = bcrypt($request->input('new_password'));
-        //     }
-        //     $user->updated_at = now();
-        //     $user->email = $request->input('email');
-        //     $user->save();
-
-        //     if (isset($professor)) {
-        //         $professor->public_email = $request->input('public_email');
-        //         $professor->public_link = $request->input('public_link');
-        //         $professor->rede_social1 = $request->input('rede_social1');
-        //         $professor->link_rsocial1 = $request->input('link_rsocial1');
-        //         $professor->rede_social2 = $request->input('rede_social2');
-        //         $professor->link_rsocial2 = $request->input('link_rsocial2');
-        //         $professor->rede_social3 = $request->input('rede_social3');
-        //         $professor->link_rsocial3 = $request->input('link_rsocial3');
-        //         $professor->rede_social4 = $request->input('rede_social4');
-        //         $professor->link_rsocial4 = $request->input('link_rsocial4');
-        //         $professor->save();
-        //     }
-        // } else {
-        //     return redirect()->back()->withInput()
-        //         ->withErrors(['current_password' => 'Senha atual incorreta']);
-        // }
 
         return back()
             ->with('success', 'Dados atualizado com sucesso!')
             ->with('theme', $this->theme);
     }
-
-
 }
