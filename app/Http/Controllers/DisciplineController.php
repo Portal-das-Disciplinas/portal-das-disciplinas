@@ -141,6 +141,7 @@ class DisciplineController extends Controller
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
+        
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
@@ -225,8 +226,7 @@ class DisciplineController extends Controller
                     $newProfessorMethodology->{'methodology_use_description'} = $professorMethodology->{'methodology_use_description'};
                     $value = $newProfessorMethodology->save();
                     $newProfessorMethodology->disciplines()->attach($discipline->id);
-                    Log::info($value);
-                    Log::info($newProfessorMethodology);
+                    
                 }
             }
 
