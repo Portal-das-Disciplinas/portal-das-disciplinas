@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Link;
-use App\Models\Professor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use App\Models\Professor;
 
 
 use function PHPSTORM_META\map;
@@ -44,28 +45,34 @@ class UsersController extends Controller
     public function update(Request $request)
     {
 
-        $rules = [
-            'name' => 'required|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . Auth::user()->id,
-            'current_password' => 'required',
-            'new_password' => 'nullable|min:8|max:12',
-            'password_confirmation' => 'nullable|required_with:new_password|same:new_password',
-            'public_link' => 'nullable'
-        ];
-
-        $request->validate($rules);
         $user = Auth::user();
         $professor = Auth::user()->professor;
 
         if (Hash::check($request->input('current_password'), $user->password)) {
             if (!empty($request->input('new_password'))) {
-                $user->password = bcrypt($request->input('new_password'));
+                if ($request->input('new_password') == $request->input('password_confirmation')) {
+                    $user->password = bcrypt($request->input('new_password'));
+                } else {
+                    return redirect()->back()->withInput()->withErrors(['password_confirmation' => 'As senhas estão diferentes']);
+                }
             }
+
             $user->updated_at = now();
-            $user->email = $request->input('email');
+            $user->name = $request->input('name');
+
+            if ($user->email != $request->input('email')) {
+                if (User::where('email', $request->input('email'))->count() < 1) {
+                    $user->email = $request->input('email');
+                } else {
+                    return redirect()->back()->withInput()
+                        ->withErrors(['email' => 'E-mail indisponível']);
+                }
+            }
+
             $user->save();
 
             if (isset($professor)) {
+                $professor->name = $request->input('name');
                 $professor->public_email = $request->input('public_email');
                 $professor->public_link = $request->input('public_link');
                 $professor->save();

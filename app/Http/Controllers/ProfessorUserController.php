@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Professor\CreateRequest;
 use App\Http\Requests\Professor\StoreRequest;
 use App\Models\Link;
-use App\Models\Professor;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
+use App\Models\Professor;
 
 /**
  * Classe que realiza tarefas relacionadas com o Professor.
@@ -137,9 +137,17 @@ class ProfessorUserController extends Controller
                 return redirect()->back()->withInput()->withErrors(['password_confirmation' => 'As senhas estão diferentes']);
             }
         }
+
+        $user->name = $request->input('name');
+        $professor->name = $request->input('name');
         
         if ($user->email != $request->input('email')) {
-            $user->email = $request->input('email');
+            if (User::where('email', $request->input('email'))->count() < 1) {
+                $user->email = $request->input('email');
+            } else {
+                return redirect()->back()->withInput()
+                    ->withErrors(['email' => 'E-mail indisponível']);
+            }
         }
 
         $user->updated_at = now();
@@ -161,4 +169,5 @@ class ProfessorUserController extends Controller
             ->with('success', 'Dados atualizado com sucesso!')
             ->with('theme', $this->theme);
     }
+    
 }
