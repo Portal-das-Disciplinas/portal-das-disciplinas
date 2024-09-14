@@ -119,6 +119,21 @@ noindex, follow
                             <div id="area-edit-topics" class="card">
                                 <span>Edição da ementa</span>
                                 <div id="area-fields-topics">
+
+                                    @if(session('oldTopicsInput'))
+                                    @php
+                                        $topicsList = session('oldTopicsInput');
+                                    @endphp
+                                    @foreach($topicsList as $key=>$topic)
+                                    <div id="{{'topic-' . $key}}" class="form-group">
+                                        <textarea name="topics[]" type="text" class="form-control">{{$topic->value}}</textarea>
+                                        <input name="topicsId[]" type="hidden" value="-1">
+                                        <div class="d-flex justify-content-end">
+                                            <small class="text-danger" style="cursor:pointer" onclick="removeTopicField(event)">remover</small>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <small class="btn-link" onclick="importComponents(event)" style="cursor: pointer;">Importar do SIGAA</small>
@@ -129,6 +144,20 @@ noindex, follow
                             <div id="area-edit-concepts" class="px-1 mt-2 card">
                                 <span>Edição dos conceitos</span>
                                 <div id="area-fields-concepts">
+                                    @if(session('oldConceptsInput'))
+                                    @php
+                                        $conceptsList = session('oldConceptsInput');
+                                    @endphp
+                                    @foreach($conceptsList as $key=>$topic)
+                                    <div id="{{'concept-' . $key}}" class="form-group">
+                                        <textarea name="concepts[]" type="text" class="form-control">{{$topic->value}}</textarea>
+                                        <input name="conceptsId[]" type="hidden" value="-1">
+                                        <div class="d-flex justify-content-end">
+                                            <small class="text-danger" style="cursor:pointer" onclick="removeConceptField(event)">remover</small>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <span class="btn btn-primary btn-sm" onclick="addConceptField()">Adicionar campo</span>
@@ -138,7 +167,20 @@ noindex, follow
                             <div id="area-edit-references" class="px-1 mt-2 card">
                                 <span>Edição das referências</span>
                                 <div id="area-fields-references">
-
+                                    @if(session('oldReferencesInput'))
+                                    @php
+                                        $referencesList = session('oldReferencesInput');
+                                    @endphp
+                                    @foreach($referencesList as $key=>$reference)
+                                    <div id="{{'reference-' . $key}}" class="form-group">
+                                        <textarea name="references[]" type="text" class="form-control">{{$reference->value}}</textarea>
+                                        <input name="referencesId[]" type="hidden" value="-1">
+                                        <div class="d-flex justify-content-end">
+                                            <small class="text-danger" style="cursor:pointer" onclick="removeReferenceField(event)">remover</small>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <small class="btn-link" onclick="importReferences(event)" style="cursor: pointer;">Importar do SIGAA</small>
@@ -318,14 +360,14 @@ noindex, follow
         <div class='page-title'>
             <h3>Perguntas Frequentes</h3>
         </div>
-        <div id="faqs">
-        </div>
-        <a id="add-faq" class="btn btn-primary">Adicionar FAQ</a>
+        <div id="faqs">{{-- Conteúdo gerado por javascript --}}</div>
+        <input id="input-faqs" name="input-faqs" value="{{ old('input-faqs')}}" hidden>
+        <a class="btn btn-primary" onclick="addFaqField(event)">Adicionar FAQ</a>
 
         <div class='d-flex page-title align-items-center'>
             <h3>Cadastro de créditos</h3>
         </div>
-        <input id="participantsList" name="participantsList" type="text" hidden>
+        <input id="participantsList" name="participantsList" type="text" hidden value="{{ old('participantsList')}}">
         <div id="participants" class='w-100'><!--gerado por javascript -->
 
         </div>
@@ -516,6 +558,7 @@ $classificationsJson = json_encode($classifications);
 @endphp
 
 @section('scripts-bottom')
+<script src="{{ asset('js/disciplines.js') }}"></script>
 <script>
     //let classifications = JSON.parse('{!! $classificationsJson !!}');
     let classifications = @json($classifications);
@@ -546,206 +589,73 @@ $classificationsJson = json_encode($classifications);
         $('[data-toggle="tooltip"]').tooltip()
     })
 
-    var addButton = document.getElementById('add-faq');
+    /*var addButton = document.getElementById('add-faq');
     var faqs = document.getElementById('faqs');
-    let counter = 0;
+    let counter = 0; */
 
-    addButton.addEventListener('click', function(event) {
+    let faqs = [];
+    if(document.querySelector('#input-faqs').value != ''){
+        faqs = JSON.parse(document.querySelector('#input-faqs').value);  
+    }
+    
+
+    function addFaqField(event) {
         event.preventDefault();
-        counter++;
-
-        // Create new elements
-        let newDiv = document.createElement('div');
-        newDiv.classList.add('modal-body');
-
-        // Create form group for title
-        let formGroupTitle = document.createElement('div');
-        formGroupTitle.classList.add('form-group');
-
-        let titleLabel = document.createElement('label');
-        titleLabel.setAttribute('for', `title${counter}`);
-        titleLabel.classList.add('col-form-label');
-        titleLabel.textContent = "Pergunta";
-
-        let titleInput = document.createElement('input');
-        titleInput.type = "text";
-        titleInput.classList.add('form-control');
-        titleInput.id = `title${counter}`;
-        titleInput.name = `title[${counter}]`;
-
-        // Append title elements
-        formGroupTitle.appendChild(titleLabel);
-        formGroupTitle.appendChild(titleInput);
-
-        // Create form group for content
-        let formGroupContent = document.createElement('div');
-        formGroupContent.classList.add('form-group');
-
-        let contentLabel = document.createElement('label');
-        contentLabel.setAttribute('for', `content${counter}`);
-        contentLabel.classList.add('col-form-label');
-        contentLabel.textContent = "Resposta";
-
-        let contentTextarea = document.createElement('textarea');
-        contentTextarea.classList.add('form-control');
-        contentTextarea.id = `content${counter}`;
-        contentTextarea.name = `content[${counter}]`;
-
-        // Append content elements
-        formGroupContent.appendChild(contentLabel);
-        formGroupContent.appendChild(contentTextarea);
-
-        // Create delete button
-        let deleteButton = document.createElement('button');
-        deleteButton.classList.add('btn');
-        deleteButton.classList.add('delete-button');
-        deleteButton.classList.add('btn-danger');
-        deleteButton.textContent = "Deletar FAQ";
-
-        // Add event listener to delete button
-        deleteButton.addEventListener('click', function() {
-            newDiv.remove();
+        faqs.push({
+            title: "",
+            content: ""
         });
+        renderFaqs("#faqs");
+    }
 
-        // Append form groups, delete button to newDiv
-        newDiv.appendChild(formGroupTitle);
-        newDiv.appendChild(formGroupContent);
-        newDiv.appendChild(deleteButton);
-
-        // Append newDiv to faqs
-        faqs.appendChild(newDiv);
-    });
-
-    /*Scripts referentes à adição de participantes*/
-    let idLinks = 0;
-    let participants = [];
-
-    function addParticipantField(event) {
+    function removeFaqField(index) {
         event.preventDefault();
-        let emptyParticipant = {
-            name: "",
-            role: "",
-            email: "",
-            index: participants.length,
-            links: []
-        };
-        participants.push(emptyParticipant);
-        renderParticipants('#participants');
-    }
-
-    function removeParticipantField(event) {
-        event.preventDefault();
-        index = event.target.id;
-        participants = participants.filter(function(participant) {
-            return participant.index != index;
+        faqs = faqs.filter(function(faq, idx) {
+            return idx != index;
         });
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
 
-        participants.forEach(function(participant, index) {
-            participant.index = index;
-        });
-        renderParticipants("#participants");
+        renderFaqs("#faqs");
     }
 
-    function addLinkField(event) {
-        event.preventDefault();
-
-        let link = {
-            index: participants[event.target.id].links.length,
-            name: "",
-            url: ""
-        };
-        if (participants[event.target.id].links.length >= 3) {
-            $('#modalLinksLimit').modal('show');
-            return;
-        }
-        participants[event.target.id].links.push(link);
-        renderParticipants("#participants");
+    function onchangeTitle(event, index) {
+        faqs[index].title = event.target.value;
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
     }
 
-    function removeLinkField(event, indexParticipant, linkIndex) {
-        event.preventDefault();
-        participants[indexParticipant].links = participants[indexParticipant].links.filter(function(link, index) {
-            return link.index != linkIndex;
-        });
-        participants[indexParticipant].links.forEach(function(link, index) {
-            link.index = index;
-        });
-
-        renderParticipants("#participants");
+    function onchangeContent(event, index) {
+        faqs[index].content = event.target.value;
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
     }
 
-    function sendParticipantsToFormInput() {
-        document.querySelector("#participantsList").value = JSON.stringify(participants);
-    }
-
-    function onChangeParticipantName(event) {
-        participants[event.target.id].name = event.target.value;
-        sendParticipantsToFormInput();
-
-    }
-
-    function onChangeParticipantRole(event) {
-        participants[event.target.id].role = event.target.value;
-        sendParticipantsToFormInput();
-    }
-
-    function onChangeParticipantEmail(event) {
-        participants[event.target.id].email = event.target.value;
-        sendParticipantsToFormInput();
-    }
-
-    function onChangeLinkName(event, participantIndex, linkIndex) {
-        participants[participantIndex].links[linkIndex].name = event.target.value;
-        sendParticipantsToFormInput();
-    }
-
-    function onChangeLinkUrl(event, participantIndex, linkIndex) {
-        participants[participantIndex].links[linkIndex].url = event.target.value;
-        sendParticipantsToFormInput();
-    }
-
-    function renderParticipants(idElement) {
+    function renderFaqs(target) {
         let html = "";
-        participants.forEach(function(participant, index) {
-            html +=
-                " <div class='d-flex mb-5 flex-column card' style='background-color: #f2f2f2'>" +
-                "<div class='p-1 w-100'>" +
-                "<div class='form-group'>" +
-                "<label for='part1'>Nome</label>" +
-                "<input id='" + participant.index + "' class='form-control' type='text' name='participantName[]' placeholder='Nome do Participante' required value='" + participant.name + "' onchange='onChangeParticipantName(event)'>" +
+        faqs.forEach(function(faq, index) {
+            html += "<div class='form card p-1 mb-2' style='background-color:#f2f2f2'>" +
+                "<input name='faqId[]' hidden value='" + faq.id + "'>" +
+                "<label>Pergunta</label>" +
+                "<input class='form-control mb-1' name='faqTitle[]' type='text' value='" + faq.title + "' onchange='onchangeTitle(event," + index + ")' required>" +
+                "<label>Resposta</label>" +
+                "<textarea class='form-control' name='faqContent[]' onchange='onchangeContent(event," + index + ")' required>" + faq.content + "</textarea>" +
+                "<div class='d-flex justify-content-end'>" +
+                "<label onclick='removeFaqField(" + index + ")' class='text-danger' style='cursor:pointer'>remover</label>" +
                 "</div>" +
-                "<div class='form-group'>" +
-                "<label>Função</label>" +
-                "<input id='" + participant.index + "' class='form-control' type='text' name='participantRole[]' placeholder='Função do Participante' required value='" + participant.role + "' onchange='onChangeParticipantRole(event)'>" +
-                "</div>" +
-                "<div class='form-group'>" +
-                "<label>E-mail</label>" +
-                "<input id='" + participant.index + "' class='form-control' type='email' name='participantEmail[]' placeholder='E-mail do Participante'  value='" + participant.email + "' onchange='onChangeParticipantEmail(event)'>" +
-                "</div>" +
-                "<hr class='hr'>" +
-                "<span>LINKS</span>" +
-                "<div id='links' class='d-flex flex-column p-1'>";
-            participant.links.forEach(function(link, index) {
-                html += "<div class='card p-1 mb-1' style='background-color:#e7eaf6'>" +
-                    "<div class='form-group w-100'>" +
-                    "<input class='form-control' type='text' name='linkName[]' maxlength='20' placeholder='Nome da rede social' required value='" + link.name + "' onchange='onChangeLinkName(event," + participant.index + "," + index + ")'>" +
-                    "</div>" +
-                    "<div class='form-group'>" +
-                    "<input class='form-control mb-0' type='url' name='linkUrl[] p-0' placeholder='http://' required value='" + link.url + "' onchange='onChangeLinkUrl(event," + participant.index + "," + index + ")'>" +
-                    "</div>" +
-                    "<div class='d-flex mb-2'><small id='" + link.index + "' class='text-danger' style='cursor:pointer;line-height:0.5' onclick='removeLinkField(event," + participant.index + "," + index + ")'>remover link</small></div>" +
-                    "</div>";
-            });
-            html += "</div>" +
-                "<a id='" + participant.index + "' class='btn btn-outline-primary btn-sm mt-2' href='#' onclick='addLinkField(event)'>Adicionar link</a>" +
-                "</div>" +
-                "<div class='d-flex justify-content-end mb-2 mr-1'><button id='" + participant.index + "' class='btn btn-danger btn-sm' onclick='removeParticipantField(event)'>remover participante</button></div>" +
-
                 "</div>";
         });
-        document.querySelector(idElement).innerHTML = html;
+
+        document.querySelector(target).innerHTML = html;
+
     }
-    renderParticipants('#participants');
+
+    renderFaqs('#faqs');
+
+    if(!document.querySelector('#participantsList').value == ''){
+        let data = JSON.parse((document.querySelector('#participantsList').value));
+        setParticipants(data);
+        renderParticipants('#participants');
+    }
+    
+        
 </script>
 <script src="{{asset('js/subjectContentsEdit.js')}}"></script>
 <script>

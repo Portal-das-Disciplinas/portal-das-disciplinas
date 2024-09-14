@@ -119,7 +119,15 @@ noindex, follow
                         <div id="area-edit-topics" class="card">
                             <span>Edição da ementa</span>
                             <div id="area-fields-topics">
-                                @foreach($discipline->subjectTopics as $key=>$topic)
+                                @php
+                                    if(session('oldTopicsInput')){
+                                        $topicsList = session('oldTopicsInput');
+                                    }else{
+                                        
+                                        $topicsList = $discipline->subjectTopics;
+                                    }
+                                @endphp
+                                @foreach($topicsList as $key=>$topic)
                                 <div id="{{'topic-' . $key}}" class="form-group">
                                     <textarea name="topics[]" type="text" class="form-control">{{$topic->value}}</textarea>
                                     <input name="topicsId[]" type="hidden" value="{{$topic->id}}">
@@ -138,7 +146,15 @@ noindex, follow
                         <div id="area-edit-concepts" class="px-1 mt-2 card">
                             <span>Edição dos conceitos</span>
                             <div id="area-fields-concepts">
-                                @foreach($discipline->subjectConcepts as $key=>$concept)
+                                @php
+                                    if(session('oldConceptsInput')){
+                                        $conceptsList = session('oldConceptsInput');
+                                    }else{
+                                        
+                                        $conceptsList = $discipline->subjectConcepts;
+                                    }
+                                @endphp
+                                @foreach($conceptsList as $key=>$concept)
                                 <div id="{{'concept-' . $key}}" class="form-group">
                                     <textarea name="concepts[]" type="text" class="form-control">{{$concept->value}}</textarea>
                                     <input name="conceptsId[]" type="hidden" value="{{$concept->id}}">
@@ -156,7 +172,14 @@ noindex, follow
                         <div id="area-edit-references" class="px-1 mt-2 card">
                             <span>Edição das referências</span>
                             <div id="area-fields-references">
-                                @foreach($discipline->subjectReferences as $key=>$reference)
+                            @php
+                                if(session('oldReferencesInput')){
+                                    $referencesList = session('oldReferencesInput');
+                                }else{       
+                                    $referencesList = $discipline->subjectReferences;
+                                }
+                                @endphp
+                                @foreach($referencesList as $key=>$reference)
                                 <div id="{{'reference-' . $key}}" class="form-group">
                                     <textarea name="references[]" type="text" class="form-control">{{$reference->value}}</textarea>
                                     <input name="referencesId[]" type="hidden" value="{{$reference->id}}">
@@ -402,6 +425,7 @@ noindex, follow
                 <h3>Perguntas Frequentes</h3>
             </div>
             <div id="faqs"><!-- Conteúdo gerado por javascript --></div>
+            <input type='text' id='input-faqs' name='input-faqs' value="{{old('input-faqs')}}" hidden>
             <button class="btn btn-primary" onclick="addFaqField(event)">Adicionar FAQ</button>
 
 
@@ -409,7 +433,9 @@ noindex, follow
             <h3 class="page-title">Créditos</h3>
             <div class="container-fluid card pt-3 pb-3">
                 <div class="row">
-                    <div class="col" id="participants"></div>
+                    <div class="col" id="participants">
+                        
+                    </div>
 
                 </div>
                 <div class="row">
@@ -419,7 +445,7 @@ noindex, follow
                         </button>
                     </div>
                 </div>
-                <input id="participantsList" name="participantList" hidden>
+                <input id="participantsList" name="participantList"  value="{{old('participantList')}}" hidden>
 
             </div>
             <div id="modalLinksLimit" class="modal fade">
@@ -495,8 +521,16 @@ $classificationsJson = json_encode($classifications);
 
 
     /*scripts relacionados com a adição das faqs */
-
-    let faqs = @json($discipline->faqs);
+    let faqs = [];
+    if(document.querySelector('#input-faqs').value == ''){
+        faqs = @json($discipline->faqs);
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
+        
+    }else{
+        faqs = JSON.parse(document.querySelector('#input-faqs').value);
+        document.querySelector('#input-faqs').value == "[]";
+    }
+    
 
     function addFaqField(event) {
         event.preventDefault();
@@ -512,16 +546,19 @@ $classificationsJson = json_encode($classifications);
         faqs = faqs.filter(function(faq, idx) {
             return idx != index;
         });
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
 
         renderFaqs("#faqs");
     }
 
     function onchangeTitle(event, index) {
         faqs[index].title = event.target.value;
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
     }
 
     function onchangeContent(event, index) {
         faqs[index].content = event.target.value;
+        document.querySelector('#input-faqs').value = JSON.stringify(faqs);
     }
 
 
@@ -548,10 +585,21 @@ $classificationsJson = json_encode($classifications);
     renderFaqs('#faqs');
 
     //Scripts relacionados com a adição de participantes da disciplina
-    let data = @json($participants);
-    setParticipants(data);
-    sendParticipantsToFormInput();
-    renderParticipants('#participants');
+        if(document.querySelector('#participantsList').value == ''){
+            let data = @json($participants);
+            setParticipants(data);
+            sendParticipantsToFormInput();
+            renderParticipants('#participants');
+        }
+        else{
+            let data = JSON.parse((document.querySelector('#participantsList').value));
+            setParticipants(data);
+            renderParticipants('#participants');
+        }
+        
+        
+    
+    
 
 
     // Scripts referente á adição de tópicos

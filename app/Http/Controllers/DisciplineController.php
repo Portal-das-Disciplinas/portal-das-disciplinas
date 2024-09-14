@@ -6,6 +6,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use App\Enums\ClassificationID;
 use App\Enums\MediaType;
+use App\Exceptions\InvalidFileFormatException;
+use App\Exceptions\MissingDataException;
 use App\Exceptions\NotAuthorizedException;
 use App\Exceptions\NotImplementedException;
 use App\Http\Middleware\PortalAccessInfoMiddleware;
@@ -59,7 +61,7 @@ class DisciplineController extends Controller
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
-        $this->middleware(PortalAccessInfoMiddleware::class)->only(['index','disciplineFilter','show']);
+        $this->middleware(PortalAccessInfoMiddleware::class)->only(['index', 'disciplineFilter', 'show']);
     }
 
     /**
@@ -140,6 +142,7 @@ class DisciplineController extends Controller
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
         }
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
+        
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
@@ -163,8 +166,7 @@ class DisciplineController extends Controller
                 $professor = Professor::query()->find($request->input('professor'));
             }
             if (!isset($professor)) {
-                DB::rollBack();
-                return redirect()->back()->withInput()->withErrors(['professor_error' => 'É necessário selecionar um professor para a disciplina.']);
+                throw new MissingDataException("É necessário selecionar um professor para a disciplina");  
             }
 
             $discipline = Discipline::create([
@@ -210,13 +212,12 @@ class DisciplineController extends Controller
                 }
             }
 
-            if($request->{'selected-professor-methodologies'}){
+            if ($request->{'selected-professor-methodologies'}) {
                 $professorMethodologiesToSave = json_decode($request->{'selected-professor-methodologies'});
-                Log::info($professorMethodologiesToSave);
-                foreach($professorMethodologiesToSave as $professorMethodology){
+                foreach ($professorMethodologiesToSave as $professorMethodology) {
                     $newProfessorMethodology = new ProfessorMethodology();
                     $newProfessorMethodology->{'methodology_id'} = $professorMethodology->{'methodology_id'};
-                    if(Auth::user()->isProfessor && $professorMethodology->{'professor_methodology_id'} != Auth::user()->professor->id){
+                    if (Auth::user()->isProfessor && $professorMethodology->{'professor_methodology_id'} != Auth::user()->professor->id) {
                         throw new NotAuthorizedException("O professor não pode criar metodologias de outros professores.");
                     }
                     $newProfessorMethodology->{'professor_id'} = $professorMethodology->{'professor_methodology_id'};
@@ -224,12 +225,9 @@ class DisciplineController extends Controller
                     $newProfessorMethodology->{'methodology_use_description'} = $professorMethodology->{'methodology_use_description'};
                     $value = $newProfessorMethodology->save();
                     $newProfessorMethodology->disciplines()->attach($discipline->id);
-                    Log::info($value);
-                    Log::info($newProfessorMethodology);
+                    
                 }
             }
-
-
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
 
@@ -258,13 +256,13 @@ class DisciplineController extends Controller
                 ]);
             } */
 
-            if($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()){
-                if($request->file('media-podcast')->getClientOriginalExtension() != 'mp3'){
-                    return redirect()->back()->withInput()->withErrors(['media-podcast' => 'Formato do arquivo de podcast inválido.']);
+            if ($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()) {
+                if ($request->file('media-podcast')->getClientOriginalExtension() != 'mp3') {
+                    throw new InvalidFileFormatException('Formato do arquivo de podcast inválido.');
                 }
                 $podcastUrl = $request->file('media-podcast')
-                    ->storeAs('podcasts',$discipline->id .'.mp3','public');
-                
+                    ->storeAs('podcasts', $discipline->id . '.mp3', 'public');
+
                 $discipline->podcast_url = $podcastUrl;
                 $discipline->save();
             }
@@ -313,8 +311,8 @@ class DisciplineController extends Controller
                 ]);
             }
 
-            $titles = $request->input('title');
-            $contents = $request->input('content');
+            $titles = $request->input('faqTitle');
+            $contents = $request->input('faqContent');
 
             if ($titles != null) {
                 foreach ($titles as $key => $title) {
@@ -371,9 +369,16 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            Log::error($exception);
-            return redirect()->back()->withErrors(['error' => "Erro ao cadastrar a disciplina"])
-                ->withInput();
+            $topicsConceptsReferences = $this->createTopicsConceptsReferenceResponse($request);
+            return redirect()
+                ->back()
+                ->withErrors(['error' => $exception->getMessage()])
+                ->withInput()
+                ->with([
+                    'oldTopicsInput' => $topicsConceptsReferences['topics'],
+                    'oldConceptsInput' => $topicsConceptsReferences['concepts'],
+                    'oldReferencesInput' => $topicsConceptsReferences['references']
+                ]);
         }
     }
 
@@ -656,22 +661,21 @@ class DisciplineController extends Controller
                 ]);
             }*/
 
-            if($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()){
-                if($request->file('media-podcast')->getClientOriginalExtension() != 'mp3'){
-                    return redirect()->back()->withInput()->withErrors(
-                        ['media-podcast' => 'Formato do arquivo de podcast inválido.']);
+            if ($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()) {
+                if ($request->file('media-podcast')->getClientOriginalExtension() != 'mp3') {
+                    throw new InvalidFileFormatException("Formato do arquivo de podcast inválido.");
                 }
-                if(Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.mp3')){
+                if (Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.mp3')) {
                     Storage::disk('public')->delete('/podcasts/' . $discipline->id . '.mp3');
                 }
 
                 $podcastUrl = $request->file('media-podcast')
-                    ->storeAs('podcasts',$discipline->id .'.mp3','public');
-                
+                    ->storeAs('podcasts', $discipline->id . '.mp3', 'public');
+
                 $discipline->podcast_url = $podcastUrl;
                 $discipline->save();
-            } else if($request->delete_podcast){
-                if(Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.' . 'mp3')){
+            } else if ($request->delete_podcast) {
+                if (Storage::disk('public')->exists('/podcasts/' . $discipline->id . '.' . 'mp3')) {
                     Storage::disk('public')->delete('/podcasts/' . $discipline->id . '.' . 'mp3');
                 }
                 $discipline->podcast_url = null;
@@ -784,25 +788,71 @@ class DisciplineController extends Controller
                 Faq::where('discipline_id', $discipline->id)->delete();
             }
 
-            /* foreach ($faqsMap as $faqId) {
-                Faq::updateOrCreate(
-                    ['title' => $discipline->id,'title' => $faqId],
-                    ['content' => $request->input('content-' . $faqId)]
-                );
-            }     */
-
             $discipline->save();
             DB::commit();
             $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
             return redirect()->route("disciplinas.show", $discipline->id);
-        } catch (\Exception $exception) {
-            //dd($exception);
+        } catch (InvalidFileFormatException $exception) {
             DB::rollBack();
+            $topicsContentsReferences = $this->createTopicsConceptsReferenceResponse($request);
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['media-podcast' => $exception->getMessage()])
+                ->with(['oldTopicsInput' => $topicsContentsReferences['topics']])
+                ->with(['oldConceptsInput' => $topicsContentsReferences['concepts']])
+                ->with(['oldReferencesInput' => $topicsContentsReferences['references']]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            $topicsContentsReferences = $this->createTopicsConceptsReferenceResponse($request);
             Log::error($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
-                ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina']);
+                ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina'])
+                ->with(['oldTopicsInput' => $topicsContentsReferences['topics']])
+                ->with(['oldConceptsInput'=> $topicsContentsReferences['concepts']])
+                ->with(['oldReferencesInput' => $topicsContentsReferences['references']]);
         }
+    }
+
+    private function createTopicsConceptsReferenceResponse(Request $request)
+    {
+        $topicsConceptsReferences = array();
+        $subjectTopics = array();
+        $subjectConcepts = array();
+        $subjectReferences = array();
+        Log::info($request->topicsId);
+        if($request->topicsId){
+            foreach ($request->topicsId as $key => $topicId) {
+                $subjectTopic = new SubjectTopic();
+                $subjectTopic->id = $topicId;
+                $subjectTopic->value = $request->topics[$key];
+                array_push($subjectTopics, $subjectTopic);
+            }
+        }
+        
+        if($request->conceptsId){
+            foreach ($request->conceptsId as $key => $conceptId) {
+                $subjectConcept = new SubjectConcept();
+                $subjectConcept->id = $conceptId;
+                $subjectConcept->value = $request->concepts[$key];
+                array_push($subjectConcepts, $subjectConcept);
+            }
+        }
+        
+        if($request->referencesId){
+            foreach($request->referencesId as $key => $referenceId){
+                $subjectReference = new SubjectReference();
+                $subjectReference->id = $referenceId;
+                $subjectReference->value = $request->references[$key];
+                array_push($subjectReferences, $subjectReference);
+            }
+        }
+        
+        $topicsConceptsReferences['topics'] = $subjectTopics;
+        $topicsConceptsReferences['concepts'] = $subjectConcepts;
+        $topicsConceptsReferences['references'] = $subjectReferences;
+
+        return $topicsConceptsReferences;
     }
 
     /**
@@ -816,7 +866,7 @@ class DisciplineController extends Controller
         Discipline::query()
             ->where('id', $id)
             ->delete();
-        if(Storage::disk('public')->exists('/podcasts/' . $id . '.' . 'mp3')){
+        if (Storage::disk('public')->exists('/podcasts/' . $id . '.' . 'mp3')) {
             Storage::disk('public')->delete('/podcasts/' . $id . '.' . 'mp3');
         }
 
@@ -957,15 +1007,16 @@ class DisciplineController extends Controller
                     ->removeProfessorMethodologyFromDiscipline($request->discipline_id, $request->professor_methodology_id);
             } catch (NotAuthorizedException $e) {
                 return response()->json(['error' => $e->getMessage()], 401);
-            } catch (Exception $e){
-                return response()->json(['error' => 'Erro no servidor'],500);
+            } catch (Exception $e) {
+                return response()->json(['error' => 'Erro no servidor'], 500);
             }
-        } else{
+        } else {
             throw new NotImplementedException();
         }
     }
 
-    public function getComponentesCurriculares(Request $request, $codigo) {
+    public function getComponentesCurriculares(Request $request, $codigo)
+    {
         $service = new APISigaaService();
 
         $data = $service->getComponentesCurriculares($codigo);
@@ -974,10 +1025,11 @@ class DisciplineController extends Controller
             return response()->json("Não foi possível obter os componentes o curriculares desta disciplina", 500);
         }
 
-        return response()->json($data, 200);   
+        return response()->json($data, 200);
     }
 
-    public function getReferenciasBibliograficas(Request $request, $codigo) {
+    public function getReferenciasBibliograficas(Request $request, $codigo)
+    {
         $service = new APISigaaService();
 
         $data = $service->getReferenciasBibliograficas($codigo);
@@ -986,6 +1038,6 @@ class DisciplineController extends Controller
             return response()->json("Não foi possível obter os componentes as referencias desta disciplina", 500);
         }
 
-        return response()->json($data, 200);   
+        return response()->json($data, 200);
     }
 }
