@@ -119,6 +119,21 @@ noindex, follow
                             <div id="area-edit-topics" class="card">
                                 <span>Edição da ementa</span>
                                 <div id="area-fields-topics">
+
+                                    @if(session('oldTopicsInput'))
+                                    @php
+                                        $topicsList = session('oldTopicsInput');
+                                    @endphp
+                                    @foreach($topicsList as $key=>$topic)
+                                    <div id="{{'topic-' . $key}}" class="form-group">
+                                        <textarea name="topics[]" type="text" class="form-control">{{$topic->value}}</textarea>
+                                        <input name="topicsId[]" type="hidden" value="-1">
+                                        <div class="d-flex justify-content-end">
+                                            <small class="text-danger" style="cursor:pointer" onclick="removeTopicField(event)">remover</small>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <small class="btn-link" onclick="importComponents(event)" style="cursor: pointer;">Importar do SIGAA</small>
@@ -129,6 +144,20 @@ noindex, follow
                             <div id="area-edit-concepts" class="px-1 mt-2 card">
                                 <span>Edição dos conceitos</span>
                                 <div id="area-fields-concepts">
+                                    @if(session('oldConceptsInput'))
+                                    @php
+                                        $conceptsList = session('oldConceptsInput');
+                                    @endphp
+                                    @foreach($conceptsList as $key=>$topic)
+                                    <div id="{{'concept-' . $key}}" class="form-group">
+                                        <textarea name="concepts[]" type="text" class="form-control">{{$topic->value}}</textarea>
+                                        <input name="conceptsId[]" type="hidden" value="-1">
+                                        <div class="d-flex justify-content-end">
+                                            <small class="text-danger" style="cursor:pointer" onclick="removeConceptField(event)">remover</small>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <span class="btn btn-primary btn-sm" onclick="addConceptField()">Adicionar campo</span>
@@ -138,7 +167,20 @@ noindex, follow
                             <div id="area-edit-references" class="px-1 mt-2 card">
                                 <span>Edição das referências</span>
                                 <div id="area-fields-references">
-
+                                    @if(session('oldReferencesInput'))
+                                    @php
+                                        $referencesList = session('oldReferencesInput');
+                                    @endphp
+                                    @foreach($referencesList as $key=>$reference)
+                                    <div id="{{'reference-' . $key}}" class="form-group">
+                                        <textarea name="references[]" type="text" class="form-control">{{$reference->value}}</textarea>
+                                        <input name="referencesId[]" type="hidden" value="-1">
+                                        <div class="d-flex justify-content-end">
+                                            <small class="text-danger" style="cursor:pointer" onclick="removeReferenceField(event)">remover</small>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                    @endif
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <small class="btn-link" onclick="importReferences(event)" style="cursor: pointer;">Importar do SIGAA</small>

@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use App\Enums\ClassificationID;
 use App\Enums\MediaType;
 use App\Exceptions\InvalidFileFormatException;
+use App\Exceptions\MissingDataException;
 use App\Exceptions\NotAuthorizedException;
 use App\Exceptions\NotImplementedException;
 use App\Http\Middleware\PortalAccessInfoMiddleware;
@@ -165,8 +166,7 @@ class DisciplineController extends Controller
                 $professor = Professor::query()->find($request->input('professor'));
             }
             if (!isset($professor)) {
-                DB::rollBack();
-                return redirect()->back()->withInput()->withErrors(['professor_error' => 'É necessário selecionar um professor para a disciplina.']);
+                throw new MissingDataException("É necessário selecionar um professor para a disciplina");  
             }
 
             $discipline = Discipline::create([
@@ -214,7 +214,6 @@ class DisciplineController extends Controller
 
             if ($request->{'selected-professor-methodologies'}) {
                 $professorMethodologiesToSave = json_decode($request->{'selected-professor-methodologies'});
-                Log::info($professorMethodologiesToSave);
                 foreach ($professorMethodologiesToSave as $professorMethodology) {
                     $newProfessorMethodology = new ProfessorMethodology();
                     $newProfessorMethodology->{'methodology_id'} = $professorMethodology->{'methodology_id'};
@@ -229,8 +228,6 @@ class DisciplineController extends Controller
                     
                 }
             }
-
-
 
             if ($request->filled('media-trailer') && YoutubeService::match($request->input('media-trailer'))) {
 
@@ -261,7 +258,7 @@ class DisciplineController extends Controller
 
             if ($request->hasFile('media-podcast') && $request->file('media-podcast')->isValid()) {
                 if ($request->file('media-podcast')->getClientOriginalExtension() != 'mp3') {
-                    return redirect()->back()->withInput()->withErrors(['media-podcast' => 'Formato do arquivo de podcast inválido.']);
+                    throw new InvalidFileFormatException('Formato do arquivo de podcast inválido.');
                 }
                 $podcastUrl = $request->file('media-podcast')
                     ->storeAs('podcasts', $discipline->id . '.mp3', 'public');
@@ -372,9 +369,16 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
-            Log::error($exception);
-            return redirect()->back()->withErrors(['error' => "Erro ao cadastrar a disciplina"])
-                ->withInput();
+            $topicsConceptsReferences = $this->createTopicsConceptsReferenceResponse($request);
+            return redirect()
+                ->back()
+                ->withErrors(['error' => $exception->getMessage()])
+                ->withInput()
+                ->with([
+                    'oldTopicsInput' => $topicsConceptsReferences['topics'],
+                    'oldConceptsInput' => $topicsConceptsReferences['concepts'],
+                    'oldReferencesInput' => $topicsConceptsReferences['references']
+                ]);
         }
     }
 
@@ -816,27 +820,34 @@ class DisciplineController extends Controller
         $subjectTopics = array();
         $subjectConcepts = array();
         $subjectReferences = array();
-        foreach ($request->topicsId as $key => $topicId) {
-            $subjectTopic = new SubjectTopic();
-            $subjectTopic->id = $topicId;
-            $subjectTopic->value = $request->topics[$key];
-            array_push($subjectTopics, $subjectTopic);
+        Log::info($request->topicsId);
+        if($request->topicsId){
+            foreach ($request->topicsId as $key => $topicId) {
+                $subjectTopic = new SubjectTopic();
+                $subjectTopic->id = $topicId;
+                $subjectTopic->value = $request->topics[$key];
+                array_push($subjectTopics, $subjectTopic);
+            }
         }
-
-        foreach ($request->conceptsId as $key => $conceptId) {
-            $subjectConcept = new SubjectConcept();
-            $subjectConcept->id = $conceptId;
-            $subjectConcept->value = $request->concepts[$key];
-            array_push($subjectConcepts, $subjectConcept);
+        
+        if($request->conceptsId){
+            foreach ($request->conceptsId as $key => $conceptId) {
+                $subjectConcept = new SubjectConcept();
+                $subjectConcept->id = $conceptId;
+                $subjectConcept->value = $request->concepts[$key];
+                array_push($subjectConcepts, $subjectConcept);
+            }
         }
-
-        foreach($request->referencesId as $key => $referenceId){
-            $subjectReference = new SubjectReference();
-            $subjectReference->id = $referenceId;
-            $subjectReference->value = $request->references[$key];
-            array_push($subjectReferences, $subjectReference);
+        
+        if($request->referencesId){
+            foreach($request->referencesId as $key => $referenceId){
+                $subjectReference = new SubjectReference();
+                $subjectReference->id = $referenceId;
+                $subjectReference->value = $request->references[$key];
+                array_push($subjectReferences, $subjectReference);
+            }
         }
-
+        
         $topicsConceptsReferences['topics'] = $subjectTopics;
         $topicsConceptsReferences['concepts'] = $subjectConcepts;
         $topicsConceptsReferences['references'] = $subjectReferences;
