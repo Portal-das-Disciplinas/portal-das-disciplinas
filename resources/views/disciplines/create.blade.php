@@ -69,7 +69,7 @@ noindex, follow
             <label for="professor" class="">Professor</label>
             <div class="form-group">
                 <select name="professor" id="professor" class="form-control" aria-label="Professor">
-                    <option selected>Selecione um professor</option>
+                    <option selected value="">Selecione um professor</option>
                     @foreach ($professors as $professor)
                     <option value="{{$professor->id}}">{{$professor->name}}</option>
                     @endforeach
@@ -667,6 +667,16 @@ $classificationsJson = json_encode($classifications);
     @endif
 </script>
 <script src="{{ asset('js/disciplines/methodology-create.js') }}"></script>
+<script>
+    @if(session('oldSelectedProfessorMethodologies'))
+        let data = @Json(session('oldSelectedProfessorMethodologies'));
+        professorMethodologies = JSON.parse(data);
+        document.querySelector('#selected-professor-methodologies').value = data;
+        renderProfessorMethodologies();
+    @endif
+    
+   
+</script>
 
 <script src="{{ asset('js/disciplines/componentesCurriculares.js') }}"></script>
 

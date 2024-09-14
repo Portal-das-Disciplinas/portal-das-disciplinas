@@ -1,6 +1,8 @@
 let professorMethodologies = [];
 let professorMethodologiesIndex = -1;
 function renderProfessorMethodologies() {
+    document.querySelector("#selected-professor-methodologies").value = JSON.stringify(professorMethodologies);
+    console.log(professorMethodologies);
     let html = "";
     if (professorMethodologies.length > 0) {
         html+= "<small class='text-secondary'>Clique no nome das metodologias para adicionar mais detalhes</small>";
