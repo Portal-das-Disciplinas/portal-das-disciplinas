@@ -220,7 +220,12 @@ class DisciplineController extends Controller
                     if (Auth::user()->isProfessor && $professorMethodology->{'professor_methodology_id'} != Auth::user()->professor->id) {
                         throw new NotAuthorizedException("O professor não pode criar metodologias de outros professores.");
                     }
-                    $newProfessorMethodology->{'professor_id'} = $professorMethodology->{'professor_methodology_id'};
+                    if(Auth::user()->isAdmin){
+                        $newProfessorMethodology->{'professor_id'} = $request->professor;
+                    }elseif( Auth::user()->isProfessor){
+                        $newProfessorMethodology->{'professor_id'} = Auth::user()->professor->id;
+                    }
+                   
                     $newProfessorMethodology->{'professor_description'} = $professorMethodology->{'professor_description'};
                     $newProfessorMethodology->{'methodology_use_description'} = $professorMethodology->{'methodology_use_description'};
                     $value = $newProfessorMethodology->save();
@@ -377,7 +382,8 @@ class DisciplineController extends Controller
                 ->with([
                     'oldTopicsInput' => $topicsConceptsReferences['topics'],
                     'oldConceptsInput' => $topicsConceptsReferences['concepts'],
-                    'oldReferencesInput' => $topicsConceptsReferences['references']
+                    'oldReferencesInput' => $topicsConceptsReferences['references'],
+                    'oldSelectedProfessorMethodologies' => $request->{'selected-professor-methodologies'}
                 ]);
         }
     }
@@ -820,7 +826,6 @@ class DisciplineController extends Controller
         $subjectTopics = array();
         $subjectConcepts = array();
         $subjectReferences = array();
-        Log::info($request->topicsId);
         if($request->topicsId){
             foreach ($request->topicsId as $key => $topicId) {
                 $subjectTopic = new SubjectTopic();
