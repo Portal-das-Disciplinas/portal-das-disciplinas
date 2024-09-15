@@ -234,3 +234,11 @@ function renderParticipants(idElement) {
     });
     document.querySelector(idElement).innerHTML = html;
 }
+
+document.querySelector('#emphasis').addEventListener('change',(event)=>{
+    document.querySelector('#select-emphasis-index').value = event.target.selectedIndex;
+});
+
+document.querySelector('#professor').addEventListener('change',(event)=>{
+    document.querySelector('#select-professor-index').value = event.target.selectedIndex;
+});

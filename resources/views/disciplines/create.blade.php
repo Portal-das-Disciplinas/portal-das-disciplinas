@@ -61,6 +61,7 @@ noindex, follow
                 <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
                 @endforeach
             </select>
+            <input id="select-emphasis-index" name="select-emphasis-index" hidden>
 
 
         </div>
@@ -74,6 +75,7 @@ noindex, follow
                     <option value="{{$professor->id}}">{{$professor->name}}</option>
                     @endforeach
                 </select>
+                <input id="select-professor-index" name="select-professor-index" hidden>
             </div>
             @endif
         </div>
@@ -722,6 +724,18 @@ $classificationsJson = json_encode($classifications);
             }
         });
     }
+</script>
+
+<script>
+    @if((session()->has('oldSelectEmphasisIndex')))
+        document.querySelector('#emphasis').selectedIndex = "{{session('oldSelectEmphasisIndex')}}";
+        document.querySelector('#select-emphasis-index').value = "{{session('oldSelectEmphasisIndex')}}";
+    @endif
+
+    @if(session()->has('oldSelectProfessorIndex'))
+        document.querySelector('#professor').selectedIndex = "{{session('oldSelectProfessorIndex')}}";
+        document.querySelector('#select-professor-index').value = "{{session('oldSelectProfessorIndex')}}";
+    @endif
 </script>
 
 
