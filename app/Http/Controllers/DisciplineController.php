@@ -380,6 +380,8 @@ class DisciplineController extends Controller
                 ->withErrors(['error' => $exception->getMessage()])
                 ->withInput()
                 ->with([
+                    'oldSelectEmphasisIndex' => $request->{'select-emphasis-index'},
+                    'oldSelectProfessorIndex' => $request->{'select-professor-index'},
                     'oldTopicsInput' => $topicsConceptsReferences['topics'],
                     'oldConceptsInput' => $topicsConceptsReferences['concepts'],
                     'oldReferencesInput' => $topicsConceptsReferences['references'],
