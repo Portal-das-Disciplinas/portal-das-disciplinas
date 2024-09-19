@@ -99,7 +99,7 @@ class DisciplineController extends Controller
         $filteredDisciplines = $disciplineService->filterDisciplines($request);
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
         $emphasis = Emphasis::all();
-        $professors = Professor::all();
+        $professors = Professor::all()->sortBy('name');
         $classifications = Classification::All()->sortBy('order');
         $methodologies = (new MethodologyService())->listAllMethodologies();
         return view('disciplines.index')
