@@ -214,13 +214,14 @@ noindex, follow
                             </div>
                             <div style="display: flex; justify-content: space-between;">
                                 <div>
-                                    <div><span>{{$discipline->getClassificationsValues($classification->id)}}</span>%</div>
+                                    <div><span>{{ ( old('classification-' . $classification->id))!= null ?  old('classification-' . $classification->id) : ($discipline->getClassificationsValues($classification->id)) }}</span>%</div>
                                 </div>
                                 <div class="slider-container">
-                                    <input id="classification-slider" name="classification-{{ $classification->id }}" type="range" min="0" max="100" value="{{$discipline->getClassificationsValues($classification->id)}}" step='5' class="classification-slider scrollClass classification-{{$classification->id}}" oninput="handleInput(this.value, this)">
+                                    <input id="classification-slider" name="classification-{{ $classification->id }}" type="range" min="0" max="100" 
+                                        value="{{ ( old('classification-' . $classification->id))!= null ?  old('classification-' . $classification->id) : ($discipline->getClassificationsValues($classification->id)) }}" step='5' class="classification-slider scrollClass classification-{{$classification->id}}" oninput="handleInput(this.value, this)">
                                 </div>
                                 <div>
-                                    <div><span>{{100-$discipline->getClassificationsValues($classification->id)}}</span>%</div>
+                                    <div><span>{{ ( old('classification-' . $classification->id))!= null ?  100- old('classification-' . $classification->id) : 100-($discipline->getClassificationsValues($classification->id)) }}</span>%</div>
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
