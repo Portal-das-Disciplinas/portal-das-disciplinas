@@ -36,7 +36,7 @@ noindex, follow
                     <label for="name">
                         Nome da disciplina
                     </label>
-                    <input type="text" required class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" id="name" name="name" value="{{$discipline->name}}" placeholder="Estrutura de dados básica I">
+                    <input type="text" required class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" id="name" name="name" value="{{old('name')!= null ? old('name') : $discipline->name}}" placeholder="Estrutura de dados básica I">
                     @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -46,7 +46,7 @@ noindex, follow
                     <label for="code">
                         Código
                     </label>
-                    <input type="text" required class="form-control {{ $errors->has('code') ? 'is-invalid' : ''}}" id="code" name="code" value="{{$discipline->code}}" placeholder="IMD0000">
+                    <input type="text" required class="form-control {{ $errors->has('code') ? 'is-invalid' : ''}}" id="code" name="code" value="{{old('code')!=null ? old('code') : $discipline->code}}" placeholder="IMD0000">
                     @error('code')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -94,7 +94,7 @@ noindex, follow
                             <p data-toggle="tooltip" data-placement="top" title="Principais pontos da disciplina."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
 
-                        <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" rows="8" placeholder="Explique aqui como funciona a disciplina">{{$discipline->description}}</textarea>
+                        <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" rows="8" placeholder="Explique aqui como funciona a disciplina">{{old('description') != null ? old('description') : $discipline->description}}</textarea>
                         @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -109,7 +109,7 @@ noindex, follow
                             "><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <textarea class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}" id="difficulties" name="difficulties" rows="8" placeholder="Coloque aqui problemas que alunos costumam relatar ao cursar esse componente.">{{$discipline->difficulties}}</textarea>
+                            <textarea class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}" id="difficulties" name="difficulties" rows="8" placeholder="Coloque aqui problemas que alunos costumam relatar ao cursar esse componente.">{{old('difficulties')!= null ? old('difficulties') : $discipline->difficulties}}</textarea>
                             @error('difficulties')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -292,8 +292,9 @@ noindex, follow
                             <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control {{ $errors->has('media-trailer') ? 'is-invalid' : ''}}" name="media-trailer" id="media-trailer" @if ($discipline->has_trailer_media)
-                            value="{{$discipline->trailer->url}}"
+                            <input type="text" class="form-control {{ $errors->has('media-trailer') ? 'is-invalid' : ''}}" name="media-trailer" id="media-trailer" 
+                            @if ($discipline->has_trailer_media || old('media-trailer') != null )
+                            value="{{old('media-trailer') != null ? old('media-trailer') : $discipline->trailer->url}}"
                             @endif
                             aria-describedby="basic-addon3"
                             placeholder="Link para vídeo no Youtube">
@@ -311,8 +312,9 @@ noindex, follow
                             <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control {{ $errors->has('media-video') ? 'is-invalid' : ''}}" name="media-video" id="media-video" @if ($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO))
-                            value="{{$discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->url}}"
+                            <input type="text" class="form-control {{ $errors->has('media-video') ? 'is-invalid' : ''}}" name="media-video" id="media-video" 
+                            @if ($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO) || old('media-video') != null)
+                            value="{{old('media-video')!=null ? old('media-video') : $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->url}}"
                             @endif
                             aria-describedby="basic-addon3"
                             placeholder="Link para vídeo no Youtube">
@@ -357,7 +359,7 @@ noindex, follow
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control {{ $errors->has('media-material') ? 'is-invalid' : ''}}" name="media-material" id="media-material" @if ($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS))
-                            value="{{$discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->url}}"
+                            value="{{old('media-material') != null ? old('media-material') : $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->url}}"
                             @endif
                             aria-describedby="basic-addon3"
                             placeholder="Link para arquivo no Google Drive">
@@ -375,7 +377,7 @@ noindex, follow
                             "><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <textarea class="form-control {{ $errors->has('acquirements') ? 'is-invalid' : ''}}" id="acquirements" name="acquirements" rows="8" placeholder="Coloque aqui conhecimentos desejaveis para o aluno cursar a disciplina.">{{$discipline->acquirements}}</textarea>
+                            <textarea class="form-control text-start {{ $errors->has('acquirements') ? 'is-invalid' : ''}}" id="acquirements" name="acquirements" rows="8" placeholder="Coloque aqui conhecimentos desejaveis para o aluno cursar a disciplina.">{{old('acquirements') != null ? old('acquirements') : $discipline->acquirements}}</textarea>
                             @error('acquirements')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
