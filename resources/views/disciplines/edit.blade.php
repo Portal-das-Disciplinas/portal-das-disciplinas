@@ -36,7 +36,7 @@ noindex, follow
                     <label for="name">
                         Nome da disciplina
                     </label>
-                    <input type="text" required class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" id="name" name="name" value="{{$discipline->name}}" placeholder="Estrutura de dados básica I">
+                    <input type="text" required class="form-control {{ $errors->has('name') ? 'is-invalid' : ''}}" id="name" name="name" value="{{old('name')!= null ? old('name') : $discipline->name}}" placeholder="Estrutura de dados básica I">
                     @error('name')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -46,7 +46,7 @@ noindex, follow
                     <label for="code">
                         Código
                     </label>
-                    <input type="text" required class="form-control {{ $errors->has('code') ? 'is-invalid' : ''}}" id="code" name="code" value="{{$discipline->code}}" placeholder="IMD0000">
+                    <input type="text" required class="form-control {{ $errors->has('code') ? 'is-invalid' : ''}}" id="code" name="code" value="{{old('code')!=null ? old('code') : $discipline->code}}" placeholder="IMD0000">
                     @error('code')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -57,12 +57,23 @@ noindex, follow
                 <label class="" for="emphasis">
                     Ênfase da disciplina
                 </label>
-                <select name="emphasis" id="emphasis" class='form-control'>
-                    <option  value=""> Nehuma </option>
+                <select name="emphasis" id="emphasis" class='form-control' onchange="onChangeEmphasis(event)">
+                    <option  value="" @if(session()->has('oldEmphasisInput') && session('oldEmphasisInput')=='sem_enfase')selected @endif >
+                         Sem ênfase
+                    </option>
                     @foreach($emphasis as $emphase)
-                    <option value="{{ $emphase->id }}" @if(isset($discipline->emphasis_id) && $emphase->id == $discipline->emphasis_id) selected @endif>{{ $emphase->name }}</option>
+                    <option value="{{ $emphase->id }}" 
+
+                        @if(session()->has('oldEmphasisInput') && (session('oldEmphasisInput') == $emphase->id))
+                            selected 
+                        @elseif(!session()->has('oldEmphasisInput') && isset($discipline->emphasis_id) && $emphase->id == $discipline->emphasis_id)
+                            selected 
+                        @endif>
+                        {{ $emphase->name }}
+                    </option>
                     @endforeach
                 </select>
+                <input id="old_input_emphasis" name="old_input_emphasis" hidden>
 
                
 
@@ -72,15 +83,18 @@ noindex, follow
                 <label for="professor">Professor</label>
                 @if (Auth::user()->is_admin)
                 <div class="form-group">
-                    <select name="professor" id="professor" class="form-control" aria-label="Professor">
+                    <select name="professor" id="professor" class="form-control" aria-label="Professor" onchange="onChangeProfessor(event)">
                         @foreach ($professors as $professor)
-                        @if ($professor->id == $discipline->professor_id)
-                        <option selected="selected" value="{{$professor->id}}">{{$professor->name}}</option>
-                        @else
-                        <option value="{{$professor->id}}">{{$professor->name}}</option>
-                        @endif
+                            @if (session()->has('oldProfessorInput') && session('oldProfessorInput') == $professor->id)
+                                <option selected value="{{$professor->id}}">{{$professor->name}}</option>
+                             @elseif(!session()->has('oldProfessorInput') && $professor->id == $discipline->professor->id)
+                                <option selected value="{{$professor->id}}">{{$professor->name}}</option>
+                             @else
+                                <option value="{{$professor->id}}">{{$professor->name}}</option>
+                            @endif
                         @endforeach
                     </select>
+                    <input id="old_input_professor" name="old_input_professor" hidden>
                 </div>
                 @endif
             </div>
@@ -94,7 +108,7 @@ noindex, follow
                             <p data-toggle="tooltip" data-placement="top" title="Principais pontos da disciplina."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
 
-                        <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" rows="8" placeholder="Explique aqui como funciona a disciplina">{{$discipline->description}}</textarea>
+                        <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : ''}}" id="description" name="description" rows="8" placeholder="Explique aqui como funciona a disciplina">{{old('description') != null ? old('description') : $discipline->description}}</textarea>
                         @error('description')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -109,7 +123,7 @@ noindex, follow
                             "><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <textarea class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}" id="difficulties" name="difficulties" rows="8" placeholder="Coloque aqui problemas que alunos costumam relatar ao cursar esse componente.">{{$discipline->difficulties}}</textarea>
+                            <textarea class="form-control {{ $errors->has('difficulties') ? 'is-invalid' : ''}}" id="difficulties" name="difficulties" rows="8" placeholder="Coloque aqui problemas que alunos costumam relatar ao cursar esse componente.">{{old('difficulties')!= null ? old('difficulties') : $discipline->difficulties}}</textarea>
                             @error('difficulties')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -214,13 +228,14 @@ noindex, follow
                             </div>
                             <div style="display: flex; justify-content: space-between;">
                                 <div>
-                                    <div><span>{{$discipline->getClassificationsValues($classification->id)}}</span>%</div>
+                                    <div><span>{{ ( old('classification-' . $classification->id))!= null ?  old('classification-' . $classification->id) : ($discipline->getClassificationsValues($classification->id)) }}</span>%</div>
                                 </div>
                                 <div class="slider-container">
-                                    <input id="classification-slider" name="classification-{{ $classification->id }}" type="range" min="0" max="100" value="{{$discipline->getClassificationsValues($classification->id)}}" step='5' class="classification-slider scrollClass classification-{{$classification->id}}" oninput="handleInput(this.value, this)">
+                                    <input id="classification-slider" name="classification-{{ $classification->id }}" type="range" min="0" max="100" 
+                                        value="{{ ( old('classification-' . $classification->id))!= null ?  old('classification-' . $classification->id) : ($discipline->getClassificationsValues($classification->id)) }}" step='5' class="classification-slider scrollClass classification-{{$classification->id}}" oninput="handleInput(this.value, this)">
                                 </div>
                                 <div>
-                                    <div><span>{{100-$discipline->getClassificationsValues($classification->id)}}</span>%</div>
+                                    <div><span>{{ ( old('classification-' . $classification->id))!= null ?  100- old('classification-' . $classification->id) : 100-($discipline->getClassificationsValues($classification->id)) }}</span>%</div>
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: space-between;" class="classification-subtitiles">
@@ -291,8 +306,9 @@ noindex, follow
                             <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control {{ $errors->has('media-trailer') ? 'is-invalid' : ''}}" name="media-trailer" id="media-trailer" @if ($discipline->has_trailer_media)
-                            value="{{$discipline->trailer->url}}"
+                            <input type="text" class="form-control {{ $errors->has('media-trailer') ? 'is-invalid' : ''}}" name="media-trailer" id="media-trailer" 
+                            @if ($discipline->has_trailer_media || old('media-trailer') != null )
+                            value="{{old('media-trailer') != null ? old('media-trailer') : $discipline->trailer->url}}"
                             @endif
                             aria-describedby="basic-addon3"
                             placeholder="Link para vídeo no Youtube">
@@ -310,8 +326,9 @@ noindex, follow
                             <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control {{ $errors->has('media-video') ? 'is-invalid' : ''}}" name="media-video" id="media-video" @if ($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO))
-                            value="{{$discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->url}}"
+                            <input type="text" class="form-control {{ $errors->has('media-video') ? 'is-invalid' : ''}}" name="media-video" id="media-video" 
+                            @if ($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO) || old('media-video') != null)
+                            value="{{old('media-video')!=null ? old('media-video') : $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->url}}"
                             @endif
                             aria-describedby="basic-addon3"
                             placeholder="Link para vídeo no Youtube">
@@ -356,7 +373,7 @@ noindex, follow
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control {{ $errors->has('media-material') ? 'is-invalid' : ''}}" name="media-material" id="media-material" @if ($discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS))
-                            value="{{$discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->url}}"
+                            value="{{old('media-material') != null ? old('media-material') : $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->url}}"
                             @endif
                             aria-describedby="basic-addon3"
                             placeholder="Link para arquivo no Google Drive">
@@ -374,7 +391,7 @@ noindex, follow
                             "><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <textarea class="form-control {{ $errors->has('acquirements') ? 'is-invalid' : ''}}" id="acquirements" name="acquirements" rows="8" placeholder="Coloque aqui conhecimentos desejaveis para o aluno cursar a disciplina.">{{$discipline->acquirements}}</textarea>
+                            <textarea class="form-control text-start {{ $errors->has('acquirements') ? 'is-invalid' : ''}}" id="acquirements" name="acquirements" rows="8" placeholder="Coloque aqui conhecimentos desejaveis para o aluno cursar a disciplina.">{{old('acquirements') != null ? old('acquirements') : $discipline->acquirements}}</textarea>
                             @error('acquirements')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
