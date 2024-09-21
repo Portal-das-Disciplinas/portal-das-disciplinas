@@ -805,6 +805,7 @@ class DisciplineController extends Controller
             DB::rollBack();
             $topicsContentsReferences = $this->createTopicsConceptsReferenceResponse($request);
             $oldEmphasisInput = $request->{'old_input_emphasis'}=="" ? "sem_enfase" : $request->{'old_input_emphasis'};
+            $oldProfessorInput = $request->{'old_input_professor'}=="" ? "sem_professor" : $request->{'old_input_professor'};
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['media-podcast' => $exception->getMessage()])
@@ -812,12 +813,14 @@ class DisciplineController extends Controller
                     'oldTopicsInput' => $topicsContentsReferences['topics'],
                     'oldConceptsInput' => $topicsContentsReferences['concepts'],
                     'oldReferencesInput' => $topicsContentsReferences['references'],
-                    'oldEmphasisInput' => $oldEmphasisInput
+                    'oldEmphasisInput' => $oldEmphasisInput,
+                    'oldProfessorInput' => $oldProfessorInput
                 ]);
         } catch (\Exception $exception) {
             DB::rollBack();
             $topicsContentsReferences = $this->createTopicsConceptsReferenceResponse($request);
             $oldEmphasisInput = $request->{'old_input_emphasis'}=="" ? "sem_enfase" : $request->{'old_input_emphasis'};
+            $oldProfessorInput = $request->{'old_input_professor'}=="" ? "sem_professor" : $request->{'old_input_professor'};
             Log::error($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina'])
@@ -825,7 +828,8 @@ class DisciplineController extends Controller
                     'oldTopicsInput' => $topicsContentsReferences['topics'],
                     'oldConceptsInput'=> $topicsContentsReferences['concepts'],
                     'oldReferencesInput' => $topicsContentsReferences['references'],
-                    'oldEmphasisInput' => $oldEmphasisInput
+                    'oldEmphasisInput' => $oldEmphasisInput,
+                    'oldProfessorInput' => $oldProfessorInput
                 ]);
         }
     }

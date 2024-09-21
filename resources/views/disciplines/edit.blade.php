@@ -83,15 +83,18 @@ noindex, follow
                 <label for="professor">Professor</label>
                 @if (Auth::user()->is_admin)
                 <div class="form-group">
-                    <select name="professor" id="professor" class="form-control" aria-label="Professor">
+                    <select name="professor" id="professor" class="form-control" aria-label="Professor" onchange="onChangeProfessor(event)">
                         @foreach ($professors as $professor)
-                        @if ($professor->id == $discipline->professor_id)
-                        <option selected="selected" value="{{$professor->id}}">{{$professor->name}}</option>
-                        @else
-                        <option value="{{$professor->id}}">{{$professor->name}}</option>
-                        @endif
+                            @if (session()->has('oldProfessorInput') && session('oldProfessorInput') == $professor->id)
+                                <option selected value="{{$professor->id}}">{{$professor->name}}</option>
+                             @elseif(!session()->has('oldProfessorInput') && $professor->id == $discipline->professor->id)
+                                <option selected value="{{$professor->id}}">{{$professor->name}}</option>
+                             @else
+                                <option value="{{$professor->id}}">{{$professor->name}}</option>
+                            @endif
                         @endforeach
                     </select>
+                    <input id="old_input_professor" name="old_input_professor" hidden>
                 </div>
                 @endif
             </div>
