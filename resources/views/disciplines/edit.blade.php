@@ -57,12 +57,23 @@ noindex, follow
                 <label class="" for="emphasis">
                     Ênfase da disciplina
                 </label>
-                <select name="emphasis" id="emphasis" class='form-control'>
-                    <option  value=""> Nehuma </option>
+                <select name="emphasis" id="emphasis" class='form-control' onchange="onChangeEmphasis(event)">
+                    <option  value="" @if(session()->has('oldEmphasisInput') && session('oldEmphasisInput')=='sem_enfase')selected @endif >
+                         Sem ênfase
+                    </option>
                     @foreach($emphasis as $emphase)
-                    <option value="{{ $emphase->id }}" @if(isset($discipline->emphasis_id) && $emphase->id == $discipline->emphasis_id) selected @endif>{{ $emphase->name }}</option>
+                    <option value="{{ $emphase->id }}" 
+
+                        @if(session()->has('oldEmphasisInput') && (session('oldEmphasisInput') == $emphase->id))
+                            selected 
+                        @elseif(!session()->has('oldEmphasisInput') && isset($discipline->emphasis_id) && $emphase->id == $discipline->emphasis_id)
+                            selected 
+                        @endif>
+                        {{ $emphase->name }}
+                    </option>
                     @endforeach
                 </select>
+                <input id="old_input_emphasis" name="old_input_emphasis" hidden>
 
                
 

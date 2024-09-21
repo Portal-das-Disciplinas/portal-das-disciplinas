@@ -242,3 +242,8 @@ document.querySelector('#emphasis').addEventListener('change',(event)=>{
 document.querySelector('#professor').addEventListener('change',(event)=>{
     document.querySelector('#select-professor-index').value = event.target.selectedIndex;
 });
+
+function onChangeEmphasis(event){
+    document.querySelector("#old_input_emphasis").value = event.target.value;
+    console.log( document.querySelector("#old_input_emphasis").value);
+}
