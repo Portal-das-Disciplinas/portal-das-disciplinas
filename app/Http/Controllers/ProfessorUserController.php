@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Professor\CreateRequest;
 use App\Http\Requests\Professor\StoreRequest;
+use App\Http\Requests\Professor\UpdateRequest;
 use App\Models\Link;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -124,19 +125,11 @@ class ProfessorUserController extends Controller
      * @param $request Objeto contendo as informações de requisição http.
      * @param $id Identificador único do Professor.
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
 
         $professor = Professor::where('id', $id)->first();
         $user = User::where('id', $professor->user_id)->first();
-
-        if (!empty($request->input('new_password'))) {
-            if ($request->input('new_password') == $request->input('password_confirmation')) {
-                $user->password = bcrypt($request->input('new_password'));
-            } else {
-                return redirect()->back()->withInput()->withErrors(['password_confirmation' => 'As senhas estão diferentes']);
-            }
-        }
 
         $user->name = $request->input('name');
         $professor->name = $request->input('name');
