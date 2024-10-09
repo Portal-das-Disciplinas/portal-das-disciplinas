@@ -174,7 +174,7 @@ Cadastro de Professor
                     @enderror
                 </div>
             </div>
-    
+
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="password" class="text-black">Senha</label>
@@ -208,6 +208,6 @@ Cadastro de Professor
             </div>
          </form>
     </div>
-    
+
 </div>
 @endsection

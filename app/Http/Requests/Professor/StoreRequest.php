@@ -35,7 +35,7 @@ class StoreRequest extends FormRequest
             'link_rsocial3' => ['max:150'],
             'rede_social4' => ['max:150' ],
             'link_rsocial4' => ['max:150'],
-            'password' => ['required','confirmed'],
+            'password' => ['required', 'min:8', 'confirmed'],
         ];
     }
 }
