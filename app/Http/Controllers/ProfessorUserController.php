@@ -25,7 +25,7 @@ class ProfessorUserController extends Controller
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
-   
+
     }
 
     /**
@@ -74,7 +74,7 @@ class ProfessorUserController extends Controller
     public function store(StoreRequest $request)
     {
 
-        
+
         DB::beginTransaction();
         try {
             $user = User::create([
@@ -140,7 +140,7 @@ class ProfessorUserController extends Controller
 
         $user->name = $request->input('name');
         $professor->name = $request->input('name');
-        
+
         if ($user->email != $request->input('email')) {
             if (User::where('email', $request->input('email'))->count() < 1) {
                 $user->email = $request->input('email');
@@ -169,5 +169,5 @@ class ProfessorUserController extends Controller
             ->with('success', 'Dados atualizado com sucesso!')
             ->with('theme', $this->theme);
     }
-    
+
 }
