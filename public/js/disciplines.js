@@ -236,11 +236,15 @@ function renderParticipants(idElement) {
 }
 
 document.querySelector('#emphasis').addEventListener('change',(event)=>{
-    document.querySelector('#select-emphasis-index').value = event.target.selectedIndex;
+    if (document.querySelector('#select-emphasis-index')) {
+        document.querySelector('#select-emphasis-index').value = event.target.selectedIndex;
+    }
 });
 
 document.querySelector('#professor').addEventListener('change',(event)=>{
-    document.querySelector('#select-professor-index').value = event.target.selectedIndex;
+    if (document.querySelector('#select-professor-index')) {
+        document.querySelector('#select-professor-index').value = event.target.selectedIndex;
+    }
 });
 
 function onChangeEmphasis(event){
