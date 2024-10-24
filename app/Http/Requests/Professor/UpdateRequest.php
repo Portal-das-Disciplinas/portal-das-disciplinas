@@ -14,12 +14,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $professorId = 1;
-        if (!is_numeric($professorId)) {
-            return false;
-        }
-
-        return Auth::user()->canProfessor($professorId);
+        return true;
     }
 
     /**
@@ -30,7 +25,16 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'max:100'],
+            'rede_social1' => ['max:150' ],
+            'link_rsocial1' => ['max:150'],
+            'rede_social2' => ['max:150'],
+            'link_rsocial2' => ['max:150'],
+            'rede_social3' => ['max:150'],
+            'link_rsocial3' => ['max:150'],
+            'rede_social4' => ['max:150'],
+            'link_rsocial4' => ['max:150'],
+            'password' => ['required', 'min:8', 'confirmed']
         ];
     }
 }

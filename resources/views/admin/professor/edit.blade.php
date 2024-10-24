@@ -158,9 +158,9 @@
 
 
               <div class="form-group col-md-6 pb-3">
-                <label for="new_password">Nova senha </label>
-                <input type="password" class="form-control @error('new_password') is-invalid @enderror" name='new_password' id="new_password" >
-                @error('new_password')
+                <label for="password">Nova senha </label>
+                <input type="password" class="form-control @error('password') is-invalid @enderror" name='password' id="password" >
+                @error('password')
                   <div class="invalid-feedback">{{$message}}</div>
                 @enderror
               </div>
