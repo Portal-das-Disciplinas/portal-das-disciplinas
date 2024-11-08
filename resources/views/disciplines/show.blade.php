@@ -576,7 +576,11 @@ mais.
                         (isset($discipline->subjectTopics) && count($discipline->subjectTopics) > 0) ||
                         (isset($discipline->subjectConcepts) && count($discipline->subjectConcepts) > 0) ||
                         (isset($discipline->subjectReferences) && count($discipline->subjectReferences) > 0))
-                        <h1>Conteúdos</h1>
+                        <h1 data-toggle="collapse" data-target="#collapseConteudos">
+                            Conteúdos
+                            <li name="caret-icon-conteudos" class="fa fa-caret-down"></li>
+                        </h1>
+                        <div class=" collapse" id="collapseConteudos">
                         @if (isset($discipline->subjectTopics) && count($discipline->subjectTopics) > 0)
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
@@ -704,6 +708,7 @@ mais.
                                     </div>
                                     @endif
                         </div>
+                        </div>
                         @endif
                         @else
                         <div class="card">
@@ -718,7 +723,7 @@ mais.
 
                     <!-- OFERTA MATRÍCULA -->
                     <div class="section">
-                        <div class="card p-4 col-12 col-md-8">
+                        <div class="card p-4">
                             <h1>Oferta/Matrícula</h1>
                             <hr class="py-2">
                             <div class="d-flex flex-column">
@@ -922,7 +927,7 @@ mais.
 @if (isset($discipline->professor->name))
 <div class=" pt-4 pb-5" style=' margin-bottom: -3rem;'>
 
-    <div class="container col-md-5">
+    <div class="container col-lg-5 col-sm-8">
         <div class="section">
             <h1 class="container-fluid  text-center mt-5">Faça uma pergunta!</h1>
             <!-- É necessário autenticar o  email do professor anteriormente -->
@@ -969,51 +974,46 @@ mais.
     <div class="row g-5">
         @if (isset($discipline->professor->name))
         <div class="col">
-            <div class="d-flex flex-row flex-wrap shadow justify-content-center  p-2">
+            <div class="d-flex flex-row flex-wrap shadow justify-content-center p-2">
                 <div class="container">
                     <div class='section mb-5'>
                         <h1 class="mb-3">Professor</h1>
-                        <div class="">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-user fa-8x mr-4"></i>
-                                <div class="wrapper-teacher-info">
-                                    <div class="text-justify px-lg-3">
-                                        <strong>{{ $discipline->professor->name }}</strong>
-                                    </div>
-                                    <div class="text-justify px-lg-3"> <strong>Email:
-                                        </strong>{{ $discipline->professor->public_email }} </div>
-                                    @if ($discipline->professor->rede_social1 == '')
-                                    <div class=" p-text"></div>
-                                    @else
-                                    <a href="{{ $discipline->professor->link_rsocial1 }}" class="text-justify px-lg-3"> <strong>
-                                            {{ $discipline->professor->rede_social1 }} </strong></a>
-                                    @endif
-                                    @if ($discipline->professor->rede_social2 == '')
-                                    <div class=" p-text"></div>
-                                    @else
-                                    <a href="{{ $discipline->professor->link_rsocial2 }}" class="text-justify px-lg-3">
-                                        <strong>{{ $discipline->professor->rede_social2 }}</strong></a>
-                                    @endif
-                                    @if ($discipline->professor->rede_social3 == '')
-                                    <div class=" p-text"></div>
-                                    @else
-                                    <a href="{{ $discipline->professor->link_rsocial3 }}" class="text-justify px-lg-3">
-                                        <strong>{{ $discipline->professor->rede_social3 }}</strong></a>
-                                    @endif
-                                    @if ($discipline->professor->rede_social4 == '')
-                                    <div class=" p-text"></div>
-                                    @else
-                                    <a href="{{ $discipline->professor->link_rsocial4 }}" class="text-justify px-lg-3">
-                                        <strong>{{ $discipline->professor->rede_social4 }}</strong></a>
-                                    @endif
-
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-user fa-8x mr-4"></i>
+                            <div class="wrapper-teacher-info">
+                                <div class="text-justify px-lg-3">
+                                    <strong>{{ $discipline->professor->name }}</strong>
                                 </div>
-
+                                <div class="text-justify px-lg-3"> <strong>Email:
+                                    </strong>{{ $discipline->professor->public_email }} </div>
+                                @if ($discipline->professor->rede_social1 == '')
+                                <div class=" p-text"></div>
+                                @else
+                                <a href="{{ $discipline->professor->link_rsocial1 }}" class="text-justify px-lg-3"> <strong>
+                                        {{ $discipline->professor->rede_social1 }} </strong></a>
+                                @endif
+                                @if ($discipline->professor->rede_social2 == '')
+                                <div class=" p-text"></div>
+                                @else
+                                <a href="{{ $discipline->professor->link_rsocial2 }}" class="text-justify px-lg-3">
+                                    <strong>{{ $discipline->professor->rede_social2 }}</strong></a>
+                                @endif
+                                @if ($discipline->professor->rede_social3 == '')
+                                <div class=" p-text"></div>
+                                @else
+                                <a href="{{ $discipline->professor->link_rsocial3 }}" class="text-justify px-lg-3">
+                                    <strong>{{ $discipline->professor->rede_social3 }}</strong></a>
+                                @endif
+                                @if ($discipline->professor->rede_social4 == '')
+                                <div class=" p-text"></div>
+                                @else
+                                <a href="{{ $discipline->professor->link_rsocial4 }}" class="text-justify px-lg-3">
+                                    <strong>{{ $discipline->professor->rede_social4 }}</strong></a>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div><!-- seção professor -->
         </div>
         @endif
@@ -1021,62 +1021,66 @@ mais.
         <!-- Seção créditos -->
         @if ((Auth::user() && Auth::user()->isAdmin) || count($discipline->disciplineParticipants) > 0)
         <div class="col">
-            <div class="d-flex flex-column shadow p-2 align-items-start">
-                <div class="d-flex flex-row justify-content-start align-items-baseline">
-                    <h1 style="cursor:pointer" data-toggle="collapse" data-target="#collapseCreditos">Créditos
-                        <li name="caret-icon-creditos" class="fa fa-caret-down"></li>
-                    </h1>
-                    @if (Auth::user() && Auth::user()->isAdmin)
-                    <button class="btn btn-success btn-sm ml-3 mb-4" data-toggle="modal" data-target="#modal-add"> &nbsp;+&nbsp; </button>
-                    @endif
-                </div>
-
-                <div id="collapseCreditos" class="collapse w-100">
-                @foreach ($discipline->disciplineParticipants as $participant)
-                    <div id="{{$loop->index}}" class="d-flex flex-column mb-4" style="line-height:1.2;">
-                        <div class="d-flex flex-row align-items-center justify-content-between w-100 bg-pridmary">
-                            <span class=" d-flex w-100 justify-content-between">
-                                <strong class="" style="cursor:pointer" data-toggle="collapse" data-target="#linksCollapse{{ $participant->id }}">
-                                    {{ $participant->name }}
-                                    <li name="linksCollapse{{ $participant->id }}" class="fas fa-caret-down"></li>
-                                </strong>
-
-                            </span>
+            <div class="d-flex flex-row flex-wrap shadow justify-content-center p-2">
+                <div class="container">
+                    <div class="section mt-2">
+                        <div class="d-flex flex-row justify-content-start align-items-baseline">
+                            <h1 style="cursor:pointer" data-toggle="collapse" data-target="#collapseCreditos">Créditos
+                                <li name="caret-icon-creditos" class="fa fa-caret-down"></li>
+                            </h1>
                             @if (Auth::user() && Auth::user()->isAdmin)
-                            <div class="d-flex align-items-center">
-                                <button class="ml-1  btn btn-link" id="{{ $loop->index }}" onclick="openModalEdit(event)" data-toggle="modal" data-target="#modal-edit">editar</button>
-                                <form class="" action="{{ route('participants_discipline.destroy', $participant->id) }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class=" mr-0 p-0 text-danger btn btn-link" type="submit">remover</button>
-                                </form>
-                            </div>
+                            <button class="btn btn-success btn-sm ml-3 mb-4" data-toggle="modal" data-target="#modal-add"> &nbsp;+&nbsp; </button>
                             @endif
-
                         </div>
 
-                        <div name="collapse-participant" class="collapse card" id="linksCollapse{{ $participant->id }}">
-                            <small>
-                                <strong><i>{{ $participant->role }}</i></strong>
-                                @if (isset($participant->email) && $participant->email != '')
-                                <a href="mailto:{{ $participant->email }}" class="ml-3">e-mail</a>
-                                @if (count($participant->links) > 0)
-                                <span class="text-primary">&nbsp;|</span>
-                                @endif
-                                @endif
+                        <div id="collapseCreditos" class="collapse w-100">
+                        @foreach ($discipline->disciplineParticipants as $participant)
+                            <div id="{{$loop->index}}" class="d-flex flex-column mb-4" style="line-height:1.2;">
+                                <div class="d-flex flex-row align-items-center justify-content-between w-100 bg-pridmary">
+                                    <span class=" d-flex w-100 justify-content-between">
+                                        <strong class="" style="cursor:pointer" data-toggle="collapse" data-target="#linksCollapse{{ $participant->id }}">
+                                            {{ $participant->name }}
+                                            <li name="linksCollapse{{ $participant->id }}" class="fas fa-caret-down"></li>
+                                        </strong>
 
-                                @foreach ($participant->links as $link)
-                                <a href="{{ $link->url }}" rel="noopener" target="_blank" class="ml-2">{{ $link->name }}</a>
-                                @if (!$loop->last)
-                                <span class="text-primary">&nbsp;|</span>
-                                @endif
-                                @endforeach
+                                    </span>
+                                    @if (Auth::user() && Auth::user()->isAdmin)
+                                    <div class="d-flex align-items-center">
+                                        <button class="ml-1  btn btn-link" id="{{ $loop->index }}" onclick="openModalEdit(event)" data-toggle="modal" data-target="#modal-edit">editar</button>
+                                        <form class="" action="{{ route('participants_discipline.destroy', $participant->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class=" mr-0 p-0 text-danger btn btn-link" type="submit">remover</button>
+                                        </form>
+                                    </div>
+                                    @endif
 
-                            </small>
-                        </div>
+                                </div>
+
+                                <div name="collapse-participant" class="collapse card" id="linksCollapse{{ $participant->id }}">
+                                    <small>
+                                        <strong><i>{{ $participant->role }}</i></strong>
+                                        @if (isset($participant->email) && $participant->email != '')
+                                        <a href="mailto:{{ $participant->email }}" class="ml-3">e-mail</a>
+                                        @if (count($participant->links) > 0)
+                                        <span class="text-primary">&nbsp;|</span>
+                                        @endif
+                                        @endif
+
+                                        @foreach ($participant->links as $link)
+                                        <a href="{{ $link->url }}" rel="noopener" target="_blank" class="ml-2">{{ $link->name }}</a>
+                                        @if (!$loop->last)
+                                        <span class="text-primary">&nbsp;|</span>
+                                        @endif
+                                        @endforeach
+
+                                    </small>
+                                </div>
+                            </div>
+                        @endforeach
+                        </div><!--collapse-->
                     </div>
-                @endforeach
-                </div><!--collapse-->
+                </div>
             </div><!--Seção créditos -->
         </div> <!--col-->
         @endif
