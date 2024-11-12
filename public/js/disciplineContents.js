@@ -1,12 +1,18 @@
 function renderDisciplineContents(elementId){
     let html =
-        "<h1>Conteúdos</h1>" +
-        "<div class='card'>" +
-        "<div class='card-header d-flex justify-content-between'>" +
-        "<div>"+
-        "<h3 class='text-primary'>Ementa</h3>"+
-        "<button class='btn btn-sm btn-success' data-toggle='modal' data-target='#modal-new-subject-topic' onclick='addContentClickEvent(event)'><i class= 'fas fa-solid fa-plus'></i>&nbsp;Adicionar</button>"+
-        "</div>";
+        `<h1 data-toggle="collapse" data-target="#collapseConteudos">
+            Conteúdos
+            <li name="caret-icon-conteudos" class="fa fa-caret-down"></li>
+        </h1> \n \
+        <div class="collapse" id="collapseConteudos">
+        <div class="card"> \n \
+        <div class="card-header d-flex justify-content-between"> \n \
+        <div> \n \
+        <h3 class="text-primary">Ementa</h3> \n \
+        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-new-subject-topic" onclick="addContentClickEvent(event)">
+            <i class= "fas fa-solid fa-plus"></i>&nbsp;Adicionar
+        </button> \n \
+        </div>`;
 
     if (subjectTopics.length > 3) {
         html += "<a id='seeMoreTopics' class='link' data-toggle='collapse' href='#collapseTopics' role='button' " +
@@ -185,9 +191,9 @@ function renderDisciplineContents(elementId){
         html += "</ul>" +
             " </div>";
     }
-    html += "</div>";
-    
-    
+    html += "</div></div>";
+
+
 
     document.querySelector(elementId).innerHTML = html;
 }
@@ -381,3 +387,15 @@ function deleteReference(event, elementIndex){
 if(document.querySelector('#discipline-contents')){
     renderDisciplineContents('#discipline-contents');
 }
+
+$('#collapseConteudos').on('show.bs.collapse', function (event) {
+    event.stopPropagation();
+    $('li[name=caret-icon-conteudos]').removeClass('fa fa-caret-down');
+    $('li[name=caret-icon-conteudos]').addClass('fa fa-caret-up');
+});
+
+$('#collapseConteudos').on('hide.bs.collapse', function (event) {
+    event.stopPropagation();
+    $('li[name=caret-icon-conteudos]').removeClass('fa fa-caret-up');
+    $('li[name=caret-icon-conteudos]').addClass('fa fa-caret-down');
+});
