@@ -293,28 +293,65 @@
         <div class="row pb-5">
             @foreach($disciplines as $discipline)
             <div class="col-12 col-sm-6 col-lg-3 mb-5 ">
-                <div class="discipline-card card shadow light-border-radius">
-                    @if(!is_null($discipline['trailer']) && ($discipline->trailer->view_url != ""))
-                    <div class="teacher-video-container">
-                        <div class="embed-responsive embed-responsive-16by9">
-                            <iframe class="embed-responsive-item light-border-radius" src="{{$discipline->trailer->view_url}}" allowfullscreen></iframe>
+                <div class="discipline-card cardd shadow light-border-radius" style="background-color: white;">
+                    <div style="height: 245px;">
+                        @if(!is_null($discipline['trailer']) && ($discipline->trailer->view_url != ""))
+                        <div class="teacher-video-container">
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <iframe class="embed-responsive-item light-border-radius" src="{{$discipline->trailer->view_url}}" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                        @else
+                        <img src="{{ asset('img/IMD_logo.svg') }}" class="card-img-top light-border-radius" alt="..">
+                        @endif
+                        <div class="card-top-contsainer px-3 pt-3">
+                            <div>
+                                <h3 class="card-title">{{ $discipline['name'] }}</h3>
+                            </div>
                         </div>
                     </div>
-                    @else
-                    <img src="{{ asset('img/IMD_logo.svg') }}" class="card-img-top light-border-radius" alt="..">
-                    @endif
 
-                    <div class="card-body d-flex justify-content-between flex-column">
-                        <div class="card-top-container">
-                            <h3 class="card-title">{{ $discipline['name'] }}</h3>
-                            <p class='card-text p-text'>
-                                {{ Str::limit($discipline['description'], 70,' (...)') }}
-                            </p>
-
+                    <div class="d-flex justify-content-between flex-column px-3" style="height:165px;" >
+                        <div>
+                                <div class="d-flex justify-content-center w-100">
+                                    <button type="button" class="btn btn-info btn-sm w-100" data-toggle="modal" data-target="{{'#modal-description-'. $discipline->id}}">
+                                        <span class="text-white">Ver Breve Descrição</span>
+                                    </button>
+                                    <div class="modal fade" id="{{'modal-description-'. $discipline->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="{{'#modal-description-'. $discipline->id}}">{{$discipline->name}}</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    @if(isset($discipline['description']) && strlen($discipline['description']) > 0)
+                                                    {{$discipline['description']}}
+                                                    @else
+                                                    <p class="text-secondary">Breve descrição não disponível.</p>
+                                                    <p class="text-secondary">Clique em no botão "Ver disciplina" para saber mais sobre a disciplina!</p>
+                                                    @endif
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <a href="{{ route('disciplinas.show', $discipline['id']) }}" class="btn btn-primary">
+                                                        Ver disciplina
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
                         <div class="card-bottom-container">
-                            <a href="{{ route('disciplinas.show', $discipline['id']) }}" class="view-more-btn btn w-100 p-text">Ver
-                                disciplina</a>
+                            <a href="{{ route('disciplinas.show', $discipline['id']) }}" class="view-more-btn btn w-100 p-text">
+                                Ver disciplina
+                            </a>
+                        </div>
+                        
+                        <div>
                             @auth
                             <div class='d-flex justify-content-end'>
                                 @if(Auth::user()->canDiscipline($discipline['id']))
@@ -343,12 +380,17 @@
 
                             @endauth
                         </div>
+
                     </div>
-                    @if (isset($discipline->professor->name))
-                    <div class="card-footer smaller-p m-0">{{$discipline->professor->name}}</div>
-                    @else
-                    <div class="card-footer smaller-p m-0">Indefinido</div>
-                    @endif
+                    <div  class="d-flex flex-column justify-content-end" style="height:60px;">
+                        @if (isset($discipline->professor->name))
+                        <div class="card-footer smaller-p py-0 m-0 w-100">
+                            {{$discipline->professor->name}}
+                        @else
+                            Indefinido
+                        @endif
+                        </div>
+                    </div>
                 </div>
             </div>
             @endforeach
