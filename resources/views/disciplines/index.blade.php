@@ -315,9 +315,9 @@
                         <div>
                                 <div class="d-flex justify-content-center w-100">
                                     <button type="button" class="btn btn-info btn-sm w-100" data-toggle="modal" data-target="{{'#modal-description-'. $discipline->id}}">
-                                        <span class="text-white">Ver Breve Descrição</span>
+                                        <span class="text-white">Ver Sinopse</span>
                                     </button>
-                                    <div class="modal fade" id="{{'modal-description-'. $discipline->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal fade" id="{{'modal-description-'. $discipline->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -330,12 +330,12 @@
                                                     @if(isset($discipline['description']) && strlen($discipline['description']) > 0)
                                                     {{$discipline['description']}}
                                                     @else
-                                                    <p class="text-secondary">Breve descrição não disponível.</p>
+                                                    <p class="text-secondary">Sinopse não disponível.</p>
                                                     <p class="text-secondary">Clique em no botão "Ver disciplina" para saber mais sobre a disciplina!</p>
                                                     @endif
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                                                     <a href="{{ route('disciplinas.show', $discipline['id']) }}" class="btn btn-primary">
                                                         Ver disciplina
                                                     </a>
