@@ -314,8 +314,8 @@
                     <div class="d-flex justify-content-between flex-column px-3" style="height:165px;" >
                         <div>
                                 <div class="d-flex justify-content-center w-100">
-                                    <button type="button" class="btn btn-info btn-sm w-100" data-toggle="modal" data-target="{{'#modal-description-'. $discipline->id}}">
-                                        <span class="text-white">Ver Sinopse</span>
+                                    <button type="button" class="btn btn-outline-primary  w-100" data-toggle="modal" data-target="{{'#modal-description-'. $discipline->id}}">
+                                        Ver Sinopse
                                     </button>
                                     <div class="modal fade" id="{{'modal-description-'. $discipline->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
