@@ -25,7 +25,6 @@ mais.
     <h3>{{ $discipline->emphase->name }}</h3>
     @endif
 </div>
-
 @if (session('cadastroOK'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     <strong>Cadastro realizado com sucesso</strong>
@@ -34,46 +33,37 @@ mais.
     </button>
 </div>
 @endif
-
 <div class="container mt-4">
-
     <!-- Botão de cadastro FAQ -->
-    @auth
-    <div class="row">
-        <div class="col-md-8">
-            @if (Auth::user()->canDiscipline($discipline->id))
-            <h3 class="mt-3">Menu do professor</h3>
-            <div class="button-group" role="group">
-                @if (isset($can) && $can)
-                <button type="button" class="btn btn-outline-white text-white" data-toggle="modal" data-target="#faqs-create" style='background-color:#1155CC'>
-                    Registrar FAQ
-                </button>
-                @endif
-                <form action=" {{ route('disciplinas.edit', $discipline->id) }}" class="d-inline" method="get">
-                    @csrf
-                    @method('UPDATE')
-                    <button type="submit" class="btn btn-warning" value="Editar">Editar</button>
-                </form>
-                <form action=" {{ route('disciplinas.destroy', $discipline->id) }}" class="d-inline" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" value="Apagar">Apagar</button>
-                </form>
-                @endif
-            </div>
-        </div>
-    </div>
-    @endauth
 
+    @auth
+
+    @if (Auth::user()->canDiscipline($discipline->id))
+    <h3 class="mt-3">Menu do professor</h3>
+    @if (isset($can) && $can)
+    <button type="button" class="btn btn-outline-white text-white w-25 mt-2" data-toggle="modal" data-target="#faqs-create" style='background-color:#1155CC'>
+        Registrar FAQ
+    </button>
+    @endif
+    <form action=" {{ route('disciplinas.edit', $discipline->id) }}" class="d-inline" method="get">
+        @csrf
+        @method('UPDATE')
+        <button type="submit" class="btn btn-warning w-25 mt-2" value="Editar">Editar</button>
+    </form>
+    <form action=" {{ route('disciplinas.destroy', $discipline->id) }}" class="d-inline" method="post">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger w-25 mt-2" value="Apagar">Apagar</button>
+    </form>
+    @endif
+
+    @endauth
     <!-- ROW Da PAGE -->
     <div class="row mt-5">
         <!-- main -->
         <div class="main col-md-12">
             <div class="row">
-
-                <!-- COLUNA ESQUERDA -->
                 <div class='col-md-8'>
-                    <!-- TRAILER -->
                     <div class="section">
                         <h1 class="mb-3">Trailer</h1>
                         @if ($discipline->has_trailer_media && $discipline->trailer->view_url != '')
@@ -87,17 +77,22 @@ mais.
 
                     <!-- SINOPSE -->
                     <div class="section mt-3">
+
                         <h1 class="mb-3">Sinopse</h1>
                         <div>
-                            <p style='text-align: justify;'>
-                            @if ($discipline->description == '')
-                                Não há sinopse cadastrada.
-                            @else
-                                {{ $discipline->description }}
-                            @endif
-                            </p>
+                            <div>
+                                @if ($discipline->description == '')
+                                <div>
+                                    <p>Não há sinopse cadastrada.</p>
+                                </div>
+                                @else
+                                <div>
+                                    <p style='text-align: justify; '>{{ $discipline->description }}</p>
+                                </div>
+                                @endif
+                            </div>
                         </div>
-                    </div>
+                    </div><!--sinopse -->
 
                     <!-- VÍDEO -->
                     <div class='section'>
@@ -112,20 +107,173 @@ mais.
                         <img style='border-radius: 6px;' class="img-fluid" src="{{ asset('img/novideo2.png') }}" alt="Sem vídeo">
                         @endif
                     </div>{{-- video --}}
+                </div>
+                <div class="col-md-4">
+                    <div class='classifications'>
+                        <h1>Classificações</h1>
+                        @if (count($classifications) > 0)
+                        @foreach ($classifications as $classification)
+                        <div class='row mb-0'>
+                            <div class="d-flex col-md-12 justify-content-center">
+                                <label class="">
+                                    <div class="d-flex">
+                                        <h3 style='margin-bottom: 0;' class='smaller-p'>
+                                            {{ $classification->name ?? '' }}
 
-                    <!-- OBSTÁCULOS -->
-                    <div class='section'>
-                        <h1 class="mb-3">Obstáculos</h1>
-                        @if ($discipline->difficulties == '')
-                            <div class=" p-text">Nenhum obstáculo.</div>
-                        @else
-                            <div style="text-align: justify; line-height: normal;">
-                                {{ $discipline->difficulties }}
+                                            @if ($classification->description)
+                                            <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description }}"><i class="far fa-question-circle"></i></span>
+                                            @endif
+                                        </h3>
+                                    </div>
+                                </label>
                             </div>
+                        </div>
+                        <div class="row d-flex align-items-center">
+                            <div class="d-flex col-md-12">
+                                <span class='d-flex justify-content-start' style='width:15%'><b>{{ $discipline->getClassificationsValues($classification->id) }}%</b></span>
+                                <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
+                                    <div id="{{ $classification->classification_id }}" class="classification-color-left progress-bar" role="progressbar" style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                                    </div>
+
+                                    <div id="{{ $classification->classification_id }}" class="classification-color-right progress-bar" role="progressbar" style="width: {{ 100 - $discipline->getClassificationsValues($classification->id) }}% ; border-radius: 0 100px 100px 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                                    </div>
+                                </div>
+                                <span class='d-flex justify-content-end' style='width:15%'><b>{{ 100 - number_format($discipline->getClassificationsValues($classification->id), 1) }}%</b></span>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-md-12 d-flex justify-content-between mt-2">
+                                <span>
+                                    <h3 style='margin-bottom: 0;' class='classification-text-left smaller-p'>
+                                        {{ $classification->type_a ?? '' }}
+                                    </h3>
+                                </span>
+                                <span>
+                                    <h3 style='margin-bottom: 0; ' class='classification-text-right smaller-p'>
+                                        {{ $classification->type_b ?? '' }}
+                                    </h3>
+                                </span>
+                            </div>
+                        </div>
+                        @endforeach
+                        @else
+                        <strong>Não há classificações cadastradas.</strong>
+                        @endif
+
+                    </div>
+                    <hr>
+                    <!-- PODCAST -->
+                    <div>
+                        <h1 class=" mt-4 mb-2">Podcast</h1>
+                        
+                       {{-- @if (
+                        $discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) &&
+                        $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '') --}}
+
+                        @if(isset($discipline->podcast_url) && ($discipline->podcast_url != '') )
+                        <audio class="w-100" controls>
+                            <source src="/storage/{{$discipline->podcast_url}}" type="audio/mp3"/>
+                        </audio>
+
+                        {{--<audio class="w-100" controls="controls">
+                            <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url }}" type="audio/mp3" />
+                            seu navegador não suporta HTML5
+                        </audio> --}}
+                        @else
+                        <img class="img-fluid light-border-radius" src="{{ asset('img/nopodcast.png') }}" alt="Sem podcast">
                         @endif
                     </div>
+                    <hr>
 
-                    <!-- METODOLOGIAS -->
+
+                    <!-- MATERIAIS -->
+
+                    <div class="mb-2">
+                        <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
+                        @if (
+                        $discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) &&
+                        $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
+                        <div class="align-center">
+
+                            <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url }}" class="text">
+                                <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
+                                <button class="btn large-secondary-button my-3 w-100"> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
+                            </a>
+                            <br />
+                        </div>
+                        @else
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-sad-tear fa-7x mr-3"></i>
+                            <strong>Sem materiais disponiveis...</strong>
+                        </div>
+                        @endif
+                    </div>
+                    <hr>
+
+                    <!-- Conhecimentos -->
+                    <div class='section mt-3'>
+                        <h1 class="mb-3">Conhecimentos / Competências Desejados</h1>
+                        <div>
+                            <div>
+                                @if ($discipline->acquirements == '')
+                                <div class=" p-text">Nenhum conhecimento.</div>
+                                @else
+                                <div style="text-align: justify; line-height: normal;">
+                                    {{ $discipline->acquirements }}
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="mb-3">Tópicos</h2>
+                        <ol type="I" id="discipline-topics">
+                            @forelse ($discipline->topics as $topic)
+                            @if (is_null($topic->parent_topic_id))
+                            <li class="mb-3" id="topic-{{ $topic->id }}">
+                                <span class="topic-title">{{ $topic->title }}</span>
+
+                                @if (count($topic->subtopics) > 0)
+                                <a class="ml-3 expand-topic" data-topic_id="{{ $topic->id }}" style="cursor: pointer; font-size: 14px;">
+                                    Subtópicos
+                                </a>
+                                @endif
+
+                                <br>
+
+                                @if ($topic->required_level)
+                                <small> Domínio desejado: {{ $topic->required_level }}</small>
+                                @endif
+                            </li>
+                            @endif
+                            @empty
+                            <p>Sem tópicos cadastrados</p>
+                            @endforelse
+                        </ol>
+                    </div>
+
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class='section'>
+                        <h1 class="mb-3">Obstáculos</h1>
+                        <div>
+                            <div>
+                                @if ($discipline->difficulties == '')
+                                <div class=" p-text">Nenhum obstáculo.</div>
+                                @else
+                                <div style="text-align: justify; line-height: normal;">
+                                    {{ $discipline->difficulties }}
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+
+                    </div>
                     <div class="section">
                         <h1>Metodologias</h1>
                         @if (auth()->user())
@@ -316,16 +464,13 @@ mais.
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                     <!-- FAQ -->
                     @if ($discipline->faqs->count())
                     <div class="section">
-                        <h1 class="mt-5" data-toggle="collapse" data-target="#collapseFaq">
-                            Perguntas Frequentes
-                            <li name="caret-icon-faq" class="fa fa-caret-down"></li>
-                        </h1>
-                        <div class="mt-3 collapse" id="collapseFaq">
+                        <h1 class="text-center mt-5">Perguntas Frequentes</h1>
+                        <div class="row mt-3" id="faqs">
                             @foreach ($discipline->faqs as $faq)
                             <div class="w-100 card mb-3 text-dark " style='border:1px solid #014C8C;'>
                                 <div class="card-header" id="faq-header-{{ $faq->id }}" data-toggle="collapse" data-target="#faq-content-{{ $faq->id }}">
@@ -363,7 +508,6 @@ mais.
                     @include('faqs.create_modal', ['discipline' => $discipline])
                     @endif
 
-                    <!-- ÍNDICES DE APROVAÇÃO -->
                     <div class="section">
                         <div class="card mt-5 px-2 py-2">
                             <div class="d-none">{{ $actualYear = date('Y') }}</div>
@@ -565,22 +709,19 @@ mais.
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
-
-                    <!-- CONTEÚDO -->
+                </div>
+                <div class="col-md-4">
                     @if(!Auth::user() || (Auth::user()->isProfessor && Auth::user()->professor->id != $discipline->professor->id) )
                     <div class="section">
                         @if (
                         (isset($discipline->subjectTopics) && count($discipline->subjectTopics) > 0) ||
                         (isset($discipline->subjectConcepts) && count($discipline->subjectConcepts) > 0) ||
                         (isset($discipline->subjectReferences) && count($discipline->subjectReferences) > 0))
-                        <h1 data-toggle="collapse" data-target="#collapseConteudos">
-                            Conteúdos
-                            <li name="caret-icon-conteudos" class="fa fa-caret-down"></li>
-                        </h1>
-                        <div class=" collapse" id="collapseConteudos">
+                        <h1>Conteúdos</h1>
                         @if (isset($discipline->subjectTopics) && count($discipline->subjectTopics) > 0)
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
@@ -708,7 +849,6 @@ mais.
                                     </div>
                                     @endif
                         </div>
-                        </div>
                         @endif
                         @else
                         <div class="card">
@@ -720,214 +860,59 @@ mais.
                     @else
                     <div id="discipline-contents" class="section"></div>
                     @endif
-
-                    <!-- OFERTA MATRÍCULA -->
-                    <div class="section">
-                        <div class="card p-4">
-                            <h1>Oferta/Matrícula</h1>
-                            <hr class="py-2">
-                            <div class="d-flex flex-column">
-                                <h2 class="pb-3">Ofertas</h2>
-                                <div id="ofertas">
-                                    <div class="card">
-                                        <div class="card-header" id="headingUltimaOferta">
-                                            <h3 class="mb-0" style="font-size: 1.75rem;">
-                                                <span class="text-primary">Última oferta: </span>
-                                                <span id="ultima-oferta">Buscando...</span>
-                                            </h3>
-                                        </div>
-
-                                        <div id="collapUltimaOferta" class="card-body">
-                                            <div id="collapUltimaOfertaBody">
-                                                <ul class="d-flex flex-column gap-3 list-unstyled" id="last-offers-list"></ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card mt-3">
-                                        <div class="card-header" id="headingOfertasPassadas">
-                                            <h3 class="mb-0" style="font-size: 1.75rem;">
-                                                <span class="text-primary">Ofertas passadas </span>
-                                                <br>
-                                                <small>Últimos 5 anos</small>
-                                            </h3>
-                                        </div>
-
-                                        <div id="collapOfertasPassadas" class="card-body">
-                                            <div id="collapOfertasPassadasBody">
-                                                <ul class="d-flex flex-column gap-3 list-unstyled" id="offers-history"></ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
+            </div>
+            <hr>
+            <div class="section">
+                <div class="card p-4 col-12 col-md-8">
+                    <h1>Oferta/Matrícula</h1>
+                    <hr class="py-2">
+                    <div class="d-flex flex-column">
+                        <h2 class="pb-3">Ofertas</h2>
+                        <div id="ofertas">
+                            <div class="card">
+                                <div class="card-header" id="headingUltimaOferta">
+                                    <h3 class="mb-0" style="font-size: 1.75rem;">
+                                        <span class="text-primary">Última oferta: </span>
+                                        <span id="ultima-oferta">Buscando...</span>
+                                    </h3>
+                                </div>
 
-                <!-- COLUNA DIREITA -->
-                <div class="col-md-4">
-                    <!-- CLASSIFICAÇÕES -->
-                    <div class='classifications'>
-                        <h1>Classificações</h1>
-                        @if (count($classifications) > 0)
-                        @foreach ($classifications as $classification)
-                        <div class='row mb-0'>
-                            <div class="d-flex col-md-12 justify-content-center">
-                                <label class="">
-                                    <div class="d-flex">
-                                        <h3 style='margin-bottom: 0;' class='smaller-p'>
-                                            {{ $classification->name ?? '' }}
-
-                                            @if ($classification->description)
-                                            <span data-toggle="tooltip" data-placement="top" title=" {{ $classification->description }}"><i class="far fa-question-circle"></i></span>
-                                            @endif
-                                        </h3>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row d-flex align-items-center">
-                            <div class="d-flex col-md-12">
-                                <span class='d-flex justify-content-start' style='width:15%'><b>{{ $discipline->getClassificationsValues($classification->id) }}%</b></span>
-                                <div class="progress " class='col-md-8' style="height: 20px; border-radius: 100px ; border: 2px solid black; padding: 2px; width:70%">
-                                    <div id="{{ $classification->classification_id }}" class="classification-color-left progress-bar" role="progressbar" style="width: {{ $discipline->getClassificationsValues($classification->id) }}%; border-radius: 100px 0 0 100px" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
-                                    </div>
-
-                                    <div id="{{ $classification->classification_id }}" class="classification-color-right progress-bar" role="progressbar" style="width: {{ 100 - $discipline->getClassificationsValues($classification->id) }}% ; border-radius: 0 100px 100px 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="20">
+                                <div id="collapUltimaOferta" class="card-body">
+                                    <div id="collapUltimaOfertaBody">
+                                        <ul class="d-flex flex-column gap-3 list-unstyled" id="last-offers-list"></ul>
                                     </div>
                                 </div>
-                                <span class='d-flex justify-content-end' style='width:15%'><b>{{ 100 - number_format($discipline->getClassificationsValues($classification->id), 1) }}%</b></span>
                             </div>
-                        </div>
 
-                        <div class="row ">
-                            <div class="col-md-12 d-flex justify-content-between mt-2">
-                                <span>
-                                    <h3 style='margin-bottom: 0;' class='classification-text-left smaller-p'>
-                                        {{ $classification->type_a ?? '' }}
+                            <div class="card mt-3">
+                                <div class="card-header" id="headingOfertasPassadas">
+                                    <h3 class="mb-0" style="font-size: 1.75rem;">
+                                        <span class="text-primary">Ofertas passadas </span>
+                                        <br>
+                                        <small>Últimos 5 anos</small>
                                     </h3>
-                                </span>
-                                <span>
-                                    <h3 style='margin-bottom: 0; ' class='classification-text-right smaller-p'>
-                                        {{ $classification->type_b ?? '' }}
-                                    </h3>
-                                </span>
-                            </div>
-                        </div>
-                        @endforeach
-                        @else
-                        <strong>Não há classificações cadastradas.</strong>
-                        @endif
-
-                    </div>
-
-                    <hr>
-
-                    <!-- PODCAST -->
-                    <div class="mb-3">
-                        <h1 class=" mt-4 mb-2">Podcast</h1>
-
-                       {{-- @if (
-                        $discipline->hasMediaOfType(\App\Enums\MediaType::PODCAST) &&
-                        $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '') --}}
-
-                        @if(isset($discipline->podcast_url) && ($discipline->podcast_url != '') )
-                        <audio class="w-100" controls>
-                            <source src="/storage/{{$discipline->podcast_url}}" type="audio/mp3"/>
-                        </audio>
-
-                        {{--<audio class="w-100" controls="controls">
-                            <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url }}" type="audio/mp3" />
-                            seu navegador não suporta HTML5
-                        </audio> --}}
-                        @else
-                        <img class="img-fluid light-border-radius" src="{{ asset('img/nopodcast.png') }}" alt="Sem podcast">
-                        @endif
-                    </div>
-
-                    <hr>
-
-                    <!-- MATERIAIS -->
-                    <div class="mb-3">
-                        <h1 class=" mt-4 mb-2 py-3">Materiais</h1>
-                        @if (
-                        $discipline->hasMediaOfType(\App\Enums\MediaType::MATERIAIS) &&
-                        $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url != '')
-                        <div class="align-center">
-
-                            <a href="{{ $discipline->getMediasByType(\App\Enums\MediaType::MATERIAIS)->first()->view_url }}" class="text">
-                                <!-- <i class="fas fa-file-download fa-9x materiais-on"></i> -->
-                                <button class="btn large-secondary-button my-3 w-100"> <i class="fas fa-file-download fa-lg mr-1"></i> Download</button>
-                            </a>
-                            <br />
-                        </div>
-                        @else
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-sad-tear fa-7x mr-3"></i>
-                            <strong>Sem materiais disponiveis...</strong>
-                        </div>
-                        @endif
-                    </div>
-                    <hr>
-
-                    <!-- Conhecimentos -->
-                    <div class='section mt-3'>
-                        <h1 class="mb-3">Conhecimentos / Competências Desejados</h1>
-                        <div>
-                            <div>
-                                @if ($discipline->acquirements == '')
-                                <div class=" p-text">Nenhum conhecimento.</div>
-                                @else
-                                <div style="text-align: justify; line-height: normal;">
-                                    {{ $discipline->acquirements }}
                                 </div>
-                                @endif
+
+                                <div id="collapOfertasPassadas" class="card-body">
+                                    <div id="collapOfertasPassadasBody">
+                                        <ul class="d-flex flex-column gap-3 list-unstyled" id="offers-history"></ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- TÓPICOS -->
-                    <div class="mb-3">
-                        <h2 class="mb-3">Tópicos</h2>
-                        <ol type="I" id="discipline-topics">
-                            @forelse ($discipline->topics as $topic)
-                            @if (is_null($topic->parent_topic_id))
-                            <li class="mb-3" id="topic-{{ $topic->id }}">
-                                <span class="topic-title">{{ $topic->title }}</span>
-
-                                @if (count($topic->subtopics) > 0)
-                                <a class="ml-3 expand-topic" data-topic_id="{{ $topic->id }}" style="cursor: pointer; font-size: 14px;">
-                                    Subtópicos
-                                </a>
-                                @endif
-
-                                <br>
-
-                                @if ($topic->required_level)
-                                <small> Domínio desejado: {{ $topic->required_level }}</small>
-                                @endif
-                            </li>
-                            @endif
-                            @empty
-                            <p>Sem tópicos cadastrados</p>
-                            @endforelse
-                        </ol>
-                    </div>
-
-                    <hr>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<hr>
+</div>
 
 @if (isset($discipline->professor->name))
 <div class=" pt-4 pb-5" style=' margin-bottom: -3rem;'>
 
-    <div class="container col-lg-5 col-sm-8">
+    <div class="container col-md-5">
         <div class="section">
             <h1 class="container-fluid  text-center mt-5">Faça uma pergunta!</h1>
             <!-- É necessário autenticar o  email do professor anteriormente -->
@@ -960,7 +945,6 @@ mais.
 
 </div>
 @endif
-
 @if ($errors->has('link'))
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>{{ $errors->first('link') }}</strong>
@@ -969,118 +953,118 @@ mais.
     </button>
 </div>
 @endif
-
 <div class="container mt-5"><!-- seção professor e créditos -->
     <div class="row g-5">
         @if (isset($discipline->professor->name))
         <div class="col">
-            <div class="d-flex flex-row flex-wrap shadow justify-content-center p-2">
+            <div class="d-flex flex-row flex-wrap shadow justify-content-center  p-2">
                 <div class="container">
                     <div class='section mb-5'>
                         <h1 class="mb-3">Professor</h1>
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-user fa-8x mr-4"></i>
-                            <div class="wrapper-teacher-info">
-                                <div class="text-justify px-lg-3">
-                                    <strong>{{ $discipline->professor->name }}</strong>
-                                </div>
-                                <div class="text-justify px-lg-3"> <strong>Email:
-                                    </strong>{{ $discipline->professor->public_email }} </div>
-                                @if ($discipline->professor->rede_social1 == '')
-                                <div class=" p-text"></div>
-                                @else
-                                <a href="{{ $discipline->professor->link_rsocial1 }}" class="text-justify px-lg-3"> <strong>
-                                        {{ $discipline->professor->rede_social1 }} </strong></a>
-                                @endif
-                                @if ($discipline->professor->rede_social2 == '')
-                                <div class=" p-text"></div>
-                                @else
-                                <a href="{{ $discipline->professor->link_rsocial2 }}" class="text-justify px-lg-3">
-                                    <strong>{{ $discipline->professor->rede_social2 }}</strong></a>
-                                @endif
-                                @if ($discipline->professor->rede_social3 == '')
-                                <div class=" p-text"></div>
-                                @else
-                                <a href="{{ $discipline->professor->link_rsocial3 }}" class="text-justify px-lg-3">
-                                    <strong>{{ $discipline->professor->rede_social3 }}</strong></a>
-                                @endif
-                                @if ($discipline->professor->rede_social4 == '')
-                                <div class=" p-text"></div>
-                                @else
-                                <a href="{{ $discipline->professor->link_rsocial4 }}" class="text-justify px-lg-3">
-                                    <strong>{{ $discipline->professor->rede_social4 }}</strong></a>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- seção professor -->
-        </div>
-        @endif
-
-        <!-- Seção créditos -->
-        @if ((Auth::user() && Auth::user()->isAdmin) || count($discipline->disciplineParticipants) > 0)
-        <div class="col">
-            <div class="d-flex flex-row flex-wrap shadow justify-content-center p-2">
-                <div class="container">
-                    <div class="section mt-2">
-                        <div class="d-flex flex-row justify-content-start align-items-baseline">
-                            <h1 style="cursor:pointer" data-toggle="collapse" data-target="#collapseCreditos">Créditos
-                                <li name="caret-icon-creditos" class="fa fa-caret-down"></li>
-                            </h1>
-                            @if (Auth::user() && Auth::user()->isAdmin)
-                            <button class="btn btn-success btn-sm ml-3 mb-4" data-toggle="modal" data-target="#modal-add"> &nbsp;+&nbsp; </button>
-                            @endif
-                        </div>
-
-                        <div id="collapseCreditos" class="collapse w-100">
-                        @foreach ($discipline->disciplineParticipants as $participant)
-                            <div id="{{$loop->index}}" class="d-flex flex-column mb-4" style="line-height:1.2;">
-                                <div class="d-flex flex-row align-items-center justify-content-between w-100 bg-pridmary">
-                                    <span class=" d-flex w-100 justify-content-between">
-                                        <strong class="" style="cursor:pointer" data-toggle="collapse" data-target="#linksCollapse{{ $participant->id }}">
-                                            {{ $participant->name }}
-                                            <li name="linksCollapse{{ $participant->id }}" class="fas fa-caret-down"></li>
-                                        </strong>
-
-                                    </span>
-                                    @if (Auth::user() && Auth::user()->isAdmin)
-                                    <div class="d-flex align-items-center">
-                                        <button class="ml-1  btn btn-link" id="{{ $loop->index }}" onclick="openModalEdit(event)" data-toggle="modal" data-target="#modal-edit">editar</button>
-                                        <form class="" action="{{ route('participants_discipline.destroy', $participant->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class=" mr-0 p-0 text-danger btn btn-link" type="submit">remover</button>
-                                        </form>
+                        <div class="">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-user fa-8x mr-4"></i>
+                                <div class="wrapper-teacher-info">
+                                    <div class="text-justify px-lg-3">
+                                        <strong>{{ $discipline->professor->name }}</strong>
                                     </div>
+                                    <div class="text-justify px-lg-3"> <strong>Email:
+                                        </strong>{{ $discipline->professor->public_email }} </div>
+                                    @if ($discipline->professor->rede_social1 == '')
+                                    <div class=" p-text"></div>
+                                    @else
+                                    <a href="{{ $discipline->professor->link_rsocial1 }}" class="text-justify px-lg-3"> <strong>
+                                            {{ $discipline->professor->rede_social1 }} </strong></a>
+                                    @endif
+                                    @if ($discipline->professor->rede_social2 == '')
+                                    <div class=" p-text"></div>
+                                    @else
+                                    <a href="{{ $discipline->professor->link_rsocial2 }}" class="text-justify px-lg-3">
+                                        <strong>{{ $discipline->professor->rede_social2 }}</strong></a>
+                                    @endif
+                                    @if ($discipline->professor->rede_social3 == '')
+                                    <div class=" p-text"></div>
+                                    @else
+                                    <a href="{{ $discipline->professor->link_rsocial3 }}" class="text-justify px-lg-3">
+                                        <strong>{{ $discipline->professor->rede_social3 }}</strong></a>
+                                    @endif
+                                    @if ($discipline->professor->rede_social4 == '')
+                                    <div class=" p-text"></div>
+                                    @else
+                                    <a href="{{ $discipline->professor->link_rsocial4 }}" class="text-justify px-lg-3">
+                                        <strong>{{ $discipline->professor->rede_social4 }}</strong></a>
                                     @endif
 
                                 </div>
 
-                                <div name="collapse-participant" class="collapse card" id="linksCollapse{{ $participant->id }}">
-                                    <small>
-                                        <strong><i>{{ $participant->role }}</i></strong>
-                                        @if (isset($participant->email) && $participant->email != '')
-                                        <a href="mailto:{{ $participant->email }}" class="ml-3">e-mail</a>
-                                        @if (count($participant->links) > 0)
-                                        <span class="text-primary">&nbsp;|</span>
-                                        @endif
-                                        @endif
-
-                                        @foreach ($participant->links as $link)
-                                        <a href="{{ $link->url }}" rel="noopener" target="_blank" class="ml-2">{{ $link->name }}</a>
-                                        @if (!$loop->last)
-                                        <span class="text-primary">&nbsp;|</span>
-                                        @endif
-                                        @endforeach
-
-                                    </small>
-                                </div>
                             </div>
-                        @endforeach
-                        </div><!--collapse-->
+                        </div>
                     </div>
                 </div>
+
+            </div><!-- seção professor -->
+        </div>
+        @endif
+        <!-- Seção créditos -->
+        @if ((Auth::user() && Auth::user()->isAdmin) || count($discipline->disciplineParticipants) > 0)
+        <div class="col">
+            <div class="d-flex flex-column shadow p-2 align-items-start">
+                <div class="d-flex flex-row justify-content-start align-items-baseline">
+                    <h1 style="cursor:pointer" data-toggle="collapse" data-target="#collapseCreditos">Créditos
+                        <li name="caret-icon-creditos" class="fa fa-caret-down"></li>
+                    </h1>
+                    @if (Auth::user() && Auth::user()->isAdmin)
+                    <button class="btn btn-success btn-sm ml-3 mb-4" data-toggle="modal" data-target="#modal-add"> &nbsp;+&nbsp; </button>
+                    @endif
+                </div>
+               
+                <div id="collapseCreditos" class="collapse w-100">
+                @foreach ($discipline->disciplineParticipants as $participant)
+                    <div id="{{$loop->index}}" class="d-flex flex-column mb-4" style="line-height:1.2;">
+                        <div class="d-flex flex-row align-items-center justify-content-between w-100 bg-pridmary">
+                            <span class=" d-flex w-100 justify-content-between">
+                                <strong class="" style="cursor:pointer" data-toggle="collapse" data-target="#linksCollapse{{ $participant->id }}">
+                                    {{ $participant->name }}
+                                    <li name="linksCollapse{{ $participant->id }}" class="fas fa-caret-down"></li>
+                                </strong>
+
+                            </span>
+                            @if (Auth::user() && Auth::user()->isAdmin)
+                            <div class="d-flex align-items-center">
+                                <button class="ml-1  btn btn-link" id="{{ $loop->index }}" onclick="openModalEdit(event)" data-toggle="modal" data-target="#modal-edit">editar</button>
+                                <form class="" action="{{ route('participants_discipline.destroy', $participant->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class=" mr-0 p-0 text-danger btn btn-link" type="submit">remover</button>
+                                </form>
+                            </div>
+                            @endif
+
+                        </div>
+
+                        <div name="collapse-participant" class="collapse card" id="linksCollapse{{ $participant->id }}">
+                            <small>
+                                <strong><i>{{ $participant->role }}</i></strong>
+                                @if (isset($participant->email) && $participant->email != '')
+                                <a href="mailto:{{ $participant->email }}" class="ml-3">e-mail</a>
+                                @if (count($participant->links) > 0)
+                                <span class="text-primary">&nbsp;|</span>
+                                @endif
+                                @endif
+
+                                @foreach ($participant->links as $link)
+                                <a href="{{ $link->url }}" rel="noopener" target="_blank" class="ml-2">{{ $link->name }}</a>
+                                @if (!$loop->last)
+                                <span class="text-primary">&nbsp;|</span>
+                                @endif
+                                @endforeach
+
+                            </small>
+                        </div>
+                    </div>
+                @endforeach
+                </div><!--collapse-->
+               
             </div><!--Seção créditos -->
         </div> <!--col-->
         @endif
@@ -1360,7 +1344,7 @@ mais.
     }
 
 
-    // Scripts referente aos tópicos
+    // Scripts referente aos tópicos    
     $(document).on('click', '.expand-topic', function() {
         let topicId = $(this).data('topic_id');
         let disciplineId = '{{ $discipline->id }}';
@@ -1470,7 +1454,7 @@ mais.
 
     function importReferences(event) {
         let codigo = "{{ $discipline->code }}";;
-
+        
         if (!codigo) {
             alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
             return;
