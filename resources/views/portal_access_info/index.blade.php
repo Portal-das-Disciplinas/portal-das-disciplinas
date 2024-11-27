@@ -29,7 +29,7 @@
                             <span class="text-secondary">URL(s) mais acessada(s)</span>
                             @if(isset($pathMoreAccessed))
                             @foreach($pathMoreAccessed as $path)
-                            <span class="text-secondary">{{$path}}</span>
+                            <span class="text-secondary">{{$path->path}}</span>
                             @endforeach
                             @endif
                         </div>
@@ -81,7 +81,7 @@
                     <h3>URL(s) MAIS ACESSADA(s)</h3>
                     @if(isset($pathMoreAccessedPeriod))
                     @foreach($pathMoreAccessedPeriod as $path)
-                    <i>{{$path}}</i>
+                    <i>{{$path->path}}</i>
                     @endforeach
                     @endif
                 </div>
