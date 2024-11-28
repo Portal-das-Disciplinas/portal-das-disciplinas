@@ -1,10 +1,10 @@
 function renderDisciplineContents(elementId){
     let html =
-        `<h1 data-toggle="collapse" data-target="#collapseConteudos">
+        `<h1>
             Conteúdos
-            <li name="caret-icon-conteudos" class="fa fa-caret-down"></li>
+            
         </h1> \n \
-        <div class="collapse" id="collapseConteudos">
+        <div>
         <div class="card"> \n \
         <div class="card-header d-flex justify-content-between"> \n \
         <div> \n \
