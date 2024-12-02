@@ -19,7 +19,6 @@ class PortalAccessInfoService
                 "path" => $path,
                 "accessed_on" => $accessedOn
             ]);
-            Log::info("Info criada");
         } catch (Exception $e) {
             Log::error("Erro ao registrar o acesso: " . $ip . " " . $path . " ");
             Log::error($e);
