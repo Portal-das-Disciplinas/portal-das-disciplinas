@@ -32,5 +32,17 @@ $('div[name=collapse-participant]').on('show.bs.collapse', function (event) {
 $('div[name=collapse-participant]').on('hide.bs.collapse', function (event) {
     $('li[name=' + event.target.id + ']').removeClass('fa fa-caret-up');
     $('li[name=' + event.target.id + ']').addClass('fa fa-caret-down');
+    event.stopPropagation();    
+});
+
+$("div[name='collapse-faq']").on('show.bs.collapse',function(event){
     event.stopPropagation();
+    $("#" + event.target.id + "-caret").removeClass("fas fa-caret-down");
+    $("#" + event.target.id + "-caret").addClass("fas fa-caret-up");
+});
+
+$("div[name='collapse-faq']").on('hide.bs.collapse',function(event){
+    event.stopPropagation();
+    $("#" + event.target.id + "-caret").removeClass("fas fa-caret-up");
+    $("#" + event.target.id + "-caret").addClass("fas fa-caret-down");
 });

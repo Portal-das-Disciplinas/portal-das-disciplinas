@@ -473,7 +473,7 @@ mais.
                         <div class="row mt-3" id="faqs">
                             @foreach ($discipline->faqs as $faq)
                             <div class="w-100 card mb-3 text-dark " style='border:1px solid #014C8C;'>
-                                <div class="card-header" id="faq-header-{{ $faq->id }}" data-toggle="collapse" data-target="#faq-content-{{ $faq->id }}">
+                                <div class="card-header" id="faq-header-{{ $faq->id }}" data-toggle="collapse" data-target="#faq-content-{{ $faq->id }}" style="cursor: pointer">
                                     <h5 class="mb-0 d-flex justify-content-between">
                                         <button class="btn btn-link collapsed mr-auto" data-toggle="collapse" data-target="#faq-content-{{ $faq->id }}" aria-expanded="true" aria-controls="faq-header-{{ $faq->id }}">
                                             {!! $faq->title !!}
@@ -488,12 +488,12 @@ mais.
                                         @endif
 
                                         <button class="btn btn-link collapsed ml-2" data-toggle="collapse" data-target="#faq-content-{{ $faq->id }}" aria-expanded="true" aria-controls="faq-header-{{ $faq->id }}">
-                                            <i class="fas fa-caret-down"></i>
+                                            <i id="faq-content-{{$faq->id}}-caret" class="fas fa-caret-down"></i>
                                         </button>
                                     </h5>
                                 </div>
 
-                                <div id="faq-content-{{ $faq->id }}" class="collapse" aria-labelledby="faq-header-{{ $faq->id }}" data-parent="#faqs">
+                                <div id="faq-content-{{ $faq->id }}" name = "collapse-faq" class="collapse" aria-labelledby="faq-header-{{ $faq->id }}" data-parent="#faqs">
                                     <div class="card-body">
                                         {!! $faq->content !!}
                                     </div>
