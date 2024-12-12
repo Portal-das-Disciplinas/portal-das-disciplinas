@@ -129,87 +129,6 @@ noindex, follow
                             @enderror
                         </div>
                     </div>
-                    <div class="card p-2 mt-2" style="background-color: #F0F8FF">
-                        <div id="area-edit-topics" class="card">
-                            <span>Edição da ementa</span>
-                            <div id="area-fields-topics">
-                                @php
-                                    if(session('oldTopicsInput')){
-                                        $topicsList = session('oldTopicsInput');
-                                    }else{
-
-                                        $topicsList = $discipline->subjectTopics;
-                                    }
-                                @endphp
-                                @foreach($topicsList as $key=>$topic)
-                                <div id="{{'topic-' . $key}}" class="form-group">
-                                    <textarea name="topics[]" type="text" class="form-control">{{$topic->value}}</textarea>
-                                    <input name="topicsId[]" type="hidden" value="{{$topic->id}}">
-                                    <div class="d-flex justify-content-end">
-                                        <small class="text-danger" style="cursor:pointer" onclick="removeTopicField(event)">remover</small>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <small class="btn-link" onclick="importComponents(event)" style="cursor: pointer;">Importar do SIGAA</small>
-                                <span class="btn btn-primary btn-sm" onclick="addTopicField()">Adicionar campo</span>
-                            </div>
-                        </div>
-
-                        <div id="area-edit-concepts" class="px-1 mt-2 card">
-                            <span>Edição dos conceitos</span>
-                            <div id="area-fields-concepts">
-                                @php
-                                    if(session('oldConceptsInput')){
-                                        $conceptsList = session('oldConceptsInput');
-                                    }else{
-
-                                        $conceptsList = $discipline->subjectConcepts;
-                                    }
-                                @endphp
-                                @foreach($conceptsList as $key=>$concept)
-                                <div id="{{'concept-' . $key}}" class="form-group">
-                                    <textarea name="concepts[]" type="text" class="form-control">{{$concept->value}}</textarea>
-                                    <input name="conceptsId[]" type="hidden" value="{{$concept->id}}">
-                                    <div class="d-flex justify-content-end">
-                                        <small class="text-danger" style="cursor:pointer" onclick="removeConceptField(event)">remover</small>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <span class="btn btn-primary btn-sm" onclick="addConceptField()">Adicionar campo</span>
-                            </div>
-                        </div>
-
-                        <div id="area-edit-references" class="px-1 mt-2 card">
-                            <span>Edição das referências</span>
-                            <div id="area-fields-references">
-                            @php
-                                if(session('oldReferencesInput')){
-                                    $referencesList = session('oldReferencesInput');
-                                }else{
-                                    $referencesList = $discipline->subjectReferences;
-                                }
-                                @endphp
-                                @foreach($referencesList as $key=>$reference)
-                                <div id="{{'reference-' . $key}}" class="form-group">
-                                    <textarea name="references[]" type="text" class="form-control">{{$reference->value}}</textarea>
-                                    <input name="referencesId[]" type="hidden" value="{{$reference->id}}">
-                                    <div class="d-flex justify-content-end">
-                                        <small class="text-danger" style="cursor:pointer" onclick="removeReferenceField(event)">remover</small>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <small class="btn-link" onclick="importReferences(event)" style="cursor: pointer;">Importar do SIGAA</small>
-                                <span class="btn btn-primary btn-sm" onclick="addReferenceField()">Adicionar campo</span>
-                            </div>
-                        </div>
-
-                    </div>
                 </div>
                 {{-- TODO
                 Card de midias com "x" para excluir --}}
@@ -434,6 +353,93 @@ noindex, follow
                             @endforelse
                         </ol>
                         <button type="button" class="mt-2 btn btn-outline-primary add-topic">Adicionar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class='page-title'>
+                <h3 style="cursor:pointer" data-toggle="collapse" data-target="#collapseConteudos">
+                    Conteúdos
+                    <li name="caret-icon-conteudos" class="fa fa-caret-down"></li>
+                </h3>
+            </div>
+            <div id="collapseConteudos" class="collapse">
+                <div id="area-edit-topics" class="card">
+                    <span>Edição da ementa</span>
+                    <div id="area-fields-topics">
+                        @php
+                            if(session('oldTopicsInput')){
+                                $topicsList = session('oldTopicsInput');
+                            }else{
+
+                                $topicsList = $discipline->subjectTopics;
+                            }
+                        @endphp
+                        @foreach($topicsList as $key=>$topic)
+                        <div id="{{'topic-' . $key}}" class="form-group">
+                            <textarea name="topics[]" type="text" class="form-control">{{$topic->value}}</textarea>
+                            <input name="topicsId[]" type="hidden" value="{{$topic->id}}">
+                            <div class="d-flex justify-content-end">
+                                <small class="text-danger" style="cursor:pointer" onclick="removeTopicField(event)">remover</small>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <small class="btn-link" onclick="importComponents(event)" style="cursor: pointer;">Importar do SIGAA</small>
+                        <span class="btn btn-primary btn-sm" onclick="addTopicField()">Adicionar campo</span>
+                    </div>
+                </div>
+
+                <div id="area-edit-concepts" class="px-1 mt-2 card">
+                    <span>Edição dos conceitos</span>
+                    <div id="area-fields-concepts">
+                        @php
+                            if(session('oldConceptsInput')){
+                                $conceptsList = session('oldConceptsInput');
+                            }else{
+
+                                $conceptsList = $discipline->subjectConcepts;
+                            }
+                        @endphp
+                        @foreach($conceptsList as $key=>$concept)
+                        <div id="{{'concept-' . $key}}" class="form-group">
+                            <textarea name="concepts[]" type="text" class="form-control">{{$concept->value}}</textarea>
+                            <input name="conceptsId[]" type="hidden" value="{{$concept->id}}">
+                            <div class="d-flex justify-content-end">
+                                <small class="text-danger" style="cursor:pointer" onclick="removeConceptField(event)">remover</small>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <span class="btn btn-primary btn-sm" onclick="addConceptField()">Adicionar campo</span>
+                    </div>
+                </div>
+
+                <div id="area-edit-references" class="px-1 mt-2 card">
+                    <span>Edição das referências</span>
+                    <div id="area-fields-references">
+                    @php
+                        if(session('oldReferencesInput')){
+                            $referencesList = session('oldReferencesInput');
+                        }else{
+                            $referencesList = $discipline->subjectReferences;
+                        }
+                        @endphp
+                        @foreach($referencesList as $key=>$reference)
+                        <div id="{{'reference-' . $key}}" class="form-group">
+                            <textarea name="references[]" type="text" class="form-control">{{$reference->value}}</textarea>
+                            <input name="referencesId[]" type="hidden" value="{{$reference->id}}">
+                            <div class="d-flex justify-content-end">
+                                <small class="text-danger" style="cursor:pointer" onclick="removeReferenceField(event)">remover</small>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <small class="btn-link" onclick="importReferences(event)" style="cursor: pointer;">Importar do SIGAA</small>
+                        <span class="btn btn-primary btn-sm" onclick="addReferenceField()">Adicionar campo</span>
                     </div>
                 </div>
             </div>
@@ -930,6 +936,18 @@ $classificationsJson = json_encode($classifications);
         event.stopPropagation();
         $('li[name=caret-icon-creditos]').removeClass('fa fa-caret-up');
         $('li[name=caret-icon-creditos]').addClass('fa fa-caret-down');
+    });
+
+    $('#collapseConteudos').on('show.bs.collapse', function (event) {
+        event.stopPropagation();
+        $('li[name=caret-icon-conteudos]').removeClass('fa fa-caret-down');
+        $('li[name=caret-icon-conteudos]').addClass('fa fa-caret-up');
+    });
+
+    $('#collapseConteudos').on('hide.bs.collapse', function (event) {
+        event.stopPropagation();
+        $('li[name=caret-icon-conteudos]').removeClass('fa fa-caret-up');
+        $('li[name=caret-icon-conteudos]').addClass('fa fa-caret-down');
     });
 </script>
 
