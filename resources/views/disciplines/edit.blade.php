@@ -14,7 +14,7 @@ noindex, follow
     <div class='page-title'>
         <h1>Editar disciplina</h1>
     </div>
-    
+
     @if($errors->any())
     @foreach($errors->all() as $error)
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -62,12 +62,12 @@ noindex, follow
                          Sem ênfase
                     </option>
                     @foreach($emphasis as $emphase)
-                    <option value="{{ $emphase->id }}" 
+                    <option value="{{ $emphase->id }}"
 
                         @if(session()->has('oldEmphasisInput') && (session('oldEmphasisInput') == $emphase->id))
-                            selected 
+                            selected
                         @elseif(!session()->has('oldEmphasisInput') && isset($discipline->emphasis_id) && $emphase->id == $discipline->emphasis_id)
-                            selected 
+                            selected
                         @endif>
                         {{ $emphase->name }}
                     </option>
@@ -75,7 +75,7 @@ noindex, follow
                 </select>
                 <input id="old_input_emphasis" name="old_input_emphasis" hidden>
 
-               
+
 
 
             </div>
@@ -137,7 +137,7 @@ noindex, follow
                                     if(session('oldTopicsInput')){
                                         $topicsList = session('oldTopicsInput');
                                     }else{
-                                        
+
                                         $topicsList = $discipline->subjectTopics;
                                     }
                                 @endphp
@@ -164,7 +164,7 @@ noindex, follow
                                     if(session('oldConceptsInput')){
                                         $conceptsList = session('oldConceptsInput');
                                     }else{
-                                        
+
                                         $conceptsList = $discipline->subjectConcepts;
                                     }
                                 @endphp
@@ -189,7 +189,7 @@ noindex, follow
                             @php
                                 if(session('oldReferencesInput')){
                                     $referencesList = session('oldReferencesInput');
-                                }else{       
+                                }else{
                                     $referencesList = $discipline->subjectReferences;
                                 }
                                 @endphp
@@ -231,7 +231,7 @@ noindex, follow
                                     <div><span>{{ ( old('classification-' . $classification->id))!= null ?  old('classification-' . $classification->id) : ($discipline->getClassificationsValues($classification->id)) }}</span>%</div>
                                 </div>
                                 <div class="slider-container">
-                                    <input id="classification-slider" name="classification-{{ $classification->id }}" type="range" min="0" max="100" 
+                                    <input id="classification-slider" name="classification-{{ $classification->id }}" type="range" min="0" max="100"
                                         value="{{ ( old('classification-' . $classification->id))!= null ?  old('classification-' . $classification->id) : ($discipline->getClassificationsValues($classification->id)) }}" step='5' class="classification-slider scrollClass classification-{{$classification->id}}" oninput="handleInput(this.value, this)">
                                 </div>
                                 <div>
@@ -249,7 +249,7 @@ noindex, follow
                                     <div class=" d-flex justify-content-center col-md-12">
                                         <h5>{{ $classification->name }}
                                             @if ($classification->description)
-                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>   
+                                                <span data-toggle="tooltip" class="h4" data-placement="top" title=" {{ $classification->description}}"><i class="far fa-question-circle" ></i></span>
                                             @endif
                                         </h5>
                                     </div>
@@ -260,13 +260,13 @@ noindex, follow
                                         <output id="outMetodologia">{{$discipline->getClassificationsValues($classification->id)}}</output><span>%<span>
                                     </div>
                                     <div class="col-md-8">
-                                        <input class='w-100' id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="{{$discipline->getClassificationsValues($classification->id)}}" min="0" max="100" oninput="handleInput(outMetodologia, outMetodologiaSecondary, this.value)" >      
+                                        <input class='w-100' id="{{ $classification->id }}" name="{{ $classification->name }}" type="range" step="5" value="{{$discipline->getClassificationsValues($classification->id)}}" min="0" max="100" oninput="handleInput(outMetodologia, outMetodologiaSecondary, this.value)" >
                                     </div>
                                     <div class=" col-md-2 d-flex justify-content-end ">
                                     <div>
                                         <output id="outMetodologiaSecondary" >{{100-$discipline->getClassificationsValues($classification->id)}}</output><span>%<span>
                                     </div>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="legend row">
@@ -306,7 +306,7 @@ noindex, follow
                             <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Razões pelas quais esta disciplina pode ser para você."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control {{ $errors->has('media-trailer') ? 'is-invalid' : ''}}" name="media-trailer" id="media-trailer" 
+                            <input type="text" class="form-control {{ $errors->has('media-trailer') ? 'is-invalid' : ''}}" name="media-trailer" id="media-trailer"
                             @if ($discipline->has_trailer_media || old('media-trailer') != null )
                             value="{{old('media-trailer') != null ? old('media-trailer') : $discipline->trailer->url}}"
                             @endif
@@ -326,7 +326,7 @@ noindex, follow
                             <p class='tooltip-text' data-toggle="tooltip" data-placement="top" title="Bate papo entre professores e alunos sobre os principais aspectos da disciplina."><i class="far fa-question-circle ml-1"></i></p>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control {{ $errors->has('media-video') ? 'is-invalid' : ''}}" name="media-video" id="media-video" 
+                            <input type="text" class="form-control {{ $errors->has('media-video') ? 'is-invalid' : ''}}" name="media-video" id="media-video"
                             @if ($discipline->hasMediaOfType(\App\Enums\MediaType::VIDEO) || old('media-video') != null)
                             value="{{old('media-video')!=null ? old('media-video') : $discipline->getMediasByType(\App\Enums\MediaType::VIDEO)->first()->url}}"
                             @endif
@@ -350,11 +350,11 @@ noindex, follow
                             value="{{$discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->url}}"
                             @endif
                              --}}
-                            
+
                             aria-describedby="basic-addon3"
                             placeholder="Selecione um arquivo para alterar">
                             <small class="d-block text-primary">* Arquivo no formato .mp3</small>
-                            
+
                             @error('media-podcast')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -414,9 +414,9 @@ noindex, follow
                                     <li class="mb-3" id="topic-{{ $topic->id }}">
                                         <span class="topic-title">{{ $topic->title }}</span>
 
-                                        <a 
-                                            class="ml-3 expand-topic" 
-                                            data-topic_id="{{ $topic->id }}" 
+                                        <a
+                                            class="ml-3 expand-topic"
+                                            data-topic_id="{{ $topic->id }}"
                                             style="cursor: pointer; font-size: 14px;"
                                         >
                                             Mostrar mais
@@ -439,32 +439,41 @@ noindex, follow
             </div>
 
             <div class='page-title'>
-                <h3>Perguntas Frequentes</h3>
+                <h3 style="cursor:pointer" data-toggle="collapse" data-target="#collapseFaqs">
+                    Perguntas Frequentes
+                    <li name="caret-icon-faqs" class="fa fa-caret-down"></li>
+                </h3>
             </div>
-            <div id="faqs"><!-- Conteúdo gerado por javascript --></div>
-            <input type='text' id='input-faqs' name='input-faqs' value="{{old('input-faqs')}}" hidden>
-            <button class="btn btn-primary" onclick="addFaqField(event)">Adicionar FAQ</button>
-
-
-
-            <h3 class="page-title">Créditos</h3>
-            <div class="container-fluid card pt-3 pb-3">
-                <div class="row">
-                    <div class="col" id="participants">
-                        
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button class="btn btn-primary" onclick="addParticipantField(event)">
-                            Adicionar participante
-                        </button>
-                    </div>
-                </div>
-                <input id="participantsList" name="participantList"  value="{{old('participantList')}}" hidden>
-
+            <div id="collapseFaqs" class="collapse">
+                <div id="faqs"><!-- Conteúdo gerado por javascript --></div>
+                <input type='text' id='input-faqs' name='input-faqs' value="{{old('input-faqs')}}" hidden>
+                <button class="btn btn-primary" onclick="addFaqField(event)">Adicionar FAQ</button>
             </div>
+
+
+
+            <h3 class="page-title" style="cursor:pointer" data-toggle="collapse" data-target="#collapseCreditos">
+                Créditos
+                <li name="caret-icon-creditos" class="fa fa-caret-down"></li>
+            </h3>
+            <div id="collapseCreditos" class="collapse">
+                <div class="container-fluid card pt-3 pb-3">
+                    <div class="row">
+                        <div class="col" id="participants">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary" onclick="addParticipantField(event)">
+                                Adicionar participante
+                            </button>
+                        </div>
+                    </div>
+                    <input id="participantsList" name="participantList"  value="{{old('participantList')}}" hidden>
+                </div>
+            </div>
+
             <div id="modalLinksLimit" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -509,7 +518,7 @@ $classificationsJson = json_encode($classifications);
 
 <script>
     //let classifications = JSON.parse('{!! $classificationsJson !!}');
-    let classifications = @json($classifications);         
+    let classifications = @json($classifications);
     function handleInput(value, element) {
         const sliderContainer = element.parentNode
         const leftOutput = sliderContainer.previousElementSibling.querySelector('span')
@@ -542,12 +551,12 @@ $classificationsJson = json_encode($classifications);
     if(document.querySelector('#input-faqs').value == ''){
         faqs = @json($discipline->faqs);
         document.querySelector('#input-faqs').value = JSON.stringify(faqs);
-        
+
     }else{
         faqs = JSON.parse(document.querySelector('#input-faqs').value);
         document.querySelector('#input-faqs').value == "[]";
     }
-    
+
 
     function addFaqField(event) {
         event.preventDefault();
@@ -613,10 +622,10 @@ $classificationsJson = json_encode($classifications);
             setParticipants(data);
             renderParticipants('#participants');
         }
-        
-        
-    
-    
+
+
+
+
 
 
     // Scripts referente á adição de tópicos
@@ -675,8 +684,8 @@ $classificationsJson = json_encode($classifications);
                 </div>
             </div>
         </div>
-        `;        
-        
+        `;
+
         $(topicsList).append(newTopicForm);
         counter += 1;
 
@@ -685,7 +694,7 @@ $classificationsJson = json_encode($classifications);
             let topicData = $(this).data('inputs-target');
             let [ topicTitle, topicLevel ] = $(`.${topicData}`);
             let disciplineId = "{{ $discipline->id }}";
-            
+
             $.ajax({
                 url: "{{route('topic.store')}}",
                 method: 'POST',
@@ -702,7 +711,7 @@ $classificationsJson = json_encode($classifications);
                     console.log(e);
                 },
                 success: function(result) {
-                    location.reload(); 
+                    location.reload();
                 }
 
             });
@@ -713,7 +722,7 @@ $classificationsJson = json_encode($classifications);
             $(topicFormId).remove();
         });
     });
-    
+
     $(document).on('click', '.expand-topic', function() {
         let topicId = $(this).data('topic_id');
         let disciplineId = {{ $discipline->id }};
@@ -764,7 +773,7 @@ $classificationsJson = json_encode($classifications);
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function() {
-                    location.reload(); 
+                    location.reload();
                 }
             });
         });
@@ -841,7 +850,7 @@ $classificationsJson = json_encode($classifications);
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function() {
-                    location.reload(); 
+                    location.reload();
                 }
             });
             });
@@ -878,7 +887,7 @@ $classificationsJson = json_encode($classifications);
 
     function importReferences(event) {
         let codigo = $('#code').val();
-        
+
         if (!codigo) {
             alert("Por favor, preencha o código da disciplina antes de realizar esta operação");
             return;
@@ -896,6 +905,32 @@ $classificationsJson = json_encode($classifications);
             }
         });
     }
+</script>
+
+<script>
+    $('#collapseFaqs').on('show.bs.collapse', function (event) {
+        event.stopPropagation();
+        $('li[name=caret-icon-faqs]').removeClass('fa fa-caret-down');
+        $('li[name=caret-icon-faqs]').addClass('fa fa-caret-up');
+    });
+
+    $('#collapseFaqs').on('hide.bs.collapse', function (event) {
+        event.stopPropagation();
+        $('li[name=caret-icon-faqs]').removeClass('fa fa-caret-up');
+        $('li[name=caret-icon-faqs]').addClass('fa fa-caret-down');
+    });
+
+    $('#collapseCreditos').on('show.bs.collapse', function (event) {
+        event.stopPropagation();
+        $('li[name=caret-icon-creditos]').removeClass('fa fa-caret-down');
+        $('li[name=caret-icon-creditos]').addClass('fa fa-caret-up');
+    });
+
+    $('#collapseCreditos').on('hide.bs.collapse', function (event) {
+        event.stopPropagation();
+        $('li[name=caret-icon-creditos]').removeClass('fa fa-caret-up');
+        $('li[name=caret-icon-creditos]').addClass('fa fa-caret-down');
+    });
 </script>
 
 <style scoped>
