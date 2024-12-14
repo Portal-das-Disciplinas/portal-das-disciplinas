@@ -6,6 +6,7 @@ use App\Exceptions\InvalidInputException;
 use App\Exceptions\InvalidIntervalException;
 use App\Models\PortalAccessInfo;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class PortalAccessInfoService
@@ -13,6 +14,10 @@ class PortalAccessInfoService
 
     public function registerAccess($ip, $path, $accessedOn)
     {
+        if(Auth::user() && Auth::user()->isAdmin){
+            return;
+        }
+        
         try {
             PortalAccessInfo::create([
                 "ip" => $ip,

@@ -7,6 +7,7 @@ use App\Models\Collaborator;
 use App\Models\DisciplineParticipant;
 use App\Models\Information;
 use App\Models\Link;
+use App\Services\PortalAccessInfoService;
 use App\Services\Urls\YoutubeService;
 use DateTime;
 use Illuminate\Http\Request;
@@ -22,13 +23,15 @@ use Illuminate\Support\Facades\Log;
 class InformationController extends Controller
 {
     protected $theme;
+    protected $portalAccessInfoService;
 
     public function __construct()
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
         $this->middleware('admin')->except('index');
-        $this->middleware(PortalAccessInfoMiddleware::class)->only('index');
+        //$this->middleware(PortalAccessInfoMiddleware::class)->only('index');
+        $this->portalAccessInfoService = new PortalAccessInfoService();
     }
 
     /**
@@ -91,6 +94,7 @@ class InformationController extends Controller
         }
         
         $videoAboutProducers = DisciplineParticipant::query()->orderBy('name','ASC')->where('worked_on','video_about')->get();
+        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
         
         return view('information', [
             'collaborators' => $collaborators,

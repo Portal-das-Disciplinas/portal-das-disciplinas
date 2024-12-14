@@ -36,6 +36,8 @@ use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
 use App\Services\DisciplineService;
 use App\Services\MethodologyService;
+use App\Services\PortalAccessInfoService;
+use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -56,12 +58,14 @@ class DisciplineController extends Controller
     const VIEW_PATH = 'disciplines.';
 
     protected $theme;
+    protected $portalAccessInfoService;
 
     public function __construct()
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
-        $this->middleware(PortalAccessInfoMiddleware::class)->only(['index', 'disciplineFilter', 'show']);
+        $this->portalAccessInfoService = new PortalAccessInfoService();
+        //$this->middleware(PortalAccessInfoMiddleware::class)->only(['index', 'disciplineFilter', 'show']);
     }
 
     /**
@@ -80,7 +84,7 @@ class DisciplineController extends Controller
         $disciplines = Discipline::query()->orderBy('name', 'ASC')->get();
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
         $methodologies = (new MethodologyService())->listAllMethodologies();
-
+        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
         return view('disciplines.index')
             ->with('disciplines', $disciplines->paginate(12))
             ->with('emphasis', $emphasis)
@@ -102,6 +106,7 @@ class DisciplineController extends Controller
         $professors = Professor::all()->sortBy('name');
         $classifications = Classification::All()->sortBy('order');
         $methodologies = (new MethodologyService())->listAllMethodologies();
+        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
         return view('disciplines.index')
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinionLinkForm)
@@ -396,7 +401,7 @@ class DisciplineController extends Controller
      * @param $id Identificador único da disciplina
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $service = new APISigaaService();
         $discipline = Discipline::query()
@@ -422,7 +427,7 @@ class DisciplineController extends Controller
                 ->with('showOpinionForm', true)
                 ->with('professorMethodologies', $discipline->professor_methodologies);
         }
-
+        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
         return view(self::VIEW_PATH . 'show', compact('discipline'))
             ->with('classifications', $classifications)
             ->with('theme', $this->theme)
