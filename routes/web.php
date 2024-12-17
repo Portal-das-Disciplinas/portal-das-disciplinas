@@ -87,6 +87,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('disciplinas', DisciplineController::class)
         ->except(['index', 'show',]);
 
+    Route::resource('projetos-associados', AssocProjectController::class)
+        ->except(['show',]);
+
     Route::resource('professores', ProfessorUserController::class);
 
     Route::resource('disciplinas.faqs', FaqController::class)
