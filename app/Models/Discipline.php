@@ -209,4 +209,8 @@ class Discipline extends Model
     public function professor_methodologies(){
         return $this->belongsToMany(ProfessorMethodology::class,'discipline_professor_methodology','discipline_id','prof_methodology_id');
     }
+
+    public function courses(){
+        return $this->belongsToMany(Course::class);
+    }
 }

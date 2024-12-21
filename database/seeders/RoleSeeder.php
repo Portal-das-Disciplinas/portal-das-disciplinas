@@ -28,6 +28,11 @@ class RoleSeeder extends Seeder
                 'name' => RoleName::PROFESSOR,
                 'priority_level' => 2,
             ],
+
+            [
+                'name' => RoleName::UNIT_ADMIN,
+                'priority_level' => 998
+            ]
         ];
 
         foreach ($roles as $role) {
