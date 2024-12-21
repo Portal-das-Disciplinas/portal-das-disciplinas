@@ -10,7 +10,9 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'institutional_unit_id',
+        'course_level_id'
     ];
 
     public function institutionalUnity(){

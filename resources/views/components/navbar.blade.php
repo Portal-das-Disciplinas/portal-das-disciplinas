@@ -86,6 +86,13 @@
                                         disciplina </div>
                                 </a>
                                 @if(auth()->user()->is_admin)
+                                <a href="{{ route('institutional_unit.index')}}">
+                                    <div class="dropdown-item py-3">
+                                        <i class="fas fa-building mr-2"></i>
+                                        Unidades Institucionais
+                                    </div>
+                                </a>
+
                                 <a href="{{ route('professores.index') }}">
                                     <div class="dropdown-item py-3"> <i class="fas fa-users-cog mr-2"></i>Painel
                                         de Administração</div>

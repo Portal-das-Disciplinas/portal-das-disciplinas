@@ -17,6 +17,7 @@ use App\Http\Controllers\CollaboratorProductionController;
 use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\DisciplinePerformanceDataController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\InstitutionalUnitController;
 use App\Http\Controllers\LinksController;
 use App\Http\Controllers\MethodologyController;
 use App\Http\Controllers\ParticipantLinkController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\TopicController;
 use App\Models\Collaborator;
 use App\Models\Discipline;
 use App\Models\DisciplinePerformanceData;
+use App\Models\InstitutionalUnit;
 use App\Models\Link;
 use App\Models\ProfessorMethodology;
 use App\Models\SemesterPerformanceData;
@@ -168,5 +170,7 @@ Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
 Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
 
 Route::get('/acessos',[PortalAccessInfoController::class,'index'])->name('portal_access_info.index');
-//Route::get('acessos/')
+
+Route::get('/units',[InstitutionalUnitController::class,'index'])->name('institutional_unit.index');
+Route::delete('/units/delete/{id}',[InstitutionalUnitController::class,'destroy'])->name('institutional_unit.destroy');
 
