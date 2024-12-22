@@ -15,7 +15,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <button class="btn btn-primary">Cadastrar Nova Unidade</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-register-unit">Cadastrar Nova Unidade</button>
         </div>
     </div>
     <div class="row mt-2">
@@ -23,7 +23,7 @@
             @if($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 @foreach($errors->all() as $error)
-                    {{$error}}
+                {{$error}}
                 @endforeach
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -43,7 +43,7 @@
     </div>
     <div class="row mt-5">
         <div class="col-md-12">
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
 
                 </thead>
@@ -92,6 +92,31 @@
             </table>
         </div>
 
+    </div>
+    <div id="modal-register-unit" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Cadastro de nova unidade institucional</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form" method="post" action = "{{ route('institutional_unit.store') }}">
+                        @csrf
+                        <div class="form-group">
+                            <input id="unit-acronym" name="unit-acronym" class="form-control" type="text" placeholder="Sigla da unidade" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <input id="unit-name" name="unit-name" class="form-control" type="text" placeholder="Nome da unidade" required>
+                        </div>
+                        <input id="submit-new-unit" type="submit" hidden>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <label for="submit-new-unit" class="btn btn-primary">Cadastrar</label>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

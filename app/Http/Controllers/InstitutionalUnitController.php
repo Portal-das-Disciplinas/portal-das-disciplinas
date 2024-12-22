@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ExistingDataException;
+use App\Exceptions\InvalidInputException;
 use App\Services\InstitutionalUnitService;
 use Exception;
 use Illuminate\Http\Request;
@@ -28,6 +30,23 @@ class InstitutionalUnitController extends Controller
         return view('institutional_unit/index',[
             'units' => $units
         ])->with('theme',$this->theme);
+    }
+
+    public function store(Request $request){
+
+        $service = new InstitutionalUnitService();
+        try{
+            $service->save($request->{'unit-acronym'}, $request->{'unit-name'});
+            return redirect()->back()->with(['success_message' => 'Unidade cadastrada com Sucesso.']);
+        }catch(InvalidInputException $e1){
+            return redirect()->back()->withErrors(['store_error' => $e1->getMessage()]);
+        }catch(ExistingDataException $e2){
+            return redirect()->back()->withErrors(['store_error' => $e2->getMessage()]);
+        }catch(Exception $e3){
+            Log::error($e3->getMessage());
+            return redirect()->back()->withErrors(['store_error' => 'Não foi possível cadastrar.']);
+
+        }
     }
 
     public function destroy(Request $request){

@@ -172,5 +172,6 @@ Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicContr
 Route::get('/acessos',[PortalAccessInfoController::class,'index'])->name('portal_access_info.index');
 
 Route::get('/units',[InstitutionalUnitController::class,'index'])->name('institutional_unit.index');
+Route::post('/units/store',[InstitutionalUnitController::class, 'store'])->name('institutional_unit.store');
 Route::delete('/units/delete/{id}',[InstitutionalUnitController::class,'destroy'])->name('institutional_unit.destroy');
 
