@@ -14,6 +14,8 @@ use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\CollaboratorProductionController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseLevelController;
 use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\DisciplinePerformanceDataController;
 use App\Http\Controllers\InformationController;
@@ -175,3 +177,6 @@ Route::get('/units',[InstitutionalUnitController::class,'index'])->name('institu
 Route::post('/units/store',[InstitutionalUnitController::class, 'store'])->name('institutional_unit.store');
 Route::delete('/units/delete/{id}',[InstitutionalUnitController::class,'destroy'])->name('institutional_unit.destroy');
 
+Route::get('/courses',[CourseController::class,'index'])->name('course.index');
+
+Route::get('/course/levels',[CourseLevelController::class,'index'])->name('course_level.index');
