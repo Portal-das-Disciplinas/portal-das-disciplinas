@@ -12,7 +12,9 @@
     <div class="row mt-3">
         <div class="col-md-12">
             <button class="btn btn-primary">Cadastrar novo curso</button>
+            @if(Auth::user() && Auth::user()->is_admin)
             <a class="btn btn-outline-primary" href="{{ route('course_level.index') }}">Cadastrar nível de curso</a>
+            @endif
         </div>
     </div>
     <div class="row mt-3">

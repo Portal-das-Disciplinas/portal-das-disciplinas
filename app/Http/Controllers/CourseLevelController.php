@@ -14,15 +14,25 @@ class CourseLevelController extends Controller
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
+        $this->middleware('admin')->except(['index']);
     }
 
     public function index(Request $request)
     {
         $courseLevelService = new CourseLevelService();
         $courseLevels = $courseLevelService->list();
-        
+
         return view('course_level/index', [
             'courseLevels' => $courseLevels
         ])->with('theme', $this->theme);
+    }
+
+    public function store(Request $request)
+    {
+        $courseLevelService = new CourseLevelService();
+        $courseLevelService->save($request->value, $request->{'priority-level'});
+        return redirect()->back()->with([
+            'success_message' => 'Cadastrado com sucesso'
+        ]);
     }
 }

@@ -180,3 +180,4 @@ Route::delete('/units/delete/{id}',[InstitutionalUnitController::class,'destroy'
 Route::get('/courses',[CourseController::class,'index'])->name('course.index');
 
 Route::get('/course/levels',[CourseLevelController::class,'index'])->name('course_level.index');
+Route::post('course/levels/store',[CourseLevelController::class,'store'])->name('course_level.store');
