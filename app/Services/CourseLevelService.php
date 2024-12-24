@@ -29,6 +29,10 @@ class CourseLevelService
         }
     }
 
+    public function delete($id){
+        return CourseLevel::destroy($id);
+    }
+
     private function reorderPriorityLevels($courseLevels,$priorityLevel){
         foreach ($courseLevels as $level) {
             if ($level->{'priority_level'} == $priorityLevel) {
