@@ -15,7 +15,7 @@ class Course extends Model
         'course_level_id'
     ];
 
-    public function institutionalUnity(){
+    public function institutionalUnit(){
         return $this->belongsTo(InstitutionalUnit::class);
     }
 
