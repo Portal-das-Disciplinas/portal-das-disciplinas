@@ -74,6 +74,11 @@ class User extends Authenticatable
     {
         return $this->role->priority_level == 999;
     }
+
+    public function getIsUnitAdminAttribute():bool
+    {
+        return $this->role->name = RoleName::UNIT_ADMIN;
+    }
     /**
      * Retorna se o usuário é um professor.
      * @return bool
@@ -115,6 +120,11 @@ class User extends Authenticatable
     public function professor()
     {
         return $this->hasOne(Professor::class);
+    }
+
+    public function unitAdmin()
+    {
+        return $this->hasOne(UnitAdmin::class);
     }
 
 }

@@ -22,4 +22,8 @@ class InstitutionalUnit extends Model
 
         return $this->hasMany(Course::class);
     }
+
+    public function unitAdmin(){
+        return $this->hasOne(UnitAdmin::class);
+    }
 }

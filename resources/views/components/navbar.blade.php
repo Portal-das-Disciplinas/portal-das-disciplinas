@@ -94,7 +94,7 @@
                                 </a>
                                 @endif
 
-                                @if(auth()->user()->is_admin || auth()->user()->is_professor)
+                                @if(auth()->user()->is_admin || auth()->user()->is_unit_admin)
                                 <a href="{{ route('course.index') }}">
                                     <div class="dropdown-item py-3">
                                         <i class="fas fa-book mr-2"></i>

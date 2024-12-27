@@ -16,6 +16,7 @@
     <div class="row">
         <div class="col-md-12">
             <button class="btn btn-primary" data-toggle="modal" data-target="#modal-register-unit">Cadastrar Nova Unidade</button>
+            <a href="{{ route('unit_admin.index') }}" class="btn btn-outline-primary">Ver administradores de unidades</a>
         </div>
     </div>
     <div class="row mt-2">

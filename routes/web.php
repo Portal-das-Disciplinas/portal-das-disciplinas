@@ -31,6 +31,7 @@ use App\Http\Controllers\SubjectConceptController;
 use App\Http\Controllers\SubjectReferenceController;
 use App\Http\Controllers\SubjectTopicController;
 use App\Http\Controllers\TopicController;
+use App\Http\Controllers\UnitAdminController;
 use App\Models\Collaborator;
 use App\Models\Discipline;
 use App\Models\DisciplinePerformanceData;
@@ -182,3 +183,6 @@ Route::get('/courses',[CourseController::class,'index'])->name('course.index');
 Route::get('/courses/levels',[CourseLevelController::class,'index'])->name('course_level.index');
 Route::post('courses/levels/store',[CourseLevelController::class,'store'])->name('course_level.store');
 Route::delete('/courses/levels/delete/{id}',[CourseLevelController::class,'destroy'])->name('course_level.destroy');
+
+Route::get('users/unit/admin',[UnitAdminController::class,'index'])->name('unit_admin.index');
+Route::post('users/unit/admin/store',[UnitAdminController::class,'store'])->name('unit_admin.store');
