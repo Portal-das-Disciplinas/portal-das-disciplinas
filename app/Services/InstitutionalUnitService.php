@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use App\Exceptions\ExistingDataException;
+use App\Exceptions\IntegrityConstraintViolationException;
 use App\Exceptions\InvalidInputException;
 use App\Models\InstitutionalUnit;
+use App\Models\Professor;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class InstitutionalUnitService
@@ -13,6 +16,10 @@ class InstitutionalUnitService
     public function listAll()
     {
         return InstitutionalUnit::query()->orderBy('name', 'asc')->get();
+    }
+
+    public function getByUnitAdmin($adminUnitId){
+        return InstitutionalUnit::where('unit_admin_id','=',$adminUnitId)->first();
     }
 
     public function save($unitAcronym, $unitName)
@@ -40,13 +47,20 @@ class InstitutionalUnitService
 
     public function delete($id)
     {
+        $numberOfProfessorsInUnit = Professor::where('institutional_unit_id','=',$id)->count();
+        if($numberOfProfessorsInUnit >0){
+            throw new IntegrityConstraintViolationException('Não foi possível deletar. Há ' 
+                . $numberOfProfessorsInUnit . " professor(es) na unidade.");
+        }
+
         DB::beginTransaction();
         try {
             InstitutionalUnit::destroy($id);
             DB::commit();
-        } catch (Exception $e) {
+
+        } catch(Exception $e){
             DB::rollBack();
-            throw new Exception("Não foi possível deletar a unidade");
+            throw $e;
         }
     }
 }

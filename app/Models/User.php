@@ -77,7 +77,7 @@ class User extends Authenticatable
 
     public function getIsUnitAdminAttribute():bool
     {
-        return $this->role->name = RoleName::UNIT_ADMIN;
+        return $this->role->name == RoleName::UNIT_ADMIN;
     }
     /**
      * Retorna se o usuário é um professor.

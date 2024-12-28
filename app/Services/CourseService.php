@@ -34,9 +34,9 @@ class CourseService{
             ]);
 
         }elseif($this->checkIsUnitAdmin()){
-            $unitAdmin = Auth::user()->professor->institutionalUnit;
+            $unitIdOfUser = Auth::user()->unitAdmin->institutionalUnit->id;
 
-            if(isset($unitAdmin) && $unitAdmin->id == $unitId){
+            if($unitIdOfUser == $unitId){
                 return Course::create([
                     'name' => $name,
                     'institutional_unit_id' => $unitId,

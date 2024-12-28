@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ExistingDataException;
+use App\Exceptions\IntegrityConstraintViolationException;
 use App\Exceptions\InvalidInputException;
 use App\Services\InstitutionalUnitService;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -54,9 +56,14 @@ class InstitutionalUnitController extends Controller
         try{
             $service->delete($request->id);
             return redirect()->back()->with(['success_message'=>'Unidade deletada com sucesso.']);
+
+        }catch(IntegrityConstraintViolationException $e){
+            return redirect()->back()->withErrors(['query_exception_error' => $e->getMessage()]);
+
         }catch(Exception $e){
-            return redirect()->back()->withErrors(['delete_error' => $e->getMessage()]);
             Log::error($e->getMessage());
+            return redirect()->back()->withErrors(['delete_error' => 'Não foi possível deletar a unidade']);
+            
         }
         
     }

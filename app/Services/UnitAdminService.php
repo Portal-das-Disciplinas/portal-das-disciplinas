@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Exceptions\ExistingDataException;
+use App\Models\InstitutionalUnit;
 use App\Models\Role;
 use App\Models\UnitAdmin;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UnitAdminService
 {
@@ -21,8 +23,8 @@ class UnitAdminService
     public function save($name, $email, $password, $idUnit)
     {
         $userService = new UserService();
-        $existingAdmin = UnitAdmin::where('institutional_unit_id', '=', $idUnit)->exists();
-        if ($existingAdmin) {
+        $existingUnitWithAdmin = UnitAdmin::where('institutional_unit_id', '=', $idUnit)->exists();
+        if ($existingUnitWithAdmin) {
             throw new ExistingDataException("Esta Unidade já possui um administrador");
         }
 
@@ -35,6 +37,9 @@ class UnitAdminService
                 'institutional_unit_id' => $idUnit
             ]);
 
+            $institutionalUnit = InstitutionalUnit::find($idUnit);
+            $institutionalUnit->unit_admin_id = $unitAdmin->id;
+            $institutionalUnit->save();
             DB::commit();
             return $unitAdmin;
 

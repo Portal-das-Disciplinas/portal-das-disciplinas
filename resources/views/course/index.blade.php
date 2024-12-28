@@ -11,12 +11,38 @@
     </div>
     <div class="row mt-3">
         <div class="col-md-12">
-            <button class="btn btn-primary">Cadastrar novo curso</button>
+            <button class="btn btn-primary" data-toggle='modal' data-target='#modal-course'>Cadastrar novo curso</button>
             @if(Auth::user() && Auth::user()->is_admin)
             <a class="btn btn-outline-primary" href="{{ route('course_level.index') }}">Cadastrar nível de curso</a>
             @endif
         </div>
     </div>
+    @if(session('success_message'))
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <p>{{session('success_message')}}</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
+    @if($errors->any())
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @foreach($errors->all() as $error)
+                <p>{{$error}}</p>
+                @endforeach
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
     @auth
     <div class="row mt-3">
         <div class="col-md-12">
@@ -48,11 +74,37 @@
                     <h3 class="modal-title" id="exampleModalLabel">Novo curso</h3>
                 </div>
                 <div class="modal-body">
+                    <form method="post" class="form" action="{{ route('course.store') }}">
+                        @csrf
+                        <div class="form-group">
+                            <label>Nome do curso</label>
+                            <input type="text" name="course-name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Unidade</label>
+                            <select type="text" name="unit-id" class="form-control">
+                                @foreach($institutionalUnits as $institutionalUnit)
+                                <option value="{{ $institutionalUnit->id }}">{{$institutionalUnit->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nivel do Curso</label>
+                            <select class="form-control" name="course-level-id">
+                                @foreach($courseLevels as $courseLevel)
+                                <option value="{{ $courseLevel->id }}">{{$courseLevel->value}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input id="submit-course-form" type="submit" hidden>
+
+
+                    </form>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Cadastrar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <label for="submit-course-form" class="btn btn-primary">Cadastrar</label>
                 </div>
             </div>
         </div>

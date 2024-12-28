@@ -179,6 +179,7 @@ Route::post('/units/store',[InstitutionalUnitController::class, 'store'])->name(
 Route::delete('/units/delete/{id}',[InstitutionalUnitController::class,'destroy'])->name('institutional_unit.destroy');
 
 Route::get('/courses',[CourseController::class,'index'])->name('course.index');
+Route::post('courses/store',[CourseController::class,'store'])->name('course.store');
 
 Route::get('/courses/levels',[CourseLevelController::class,'index'])->name('course_level.index');
 Route::post('courses/levels/store',[CourseLevelController::class,'store'])->name('course_level.store');
