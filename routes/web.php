@@ -187,3 +187,4 @@ Route::delete('/courses/levels/delete/{id}',[CourseLevelController::class,'destr
 
 Route::get('users/unit/admin',[UnitAdminController::class,'index'])->name('unit_admin.index');
 Route::post('users/unit/admin/store',[UnitAdminController::class,'store'])->name('unit_admin.store');
+Route::delete('users/unit/admin/delete/{id}',[UnitAdminController::class,'destroy'])->name('unit_admin.destroy');

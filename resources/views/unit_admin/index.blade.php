@@ -48,6 +48,7 @@
                     <tr>
                         <th>nome</th>
                         <th>Unidade</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +56,13 @@
                     <tr>
                         <td>{{$unitAdmin->user->name}}</td>
                         <td>{{$unitAdmin->InstitutionalUnit->name}}</td>
-                        <td><button class="btn btn-danger btn-sm">Apagar</button></td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                data-target="#modal-confirm-delete"
+                                onclick="onClickModalConfirmDelete('{{$unitAdmin->id}}','{{$unitAdmin->institutionalUnit->name}}')">
+                                Apagar
+                            </button>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -97,11 +104,38 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <label for="submit-unit-admin-form"class="btn btn-primary">Cadastrar</label>
+                    <label for="submit-unit-admin-form" class="btn btn-primary">Cadastrar</label>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <div id="modal-confirm-delete" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Confirmação</h3>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmation-text">Tem certeza?</p>
+                    <form method="post" action="">
+                        @csrf
+                        @method('delete')
+                        <input id="submit-confirm-delete" type="submit" hidden>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <label for="submit-confirm-delete" class="btn btn-danger">Remover</label>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="onClickCancelDelete()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+@endsection
+
+@section('scripts-bottom')
+<script src="{{ asset('js/unitAdmin.js') }}"></script>
+
 @endsection

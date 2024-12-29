@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ExistingDataException;
+use App\Exceptions\NotAuthorizedException;
 use App\Services\InstitutionalUnitService;
 use App\Services\UnitAdminService;
 use Exception;
@@ -13,18 +14,19 @@ use Illuminate\Support\Facades\Storage;
 class UnitAdminController extends Controller
 {
     protected $theme;
+    protected $unitAdminService;
 
     public function __construct()
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
+        $this->unitAdminService = new UnitAdminService();
         $this->middleware('admin');
     }
 
     public function index(){
 
-        $unitAdminService = new UnitAdminService();
-        $unitAdmins = $unitAdminService->list();
+        $unitAdmins = $this->unitAdminService->list();
         $institutionalUnitService = new InstitutionalUnitService();
         $institutionalUnits = $institutionalUnitService->listAll(); 
         return view('unit_admin/index',[
@@ -36,9 +38,8 @@ class UnitAdminController extends Controller
 
     public function store(Request $request){
         
-        $unitAdminService = new UnitAdminService();
         try{
-            $unitAdminService->save($request->name, $request->email,$request->password, $request->{'unit-id'});
+            $this->unitAdminService->save($request->name, $request->email,$request->password, $request->{'unit-id'});
             return redirect()->back()->with(['success_message' => 'Administrador de unidade cadastrado com sucesso!']);
 
         }catch(ExistingDataException $e){
@@ -48,6 +49,20 @@ class UnitAdminController extends Controller
         }catch(Exception $e){
             Log::error($e->getMessage());
             return redirect()->back()->withErrors(['store_error' => 'Não foi possível cadastrar.']);
+        }
+    }
+
+    public function destroy($id){
+        try{
+            $this->unitAdminService->delete($id);
+            return redirect()->back()->with(['success_message' => 'Administrador de unidade removido.']);
+
+        }catch(NotAuthorizedException $e){
+            return redirect()->back()->withErrors(['auth_error' => $e->getMessage()]);
+
+        }catch(Exception $e){
+            Log::error($e->getMessage());
+            return redirect()->back()->withErrors(['delete_error' => 'Não foi possível remover']);
         }
     }
 }
