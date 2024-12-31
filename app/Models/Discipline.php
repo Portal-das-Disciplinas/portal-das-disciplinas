@@ -36,7 +36,8 @@ class Discipline extends Model
         'difficulties',
         'professor_id',
         'acquirements',
-        'podcast_url'
+        'podcast_url',
+        'institutional_unit_id'
     ];
 
     /**
@@ -208,6 +209,10 @@ class Discipline extends Model
 
     public function professor_methodologies(){
         return $this->belongsToMany(ProfessorMethodology::class,'discipline_professor_methodology','discipline_id','prof_methodology_id');
+    }
+
+    public function institutionalUnit(){
+        return $this->belongsTo(InstitutionalUnit::class);
     }
 
     public function courses(){

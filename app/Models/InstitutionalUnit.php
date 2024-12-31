@@ -18,6 +18,10 @@ class InstitutionalUnit extends Model
         return $this->hasMany(Professor::class);
     }
 
+    public function disciplines(){
+        return $this->hasMany(Discipline::class);
+    }
+
     public function curses(){
 
         return $this->hasMany(Course::class);

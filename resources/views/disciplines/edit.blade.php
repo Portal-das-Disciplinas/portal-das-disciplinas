@@ -84,10 +84,11 @@ noindex, follow
                 @if (Auth::user()->is_admin)
                 <div class="form-group">
                     <select name="professor" id="professor" class="form-control" aria-label="Professor" onchange="onChangeProfessor(event)">
+                                <option value="">Nenhum</option>
                         @foreach ($professors as $professor)
                             @if (session()->has('oldProfessorInput') && session('oldProfessorInput') == $professor->id)
                                 <option selected value="{{$professor->id}}">{{$professor->name}}</option>
-                             @elseif(!session()->has('oldProfessorInput') && $professor->id == $discipline->professor->id)
+                             @elseif(!session()->has('oldProfessorInput') && isset($discipline->professor) && $professor->id == $discipline->professor->id)
                                 <option selected value="{{$professor->id}}">{{$professor->name}}</option>
                              @else
                                 <option value="{{$professor->id}}">{{$professor->name}}</option>

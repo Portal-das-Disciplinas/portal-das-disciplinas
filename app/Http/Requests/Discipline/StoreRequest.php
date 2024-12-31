@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::user()->is_admin || Auth::user()->is_professor;
+        return Auth::user()->is_admin || Auth::user()->is_unit_admin || Auth::user()->is_professor;
     }
 
     /**

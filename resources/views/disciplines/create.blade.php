@@ -62,11 +62,24 @@ noindex, follow
                 @endforeach
             </select>
             <input id="select-emphasis-index" name="select-emphasis-index" hidden>
-
-
         </div>
+
         <div class="col-md-12 px-0">
-            @if (Auth::user()->isAdmin)
+            <div class="form-group">
+                <label>Unidade</label>
+                <select name="institutional-unit-id" class="form-control">
+                    @if(Auth::user() && Auth::user()->is_admin)
+                    <option value="">Nenhuma</option>
+                    @endif
+                    @foreach($institutionalUnits as $unit)
+                    <option value="{{$unit->id}}">{{$unit->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-12 px-0">
+            @if (Auth::user()->isAdmin || Auth::user()->is_unit_admin)
             <label for="professor" class="">Professor</label>
             <div class="form-group">
                 <select name="professor" id="professor" class="form-control" aria-label="Professor">
@@ -79,6 +92,7 @@ noindex, follow
             </div>
             @endif
         </div>
+        
         <div class="form-row mt-3">
             <div class="col-md-6">
                 <div class="form-group">

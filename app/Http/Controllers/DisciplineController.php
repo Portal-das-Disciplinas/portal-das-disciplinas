@@ -32,11 +32,14 @@ use App\Models\ProfessorMethodology;
 use App\Models\SubjectConcept;
 use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
+use App\Models\UnitAdmin;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
 use App\Services\DisciplineService;
+use App\Services\InstitutionalUnitService;
 use App\Services\MethodologyService;
 use App\Services\PortalAccessInfoService;
+use App\Services\ProfessorService;
 use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -59,12 +62,16 @@ class DisciplineController extends Controller
 
     protected $theme;
     protected $portalAccessInfoService;
+    protected $institutionalUnitService;
+    protected $professorService;
 
     public function __construct()
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
         $this->portalAccessInfoService = new PortalAccessInfoService();
+        $this->institutionalUnitService = new InstitutionalUnitService();
+        $this->professorService = new ProfessorService();
         //$this->middleware(PortalAccessInfoMiddleware::class)->only(['index', 'disciplineFilter', 'show']);
     }
 
@@ -142,18 +149,29 @@ class DisciplineController extends Controller
         $professors = new Professor();
         $classifications = Classification::all();
         $emphasis = Emphasis::all();
-
-        if (Auth::user()->isAdmin) {
+        $institutionalUnits = null;
+        if ($this->checkIsAdmin()) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
+            $institutionalUnits = $this->institutionalUnitService->listAll();
+
+        }elseif($this->checkIsUnitAdmin()){
+            $unitAdmin = Auth::user()->unitAdmin;
+            $institutionalUnit = $unitAdmin->institutionalUnit;
+            $professors = $this->professorService->getProfessorsByInstitutionalUnit($institutionalUnit->id);
+            $institutionalUnits = collect();
+            $institutionalUnits->add($institutionalUnit);
+
+
         }
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
-        
+
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm', true);
+            ->with('showOpinionForm', true)
+            ->with('institutionalUnits', $institutionalUnits);
     }
     /**
      * Store a newly created resource in storage.
@@ -167,7 +185,7 @@ class DisciplineController extends Controller
         try {
             $user = Auth::user();
             $professor = new Professor();
-            if ($user->isAdmin) {
+            if ($user->isAdmin || $user->is_unit_admin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
             if (!isset($professor)) {
@@ -181,7 +199,8 @@ class DisciplineController extends Controller
                 'emphasis_id' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),
-                'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
+                'professor_id' => ($user->isAdmin || $user->is_unit_admin) ? $professor->id : $user->professor->id,
+                'institutional_unit_id' => $request->{'institutional-unit-id'}
             ]);
 
             if ($request->topics) {
@@ -448,6 +467,7 @@ class DisciplineController extends Controller
         $professors = new Professor();
         if (Auth::user()->isAdmin) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
+            Log::info($professors);
         }
         $discipline = Discipline::query()
             ->with([
@@ -1063,5 +1083,13 @@ class DisciplineController extends Controller
         }
 
         return response()->json($data, 200);
+    }
+
+    private function checkIsAdmin(){
+        return Auth::user() && Auth::user()->is_admin;
+    }
+
+    private function checkIsUnitAdmin(){
+        return Auth::user() && Auth::user()->is_unit_admin;
     }
 }

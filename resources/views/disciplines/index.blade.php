@@ -383,8 +383,9 @@
 
                     </div>
                     <div  class="d-flex flex-column justify-content-end" style="height:60px;">
-                        @if (isset($discipline->professor->name))
+                       
                         <div class="card-footer smaller-p py-0 m-0 w-100">
+                        @if (isset($discipline->professor->name))
                             {{$discipline->professor->name}}
                         @else
                             Indefinido

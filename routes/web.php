@@ -90,7 +90,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/perfil', [UsersController::class, 'update'])->name('updateUser');
 
     Route::resource('disciplinas', DisciplineController::class)
-        ->except(['index', 'show',]);
+        ->except(['index', 'show']);
 
     Route::resource('professores', ProfessorUserController::class);
 
@@ -111,8 +111,8 @@ Route::resource('collaborators',CollaboratorController::class);
 
 
 
-Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
-    ->name('disciplinas.show');
+Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])->name('disciplinas.show');
+
 
 Route::post('participantes_disciplina/store', [DisciplineParticipantController::class,'store'])->name('participants_discipline.store');
 Route::post('produtores/videoportal/supdate',[DisciplineParticipantController::class,'storeOrUpdatePortalVideoProducers'])->name('content_producers.store_update');
