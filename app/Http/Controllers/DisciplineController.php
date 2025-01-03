@@ -473,10 +473,16 @@ class DisciplineController extends Controller
     {
         $emphasis = Emphasis::all();
         $professors = new Professor();
-        if (Auth::user()->isAdmin) {
-            $professors = Professor::query()->orderBy('name', 'ASC')->get();
-            Log::info($professors);
+        $institutionalUnits = collect();
+        if ($this->checkIsAdmin()) {
+            $professors = $this->professorService->listAll();
+            $institutionalUnits = $this->institutionalUnitService->listAll();
+
+        }elseif($this->checkIsUnitAdmin()){
+            $professors = $this->professorService
+                    ->ListByInstitutionalUnitId(Auth::user()->unitAdmin->institutionalUnit->id);
         }
+        
         $discipline = Discipline::query()
             ->with([
                 'professor',
@@ -485,9 +491,11 @@ class DisciplineController extends Controller
                 'disciplineParticipants',
                 'subjectTopics',
                 'subjectConcepts',
-                'subjectReferences'
-            ])
-            ->findOrFail($id);
+                'subjectReferences',
+                'institutionalUnit'
+            ])->findOrFail($id);
+
+        $selectedInstitutionalUnit = $discipline->institutionalUnit;    
         $classifications = Classification::query()->orderBy('order', 'ASC')->get();
         $participants = array();
         for ($i = 0; $i < count($discipline->disciplineParticipants()->get()); $i++) {
@@ -502,6 +510,8 @@ class DisciplineController extends Controller
             ->with('theme', $this->theme)
             ->with('participants', $participants)
             ->with('opinionLinkForm', $opinioLinkForm)
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('selectedInstitutionalUnit', $selectedInstitutionalUnit)
             ->with('showOpinionForm', true);
     }
 
@@ -518,11 +528,11 @@ class DisciplineController extends Controller
         DB::beginTransaction();
         try {
             $user = Auth::user();
-            $professor = new Professor();
+           /* $professor = new Professor();
 
-            if ($user->isAdmin) {
+            if ($user->isAdmin || $user->is_unit_admin) {
                 $professor = Professor::query()->find($request->input('professor'));
-            }
+            } */
 
             $discipline = Discipline::query()->find($id);
             $discipline->update([
@@ -531,9 +541,21 @@ class DisciplineController extends Controller
                 'description' => $request->input('description'),
                 'emphasis_id' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
-                'acquirements' => $request->input('acquirements'),
-                'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id,
+                'acquirements' => $request->input('acquirements')
             ]);
+
+            if($user->is_unit_admin && !isset($request->professor)){
+                return redirect()->back()->withInput()
+                    ->withErrors(['professor_error' => 'É nescessário selecionar um professor']);
+            } 
+
+            if($user->is_admin || $user->is_unit_admin){
+                $discipline->professor_id = $request->professor;
+            }
+
+            if($this->checkIsAdmin()){
+                $discipline->institutional_unit_id = $request->{'institutional-unit-id'};
+            }
 
             $participantsFromJson = (json_decode($request->participantList));
             /* Deleta os participantes que não estão na lista da requisição */

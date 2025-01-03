@@ -55,13 +55,19 @@ class User extends Authenticatable
             return true;
         }
 
+        if (is_numeric($discipline)) {
+            $discipline = Discipline::findOrFail($discipline);
+        }
+
+        if($this->is_unit_admin){
+            return (isset($this->unitAdmin->institutionalUnit) && isset($discipline->institutionalunit)
+                 && $this->unitAdmin->institutionalUnit->id == $discipline->institutionalUnit->id);
+        }
+
         if (is_null($this->professor)) {
             return false;
         }
 
-        if (is_numeric($discipline)) {
-            $discipline = Discipline::findOrFail($discipline);
-        }
 
         return $this->professor->id == $discipline->professor_id;
     }

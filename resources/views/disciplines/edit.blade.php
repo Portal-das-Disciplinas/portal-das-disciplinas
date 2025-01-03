@@ -79,9 +79,19 @@ noindex, follow
 
 
             </div>
+            @if(Auth::user() && Auth::user()->is_admin)
+            <div class="col-md-12 px-0 pr-0">
+                <label>Unidade</label>
+                <select name="institutional-unit-id" class="form-control" value="institutional-unit-id">
+                    @foreach($institutionalUnits as $unit)
+                    <option value="{{ $unit->id }}" {{ $selectedInstitutionalUnit->id == $unit->id ? 'selected' : '' }}>{{$unit->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+            @if (Auth::user()->is_admin || Auth::user()->is_unit_admin)
             <div class="col-md-12 px-0 pr-0">
                 <label for="professor">Professor</label>
-                @if (Auth::user()->is_admin)
                 <div class="form-group">
                     <select name="professor" id="professor" class="form-control" aria-label="Professor" onchange="onChangeProfessor(event)">
                                 <option value="">Nenhum</option>
@@ -97,8 +107,8 @@ noindex, follow
                     </select>
                     <input id="old_input_professor" name="old_input_professor" hidden>
                 </div>
-                @endif
             </div>
+            @endif
             <div class="form-row mt-3">
                 <div class="col-md-6">
                     <div class="form-group">
