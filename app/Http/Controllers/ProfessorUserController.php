@@ -86,14 +86,21 @@ class ProfessorUserController extends Controller
     {
         $professor = Professor::where('id', $id)->with('user')->first();
         $is_teacher = $professor->user->role_id == 3;
-
+        $institutionalUnits = collect();
+        $selectedUnit = $professor->InstitutionalUnit;
+        if($this->checkIsAdmin()){
+            $institutionalUnits = $this->institutionalUnitService->listAll();
+        }
+        
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
         return view(self::VIEW_PATH . 'professor.edit')
             ->with('professor', $professor)
             ->with('is_teacher', $is_teacher)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinionLinkForm)
-            ->with('showOpinionForm', true);
+            ->with('showOpinionForm', true)
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('selectedUnit', $selectedUnit);
     }
 
     /**
@@ -185,6 +192,10 @@ class ProfessorUserController extends Controller
         $professor->link_rsocial3 = $request->input('link_rsocial3');
         $professor->rede_social4 = $request->input('rede_social4');
         $professor->link_rsocial4 = $request->input('link_rsocial4');
+        if(Auth::user()->is_admin){
+            $professor->institutional_unit_id = $request->{'institutional-unit-id'};
+        }
+        
         $professor->save();
 
         return back()
