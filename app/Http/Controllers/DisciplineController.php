@@ -91,7 +91,7 @@ class DisciplineController extends Controller
         $disciplines = Discipline::query()->orderBy('name', 'ASC')->get();
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
         $methodologies = (new MethodologyService())->listAllMethodologies();
-        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
+        $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view('disciplines.index')
             ->with('disciplines', $disciplines->paginate(12))
             ->with('emphasis', $emphasis)
@@ -113,7 +113,7 @@ class DisciplineController extends Controller
         $professors = Professor::all()->sortBy('name');
         $classifications = Classification::All()->sortBy('order');
         $methodologies = (new MethodologyService())->listAllMethodologies();
-        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
+        $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view('disciplines.index')
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinionLinkForm)
@@ -153,15 +153,18 @@ class DisciplineController extends Controller
         if ($this->checkIsAdmin()) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
             $institutionalUnits = $this->institutionalUnitService->listAll();
-
-        }elseif($this->checkIsUnitAdmin()){
+        } elseif ($this->checkIsUnitAdmin()) {
             $unitAdmin = Auth::user()->unitAdmin;
             $institutionalUnit = $unitAdmin->institutionalUnit;
             $professors = $this->professorService->getProfessorsByInstitutionalUnit($institutionalUnit->id);
             $institutionalUnits = collect();
             $institutionalUnits->add($institutionalUnit);
 
-
+        } elseif ($this->checkIsProfessor()) {
+            if (!isset(Auth::user()->professor->InstitutionalUnit)) {
+                return redirect()->back()
+                    ->withInput()->withErrors(['unit_error' => 'O professor precisa estar em um unidade']);
+            }
         }
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
 
@@ -189,7 +192,7 @@ class DisciplineController extends Controller
                 $professor = Professor::query()->find($request->input('professor'));
             }
             if (!isset($professor)) {
-                throw new MissingDataException("É necessário selecionar um professor para a disciplina");  
+                throw new MissingDataException("É necessário selecionar um professor para a disciplina");
             }
 
             $discipline = Discipline::create([
@@ -200,8 +203,14 @@ class DisciplineController extends Controller
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),
                 'professor_id' => ($user->isAdmin || $user->is_unit_admin) ? $professor->id : $user->professor->id,
-                'institutional_unit_id' => $request->{'institutional-unit-id'}
+                //'institutional_unit_id' => $request->{'institutional-unit-id'}
             ]);
+            if(Auth::user()->is_professor){
+                $discipline->institutional_unit_id = Auth::user()->professor->InstitutionalUnit->id;
+            }else{
+                $discipline->institutional_unit_id = $request->{'institutional-unit-id'};
+            }
+
 
             if ($request->topics) {
                 foreach ($request->topics as $topicName) {
@@ -244,17 +253,16 @@ class DisciplineController extends Controller
                     if (Auth::user()->isProfessor && $professorMethodology->{'professor_methodology_id'} != Auth::user()->professor->id) {
                         throw new NotAuthorizedException("O professor não pode criar metodologias de outros professores.");
                     }
-                    if(Auth::user()->isAdmin){
+                    if (Auth::user()->isAdmin) {
                         $newProfessorMethodology->{'professor_id'} = $request->professor;
-                    }elseif( Auth::user()->isProfessor){
+                    } elseif (Auth::user()->isProfessor) {
                         $newProfessorMethodology->{'professor_id'} = Auth::user()->professor->id;
                     }
-                   
+
                     $newProfessorMethodology->{'professor_description'} = $professorMethodology->{'professor_description'};
                     $newProfessorMethodology->{'methodology_use_description'} = $professorMethodology->{'methodology_use_description'};
                     $value = $newProfessorMethodology->save();
                     $newProfessorMethodology->disciplines()->attach($discipline->id);
-                    
                 }
             }
 
@@ -293,7 +301,7 @@ class DisciplineController extends Controller
                     ->storeAs('podcasts', $discipline->id . '.mp3', 'public');
 
                 $discipline->podcast_url = $podcastUrl;
-                $discipline->save();
+                //$discipline->save();
             }
 
             if ($request->filled('media-video') && YoutubeService::match($request->input('media-video'))) {
@@ -381,7 +389,7 @@ class DisciplineController extends Controller
                     }
                 }
             }
-
+            $discipline->save();
             DB::commit();
             $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
@@ -420,7 +428,7 @@ class DisciplineController extends Controller
      * @param $id Identificador único da disciplina
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
         $service = new APISigaaService();
         $discipline = Discipline::query()
@@ -446,7 +454,7 @@ class DisciplineController extends Controller
                 ->with('showOpinionForm', true)
                 ->with('professorMethodologies', $discipline->professor_methodologies);
         }
-        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
+        $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view(self::VIEW_PATH . 'show', compact('discipline'))
             ->with('classifications', $classifications)
             ->with('theme', $this->theme)
@@ -829,8 +837,8 @@ class DisciplineController extends Controller
         } catch (InvalidFileFormatException $exception) {
             DB::rollBack();
             $topicsContentsReferences = $this->createTopicsConceptsReferenceResponse($request);
-            $oldEmphasisInput = $request->{'old_input_emphasis'}=="" ? "sem_enfase" : $request->{'old_input_emphasis'};
-            $oldProfessorInput = $request->{'old_input_professor'}=="" ? "sem_professor" : $request->{'old_input_professor'};
+            $oldEmphasisInput = $request->{'old_input_emphasis'} == "" ? "sem_enfase" : $request->{'old_input_emphasis'};
+            $oldProfessorInput = $request->{'old_input_professor'} == "" ? "sem_professor" : $request->{'old_input_professor'};
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['media-podcast' => $exception->getMessage()])
@@ -844,14 +852,14 @@ class DisciplineController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             $topicsContentsReferences = $this->createTopicsConceptsReferenceResponse($request);
-            $oldEmphasisInput = $request->{'old_input_emphasis'}=="" ? "sem_enfase" : $request->{'old_input_emphasis'};
-            $oldProfessorInput = $request->{'old_input_professor'}=="" ? "sem_professor" : $request->{'old_input_professor'};
+            $oldEmphasisInput = $request->{'old_input_emphasis'} == "" ? "sem_enfase" : $request->{'old_input_emphasis'};
+            $oldProfessorInput = $request->{'old_input_professor'} == "" ? "sem_professor" : $request->{'old_input_professor'};
             Log::error($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina'])
                 ->with([
                     'oldTopicsInput' => $topicsContentsReferences['topics'],
-                    'oldConceptsInput'=> $topicsContentsReferences['concepts'],
+                    'oldConceptsInput' => $topicsContentsReferences['concepts'],
                     'oldReferencesInput' => $topicsContentsReferences['references'],
                     'oldEmphasisInput' => $oldEmphasisInput,
                     'oldProfessorInput' => $oldProfessorInput
@@ -865,7 +873,7 @@ class DisciplineController extends Controller
         $subjectTopics = array();
         $subjectConcepts = array();
         $subjectReferences = array();
-        if($request->topicsId){
+        if ($request->topicsId) {
             foreach ($request->topicsId as $key => $topicId) {
                 $subjectTopic = new SubjectTopic();
                 $subjectTopic->id = $topicId;
@@ -873,8 +881,8 @@ class DisciplineController extends Controller
                 array_push($subjectTopics, $subjectTopic);
             }
         }
-        
-        if($request->conceptsId){
+
+        if ($request->conceptsId) {
             foreach ($request->conceptsId as $key => $conceptId) {
                 $subjectConcept = new SubjectConcept();
                 $subjectConcept->id = $conceptId;
@@ -882,16 +890,16 @@ class DisciplineController extends Controller
                 array_push($subjectConcepts, $subjectConcept);
             }
         }
-        
-        if($request->referencesId){
-            foreach($request->referencesId as $key => $referenceId){
+
+        if ($request->referencesId) {
+            foreach ($request->referencesId as $key => $referenceId) {
                 $subjectReference = new SubjectReference();
                 $subjectReference->id = $referenceId;
                 $subjectReference->value = $request->references[$key];
                 array_push($subjectReferences, $subjectReference);
             }
         }
-        
+
         $topicsConceptsReferences['topics'] = $subjectTopics;
         $topicsConceptsReferences['concepts'] = $subjectConcepts;
         $topicsConceptsReferences['references'] = $subjectReferences;
@@ -1085,11 +1093,18 @@ class DisciplineController extends Controller
         return response()->json($data, 200);
     }
 
-    private function checkIsAdmin(){
+    private function checkIsAdmin()
+    {
         return Auth::user() && Auth::user()->is_admin;
     }
 
-    private function checkIsUnitAdmin(){
+    private function checkIsUnitAdmin()
+    {
         return Auth::user() && Auth::user()->is_unit_admin;
+    }
+
+    private function checkIsProfessor()
+    {
+        return Auth::user() && Auth::user()->is_professor;
     }
 }
