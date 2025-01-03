@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\MissingDataException;
+use App\Exceptions\NotAuthorizedException;
 use App\Http\Requests\Professor\CreateRequest;
 use App\Http\Requests\Professor\StoreRequest;
 use App\Http\Requests\Professor\UpdateRequest;
@@ -13,6 +15,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 use App\Models\Professor;
+use App\Services\InstitutionalUnitService;
+use Exception;
+use App\Services\ProfessorService;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Classe que realiza tarefas relacionadas com o Professor.
@@ -21,12 +27,15 @@ class ProfessorUserController extends Controller
 {
     const VIEW_PATH = "admin.";
     protected $theme;
+    protected $professorService;
+    protected $institutionalUnitService;
 
     public function __construct()
     {
         $contents = Storage::get('theme/theme.json');
+        $this->professorService = new ProfessorService();
+        $this->institutionalUnitService = new InstitutionalUnitService();
         $this->theme = json_decode($contents, true);
-
     }
 
     /**
@@ -34,11 +43,16 @@ class ProfessorUserController extends Controller
      */
     public function index()
     {
-        $professors = Professor::query()->with([
-            'user',
-        ])->get();
-        //dd($professors);
-        return view(self::VIEW_PATH . 'professor.' . 'index', compact('professors'))->with('theme', $this->theme);
+        if($this->checkIsAdmin()){
+            $professors = $this->professorService->listAll();
+        }elseif($this->checkIsUnitAdmin()){
+            $professors = $this->professorService
+                ->ListByInstitutionalUnitId(Auth::user()->unitAdmin->institutionalUnit->id);
+        }
+        return view('admin/professor/index',[
+            'professors' => $professors,
+            'theme' =>$this->theme
+        ]);
     }
 
     /**
@@ -47,7 +61,21 @@ class ProfessorUserController extends Controller
      */
     public function create(CreateRequest $request)
     {
-        return view(self::VIEW_PATH . 'professor.' . 'create')->with('theme', $this->theme);
+        try {
+            if ($this->checkIsAdmin()) {
+                $institutionalUnits = $this->institutionalUnitService->listAll();
+            } elseif ($this->checkIsUnitAdmin()) {
+                $institutionalUnits = collect();
+                $institutionalUnit = $this->institutionalUnitService->getByUnitAdmin(Auth::user()->unitAdmin->id);
+                $institutionalUnits->add($institutionalUnit);
+            }
+            return view(self::VIEW_PATH . 'professor.' . 'create')
+                ->with('institutionalUnits', $institutionalUnits)
+                ->with('theme', $this->theme);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**
@@ -59,13 +87,13 @@ class ProfessorUserController extends Controller
         $professor = Professor::where('id', $id)->with('user')->first();
         $is_teacher = $professor->user->role_id == 3;
 
-        $opinionLinkForm = Link::where('name','opinionForm')->first();
+        $opinionLinkForm = Link::where('name', 'opinionForm')->first();
         return view(self::VIEW_PATH . 'professor.edit')
             ->with('professor', $professor)
             ->with('is_teacher', $is_teacher)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinionLinkForm)
-            ->with('showOpinionForm',true);
+            ->with('showOpinionForm', true);
     }
 
     /**
@@ -75,36 +103,37 @@ class ProfessorUserController extends Controller
     public function store(StoreRequest $request)
     {
 
-
-        DB::beginTransaction();
         try {
-            $user = User::create([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => bcrypt($request->input('password')),
-                'role_id' => '3'
-            ]);
-
-            Professor::create([
-                'name' => $user->name,
-                'profile_pic_link' => null,
-                'public_email' => $request->get('public_email', $user->email),
-                'rede_social1' => $request->get('rede_social1', $user->rede_social1),
-                'link_rsocial1' => $request->get('link_rsocial1', $user->link_rsocial1),
-                'rede_social2' => $request->get('rede_social2', $user->rede_social2),
-                'link_rsocial2' => $request->get('link_rsocial2', $user->link_rsocial2),
-                'rede_social3' => $request->get('rede_social3', $user->rede_social3),
-                'link_rsocial3' => $request->get('link_rsocial3', $user->link_rsocial3),
-                'rede_social4' => $request->get('rede_social4', $user->rede_social4),
-                'link_rsocial4' => $request->get('link_rsocial4', $user->link_rsocial4),
-                'user_id' => $user->id
-            ]);
-
-            DB::commit();
+            if (!$this->checkIsAdmin() && !$this->checkIsUnitAdmin()) {
+                throw new NotAuthorizedException("Você não tem permissão para realizar esta operação");
+            }
+            $this->professorService->save(
+                $request->name,
+                $request->email,
+                $request->password,
+                null,
+                $request->public_email,
+                $request->rede_social1,
+                $request->link_rsocial1,
+                $request->rede_social2,
+                $request->link_rsocial2,
+                $request->rede_social3,
+                $request->link_rsocial3,
+                $request->rede_social4,
+                $request->link_rsocial4,
+                $request->{'institutional-unit-id'}
+            );
             return redirect()->route('professores.index');
-        } catch (\Exception $exception) {
-            DB::rollback();
-            return redirect()->back()->withInput();
+
+        } catch (NotAuthorizedException $e) {
+            return redirect()->back()->withInput()->withErrors(['auth_error' => $e->getMessage()]);
+
+        } catch(MissingDataException $e){
+            return redirect()->back()->withInput()->withErrors(['missing_value' => $e->getMessage()]);
+
+        }catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->back()->withInput()->withErrors(['store_error' => 'Não foi possível cadastrar o professor']);
         }
     }
 
@@ -163,4 +192,13 @@ class ProfessorUserController extends Controller
             ->with('theme', $this->theme);
     }
 
+    private function checkIsAdmin()
+    {
+        return Auth::user() && Auth::user()->is_admin;
+    }
+
+    private function checkIsUnitAdmin()
+    {
+        return Auth::user() && Auth::user()->is_unit_admin;
+    }
 }

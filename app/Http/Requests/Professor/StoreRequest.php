@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Professor;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class StoreRequest extends FormRequest
 {
