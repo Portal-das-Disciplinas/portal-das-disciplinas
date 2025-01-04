@@ -74,9 +74,16 @@ noindex, follow
                     @endforeach
                 </select>
                 <input id="old_input_emphasis" name="old_input_emphasis" hidden>
-
-
-
+            </div>
+            <div class="col-md-12 px-0">
+                <label>Nível de ensino</label>
+                <select name="education-level-id" value="{{ old('education-level-id') }}" class="form-control">
+                    @foreach($educationLevels as $educationLevel)
+                    <option value="{{ $educationLevel->id }}" 
+                        @if(isset($discipline->educationLevel) && $discipline->educationLevel->id == $educationLevel->id) selected @endif >
+                        {{$educationLevel->value}}</option>
+                    @endforeach
+                </select>
 
             </div>
             @if(Auth::user() && Auth::user()->is_admin)
