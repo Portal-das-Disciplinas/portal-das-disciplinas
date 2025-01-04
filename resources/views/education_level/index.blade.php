@@ -5,13 +5,13 @@
     <div class="row">
         <div class="col-md-12 mt-3">
             <div class="d-flex justify-content-center">
-                <h1>Cadastro de níveis de curso</h1>
+                <h1>Cadastro de níveis de ensino</h1>
             </div>
         </div>
     </div>
     <div class="row mt-3">
         <div class="col-md-12">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-course-level">Cadastrar novo</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modal-education-level">Cadastrar novo</button>
         </div>
     </div>
     <div class="row mt-3">
@@ -21,13 +21,13 @@
 
                 </thead>
                 <tbody>
-                    @foreach($courseLevels as $courseLevel)
+                    @foreach($educationLevels as $educationLevel)
                     <tr>
-                        <td>{{$courseLevel->value}}</td>
+                        <td>{{$educationLevel->value}}</td>
                         <td>
                             <div class="d-flex justify-content-end">
                                 <button class="btn btn-danger" data-toggle="modal" data-target="#modal-confirm-delete" 
-                                    onclick="setupModalDelete('{{ $courseLevel->id }}','{{ $courseLevel->value }}')">
+                                    onclick="setupModalDelete('{{ $educationLevel->id }}','{{ $educationLevel->value }}')">
                                     Apagar
                                 </button>
                             </div>
@@ -39,14 +39,14 @@
         </div>
     </div>
 
-    <div id="modal-course-level" class="modal fade" tabindex="-1" role="dialog">
+    <div id="modal-education-level" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Nível de curso</h3>
+                    <h3 class="modal-title">Nível de ensino</h3>
                 </div>
                 <div class="modal-body">
-                    <form class="form" method="post" action="{{ route('course_level.store')}}">
+                    <form class="form" method="post" action="{{ route('education_level.store')}}">
                         @csrf
                         <div class="form-group">
                             <label>Nome do nível</label>
@@ -75,11 +75,11 @@
                 </div>
                 <div class="modal-body">
                     <p>Tem certeza que deseja apagar o nível:</p>
-                    <strong id="course-level-value"></strong>
+                    <strong id="education-level-value"></strong>
                     <form class="form" method="post" action="">
                         @csrf
                         @method('delete')
-                        <input id="course-level-id" name="course-level-id" value="-1" hidden>
+                        <input id="education-level-id" name="education-level-id" value="-1" hidden>
                         <input id="submit-delete" type="submit" hidden>
 
                     </form>
@@ -99,6 +99,6 @@
 
 @section('scripts-bottom')
 
-<script src="{{ asset('js/course_level.js') }}"></script>
+<script src="{{ asset('js/education_level.js') }}"></script>
 
 @endsection

@@ -18,7 +18,7 @@ class CourseService{
             $query->where('institutional_unit_id','=',$unitId);
         }
         if(isset($courseLevelId)){
-            $query->where('course_level_id','=',$courseLevelId);
+            $query->where('education_level_id','=',$courseLevelId);
         }
 
         return $query->orderBy('name','asc')->get();
@@ -30,7 +30,7 @@ class CourseService{
             return Course::create([
                 'name' => $name,
                 'institutional_unit_id' => $unitId,
-                'course_level_id' => $levelId
+                'education_level_id' => $levelId
             ]);
 
         }elseif($this->checkIsUnitAdmin()){
@@ -40,7 +40,7 @@ class CourseService{
                 return Course::create([
                     'name' => $name,
                     'institutional_unit_id' => $unitId,
-                    'course_level_id' => $levelId
+                    'education_level_id' => $levelId
                 ]);
 
             }else{

@@ -13,7 +13,7 @@
         <div class="col-md-12">
             <button class="btn btn-primary" data-toggle='modal' data-target='#modal-course'>Cadastrar novo curso</button>
             @if(Auth::user() && Auth::user()->is_admin)
-            <a class="btn btn-outline-primary" href="{{ route('course_level.index') }}">Cadastrar nível de curso</a>
+            <a class="btn btn-outline-primary" href="{{ route('education_level.index') }}">Cadastrar nível de ensino</a>
             @endif
         </div>
     </div>
@@ -56,7 +56,7 @@
                     @foreach($courses as $course)
                     <tr>
                         <td>{{$course->name}}</td>
-                        <td>{{$course->courseLevel->value}}</td>
+                        <td>{{$course->educationLevel->value}}</td>
                         <td>{{$course->institutionalUnit->name}}</td>
                         <td><button class="btn btn-danger">Apagar</button></td>
                     </tr>
@@ -89,10 +89,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Nivel do Curso</label>
-                            <select class="form-control" name="course-level-id">
-                                @foreach($courseLevels as $courseLevel)
-                                <option value="{{ $courseLevel->id }}">{{$courseLevel->value}}</option>
+                            <label>Nivel ensino</label>
+                            <select class="form-control" name="education-level-id">
+                                @foreach($educationLevels as $educationLevel)
+                                <option value="{{ $educationLevel->id }}">{{$educationLevel->value}}</option>
                                 @endforeach
                             </select>
                         </div>

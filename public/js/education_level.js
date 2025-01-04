@@ -1,7 +1,7 @@
 function setupModalDelete(id, value){
-    document.querySelector('#modal-confirm-delete form').setAttribute('action',"/courses/levels/delete/" + id)
-    document.querySelector('#modal-confirm-delete #course-level-value').innerHTML = value;
-    document.querySelector('#modal-confirm-delete #course-level-id').innerHTML = id;
+    document.querySelector('#modal-confirm-delete form').setAttribute('action',"/ensino/niveis/delete/" + id)
+    document.querySelector('#modal-confirm-delete #education-level-value').innerHTML = value;
+    document.querySelector('#modal-confirm-delete #education-level-id').innerHTML = id;
 }
 
 function setdownModalDelete(){

@@ -2,27 +2,27 @@
 
 namespace App\Services;
 
-use App\Models\CourseLevel;
+use App\Models\EducationLevel;
 
-class CourseLevelService
+class EducationLevelService
 {
 
     public function list()
     {
-        return CourseLevel::query()->orderBy('priority_level', 'asc')->get();
+        return EducationLevel::query()->orderBy('priority_level', 'asc')->get();
     }
 
     public function save($value, $priorityLevel)
     {
-        $courseLevels = CourseLevel::query()->orderBy('priority_level', 'asc')->get();
+        $courseLevels = EducationLevel::query()->orderBy('priority_level', 'asc')->get();
         if (count($courseLevels) == 0) {
-            return CourseLevel::create([
+            return EducationLevel::create([
                 'value' => $value,
                 'priority_level' => $priorityLevel
             ]);
         } else {
             $this->reorderPriorityLevels($courseLevels, $priorityLevel);          
-            return CourseLevel::create([
+            return EducationLevel::create([
                 'value' => $value,
                 'priority_level' => $priorityLevel
             ]);
@@ -30,14 +30,14 @@ class CourseLevelService
     }
 
     public function delete($id){
-        return CourseLevel::destroy($id);
+        return EducationLevel::destroy($id);
     }
 
     private function reorderPriorityLevels($courseLevels,$priorityLevel){
         foreach ($courseLevels as $level) {
             if ($level->{'priority_level'} == $priorityLevel) {
                 $level->{'priority_level'}++;
-                $levelToUpdate = CourseLevel::findOrFail($level->id);
+                $levelToUpdate = EducationLevel::findOrFail($level->id);
                 $levelToUpdate->priority_level = $level->priority_level;
                 $levelToUpdate->save();
                 break;
@@ -47,7 +47,7 @@ class CourseLevelService
         for ($i = 0; $i < count($courseLevels); $i++) {
             if ((($i - 1) >= 0) && ($courseLevels[$i - 1]->priority_level == $courseLevels[$i]->priority_level)) {
                 $courseLevels[$i]->priority_level++;
-                $levelToUpdate = CourseLevel::findOrFail($courseLevels[$i]->id);
+                $levelToUpdate = EducationLevel::findOrFail($courseLevels[$i]->id);
                 $levelToUpdate->{'priority_level'} = $courseLevels[$i]->priority_level;
                 $levelToUpdate->save();
             }

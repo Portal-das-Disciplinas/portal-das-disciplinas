@@ -18,6 +18,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseLevelController;
 use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\DisciplinePerformanceDataController;
+use App\Http\Controllers\EducationLevelController;
 use App\Http\Controllers\InformationController;
 use App\Http\Controllers\InstitutionalUnitController;
 use App\Http\Controllers\LinksController;
@@ -181,9 +182,9 @@ Route::delete('/units/delete/{id}',[InstitutionalUnitController::class,'destroy'
 Route::get('/courses',[CourseController::class,'index'])->name('course.index');
 Route::post('courses/store',[CourseController::class,'store'])->name('course.store');
 
-Route::get('/courses/levels',[CourseLevelController::class,'index'])->name('course_level.index');
-Route::post('courses/levels/store',[CourseLevelController::class,'store'])->name('course_level.store');
-Route::delete('/courses/levels/delete/{id}',[CourseLevelController::class,'destroy'])->name('course_level.destroy');
+Route::get('/ensino/niveis',[EducationLevelController::class,'index'])->name('education_level.index');
+Route::post('ensino/niveis/store',[EducationLevelController::class,'store'])->name('education_level.store');
+Route::delete('/ensino/niveis/delete/{id}',[EducationLevelController::class,'destroy'])->name('education_level.destroy');
 
 Route::get('users/unit/admin',[UnitAdminController::class,'index'])->name('unit_admin.index');
 Route::post('users/unit/admin/store',[UnitAdminController::class,'store'])->name('unit_admin.store');

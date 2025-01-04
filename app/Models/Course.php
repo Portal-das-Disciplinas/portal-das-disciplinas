@@ -12,7 +12,7 @@ class Course extends Model
     protected $fillable = [
         'name',
         'institutional_unit_id',
-        'course_level_id'
+        'education_level_id'
     ];
 
     public function institutionalUnit(){
@@ -24,8 +24,8 @@ class Course extends Model
     }
 
 
-    public function courseLevel(){
-        return $this->belongsTo(CourseLevel::class);
+    public function educationLevel(){
+        return $this->belongsTo(EducationLevel::class);
     }
 
 }

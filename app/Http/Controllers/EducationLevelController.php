@@ -2,46 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CourseLevelService;
+use App\Services\EducationLevelService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class CourseLevelController extends Controller
+class EducationLevelController extends Controller
 {
     protected $theme;
+    protected $educationLevelService;
 
     public function __construct()
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
         $this->middleware('admin')->except(['index']);
+        $this->educationLevelService = new EducationLevelService();
     }
 
     public function index(Request $request)
     {
-        $courseLevelService = new CourseLevelService();
-        $courseLevels = $courseLevelService->list();
+        $educationLevels = $this->educationLevelService->list();
 
-        return view('course_level/index', [
-            'courseLevels' => $courseLevels
+        return view('education_level/index', [
+            'educationLevels' => $educationLevels
         ])->with('theme', $this->theme);
     }
 
     public function store(Request $request)
     {
-        $courseLevelService = new CourseLevelService();
-        $courseLevelService->save($request->value, $request->{'priority-level'});
+        $this->educationLevelService->save($request->value, $request->{'priority-level'});
         return redirect()->back()->with([
             'success_message' => 'Cadastrado com sucesso'
         ]);
     }
 
     public function destroy($id){
-        $courseLevelService = new CourseLevelService();
         try{
-            $courseLevelService->delete($id);
+            $this->educationLevelService->delete($id);
             return redirect()->back()->with(['success_message' => 'Nível apagado com sucesso!']);
         }catch(Exception $e){
             Log::error($e->getMessage());

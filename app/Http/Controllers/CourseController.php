@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\NotAuthorizedException;
 use App\Services\CourseLevelService;
 use App\Services\CourseService;
+use App\Services\EducationLevelService;
 use App\Services\InstitutionalUnitService;
 use Exception;
 use Illuminate\Http\Request;
@@ -15,11 +16,13 @@ use Illuminate\Support\Facades\Storage;
 class CourseController extends Controller
 {
     protected $theme;
+    protected $educationLevelService;
 
     public function __construct()
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
+        $this->educationLevelService = new EducationLevelService();
     }
 
     public function index(Request $request)
@@ -40,28 +43,25 @@ class CourseController extends Controller
             $courses = $courseService->list($unitId = $adminUnitId);
         }
         
-        $courseLevelService = new CourseLevelService();
-        $courseLevels = $courseLevelService->list();
+        $educationLevels = $this->educationLevelService->list();
 
         return view('course/index', [
             'courses' => $courses,
             'institutionalUnits' => $institutionalUnits,
-            'courseLevels' => $courseLevels
+            'educationLevels' => $educationLevels
 
         ])->with('theme', $this->theme);
     }
 
     public function store(Request $request){
         if(!$this->checkIsAdminOrUnitAdmin()){
-
             return redirect()->back()->withErrors([
                 'auth_error' => 'Você não tem permissão para realizar esta operação.'
             ]);
         }
-
         $courseService = new CourseService();
         try{
-            $courseService->save($request->{'course-name'}, $request->{'unit-id'}, $request->{'course-level-id'});
+            $courseService->save($request->{'course-name'}, $request->{'unit-id'}, $request->{'education-level-id'});
             return redirect()->back()->with('success_message','Curso cadastrado com sucesso.');
 
         }catch(NotAuthorizedException $e1){
