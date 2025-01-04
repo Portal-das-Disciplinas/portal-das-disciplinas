@@ -521,6 +521,8 @@ class DisciplineController extends Controller
 
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
         $educationLevels = $this->educationLevelService->list();
+        $courses = $this->courseService->list();
+
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
@@ -530,7 +532,8 @@ class DisciplineController extends Controller
             ->with('institutionalUnits', $institutionalUnits)
             ->with('selectedInstitutionalUnit', $selectedInstitutionalUnit)
             ->with('educationLevels', $educationLevels)
-            ->with('showOpinionForm', true);
+            ->with('showOpinionForm', true)
+            ->with('courses', $courses);
     }
 
     /**
@@ -562,6 +565,14 @@ class DisciplineController extends Controller
                 'acquirements' => $request->input('acquirements'),
                 'education_level_id' => $request->{'education-level-id'}
             ]);
+
+            $selectedCoursesId = $request->{'course-id'};
+            $discipline->courses()->detach();
+            foreach($selectedCoursesId as $courseId){
+                $discipline->courses()->attach($courseId);
+            }
+
+
 
             if($user->is_unit_admin && !isset($request->professor)){
                 return redirect()->back()->withInput()

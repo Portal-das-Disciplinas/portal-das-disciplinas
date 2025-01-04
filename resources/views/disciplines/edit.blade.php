@@ -116,6 +116,21 @@ noindex, follow
                 </div>
             </div>
             @endif
+
+            <div class="col-md-12 px-0"> 
+                <label>Selecione os cursos dos quais esta disciplina pertence</label>
+                <div class="card px-1" style="overflow-y: auto; max-height: 300px;">
+                    @foreach($courses as $course)
+                    <div class="form-group">
+                        <input id="{{ $course->name }}" type="checkbox" name="course-id[]" 
+                            class="input-check" value="{{ $course->id }}"
+                            @if($discipline->courses->find($course->id)) checked @endif>
+                        <label for="{{ $course->name }}" class="form-label text-primary" style="cursor:pointer;">{{$course->name}}</label>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="form-row mt-3">
                 <div class="col-md-6">
                     <div class="form-group">

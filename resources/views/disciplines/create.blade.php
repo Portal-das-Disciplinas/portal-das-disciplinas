@@ -103,7 +103,7 @@ noindex, follow
         </div>
         <div class="col-md-12 px-0"> 
             <label>Selecione os cursos dos quais esta disciplina pertence</label>
-            <div class="card px-1">
+            <div class="card px-1" style="overflow-y: auto; max-height: 300px;">
                 @foreach($courses as $course)
                 <div class="form-group">
                     <input id="{{ $course->name }}" type="checkbox" name="course-id[]" 
