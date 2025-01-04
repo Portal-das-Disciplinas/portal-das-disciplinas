@@ -37,7 +37,8 @@ class Discipline extends Model
         'professor_id',
         'acquirements',
         'podcast_url',
-        'institutional_unit_id'
+        'institutional_unit_id',
+        'education_level_id'
     ];
 
     /**
@@ -217,5 +218,9 @@ class Discipline extends Model
 
     public function courses(){
         return $this->belongsToMany(Course::class);
+    }
+
+    public function educationLevel(){
+        return $this->belongsTo(EducationLevel::class);
     }
 }

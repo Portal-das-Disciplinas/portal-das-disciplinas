@@ -51,7 +51,6 @@ noindex, follow
 
 
         <div class="col-md-12 px-0">
-
             <label class="" for="emphasis">
                 Ênfase da disciplina
             </label>
@@ -62,6 +61,15 @@ noindex, follow
                 @endforeach
             </select>
             <input id="select-emphasis-index" name="select-emphasis-index" hidden>
+        </div>
+
+        <div class="col-md-12 px-0">
+            <label>Nível de ensino</label>
+            <select class="form-control" name="education-level-id">
+                @foreach($educationLevels as $educationLevel)
+                <option value="{{ $educationLevel->id }}">{{$educationLevel->value}}</option>
+                @endforeach
+            </select>
         </div>
         @if(Auth::user() && !Auth::user()->is_professor)
         <div class="col-md-12 px-0">

@@ -18,5 +18,9 @@ class EducationLevel extends Model
         return $this->hasMany(Course::class);
     }
 
+    public function disciplines(){
+        return $this->hasMany(Discipline::class);
+    }
+
 
 }

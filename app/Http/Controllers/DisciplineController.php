@@ -36,6 +36,7 @@ use App\Models\UnitAdmin;
 use App\Services\APISigaa\APISigaaService;
 use App\Services\DisciplinePerformanceDataService;
 use App\Services\DisciplineService;
+use App\Services\EducationLevelService;
 use App\Services\InstitutionalUnitService;
 use App\Services\MethodologyService;
 use App\Services\PortalAccessInfoService;
@@ -64,6 +65,7 @@ class DisciplineController extends Controller
     protected $portalAccessInfoService;
     protected $institutionalUnitService;
     protected $professorService;
+    protected $educationLevelService;
 
     public function __construct()
     {
@@ -72,6 +74,7 @@ class DisciplineController extends Controller
         $this->portalAccessInfoService = new PortalAccessInfoService();
         $this->institutionalUnitService = new InstitutionalUnitService();
         $this->professorService = new ProfessorService();
+        $this->educationLevelService = new EducationLevelService();
         //$this->middleware(PortalAccessInfoMiddleware::class)->only(['index', 'disciplineFilter', 'show']);
     }
 
@@ -166,6 +169,7 @@ class DisciplineController extends Controller
                     ->withInput()->withErrors(['unit_error' => 'O professor precisa estar em um unidade']);
             }
         }
+        $educationLevels = $this->educationLevelService->list();
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
 
         return view(self::VIEW_PATH . 'create', compact('professors'))
@@ -174,7 +178,8 @@ class DisciplineController extends Controller
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
             ->with('showOpinionForm', true)
-            ->with('institutionalUnits', $institutionalUnits);
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('educationLevels', $educationLevels);
     }
     /**
      * Store a newly created resource in storage.
@@ -203,7 +208,7 @@ class DisciplineController extends Controller
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),
                 'professor_id' => ($user->isAdmin || $user->is_unit_admin) ? $professor->id : $user->professor->id,
-                //'institutional_unit_id' => $request->{'institutional-unit-id'}
+                'education_level_id' => $request->{'education-level-id'}
             ]);
             if(Auth::user()->is_professor){
                 $discipline->institutional_unit_id = Auth::user()->professor->InstitutionalUnit->id;
