@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\CourseLevel;
-use App\Enums\CourseLevelValue;
+use App\Enums\EducationLevelValue;
+use App\Models\EducationLevel;
 use Illuminate\Database\Seeder;
 
-class CourseLevelSeeder extends Seeder
+class EducationLevelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +15,8 @@ class CourseLevelSeeder extends Seeder
      */
     public function run()
     {
-        CourseLevel::create([
-            'value' => CourseLevelValue::GRADUATION,
+        EducationLevel::create([
+            'value' => EducationLevelValue::GRADUATION,
             'priority_level' => 10
         ]);
     }

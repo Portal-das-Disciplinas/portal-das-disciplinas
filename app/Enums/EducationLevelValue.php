@@ -4,7 +4,7 @@ namespace App\Enums;
 
 use App\Enums\Enum;
 
-class CourseLevelValue extends Enum{
+class EducationLevelValue extends Enum{
 
     const GRADUATION = 'GRADUAÇÃO';
 }
