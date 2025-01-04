@@ -17,6 +17,7 @@ use App\Http\Requests\Discipline\UpdateRequest;
 use App\Models\Classification;
 use App\Models\DisciplinePerformanceData;
 use App\Models\ClassificationDiscipline;
+use App\Models\Course;
 use App\Services\Urls\GoogleDriveService;
 use App\Services\Urls\YoutubeService;
 use Illuminate\Http\Request;
@@ -34,6 +35,7 @@ use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
 use App\Models\UnitAdmin;
 use App\Services\APISigaa\APISigaaService;
+use App\Services\CourseService;
 use App\Services\DisciplinePerformanceDataService;
 use App\Services\DisciplineService;
 use App\Services\EducationLevelService;
@@ -66,6 +68,7 @@ class DisciplineController extends Controller
     protected $institutionalUnitService;
     protected $professorService;
     protected $educationLevelService;
+    protected $courseService;
 
     public function __construct()
     {
@@ -75,6 +78,7 @@ class DisciplineController extends Controller
         $this->institutionalUnitService = new InstitutionalUnitService();
         $this->professorService = new ProfessorService();
         $this->educationLevelService = new EducationLevelService();
+        $this->courseService = new CourseService();
         //$this->middleware(PortalAccessInfoMiddleware::class)->only(['index', 'disciplineFilter', 'show']);
     }
 
@@ -153,6 +157,7 @@ class DisciplineController extends Controller
         $classifications = Classification::all();
         $emphasis = Emphasis::all();
         $institutionalUnits = null;
+        $courses = $this->courseService->list();
         if ($this->checkIsAdmin()) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
             $institutionalUnits = $this->institutionalUnitService->listAll();
@@ -179,7 +184,8 @@ class DisciplineController extends Controller
             ->with('opinionLinkForm', $opinioLinkForm)
             ->with('showOpinionForm', true)
             ->with('institutionalUnits', $institutionalUnits)
-            ->with('educationLevels', $educationLevels);
+            ->with('educationLevels', $educationLevels)
+            ->with('courses', $courses);
     }
     /**
      * Store a newly created resource in storage.
@@ -210,6 +216,11 @@ class DisciplineController extends Controller
                 'professor_id' => ($user->isAdmin || $user->is_unit_admin) ? $professor->id : $user->professor->id,
                 'education_level_id' => $request->{'education-level-id'}
             ]);
+
+            foreach($request->{'course-id'} as $courseId){
+                $discipline->courses()->attach($courseId);
+            }
+
             if(Auth::user()->is_professor){
                 $discipline->institutional_unit_id = Auth::user()->professor->InstitutionalUnit->id;
             }else{
