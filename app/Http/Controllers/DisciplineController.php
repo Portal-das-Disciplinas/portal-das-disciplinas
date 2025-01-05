@@ -99,6 +99,7 @@ class DisciplineController extends Controller
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
         $methodologies = (new MethodologyService())->listAllMethodologies();
         $institutionalUnits = $this->institutionalUnitService->listAll();
+        $courses = $this->courseService->list();
         $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view('disciplines.index')
             ->with('disciplines', $disciplines->paginate(12))
@@ -110,7 +111,8 @@ class DisciplineController extends Controller
             ->with('studentsData', $studentsData)
             ->with('professors', $professors_all)
             ->with('methodologies', $methodologies)
-            ->with('institutionalUnits', $institutionalUnits);
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('courses', $courses);
     }
 
     public function disciplineFilter(Request $request)
@@ -123,6 +125,7 @@ class DisciplineController extends Controller
         $classifications = Classification::All()->sortBy('order');
         $methodologies = (new MethodologyService())->listAllMethodologies();
         $institutionalUnits = $this->institutionalUnitService->listAll();
+        $courses = $this->courseService->list();
         $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view('disciplines.index')
             ->with('theme', $this->theme)
@@ -132,7 +135,8 @@ class DisciplineController extends Controller
             ->with('classifications', $classifications)
             ->with('professors', $professors)
             ->with('methodologies', $methodologies)
-            ->with('institutionalUnits', $institutionalUnits);
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('courses', $courses);
     }
 
     /**

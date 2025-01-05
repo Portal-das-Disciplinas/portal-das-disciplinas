@@ -32,6 +32,8 @@ class DisciplineService
             ->leftJoin('discipline_professor_methodology','discipline_professor_methodology.discipline_id','=','disciplines.id')
             ->leftJoin('professor_methodologies','professor_methodologies.id','=','discipline_professor_methodology.prof_methodology_id')
             ->leftJoin('methodologies','methodologies.id','=','professor_methodologies.methodology_id')
+            ->leftJoin('course_discipline', 'disciplines.id','=','course_discipline.discipline_id')
+            ->leftJoin('courses','courses.id','=','course_discipline.course_id')
             ->select('disciplines.*');
         if ($request->name_discipline) {
             $searchValues = array_map('trim', explode(',', $request->name_discipline));
@@ -54,9 +56,13 @@ class DisciplineService
             $disciplines->where('institutional_unit_id','=',$request->{'institutional-unit-id'});
         }
 
+        if($request->{'course-id'}){
+            $disciplines->where('courses.id','=' ,$request->{'course-id'});
+        }
+
         if ($request->emphasis) {
             $disciplines->where('emphasis_id', $request->emphasis);
-        }
+        };
         if ($request->professors && $request->professors != "null") {
             $disciplines->where('disciplines.professor_id', $request->professors);
         }

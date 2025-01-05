@@ -47,7 +47,9 @@
                     <div class="col-md-4 mb-3">
                         <select id="course-id" name="course-id" class="form-control">
                             <option value="">Todos os cursos</option>
-                            <option>Bacharelado em Ciências Artuariais</option>
+                            @foreach($courses as $course)
+                            <option value=" {{$course->id}}">{{$course->name}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-3 mb-3">
