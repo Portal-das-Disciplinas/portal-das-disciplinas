@@ -36,6 +36,26 @@
             <div class="col-md-12">
                 <form id="filter" class="row" action="/discipline/filter" method="GET">
                     @csrf
+                    <div class="col-md-5 mb-3">
+                        <select name="institutional-unit-id" class="form-control ">
+                            <option value="">Todas as unidades</option>
+                            @foreach($institutionalUnits as $unit)
+                            <option value=" {{$unit->id}} ">{{$unit->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <select id="course-id" name="course-id" class="form-control">
+                            <option value="">Todos os cursos</option>
+                            <option>Bacharelado em Ciências Artuariais</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <select name="education-level-id" class="form-control">
+                            <option value="">Todos os níveis</option>
+                            <option>GRADUAÇÃO</option>
+                        </select>
+                    </div>
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">

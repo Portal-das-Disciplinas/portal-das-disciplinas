@@ -49,6 +49,11 @@ class DisciplineService
         } else {
             $disciplines->where('disciplines.name', 'like', '%' . "" . '%');
         }
+
+        if($request->{'institutional-unit-id'}){
+            $disciplines->where('institutional_unit_id','=',$request->{'institutional-unit-id'});
+        }
+
         if ($request->emphasis) {
             $disciplines->where('emphasis_id', $request->emphasis);
         }
