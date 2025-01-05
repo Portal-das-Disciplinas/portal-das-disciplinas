@@ -100,6 +100,7 @@ class DisciplineController extends Controller
         $methodologies = (new MethodologyService())->listAllMethodologies();
         $institutionalUnits = $this->institutionalUnitService->listAll();
         $courses = $this->courseService->list();
+        $educationLevels = $this->educationLevelService->list();
         $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view('disciplines.index')
             ->with('disciplines', $disciplines->paginate(12))
@@ -112,7 +113,8 @@ class DisciplineController extends Controller
             ->with('professors', $professors_all)
             ->with('methodologies', $methodologies)
             ->with('institutionalUnits', $institutionalUnits)
-            ->with('courses', $courses);
+            ->with('courses', $courses)
+            ->with('educationLevels', $educationLevels);
     }
 
     public function disciplineFilter(Request $request)
@@ -126,6 +128,7 @@ class DisciplineController extends Controller
         $methodologies = (new MethodologyService())->listAllMethodologies();
         $institutionalUnits = $this->institutionalUnitService->listAll();
         $courses = $this->courseService->list();
+        $educationLevels = $this->educationLevelService->list();
         $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view('disciplines.index')
             ->with('theme', $this->theme)
@@ -136,7 +139,8 @@ class DisciplineController extends Controller
             ->with('professors', $professors)
             ->with('methodologies', $methodologies)
             ->with('institutionalUnits', $institutionalUnits)
-            ->with('courses', $courses);
+            ->with('courses', $courses)
+            ->with('educationLevels', $educationLevels);
     }
 
     /**

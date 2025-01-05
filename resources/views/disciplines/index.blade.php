@@ -55,7 +55,9 @@
                     <div class="col-md-3 mb-3">
                         <select name="education-level-id" class="form-control">
                             <option value="">Todos os níveis</option>
-                            <option>GRADUAÇÃO</option>
+                            @foreach($educationLevels as $educationLevel)
+                            <option value=" {{$educationLevel->id}}">{{$educationLevel->value}}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-12">

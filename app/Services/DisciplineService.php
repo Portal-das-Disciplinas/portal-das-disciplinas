@@ -60,6 +60,10 @@ class DisciplineService
             $disciplines->where('courses.id','=' ,$request->{'course-id'});
         }
 
+        if($request->{'education-level-id'}){
+            $disciplines->where('disciplines.education_level_id', '=', $request->{'education-level-id'});
+        }
+
         if ($request->emphasis) {
             $disciplines->where('emphasis_id', $request->emphasis);
         };
