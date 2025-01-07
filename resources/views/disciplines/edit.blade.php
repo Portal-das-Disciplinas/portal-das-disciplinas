@@ -91,7 +91,7 @@ noindex, follow
                 <label>Unidade</label>
                 <select name="institutional-unit-id" class="form-control" value="institutional-unit-id">
                     @foreach($institutionalUnits as $unit)
-                    <option value="{{ $unit->id }}" {{ $selectedInstitutionalUnit->id == $unit->id ? 'selected' : '' }}>{{$unit->name}}</option>
+                    <option value="{{ $unit->id }}" {{isset($selectedInstitutionalUnit) && $selectedInstitutionalUnit->id == $unit->id ? 'selected' : '' }}>{{$unit->name}}</option>
                     @endforeach
                 </select>
             </div>
