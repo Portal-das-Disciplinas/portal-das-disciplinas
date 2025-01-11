@@ -14,9 +14,13 @@ use App\Http\Controllers\Chart\PassRateController;
 use App\Http\Controllers\ClassificationController;
 use App\Http\Controllers\CollaboratorController;
 use App\Http\Controllers\CollaboratorProductionController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseLevelController;
 use App\Http\Controllers\DisciplineParticipantController;
 use App\Http\Controllers\DisciplinePerformanceDataController;
+use App\Http\Controllers\EducationLevelController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\InstitutionalUnitController;
 use App\Http\Controllers\LinksController;
 use App\Http\Controllers\MethodologyController;
 use App\Http\Controllers\ParticipantLinkController;
@@ -28,9 +32,11 @@ use App\Http\Controllers\SubjectConceptController;
 use App\Http\Controllers\SubjectReferenceController;
 use App\Http\Controllers\SubjectTopicController;
 use App\Http\Controllers\TopicController;
+use App\Http\Controllers\UnitAdminController;
 use App\Models\Collaborator;
 use App\Models\Discipline;
 use App\Models\DisciplinePerformanceData;
+use App\Models\InstitutionalUnit;
 use App\Models\Link;
 use App\Models\ProfessorMethodology;
 use App\Models\SemesterPerformanceData;
@@ -85,7 +91,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/perfil', [UsersController::class, 'update'])->name('updateUser');
 
     Route::resource('disciplinas', DisciplineController::class)
-        ->except(['index', 'show',]);
+        ->except(['index', 'show']);
 
     Route::resource('professores', ProfessorUserController::class);
 
@@ -106,8 +112,8 @@ Route::resource('collaborators',CollaboratorController::class);
 
 
 
-Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])
-    ->name('disciplinas.show');
+Route::get('/disciplinas/{id}', [DisciplineController::class, 'show'])->name('disciplinas.show');
+
 
 Route::post('participantes_disciplina/store', [DisciplineParticipantController::class,'store'])->name('participants_discipline.store');
 Route::post('produtores/videoportal/supdate',[DisciplineParticipantController::class,'storeOrUpdatePortalVideoProducers'])->name('content_producers.store_update');
@@ -168,5 +174,18 @@ Route::put('/topic/{topic_id}/update', [TopicController::class, 'update']);
 Route::delete('/discipline/{discipline_id}/topic/{topic_id}/delete', [TopicController::class, 'destroy']);
 
 Route::get('/acessos',[PortalAccessInfoController::class,'index'])->name('portal_access_info.index');
-//Route::get('acessos/')
 
+Route::get('/units',[InstitutionalUnitController::class,'index'])->name('institutional_unit.index');
+Route::post('/units/store',[InstitutionalUnitController::class, 'store'])->name('institutional_unit.store');
+Route::delete('/units/delete/{id}',[InstitutionalUnitController::class,'destroy'])->name('institutional_unit.destroy');
+
+Route::get('/courses',[CourseController::class,'index'])->name('course.index');
+Route::post('courses/store',[CourseController::class,'store'])->name('course.store');
+
+Route::get('/ensino/niveis',[EducationLevelController::class,'index'])->name('education_level.index');
+Route::post('ensino/niveis/store',[EducationLevelController::class,'store'])->name('education_level.store');
+Route::delete('/ensino/niveis/delete/{id}',[EducationLevelController::class,'destroy'])->name('education_level.destroy');
+
+Route::get('users/unit/admin',[UnitAdminController::class,'index'])->name('unit_admin.index');
+Route::post('users/unit/admin/store',[UnitAdminController::class,'store'])->name('unit_admin.store');
+Route::delete('users/unit/admin/delete/{id}',[UnitAdminController::class,'destroy'])->name('unit_admin.destroy');

@@ -63,6 +63,18 @@ Cadastro de Professor
             </div>
 
             <div class="form-row">
+                <label class="text-black">Unidade</label>
+                <select name="institutional-unit-id" class="form-control">
+                    @if(Auth::user() && Auth::user()->is_admin)
+                    <option value="">Nenhuma</option>
+                    @endif
+                    @foreach($institutionalUnits as $unit)
+                    <option value="{{ $unit->id }}">{{$unit->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="rede_social1" class="text-black">Rede Social 1</label>
                     <input  type="text"

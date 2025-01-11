@@ -55,13 +55,19 @@ class User extends Authenticatable
             return true;
         }
 
+        if (is_numeric($discipline)) {
+            $discipline = Discipline::findOrFail($discipline);
+        }
+
+        if($this->is_unit_admin){
+            return (isset($this->unitAdmin->institutionalUnit) && isset($discipline->institutionalunit)
+                 && $this->unitAdmin->institutionalUnit->id == $discipline->institutionalUnit->id);
+        }
+
         if (is_null($this->professor)) {
             return false;
         }
 
-        if (is_numeric($discipline)) {
-            $discipline = Discipline::findOrFail($discipline);
-        }
 
         return $this->professor->id == $discipline->professor_id;
     }
@@ -73,6 +79,11 @@ class User extends Authenticatable
     public function getIsAdminAttribute(): bool
     {
         return $this->role->priority_level == 999;
+    }
+
+    public function getIsUnitAdminAttribute():bool
+    {
+        return $this->role->name == RoleName::UNIT_ADMIN;
     }
     /**
      * Retorna se o usuário é um professor.
@@ -115,6 +126,11 @@ class User extends Authenticatable
     public function professor()
     {
         return $this->hasOne(Professor::class);
+    }
+
+    public function unitAdmin()
+    {
+        return $this->hasOne(UnitAdmin::class);
     }
 
 }

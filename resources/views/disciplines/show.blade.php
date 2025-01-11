@@ -274,6 +274,7 @@ mais.
                         </div>
 
                     </div>
+                    @if(isset($discipline->professor))
                     <div class="section">
                         <h1>Metodologias</h1>
                         @if (auth()->user())
@@ -466,6 +467,7 @@ mais.
                         </div>
 
                     </div>
+                    @endif
                     <!-- FAQ -->
                     @if ($discipline->faqs->count())
                     <div class="section">
@@ -1391,15 +1393,16 @@ mais.
 @section('scripts-bottom')
 <script src="{{ asset('js/disciplineShow.js') }}"></script>
 <script>
-    let professorName = "{{ $discipline->professor->name }}".toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,
-        "");
+    let professorName = "{{ isset($discipline->professor->name) ? $discipline->professor->name : ''  }}"
+        .toUpperCase().normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, "");
 </script>
 <script src="{{ asset('js/disciplinePerfomanceDataFormPortal.js') }}"></script>
 <script src="{{ asset('js/subjectContentsCollapse.js') }}"></script>
 <script>
     let disciplineId = "{{ $discipline->id }}";
     let disciplineCode = "{{ $discipline->code }}";
-    let professorId = "{{ $discipline->professor->id }}";
+    let professorId = "{{ isset($discipline->professor->id) ? $discipline->professor->id : null }}";
     let subjectTopics = @json($discipline->subjectTopics);
     let subjectConcepts = @json($discipline->subjectConcepts);
     let subjectReferences = @json($discipline->subjectReferences);
@@ -1408,14 +1411,18 @@ mais.
     userIdProfessor = '{{ Auth::user()->professor->id }}';
     @endif
 </script>
+@if(isset($discipline->professor))
 <script src="{{ asset('js/methodologies.js') }}"></script>
+<script>getProfessorMethodologies()</script>
+@endif
 <script src="{{ asset('js/disciplineContents.js')}}"></script>
+
+@if(auth()->user())
 <script>
-    @if(auth()->user())
-    getProfessorMethodologies();
     let token = '{{ csrf_token() }}';
-    @endif
 </script>
+@endif
+
 <script>
     $(function() {
         $('[data-toggle="tooltip"]').tooltip()

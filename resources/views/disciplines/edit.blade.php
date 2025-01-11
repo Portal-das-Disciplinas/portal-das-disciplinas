@@ -74,20 +74,38 @@ noindex, follow
                     @endforeach
                 </select>
                 <input id="old_input_emphasis" name="old_input_emphasis" hidden>
-
-
-
+            </div>
+            <div class="col-md-12 px-0">
+                <label>Nível de ensino</label>
+                <select name="education-level-id" value="{{ old('education-level-id') }}" class="form-control">
+                    @foreach($educationLevels as $educationLevel)
+                    <option value="{{ $educationLevel->id }}" 
+                        @if(isset($discipline->educationLevel) && $discipline->educationLevel->id == $educationLevel->id) selected @endif >
+                        {{$educationLevel->value}}</option>
+                    @endforeach
+                </select>
 
             </div>
+            @if(Auth::user() && Auth::user()->is_admin)
+            <div class="col-md-12 px-0 pr-0">
+                <label>Unidade</label>
+                <select name="institutional-unit-id" class="form-control" value="institutional-unit-id">
+                    @foreach($institutionalUnits as $unit)
+                    <option value="{{ $unit->id }}" {{isset($selectedInstitutionalUnit) && $selectedInstitutionalUnit->id == $unit->id ? 'selected' : '' }}>{{$unit->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            @endif
+            @if (Auth::user()->is_admin || Auth::user()->is_unit_admin)
             <div class="col-md-12 px-0 pr-0">
                 <label for="professor">Professor</label>
-                @if (Auth::user()->is_admin)
                 <div class="form-group">
                     <select name="professor" id="professor" class="form-control" aria-label="Professor" onchange="onChangeProfessor(event)">
+                                <option value="">Nenhum</option>
                         @foreach ($professors as $professor)
                             @if (session()->has('oldProfessorInput') && session('oldProfessorInput') == $professor->id)
                                 <option selected value="{{$professor->id}}">{{$professor->name}}</option>
-                             @elseif(!session()->has('oldProfessorInput') && $professor->id == $discipline->professor->id)
+                             @elseif(!session()->has('oldProfessorInput') && isset($discipline->professor) && $professor->id == $discipline->professor->id)
                                 <option selected value="{{$professor->id}}">{{$professor->name}}</option>
                              @else
                                 <option value="{{$professor->id}}">{{$professor->name}}</option>
@@ -96,8 +114,23 @@ noindex, follow
                     </select>
                     <input id="old_input_professor" name="old_input_professor" hidden>
                 </div>
-                @endif
             </div>
+            @endif
+
+            <div class="col-md-12 px-0"> 
+                <label>Selecione os cursos dos quais esta disciplina pertence</label>
+                <div class="card px-1" style="overflow-y: auto; max-height: 300px;">
+                    @foreach($courses as $course)
+                    <div class="form-group">
+                        <input id="{{ $course->name }}" type="checkbox" name="course-id[]" 
+                            class="input-check" value="{{ $course->id }}"
+                            @if($discipline->courses->find($course->id)) checked @endif>
+                        <label for="{{ $course->name }}" class="form-label text-primary" style="cursor:pointer;">{{$course->name}}</label>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="form-row mt-3">
                 <div class="col-md-6">
                     <div class="form-group">

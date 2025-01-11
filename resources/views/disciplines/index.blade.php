@@ -36,6 +36,30 @@
             <div class="col-md-12">
                 <form id="filter" class="row" action="/discipline/filter" method="GET">
                     @csrf
+                    <div class="col-md-5 mb-3">
+                        <select name="institutional-unit-id" class="form-control ">
+                            <option value="">Todas as unidades</option>
+                            @foreach($institutionalUnits as $unit)
+                            <option value=" {{$unit->id}} ">{{$unit->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <select id="course-id" name="course-id" class="form-control">
+                            <option value="">Todos os cursos</option>
+                            @foreach($courses as $course)
+                            <option value=" {{$course->id}}">{{$course->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <select name="education-level-id" class="form-control">
+                            <option value="">Todos os níveis</option>
+                            @foreach($educationLevels as $educationLevel)
+                            <option value=" {{$educationLevel->id}}">{{$educationLevel->value}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
@@ -293,7 +317,18 @@
         <div class="row pb-5">
             @foreach($disciplines as $discipline)
             <div class="col-12 col-sm-6 col-lg-3 mb-5 ">
-                <div class="discipline-card cardd shadow light-border-radius" style="background-color: white;">
+                <div class="discipline-card shadow light-border-radius" style="background-color: white;">
+                    <div class=" d-flex justify-content-end bg-primary">
+                        <small>
+                            <strong class="text-white mr-1">
+                                @if(isset($discipline->institutionalUnit))
+                                {{isset($discipline->InstitutionalUnit->acronym) ? $discipline->institutionalUnit->acronym : Str::limit($discipline->institutionalUnit->name,32,'...')}}
+                                @else
+                                Portal das Disciplinas
+                                @endif
+                            </strong>
+                        </small>
+                    </div>
                     <div style="height: 245px;">
                         @if(!is_null($discipline['trailer']) && ($discipline->trailer->view_url != ""))
                         <div class="teacher-video-container">
@@ -306,12 +341,16 @@
                         @endif
                         <div class="card-top-contsainer px-3 pt-3">
                             <div>
-                                <h3 class="card-title">{{ $discipline['name'] }}</h3>
+                                @if(strlen($discipline->name) >= 56)
+                                <strong class="card-title">{{ $discipline->name}}</strong>
+                                @else
+                                <h3 class="card-title">{{$discipline->name}}</h3>
+                                @endif
                             </div>
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between flex-column px-3" style="height:165px;" >
+                    <div class="d-flex justify-content-between flex-column px-3" style="height:135px;" >
                         <div>
                                 <div class="d-flex justify-content-center w-100">
                                     <button type="button" class="btn btn-outline-primary  w-100" data-toggle="modal" data-target="{{'#modal-description-'. $discipline->id}}">
@@ -383,8 +422,9 @@
 
                     </div>
                     <div  class="d-flex flex-column justify-content-end" style="height:60px;">
-                        @if (isset($discipline->professor->name))
+                       
                         <div class="card-footer smaller-p py-0 m-0 w-100">
+                        @if (isset($discipline->professor->name))
                             {{$discipline->professor->name}}
                         @else
                             Indefinido

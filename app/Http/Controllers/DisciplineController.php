@@ -17,6 +17,7 @@ use App\Http\Requests\Discipline\UpdateRequest;
 use App\Models\Classification;
 use App\Models\DisciplinePerformanceData;
 use App\Models\ClassificationDiscipline;
+use App\Models\Course;
 use App\Services\Urls\GoogleDriveService;
 use App\Services\Urls\YoutubeService;
 use Illuminate\Http\Request;
@@ -32,11 +33,16 @@ use App\Models\ProfessorMethodology;
 use App\Models\SubjectConcept;
 use App\Models\SubjectReference;
 use App\Models\SubjectTopic;
+use App\Models\UnitAdmin;
 use App\Services\APISigaa\APISigaaService;
+use App\Services\CourseService;
 use App\Services\DisciplinePerformanceDataService;
 use App\Services\DisciplineService;
+use App\Services\EducationLevelService;
+use App\Services\InstitutionalUnitService;
 use App\Services\MethodologyService;
 use App\Services\PortalAccessInfoService;
+use App\Services\ProfessorService;
 use DateTime;
 use Exception;
 use Illuminate\Support\Facades\Storage;
@@ -59,12 +65,20 @@ class DisciplineController extends Controller
 
     protected $theme;
     protected $portalAccessInfoService;
+    protected $institutionalUnitService;
+    protected $professorService;
+    protected $educationLevelService;
+    protected $courseService;
 
     public function __construct()
     {
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
         $this->portalAccessInfoService = new PortalAccessInfoService();
+        $this->institutionalUnitService = new InstitutionalUnitService();
+        $this->professorService = new ProfessorService();
+        $this->educationLevelService = new EducationLevelService();
+        $this->courseService = new CourseService();
         //$this->middleware(PortalAccessInfoMiddleware::class)->only(['index', 'disciplineFilter', 'show']);
     }
 
@@ -84,7 +98,10 @@ class DisciplineController extends Controller
         $disciplines = Discipline::query()->orderBy('name', 'ASC')->get();
         $opinionLinkForm = Link::where('name', 'opinionForm')->first();
         $methodologies = (new MethodologyService())->listAllMethodologies();
-        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
+        $institutionalUnits = $this->institutionalUnitService->listAll();
+        $courses = $this->courseService->list();
+        $educationLevels = $this->educationLevelService->list();
+        $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view('disciplines.index')
             ->with('disciplines', $disciplines->paginate(12))
             ->with('emphasis', $emphasis)
@@ -94,7 +111,10 @@ class DisciplineController extends Controller
             ->with('classifications', $classifications)
             ->with('studentsData', $studentsData)
             ->with('professors', $professors_all)
-            ->with('methodologies', $methodologies);
+            ->with('methodologies', $methodologies)
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('courses', $courses)
+            ->with('educationLevels', $educationLevels);
     }
 
     public function disciplineFilter(Request $request)
@@ -106,7 +126,10 @@ class DisciplineController extends Controller
         $professors = Professor::all()->sortBy('name');
         $classifications = Classification::All()->sortBy('order');
         $methodologies = (new MethodologyService())->listAllMethodologies();
-        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
+        $institutionalUnits = $this->institutionalUnitService->listAll();
+        $courses = $this->courseService->list();
+        $educationLevels = $this->educationLevelService->list();
+        $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view('disciplines.index')
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinionLinkForm)
@@ -114,7 +137,10 @@ class DisciplineController extends Controller
             ->with('emphasis', $emphasis)
             ->with('classifications', $classifications)
             ->with('professors', $professors)
-            ->with('methodologies', $methodologies);
+            ->with('methodologies', $methodologies)
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('courses', $courses)
+            ->with('educationLevels', $educationLevels);
     }
 
     /**
@@ -142,18 +168,36 @@ class DisciplineController extends Controller
         $professors = new Professor();
         $classifications = Classification::all();
         $emphasis = Emphasis::all();
-
-        if (Auth::user()->isAdmin) {
+        $institutionalUnits = null;
+        $courses = $this->courseService->list();
+        if ($this->checkIsAdmin()) {
             $professors = Professor::query()->orderBy('name', 'ASC')->get();
+            $institutionalUnits = $this->institutionalUnitService->listAll();
+        } elseif ($this->checkIsUnitAdmin()) {
+            $unitAdmin = Auth::user()->unitAdmin;
+            $institutionalUnit = $unitAdmin->institutionalUnit;
+            $professors = $this->professorService->getProfessorsByInstitutionalUnit($institutionalUnit->id);
+            $institutionalUnits = collect();
+            $institutionalUnits->add($institutionalUnit);
+
+        } elseif ($this->checkIsProfessor()) {
+            if (!isset(Auth::user()->professor->InstitutionalUnit)) {
+                return redirect()->back()
+                    ->withInput()->withErrors(['unit_error' => 'O professor precisa estar em um unidade']);
+            }
         }
+        $educationLevels = $this->educationLevelService->list();
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
-        
+
         return view(self::VIEW_PATH . 'create', compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm', true);
+            ->with('showOpinionForm', true)
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('educationLevels', $educationLevels)
+            ->with('courses', $courses);
     }
     /**
      * Store a newly created resource in storage.
@@ -167,11 +211,11 @@ class DisciplineController extends Controller
         try {
             $user = Auth::user();
             $professor = new Professor();
-            if ($user->isAdmin) {
+            if ($user->isAdmin || $user->is_unit_admin) {
                 $professor = Professor::query()->find($request->input('professor'));
             }
             if (!isset($professor)) {
-                throw new MissingDataException("É necessário selecionar um professor para a disciplina");  
+                throw new MissingDataException("É necessário selecionar um professor para a disciplina");
             }
 
             $discipline = Discipline::create([
@@ -181,8 +225,23 @@ class DisciplineController extends Controller
                 'emphasis_id' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),
-                'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id
+                'professor_id' => ($user->isAdmin || $user->is_unit_admin) ? $professor->id : $user->professor->id,
+                'education_level_id' => $request->{'education-level-id'}
             ]);
+
+            $coursesId = $request->{'course-id'};
+            if(isset($coursesId)){
+                foreach($coursesId as $courseId){
+                    $discipline->courses()->attach($courseId);
+                }
+            }
+            
+            if(Auth::user()->is_professor){
+                $discipline->institutional_unit_id = Auth::user()->professor->InstitutionalUnit->id;
+            }else{
+                $discipline->institutional_unit_id = $request->{'institutional-unit-id'};
+            }
+
 
             if ($request->topics) {
                 foreach ($request->topics as $topicName) {
@@ -225,17 +284,16 @@ class DisciplineController extends Controller
                     if (Auth::user()->isProfessor && $professorMethodology->{'professor_methodology_id'} != Auth::user()->professor->id) {
                         throw new NotAuthorizedException("O professor não pode criar metodologias de outros professores.");
                     }
-                    if(Auth::user()->isAdmin){
+                    if (Auth::user()->isAdmin) {
                         $newProfessorMethodology->{'professor_id'} = $request->professor;
-                    }elseif( Auth::user()->isProfessor){
+                    } elseif (Auth::user()->isProfessor) {
                         $newProfessorMethodology->{'professor_id'} = Auth::user()->professor->id;
                     }
-                   
+
                     $newProfessorMethodology->{'professor_description'} = $professorMethodology->{'professor_description'};
                     $newProfessorMethodology->{'methodology_use_description'} = $professorMethodology->{'methodology_use_description'};
                     $value = $newProfessorMethodology->save();
                     $newProfessorMethodology->disciplines()->attach($discipline->id);
-                    
                 }
             }
 
@@ -274,7 +332,7 @@ class DisciplineController extends Controller
                     ->storeAs('podcasts', $discipline->id . '.mp3', 'public');
 
                 $discipline->podcast_url = $podcastUrl;
-                $discipline->save();
+                //$discipline->save();
             }
 
             if ($request->filled('media-video') && YoutubeService::match($request->input('media-video'))) {
@@ -362,7 +420,7 @@ class DisciplineController extends Controller
                     }
                 }
             }
-
+            $discipline->save();
             DB::commit();
             $disciplinePerformanceDataService = new DisciplinePerformanceDataService();
             $disciplinePerformanceDataService->updateDisciplinePerformanceDataValues($discipline->code);
@@ -379,10 +437,11 @@ class DisciplineController extends Controller
             return redirect()->route("disciplinas.show", $discipline->id);
         } catch (\Exception $exception) {
             DB::rollBack();
+            Log::error($exception);
             $topicsConceptsReferences = $this->createTopicsConceptsReferenceResponse($request);
             return redirect()
                 ->back()
-                ->withErrors(['error' => $exception->getMessage()])
+                ->withErrors(['error' => "Um erro aconteceu"])
                 ->withInput()
                 ->with([
                     'oldSelectEmphasisIndex' => $request->{'select-emphasis-index'},
@@ -401,7 +460,7 @@ class DisciplineController extends Controller
      * @param $id Identificador único da disciplina
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show(Request $request,$id)
+    public function show(Request $request, $id)
     {
         $service = new APISigaaService();
         $discipline = Discipline::query()
@@ -427,7 +486,7 @@ class DisciplineController extends Controller
                 ->with('showOpinionForm', true)
                 ->with('professorMethodologies', $discipline->professor_methodologies);
         }
-        $this->portalAccessInfoService->registerAccess($request->ip(),$request->path(),new DateTime());
+        $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
         return view(self::VIEW_PATH . 'show', compact('discipline'))
             ->with('classifications', $classifications)
             ->with('theme', $this->theme)
@@ -446,9 +505,16 @@ class DisciplineController extends Controller
     {
         $emphasis = Emphasis::all();
         $professors = new Professor();
-        if (Auth::user()->isAdmin) {
-            $professors = Professor::query()->orderBy('name', 'ASC')->get();
+        $institutionalUnits = collect();
+        if ($this->checkIsAdmin()) {
+            $professors = $this->professorService->listAll();
+            $institutionalUnits = $this->institutionalUnitService->listAll();
+
+        }elseif($this->checkIsUnitAdmin()){
+            $professors = $this->professorService
+                    ->ListByInstitutionalUnitId(Auth::user()->unitAdmin->institutionalUnit->id);
         }
+        
         $discipline = Discipline::query()
             ->with([
                 'professor',
@@ -457,9 +523,11 @@ class DisciplineController extends Controller
                 'disciplineParticipants',
                 'subjectTopics',
                 'subjectConcepts',
-                'subjectReferences'
-            ])
-            ->findOrFail($id);
+                'subjectReferences',
+                'institutionalUnit'
+            ])->findOrFail($id);
+
+        $selectedInstitutionalUnit = $discipline->institutionalUnit;    
         $classifications = Classification::query()->orderBy('order', 'ASC')->get();
         $participants = array();
         for ($i = 0; $i < count($discipline->disciplineParticipants()->get()); $i++) {
@@ -468,13 +536,20 @@ class DisciplineController extends Controller
         }
 
         $opinioLinkForm = Link::where('name', 'opinionForm')->first();
+        $educationLevels = $this->educationLevelService->list();
+        $courses = $this->courseService->list();
+
         return view(self::VIEW_PATH . 'edit', compact('discipline'), compact('professors'))
             ->with('classifications', $classifications)
             ->with('emphasis', $emphasis)
             ->with('theme', $this->theme)
             ->with('participants', $participants)
             ->with('opinionLinkForm', $opinioLinkForm)
-            ->with('showOpinionForm', true);
+            ->with('institutionalUnits', $institutionalUnits)
+            ->with('selectedInstitutionalUnit', $selectedInstitutionalUnit)
+            ->with('educationLevels', $educationLevels)
+            ->with('showOpinionForm', true)
+            ->with('courses', $courses);
     }
 
     /**
@@ -490,11 +565,11 @@ class DisciplineController extends Controller
         DB::beginTransaction();
         try {
             $user = Auth::user();
-            $professor = new Professor();
+           /* $professor = new Professor();
 
-            if ($user->isAdmin) {
+            if ($user->isAdmin || $user->is_unit_admin) {
                 $professor = Professor::query()->find($request->input('professor'));
-            }
+            } */
 
             $discipline = Discipline::query()->find($id);
             $discipline->update([
@@ -504,8 +579,29 @@ class DisciplineController extends Controller
                 'emphasis_id' => $request->input('emphasis'),
                 'difficulties' => $request->input('difficulties'),
                 'acquirements' => $request->input('acquirements'),
-                'professor_id' => $user->isAdmin ? $professor->id : $user->professor->id,
+                'education_level_id' => $request->{'education-level-id'}
             ]);
+
+            $selectedCoursesId = $request->{'course-id'};
+            $discipline->courses()->detach();
+            if(isset($selectedCoursesId)){
+                foreach($selectedCoursesId as $courseId){
+                    $discipline->courses()->attach($courseId);
+                }
+            }
+
+            if($user->is_unit_admin && !isset($request->professor)){
+                return redirect()->back()->withInput()
+                    ->withErrors(['professor_error' => 'É nescessário selecionar um professor']);
+            } 
+
+            if($user->is_admin || $user->is_unit_admin){
+                $discipline->professor_id = $request->professor;
+            }
+
+            if($this->checkIsAdmin()){
+                $discipline->institutional_unit_id = $request->{'institutional-unit-id'};
+            }
 
             $participantsFromJson = (json_decode($request->participantList));
             /* Deleta os participantes que não estão na lista da requisição */
@@ -809,8 +905,8 @@ class DisciplineController extends Controller
         } catch (InvalidFileFormatException $exception) {
             DB::rollBack();
             $topicsContentsReferences = $this->createTopicsConceptsReferenceResponse($request);
-            $oldEmphasisInput = $request->{'old_input_emphasis'}=="" ? "sem_enfase" : $request->{'old_input_emphasis'};
-            $oldProfessorInput = $request->{'old_input_professor'}=="" ? "sem_professor" : $request->{'old_input_professor'};
+            $oldEmphasisInput = $request->{'old_input_emphasis'} == "" ? "sem_enfase" : $request->{'old_input_emphasis'};
+            $oldProfessorInput = $request->{'old_input_professor'} == "" ? "sem_professor" : $request->{'old_input_professor'};
             return redirect()->back()
                 ->withInput()
                 ->withErrors(['media-podcast' => $exception->getMessage()])
@@ -824,14 +920,14 @@ class DisciplineController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             $topicsContentsReferences = $this->createTopicsConceptsReferenceResponse($request);
-            $oldEmphasisInput = $request->{'old_input_emphasis'}=="" ? "sem_enfase" : $request->{'old_input_emphasis'};
-            $oldProfessorInput = $request->{'old_input_professor'}=="" ? "sem_professor" : $request->{'old_input_professor'};
+            $oldEmphasisInput = $request->{'old_input_emphasis'} == "" ? "sem_enfase" : $request->{'old_input_emphasis'};
+            $oldProfessorInput = $request->{'old_input_professor'} == "" ? "sem_professor" : $request->{'old_input_professor'};
             Log::error($exception);
             return redirect()->route("disciplinas.edit", $discipline->id)
                 ->withInput()->withErrors(['generalError' => 'Ocorreu um erro ao salvar a disciplina'])
                 ->with([
                     'oldTopicsInput' => $topicsContentsReferences['topics'],
-                    'oldConceptsInput'=> $topicsContentsReferences['concepts'],
+                    'oldConceptsInput' => $topicsContentsReferences['concepts'],
                     'oldReferencesInput' => $topicsContentsReferences['references'],
                     'oldEmphasisInput' => $oldEmphasisInput,
                     'oldProfessorInput' => $oldProfessorInput
@@ -845,7 +941,7 @@ class DisciplineController extends Controller
         $subjectTopics = array();
         $subjectConcepts = array();
         $subjectReferences = array();
-        if($request->topicsId){
+        if ($request->topicsId) {
             foreach ($request->topicsId as $key => $topicId) {
                 $subjectTopic = new SubjectTopic();
                 $subjectTopic->id = $topicId;
@@ -853,8 +949,8 @@ class DisciplineController extends Controller
                 array_push($subjectTopics, $subjectTopic);
             }
         }
-        
-        if($request->conceptsId){
+
+        if ($request->conceptsId) {
             foreach ($request->conceptsId as $key => $conceptId) {
                 $subjectConcept = new SubjectConcept();
                 $subjectConcept->id = $conceptId;
@@ -862,16 +958,16 @@ class DisciplineController extends Controller
                 array_push($subjectConcepts, $subjectConcept);
             }
         }
-        
-        if($request->referencesId){
-            foreach($request->referencesId as $key => $referenceId){
+
+        if ($request->referencesId) {
+            foreach ($request->referencesId as $key => $referenceId) {
                 $subjectReference = new SubjectReference();
                 $subjectReference->id = $referenceId;
                 $subjectReference->value = $request->references[$key];
                 array_push($subjectReferences, $subjectReference);
             }
         }
-        
+
         $topicsConceptsReferences['topics'] = $subjectTopics;
         $topicsConceptsReferences['concepts'] = $subjectConcepts;
         $topicsConceptsReferences['references'] = $subjectReferences;
@@ -1063,5 +1159,20 @@ class DisciplineController extends Controller
         }
 
         return response()->json($data, 200);
+    }
+
+    private function checkIsAdmin()
+    {
+        return Auth::user() && Auth::user()->is_admin;
+    }
+
+    private function checkIsUnitAdmin()
+    {
+        return Auth::user() && Auth::user()->is_unit_admin;
+    }
+
+    private function checkIsProfessor()
+    {
+        return Auth::user() && Auth::user()->is_professor;
     }
 }

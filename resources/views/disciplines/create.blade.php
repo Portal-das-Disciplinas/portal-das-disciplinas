@@ -51,7 +51,6 @@ noindex, follow
 
 
         <div class="col-md-12 px-0">
-
             <label class="" for="emphasis">
                 Ênfase da disciplina
             </label>
@@ -62,11 +61,34 @@ noindex, follow
                 @endforeach
             </select>
             <input id="select-emphasis-index" name="select-emphasis-index" hidden>
-
-
         </div>
+
         <div class="col-md-12 px-0">
-            @if (Auth::user()->isAdmin)
+            <label>Nível de ensino</label>
+            <select class="form-control" name="education-level-id">
+                @foreach($educationLevels as $educationLevel)
+                <option value="{{ $educationLevel->id }}">{{$educationLevel->value}}</option>
+                @endforeach
+            </select>
+        </div>
+        @if(Auth::user() && !Auth::user()->is_professor)
+        <div class="col-md-12 px-0">
+            <div class="form-group">
+                <label>Unidade</label>
+                <select name="institutional-unit-id" class="form-control">
+                    @if(Auth::user()->is_admin)
+                    <option value="">Nenhuma</option>
+                    @endif
+                    @foreach($institutionalUnits as $unit)
+                    <option value="{{$unit->id}}">{{$unit->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        @endif
+
+        <div class="col-md-12 px-0">
+            @if (Auth::user()->isAdmin || Auth::user()->is_unit_admin)
             <label for="professor" class="">Professor</label>
             <div class="form-group">
                 <select name="professor" id="professor" class="form-control" aria-label="Professor">
@@ -79,6 +101,19 @@ noindex, follow
             </div>
             @endif
         </div>
+        <div class="col-md-12 px-0"> 
+            <label>Selecione os cursos dos quais esta disciplina pertence</label>
+            <div class="card px-1" style="overflow-y: auto; max-height: 300px;">
+                @foreach($courses as $course)
+                <div class="form-group">
+                    <input id="{{ $course->name }}" type="checkbox" name="course-id[]" 
+                        class="input-check" value="{{ $course->id }}">
+                    <label for="{{ $course->name }}" class="form-label text-primary" style="cursor:pointer;">{{$course->name}}</label>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        
         <div class="form-row mt-3">
             <div class="col-md-6">
                 <div class="form-group">

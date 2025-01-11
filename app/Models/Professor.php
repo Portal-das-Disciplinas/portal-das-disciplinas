@@ -45,6 +45,7 @@ class Professor extends Model
         'rede_social4',
         'link_rsocial4',
         'user_id',
+        'institutional_unit_id'
     ];
 
     /**
@@ -54,5 +55,10 @@ class Professor extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function institutionalUnit()
+    {
+        return $this->belongsTo(InstitutionalUnit::class);
     }
 }

@@ -67,6 +67,21 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                @if(Auth::user() && Auth::user()->is_admin)
+                <div class="form-group col-12">
+                  <label class="text-black">Unidade</label>
+                  <select name="institutional-unit-id" class="form-control" value="{{ old('institutional-unit-id') }}">
+                    <option value="" @if(!isset($selectedUnit)) selected @endif>Nenhum</option>
+                    @foreach($institutionalUnits as $unit)
+                    <option value="{{ $unit->id }}" 
+                      @if( isset($selectedUnit) && $unit->id == $selectedUnit->id) selected @endif>
+                        {{$unit->name}}
+                    </option>
+                    @endforeach
+                  </select>
+
+                </div>
+                @endif
                     <div class="form-group col-md-6 pb-3">
                         <label for="rede_social1">Nome Rede Social 1 </label>
                         <input type="text" class="form-control {{ $errors->has('rede_social1') ? 'is-invalid' : ''}}" name='rede_social1' id="rede_social1"
