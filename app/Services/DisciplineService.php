@@ -53,7 +53,7 @@ class DisciplineService
         }
 
         if($request->{'institutional-unit-id'}){
-            $disciplines->where('institutional_unit_id','=',$request->{'institutional-unit-id'});
+            $disciplines->where('disciplines.institutional_unit_id','=',$request->{'institutional-unit-id'});
         }
 
         if($request->{'course-id'}){
