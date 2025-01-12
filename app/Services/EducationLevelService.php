@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\EducationLevel;
+use Illuminate\Support\Facades\Log;
 
 class EducationLevelService
 {
@@ -27,6 +28,17 @@ class EducationLevelService
                 'priority_level' => $priorityLevel
             ]);
         }
+    }
+
+    public function update($id, $value, $priorityLevel){
+        $educationLevel = EducationLevel::findOrFail($id);
+        $courseLevels = EducationLevel::query()->orderBy('priority_level','asc')->get();
+        if($priorityLevel != $educationLevel->priority_level){
+            $this->reorderPriorityLevels($courseLevels, $priorityLevel);
+        }
+        $educationLevel->value = $value;
+        $educationLevel->priority_level = $priorityLevel;
+        $educationLevel->save();
     }
 
     public function delete($id){

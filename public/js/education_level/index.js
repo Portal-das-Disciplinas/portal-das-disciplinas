@@ -1,3 +1,10 @@
+function onClickUpdate(id, value, priorityLevel){
+    $('#modal-education-level-edit').modal('show');
+    $('#modal-education-level-edit form').attr('action','/ensino/niveis/' + id);
+    $('#modal-education-level-edit #value').val(value);
+    $('#modal-education-level-edit #priority-level').val(priorityLevel);
+}
+
 function setupModalDelete(id, value){
     document.querySelector('#modal-confirm-delete form').setAttribute('action',"/ensino/niveis/delete/" + id)
     document.querySelector('#modal-confirm-delete #education-level-value').innerHTML = value;

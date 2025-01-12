@@ -38,6 +38,15 @@ class EducationLevelController extends Controller
         ]);
     }
 
+    public function update(Request $request, $id){
+        try{
+            $this->educationLevelService->update($id,$request->value, $request->{'priority-level'});
+            return redirect()->back()->with(['success_message' => 'Atualizado com sucesso.']);
+        }catch(Exception $e){
+            return redirect()->back()->withErrors(['update_error' => 'Não foi possível atualizar.']);
+        }
+    }
+
     public function destroy($id){
         try{
             $this->educationLevelService->delete($id);

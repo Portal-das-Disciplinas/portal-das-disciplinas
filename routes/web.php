@@ -185,6 +185,7 @@ Route::post('courses/store',[CourseController::class,'store'])->name('course.sto
 
 Route::get('/ensino/niveis',[EducationLevelController::class,'index'])->name('education_level.index');
 Route::post('ensino/niveis/store',[EducationLevelController::class,'store'])->name('education_level.store');
+Route::put('ensino/niveis/{id}',[EducationLevelController::class,'update'])->name('education_level.update');
 Route::delete('/ensino/niveis/delete/{id}',[EducationLevelController::class,'destroy'])->name('education_level.destroy');
 
 Route::get('users/unit/admin',[UnitAdminController::class,'index'])->name('unit_admin.index');
