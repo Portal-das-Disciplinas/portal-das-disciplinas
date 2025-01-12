@@ -177,6 +177,7 @@ Route::get('/acessos',[PortalAccessInfoController::class,'index'])->name('portal
 
 Route::get('/units',[InstitutionalUnitController::class,'index'])->name('institutional_unit.index');
 Route::post('/units/store',[InstitutionalUnitController::class, 'store'])->name('institutional_unit.store');
+Route::put('/units/{id}',[InstitutionalUnitController::class, 'update'])->name('institutional_units.update');
 Route::delete('/units/delete/{id}',[InstitutionalUnitController::class,'destroy'])->name('institutional_unit.destroy');
 
 Route::get('/courses',[CourseController::class,'index'])->name('course.index');

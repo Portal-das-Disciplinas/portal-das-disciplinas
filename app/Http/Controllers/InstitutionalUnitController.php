@@ -15,56 +15,68 @@ use Illuminate\Support\Facades\Storage;
 class InstitutionalUnitController extends Controller
 {
     protected $theme;
+    protected $institutionalUnitService;
 
     public function __construct()
     {
 
         $contents = Storage::get('theme/theme.json');
         $this->theme = json_decode($contents, true);
+        $this->institutionalUnitService = new InstitutionalUnitService();
         $this->middleware('admin');
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
-        $service = new InstitutionalUnitService();
-        $units = $service->listAll();
+        $units = $this->institutionalUnitService->listAll();
 
-        return view('institutional_unit/index',[
+        return view('institutional_unit/index', [
             'units' => $units
-        ])->with('theme',$this->theme);
+        ])->with('theme', $this->theme);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-        $service = new InstitutionalUnitService();
-        try{
-            $service->save($request->{'unit-acronym'}, $request->{'unit-name'});
+        try {
+            $this->institutionalUnitService->save($request->{'unit-acronym'}, $request->{'unit-name'});
             return redirect()->back()->with(['success_message' => 'Unidade cadastrada com Sucesso.']);
-        }catch(InvalidInputException $e1){
+        } catch (InvalidInputException $e1) {
             return redirect()->back()->withErrors(['store_error' => $e1->getMessage()]);
-        }catch(ExistingDataException $e2){
+        } catch (ExistingDataException $e2) {
             return redirect()->back()->withErrors(['store_error' => $e2->getMessage()]);
-        }catch(Exception $e3){
+        } catch (Exception $e3) {
             Log::error($e3->getMessage());
             return redirect()->back()->withErrors(['store_error' => 'Não foi possível cadastrar.']);
-
         }
     }
 
-    public function destroy(Request $request){
-        $service = new InstitutionalUnitService();
-        try{
-            $service->delete($request->id);
-            return redirect()->back()->with(['success_message'=>'Unidade deletada com sucesso.']);
+    public function update(Request $request, $id)
+    {
+        try {
+            $this->institutionalUnitService->update($id, $request->{'unit-acronym'}, $request->{'unit-name'});
+            return redirect()->back()->with(['success_message' => 'Unidade atualizada com Sucesso.']);
+        } catch (InvalidInputException $e1) {
+            return redirect()->back()->withErrors(['input_error' => $e1->getMessage()]);
+        } catch (ExistingDataException $e2) {
+            return redirect()->back()->withErrors(['input_error' => $e2->getMessage()]);
+        } catch (Exception $e3) {
+            Log::error($e3->getMessage());
+            return redirect()->back()->withErrors(['store_error' => 'Não foi possível atualizar.']);
+        }
+    }
 
-        }catch(IntegrityConstraintViolationException $e){
+    public function destroy(Request $request)
+    {
+        try {
+            $this->institutionalUnitService->delete($request->id);
+            return redirect()->back()->with(['success_message' => 'Unidade deletada com sucesso.']);
+        } catch (IntegrityConstraintViolationException $e) {
             return redirect()->back()->withErrors(['query_exception_error' => $e->getMessage()]);
-
-        }catch(Exception $e){
+        } catch (Exception $e) {
             Log::error($e->getMessage());
             return redirect()->back()->withErrors(['delete_error' => 'Não foi possível deletar a unidade']);
-            
         }
-        
     }
 }
