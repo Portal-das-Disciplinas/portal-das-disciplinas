@@ -172,9 +172,14 @@ mais.
                         $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url != '') --}}
 
                         @if(isset($discipline->podcast_url) && ($discipline->podcast_url != '') )
-                        <audio class="w-100" controls>
+                        <audio id="podcast" class="w-100" controls controlsList="noplaybackrate">
                             <source src="/storage/{{$discipline->podcast_url}}" type="audio/mp3"/>
                         </audio>
+                        <div class="d-flex justify-content-between mb-3">
+                            <button class="btn btn-outline-primary px-4" onclick="decrementPlaybackRate()"><i class="fas fa-thin fa-minus"></i></button>
+                            <small>Velocidade <span id="podcast-playback-rate" class="font-weight-bold">1.0x</span></small>
+                            <button class="btn btn-outline-primary px-4" onclick="incrementPlaybackRate()"><i class="fas fa-thin fa-plus"></i></button>
+                        </div>
 
                         {{--<audio class="w-100" controls="controls">
                             <source src="{{ $discipline->getMediasByType(\App\Enums\MediaType::PODCAST)->first()->view_url }}" type="audio/mp3" />
@@ -1391,6 +1396,7 @@ mais.
 
 @endsection
 @section('scripts-bottom')
+<script src=" {{asset('js/disciplines/show.js')}} "></script>
 <script src="{{ asset('js/disciplineShow.js') }}"></script>
 <script>
     let professorName = "{{ isset($discipline->professor->name) ? $discipline->professor->name : ''  }}"
@@ -1480,4 +1486,5 @@ mais.
         });
     }
 </script>
+
 @endsection
