@@ -59,7 +59,7 @@
                                 {{$unit->name}}
                             <p>
                         </td>
-                        <td><button class="btn btn-warning btn-sm">Atualizar</button></td>
+                        <td><button class="btn btn-warning btn-sm" onclick="onClickEditUnit('{{$unit->id}}','{{$unit->acronym}}','{{$unit->name}}')">Atualizar</button></td>
                         <td><button class="btn btn-danger btn-sm" data-toggle='modal' data-target="#modal-confirm-delete-{{$unit->id}}">Deletar</button></td>
                     </tr>
                     <div id="modal-confirm-delete-{{$unit->id}}" class="modal" tabindex="-1" role="dialog">
@@ -119,6 +119,41 @@
             </div>
         </div>
     </div>
+
+    <div id="modal-edit-unit" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Cadastro de nova unidade institucional</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form" method="post" action = "">
+                        @csrf
+                        @Method('PUT')
+                        <div class="form-group">
+                            <input id="unit-acronym" name="unit-acronym" class="form-control" type="text" placeholder="Sigla da unidade" maxlength="10">
+                        </div>
+                        <div class="form-group">
+                            <input id="unit-name" name="unit-name" class="form-control" type="text" placeholder="Nome da unidade" required>
+                        </div>
+                        <input id="register-new-unit" type="submit" hidden>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <label for="register-new-unit" class="btn btn-primary">Atualizar</label>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection
+
+@section('scripts-bottom')
+
+<script src="{{ asset('js/institutional_unit/index.js') }}"></script>
+
+
+@endsection
+
