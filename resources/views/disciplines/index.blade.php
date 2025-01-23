@@ -122,11 +122,13 @@
                                         <div class="col-md-12">
                                             <div class="d-flex">
                                                 <div class="mr-5">
-                                                    <input id="filtro-classificacoes-caracteristica" name="filtro-classificacoes-caracteristica" type="checkbox" checked onchange="onClickClassificationFilterType(event)">
+                                                    <input id="filtro-classificacoes-caracteristica" name="filtro-classificacoes-caracteristica" type="checkbox" onchange="onClickClassificationFilterType(event)"
+                                                     {{isset($checkClassificationFeature) ||(!isset($checkClassificationFeature) && !isset($checkClassificationDetailed)) ? 'checked' : '' }}>
                                                     <label for="filtro-classificacoes-caracteristica" class="text-white" style="cursor:pointer"><small>Filtro por Característa</small></label>
                                                 </div>
                                                 <div>
-                                                    <input id="filtro-classificacoes-detalhado" name="filtro-classificacoes-detalhado" type="checkbox" onchange="onClickClassificationFilterType(event)">
+                                                    <input id="filtro-classificacoes-detalhado" name="filtro-classificacoes-detalhado" type="checkbox" onchange="onClickClassificationFilterType(event)"
+                                                    {{isset($checkClassificationDetailed) ? 'checked' : '' }}>
                                                     <label for="filtro-classificacoes-detalhado" class="text-white" style="cursor:pointer"><small>Filtro detalhado</small></label>
                                                 </div>
                                             </div>
@@ -498,6 +500,11 @@
     enableApprovalFilters(false);
     @endif
     updateDetailedClassificationsStyles(@json($classifications));
+
+    let filteredMethodologiesInputValues  = (document.querySelector('#filteredMethodologies').value);
+    if(filteredMethodologiesInputValues != "" && filteredMethodologiesInputValues != "[]"){
+        $('#collapse-filters').collapse('show');
+    }
 
 </script>
 

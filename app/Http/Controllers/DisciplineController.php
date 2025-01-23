@@ -183,7 +183,9 @@ class DisciplineController extends Controller
             ->with('selectedPredominantClassifications' ,$selectedPredominantClassifications )
             ->with('selectedDetailedClassificationTypes', $selectedDetailedClassificationTypes)
             ->with('selectedActiveClassications', $selectedActiveClassications)
-            ->with('classificationValues', $classificationValues);
+            ->with('classificationValues', $classificationValues)
+            ->with('checkClassificationFeature', $request->{'filtro-classificacoes-caracteristica'})
+            ->with('checkClassificationDetailed', $request->{'filtro-classificacoes-detalhado'});
 
             return $view;
     }

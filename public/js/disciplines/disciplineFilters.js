@@ -97,7 +97,7 @@ function updateDetailedClassificationsStyles(classifications) {
             typeAName.classList.remove('text-secondary');
             typeBName.classList.remove('text-primary');
             typeBName.classList.add('text-secondary');
-            
+
         } else {
             typeAName.classList.remove('text-primary');
             typeAName.classList.add('text-secondary');
@@ -115,9 +115,8 @@ function onChangeClassificationSlider(event) {
     checkbox.checked = true;
 }
 
-function onClickClassificationFilterType(event) {
-    event.target.checked = true;
-    if (event.target.id == "filtro-classificacoes-caracteristica") {
+function showClassificationsArea() {
+    if (document.querySelector("#filtro-classificacoes-caracteristica").checked) {
         document.querySelector("#filtro-classificacoes-detalhado").checked = false;
         document.querySelector("#area-caracteristica-predominante").classList.remove("d-none");
         document.querySelector("#area-filtro-detalhado").classList.add("d-none");
@@ -127,6 +126,17 @@ function onClickClassificationFilterType(event) {
         document.querySelector("#area-filtro-detalhado").classList.remove("d-none");
         document.querySelector("#area-caracteristica-predominante").classList.add("d-none");
     }
+}
+
+function onClickClassificationFilterType(event) {
+    event.target.checked = true;
+    if (event.target.id == "filtro-classificacoes-caracteristica") {
+        document.querySelector("#filtro-classificacoes-detalhado").checked = false;
+    }
+    else {
+        document.querySelector("#filtro-classificacoes-caracteristica").checked = false;
+    }
+    showClassificationsArea();
 }
 
 function onCheckClassificationFilter(event) {
@@ -158,7 +168,6 @@ function enableApprovalFilters(enable) {
     inputValorComparacao.style = inputValorComparacao.disabled ? disabledStyle : "";
     selectAnoAprov.style = selectAnoAprov.disabled ? disabledStyle : "";
     selectPeriodoAprov.style = selectPeriodoAprov.disabled ? disabledStyle : "";
-
 }
 
 if (document.querySelector('#check-filtro-classificacoes').checked) {
@@ -167,3 +176,13 @@ if (document.querySelector('#check-filtro-classificacoes').checked) {
 else {
     $('#collapse-classificacoes').collapse('hide');
 }
+
+if (document.querySelector('#check-filtro-classificacoes').checked
+    || document.querySelector('#check-filtro-aprovacao').checked
+    || document.querySelector('#select-professors').selectedIndex != 0
+    ) {
+
+    $('#collapse-filters').collapse('show');
+}
+
+showClassificationsArea()
