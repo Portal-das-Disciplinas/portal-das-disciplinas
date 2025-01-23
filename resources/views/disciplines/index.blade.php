@@ -34,13 +34,13 @@
 
         <div class="row justify-content-md-center mt-5" style="margin-bottom:25px;">
             <div class="col-md-12">
-                <form id="filter" class="row" action="/discipline/filter" method="GET">
+                <form id="filter" class="row" action="{{ route('index') }}" method="GET">
                     @csrf
                     <div class="col-md-5 mb-3">
                         <select name="institutional-unit-id" class="form-control ">
                             <option value="">Todas as unidades</option>
                             @foreach($institutionalUnits as $unit)
-                            <option value=" {{$unit->id}} ">{{$unit->name}}</option>
+                            <option value=" {{$unit->id}} "  {{$unitId == $unit->id ? 'selected' : ''}}>{{$unit->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -48,7 +48,7 @@
                         <select id="course-id" name="course-id" class="form-control">
                             <option value="">Todos os cursos</option>
                             @foreach($courses as $course)
-                            <option value=" {{$course->id}}">{{$course->name}}</option>
+                            <option value=" {{$course->id}}" {{$courseId == $course->id ? 'selected' : ''}}>{{$course->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -56,14 +56,14 @@
                         <select name="education-level-id" class="form-control">
                             <option value="">Todos os níveis</option>
                             @foreach($educationLevels as $educationLevel)
-                            <option value=" {{$educationLevel->id}}">{{$educationLevel->value}}</option>
+                            <option value=" {{$educationLevel->id}}" {{$educationLevelId == $educationLevel->id ? 'selected' : ''}}>{{$educationLevel->value}}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-6">
-                                <input id="name_discipline" type="text" class="form-control" placeholder="Nome da disciplina, temas, conceitos metodologias ou referências" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$name_discipline ?? ''}}" />
+                                <input id="name_discipline" type="text" class="form-control" placeholder="Nome da disciplina, temas, conceitos metodologias ou referências" aria-label="Caixa de pesquisa" aria-describedby="button-addon2" name='name_discipline' value="{{$disciplineName}}" />
                                 <label for="name_discipline" class="text-white"><small>Digite, o nome da disciplina, temas, conceitos, metodologias ou referências <span class="text-warning">separados por vírgula</span></small></label>
                                 {{--<div id="autocomplete-results" class="autocomplete-results mt-1 "></div> --}}
                             </div>
@@ -71,7 +71,7 @@
                                 <select name="emphasis" id="emphasis" class='form-control'>
                                     <option selected value=""> Todas as ênfases </option>
                                     @foreach($emphasis ?? '' as $emphase)
-                                    <option value="{{ $emphase->id }}">{{ $emphase->name }}</option>
+                                    <option value="{{ $emphase->id }}" {{$emphaseId == $emphase->id ? 'selected' : ''}}>{{ $emphase->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -84,7 +84,7 @@
                         </div>
 
                         <span id="texto-mostrar-filtros" class=" btn btn-outline-info text-warning mt-2 mb-2" data-toggle="collapse" data-target="#collapse-filters" role="button" aria-controls="#collapse-filters">Busca Avançada  <li class='fa fa-caret-down'></li></span>
-                        <div id="collapse-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
+                        <div id="collapse-filters" name="collapse-advanced-filters" class="collapse px-1 pb-2" style="border: solid 1px rgba(255,255,255,0.5);border-radius:5px">
                             @if(count($methodologies) > 0) 
                             <div class="row mt-3">
                                 <div class="col-md-12">
@@ -105,7 +105,7 @@
                                         <option value="null">Todos os professores</option>
                                         @if(isset($professors))
                                         @foreach($professors as $professor)
-                                        <option value="{{$professor->id}}">{{$professor->name}}</option>
+                                        <option value="{{$professor->id}}" {{$professorId == $professor->id ? 'selected' : ''}}>{{$professor->name}}</option>
                                         @endforeach
                                         @endif
                                     </select>
@@ -114,7 +114,7 @@
 
                             <div class="row mt-1 ">
                                 <div class="col-md-12">
-                                    <input id="check-filtro-classificacoes" name="check-filtro-classificacoes" type="checkbox" onclick="onCheckClassificationFilter(event)">
+                                    <input id="check-filtro-classificacoes" name="check-filtro-classificacoes" type="checkbox" onclick="onCheckClassificationFilter(event)" {{isset($checkClassificationsFilter) ? 'checked' : ''}}>
                                     <label for="check-filtro-classificacoes" class="text-white" style="cursor:pointer;">Filtro por classificações</label>
                                 </div>
                                 <div class="col-md-12">
@@ -149,20 +149,24 @@
                                                                     <tr>
                                                                         <td><small class="font-weight-bold">{{$classification->name}}</small></td>
                                                                         <td>
-                                                                            <div class="d-flex flex-column align-items-center">
-                                                                                <input id="{{'predominant_classification_type_a' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="type_a">
+                                                                            <div class="d-flex flex-column align-items-center">                                                   
+                                                                                <input id="{{'predominant_classification_type_a' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="type_a" 
+                                                                                {{isset($selectedPredominantClassifications['classification' . $classification->id]) && ($selectedPredominantClassifications['classification' . $classification->id]) == 'type_a'? 'checked' : ''}} >
                                                                                 <label for="{{'predominant_classification_type_a' . $classification->id}}" style="cursor:pointer;"><small class="font-weight-bold">{{$classification->{'type_a'} }}</small></label>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex flex-column align-items-center">
-                                                                                <input id="{{'predominant_classification_neutral' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="neutra" checked>
+                                                                                <input id="{{'predominant_classification_neutral' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="neutra" 
+                                                                                {{!isset($selectedPredominantClassifications['classification' . $classification->id]) 
+                                                                                    || ((($selectedPredominantClassifications['classification' . $classification->id]) != 'type_a') && ($selectedPredominantClassifications['classification' . $classification->id]) != 'type_b') ? 'checked' : ''}}>
                                                                                 <label for="{{'predominant_classification_neutral' . $classification->id}}" style="cursor:pointer;"> <small class="text-secondary font-weight-bold">Neutra</small></label>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex flex-column align-items-center">
-                                                                                <input id="{{'predominant_classification_type_b' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="type_b">
+                                                                                <input id="{{'predominant_classification_type_b' . $classification->id}}" type="radio" name="{{'classification' . $classification->id}}" value="type_b"
+                                                                                {{isset($selectedPredominantClassifications['classification' . $classification->id]) && ($selectedPredominantClassifications['classification' . $classification->id]) == 'type_b'? 'checked' : ''}}>
                                                                                 <label for="{{'predominant_classification_type_b' . $classification->id}}" style="cursor:pointer;"><small class="font-weight-bold">{{$classification->{'type_b'} }}</small></label>
                                                                             </div>
                                                                         </td>
@@ -184,30 +188,36 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <table class="table">
+                                                            <table id="table-classifications-detail" class="table">
                                                                 <tbody>
                                                                     @foreach($classifications as $classification)
                                                                     <tr>
                                                                         <td>
-                                                                            <input id="{{'classification_detail_active' . $classification->id}}" name="{{'classification_detail_active' . $classification->id}}" type="checkbox">
+                                                                            <input id="{{'classification_detail_active' . $classification->id}}" name="{{'classification_detail_active' . $classification->id}}" type="checkbox"
+                                                                            {{isset($selectedActiveClassications['classification_detail_active' . $classification->id]) ? 'checked' : ''}}>
                                                                             <label for="{{'classification_detail_active' . $classification->id}}" style="cursor:pointer;"><small class="font-weight-bold">{{$classification->name}}</small></label>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex justify-content-center align-items-center flex-column">
                                                                                 <label for="{{'classification_detail_type_a_value' . $classification->id}}"><small id="{{'classification_detail_type_a_name' . $classification->id }}" class="text-primary font-weight-bold" style="cursor:pointer;">{{$classification->{'type_a'} }}</small></label>
-                                                                                <input type="radio" id="{{'classification_detail_type_a_value' . $classification->id}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_a" checked onchange="onSelectClassificationTypeA(event, '{{$classification->id}}' )">
+                                                                                <input type="radio" id="{{'classification_detail_type_a_value' . $classification->id}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_a" onchange="onSelectClassificationTypeA(event, '{{$classification->id}}' )"
+                                                                                {{(!isset($selectedDetailedClassificationTypes['classification_detail' . $classification->id .'radio'])) || (isset($selectedDetailedClassificationTypes['classification_detail' . $classification->id .'radio']) && ($selectedDetailedClassificationTypes['classification_detail' . $classification->id .'radio'] == 'type_a')) ? 'checked' : ''}}>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex flex-column align-items-center">
-                                                                                <input id="{{'classification_detail' . $classification->id}}" type="range" min="0" max="100" value="0" name="{{'classification_detail' . $classification->id}}" style="appearance:none; background:lightgray;height:8px;width:75px;" oninput="onChangeClassificationSlider(event)" step="5">
-                                                                                <span id="{{'classification_detail' . $classification->id . 'info_value'}}" class="text-primary mt-3 font-weight-bold"> >= 0</span>
+                                                                                <input id="{{'classification_detail' . $classification->id}}" type="range" min="0" max="100"name="{{'classification_detail' . $classification->id}}" style="appearance:none; background:lightgray;height:8px;width:75px;" oninput="onChangeClassificationSlider(event)" step="5"
+                                                                                    value={{ isset($classificationValues['classification_detail' . $classification->id]) ?  $classificationValues['classification_detail' . $classification->id] : '0'}}>
+                                                                                <span id="{{'classification_detail' . $classification->id . 'info_value'}}" class="text-primary mt-3 font-weight-bold">
+                                                                                     >={{ isset($classificationValues['classification_detail' . $classification->id]) ?  $classificationValues['classification_detail' . $classification->id] : '0'}}
+                                                                                </span>
                                                                             </div>
                                                                         </td>
                                                                         <td>
                                                                             <div class="d-flex flex-column justify-content-center align-items-center">
                                                                                 <label for="{{'classification_detail_type_b_value' . $classification->id}}"><small id="{{'classification_detail_type_b_name' . $classification->id }}" class="text-secondary font-weight-bold" style="cursor:pointer;">{{$classification->{'type_b'} }}</small></label>
-                                                                                <input type="radio" id="{{'classification_detail_type_b_value' . $classification->id}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_b" onchange="onSelectClassificationTypeB(event, '{{$classification->id}}' )">
+                                                                                <input type="radio" id="{{'classification_detail_type_b_value' . $classification->id}}" name="{{'classification_detail' . $classification->id .'radio'}}" value="type_b" onchange="onSelectClassificationTypeB(event, '{{$classification->id}}' )"
+                                                                                {{isset($selectedDetailedClassificationTypes['classification_detail' . $classification->id .'radio']) && ($selectedDetailedClassificationTypes['classification_detail' . $classification->id .'radio'] == 'type_b') ? 'checked' : ''}}>
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -225,26 +235,27 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-md-12">
-                                    <input id="check-filtro-aprovacao" name="check-filtro-aprovacao" type="checkbox" onchange="onChangeCheckFilterApproval(event)">
+                                    <input id="check-filtro-aprovacao" name="check-filtro-aprovacao" type="checkbox" onchange="onChangeCheckFilterApproval(event)" {{$checkApprovalFilters =='on' ? 'checked' : ''}}>
                                     <label class="text-white" for="check-filtro-aprovacao" style="cursor:pointer">Filtro por dados de aprovação</label>
                                 </div>
                                 <div class="col-md-5 ">
                                     <div class="form-row">
                                         <div class="col-md-4 mb-1">
                                             <select id="select-tipo-aprov" class="form-control mr-1" name="tipo-aprov">
-                                                <option value="aprov">aprovação</option>
-                                                <option value="reprov">reprovação</option>
+                                                <option value="aprov" {{$selectTipoAprov == 'aprov' ? 'selected' : ''}}>aprovação</option>
+                                                <option value="reprov" {{$selectTipoAprov == 'reprov' ? 'selected' : ''}}>reprovação</option>
                                             </select>
                                         </div>
                                         <div class="col-md-4 mb-1">
                                             <select id="select-comparacao" class="form-control mr-1" name="comparacao">
-                                                <option value="maior">maior que</option>
-                                                <option value="menor">menor que</option>
+                                                <option value="maior" {{$comparacao == 'maior' ? 'selected' : ''}}>maior que</option>
+                                                <option value="menor" {{$comparacao == 'menor' ? 'selected' : ''}}>menor que</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="d-flex align-items-center">
-                                                <input id="input-valor-comparacao" type="number" min="0" max="100" class="form-control" name="valor-comparacao" value="0">
+                                                <input id="input-valor-comparacao" type="number" min="0" max="100" 
+                                                    class="form-control" name="valor-comparacao" value="{{$valorComparacao}}">
                                                 <span class="text-white ml-2">%</span>
                                             </div>
                                         </div>
@@ -260,8 +271,9 @@
                                                 <div class="col-md-9">
                                                     <select id="select-ano-aprov" name="ano-aprov" class="form-control">
                                                         <option value="null">Todos</option>
-                                                        @for($i=2014;$i < date('Y');$i++) <option value="{{$i}}">{{$i}}</option>
-                                                            @endfor
+                                                        @for($i=2014;$i < date('Y');$i++) 
+                                                        <option value="{{$i}}" {{$anoAprov == $i ? 'selected' : ''}}>{{$i}}</option>
+                                                        @endfor
                                                     </select>
                                                 </div>
                                             </div>
@@ -274,12 +286,9 @@
                                                 <div class="col-md-7">
                                                     <select id="select-periodo-aprov" name="periodo-aprov" class="form-control" style="background-color: lightgray;" disabled>
                                                         <option value="null">Todos</option>
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                        <option value="4">4</option>
-                                                        <option value="5">5</option>
-                                                        <option value="6">6</option>
+                                                        @for($i=1; $i <= 6; $i++)
+                                                        <option value="{{$i}}" {{$periodoAprov == $i ? 'selected' : ''}}>{{$i}}</option>
+                                                        @endfor
                                                     </select>
                                                 </div>
                                             </div>
@@ -480,5 +489,16 @@
     let methodologies = @json($methodologies);
 </script>
 <script src="{{asset('js/disciplines/methodologySelect.js')}}"></script>
+<script>
+    let oldFilteredMethodologies = @json($filteredMethodologies);
+    setFilteredMethodologies(oldFilteredMethodologies);
+    @if(isset($checkApprovalFilters))
+    enableApprovalFilters(true);
+    @else
+    enableApprovalFilters(false);
+    @endif
+    updateDetailedClassificationsStyles(@json($classifications));
+
+</script>
 
 @endsection

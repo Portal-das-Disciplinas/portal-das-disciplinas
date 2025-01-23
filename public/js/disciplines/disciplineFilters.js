@@ -1,37 +1,5 @@
 const disabledStyle = "background-color: lightgray; opacity: 70%;";
 
-function changeApprovalFilterFields() {
-    let checkFiltroAprovacao = document.querySelector("#check-filtro-aprovacao");
-    let selectTipoAprov = document.querySelector('#select-tipo-aprov');
-    let selectComparacao = document.querySelector('#select-comparacao');
-    let inputValorComparacao = document.querySelector('#input-valor-comparacao');
-    let selectAnoAprov = document.querySelector('#select-ano-aprov');
-    let selectPeriodoAprov = document.querySelector('#select-periodo-aprov');
-    if (checkFiltroAprovacao.checked) {
-        selectTipoAprov.disabled = false;
-        selectComparacao.disabled = false;
-        inputValorComparacao.disabled = false;
-        selectAnoAprov.disabled = false;
-        selectPeriodoAprov.disabled = false;
-        selectTipoAprov.style = "";
-        selectComparacao.style = "";
-        inputValorComparacao.style = "";
-        selectAnoAprov.style = "";
-        selectPeriodoAprov.style = "";
-    } else {
-        selectTipoAprov.disabled = true;
-        selectComparacao.disabled = true;
-        inputValorComparacao.disabled = true;
-        selectAnoAprov.disabled = true;
-        selectPeriodoAprov.disabled = true;
-        selectTipoAprov.style = disabledStyle;
-        selectComparacao.style = disabledStyle;
-        inputValorComparacao.style = disabledStyle;
-        selectAnoAprov.style = disabledStyle;
-        selectPeriodoAprov.style = disabledStyle;
-    }
-}
-
 function changeClassificationFilter() {
     let checkFeatureFilter = document.querySelector('#filtro-classificacoes-caracteristica');
     let checkDetailFilter = document.querySelector('#filtro-classificacoes-detalhado');
@@ -52,7 +20,7 @@ function changeClassificationFilter() {
 }
 
 function onChangeCheckFilterApproval(event) {
-    changeApprovalFilterFields();
+    enableApprovalFilters(event.target.checked);
 }
 
 window.onload = function () {
@@ -77,7 +45,6 @@ window.onload = function () {
         $('#collapse-classificacoes').collapse('hide');
         if (event.target.id == "collapse-filters") {
             document.querySelector("#texto-mostrar-filtros").innerHTML = "Busca Avançada  <li class='fa fa-caret-down'></li>";
-            //document.querySelector("#filtro-livre").value = null;
         }
     });
 };
@@ -90,7 +57,7 @@ function onSelectClassificationTypeA(event, classificationId) {
         typeAName.classList.remove('text-secondary');
         typeBName.classList.remove('text-primary');
         typeBName.classList.add('text-secondary');
-    } else { 
+    } else {
         typeAName.classList.remove('text-primary');
         typeAName.classList.add('text-secondary');
         typeBName.classList.add('text-primary');
@@ -107,13 +74,38 @@ function onSelectClassificationTypeB(event, classificationId) {
         typeAName.classList.add('text-secondary');
         typeBName.classList.add('text-primary');
         typeBName.classList.remove('text-secondary');
-    } else { 
+    } else {
         typeAName.classList.add('text-primary');
         typeAName.classList.remove('text-secondary');
         typeBName.classList.remove('text-primary');
         typeBName.classList.add('text-secondary');
     }
 
+}
+
+function updateDetailedClassificationsStyles(classifications) {
+    let classificationsArray = Object.keys(classifications).map(key => {
+        return (classifications[key]);
+    });
+
+    classificationsArray.forEach(classification => {
+        let radioTypeA = document.querySelector('#classification_detail_type_a_value' + classification.id);
+        let typeAName = document.querySelector('#classification_detail_type_a_name' + classification.id);
+        let typeBName = document.querySelector('#classification_detail_type_b_name' + classification.id);
+        if (radioTypeA.checked) {
+            typeAName.classList.add('text-primary');
+            typeAName.classList.remove('text-secondary');
+            typeBName.classList.remove('text-primary');
+            typeBName.classList.add('text-secondary');
+            
+        } else {
+            typeAName.classList.remove('text-primary');
+            typeAName.classList.add('text-secondary');
+            typeBName.classList.add('text-primary');
+            typeBName.classList.remove('text-secondary');
+        }
+
+    });
 }
 
 function onChangeClassificationSlider(event) {
@@ -146,4 +138,32 @@ function onCheckClassificationFilter(event) {
     }
 }
 
-changeApprovalFilterFields();
+function enableApprovalFilters(enable) {
+    let checkFiltroAprovacao = document.querySelector("#check-filtro-aprovacao");
+    let selectTipoAprov = document.querySelector('#select-tipo-aprov');
+    let selectComparacao = document.querySelector('#select-comparacao');
+    let inputValorComparacao = document.querySelector('#input-valor-comparacao');
+    let selectAnoAprov = document.querySelector('#select-ano-aprov');
+    let selectPeriodoAprov = document.querySelector('#select-periodo-aprov');
+
+    checkFiltroAprovacao.checked = enable;
+    selectTipoAprov.disabled = !enable;
+    selectComparacao.disabled = !enable;
+    inputValorComparacao.disabled = !enable;
+    selectAnoAprov.disabled = !enable;
+    selectPeriodoAprov.disabled = !enable;
+
+    selectTipoAprov.style = selectTipoAprov.disabled ? disabledStyle : "";
+    selectComparacao.style = selectComparacao.disabled ? disabledStyle : "";
+    inputValorComparacao.style = inputValorComparacao.disabled ? disabledStyle : "";
+    selectAnoAprov.style = selectAnoAprov.disabled ? disabledStyle : "";
+    selectPeriodoAprov.style = selectPeriodoAprov.disabled ? disabledStyle : "";
+
+}
+
+if (document.querySelector('#check-filtro-classificacoes').checked) {
+    $('#collapse-classificacoes').collapse('show');
+}
+else {
+    $('#collapse-classificacoes').collapse('hide');
+}
