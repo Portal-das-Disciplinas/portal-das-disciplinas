@@ -1,4 +1,4 @@
-<header class="sticky-top shadow">
+<header class="sticky-top shadow w-100">
     <div class="menu-container container d-flex mt-0 justify-content-between align-items-center">
         <a class="navbar-brand" href="{{ route('index') }}">
             <img src="{{ asset('storage/img/logo.png') }}" class='logo-navbar' alt="Logo do {{ $theme['PROJETO_SIGLA_SETOR']}}">
