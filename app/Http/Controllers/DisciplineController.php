@@ -88,7 +88,7 @@ class DisciplineController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function index(Request $request)
+    /*public function indexx(Request $request)
     {
         $emphasis = Emphasis::all();
         $classifications = Classification::all()->sortBy('order');
@@ -115,9 +115,9 @@ class DisciplineController extends Controller
             ->with('institutionalUnits', $institutionalUnits)
             ->with('courses', $courses)
             ->with('educationLevels', $educationLevels);
-    }
+    } */
 
-    public function disciplineFilter(Request $request)
+    public function index(Request $request)
     {
         $disciplineService = new DisciplineService();
         $filteredDisciplines = $disciplineService->filterDisciplines($request);
@@ -130,7 +130,31 @@ class DisciplineController extends Controller
         $courses = $this->courseService->list();
         $educationLevels = $this->educationLevelService->list();
         $this->portalAccessInfoService->registerAccess($request->ip(), $request->path(), new DateTime());
-        return view('disciplines.index')
+
+        $selectedActiveClassications = [];
+        $selectedPredominantClassifications = [];
+        $selectedDetailedClassificationTypes = [];
+        $classificationValues = [];
+        foreach($classifications as $classification){
+            if(isset($request->{'classification_detail_active' . $classification->id})){
+                $selectedActiveClassications['classification_detail_active' . $classification->id] = $request->{'classification_detail_active' . $classification->id};
+            }
+
+            if(isset($request->{'classification' . $classification->id})){
+                $selectedPredominantClassifications['classification' . $classification->id] = $request->{'classification' . $classification->id};
+                
+            }
+            if(isset($request->{'classification_detail' . $classification->id .'radio'})){
+                $selectedDetailedClassificationTypes['classification_detail' . $classification->id .'radio'] = $request->{'classification_detail' . $classification->id .'radio'};
+            }
+
+            if(isset($request->{'classification_detail' . $classification->id})){
+                $classificationValues['classification_detail' . $classification->id] = $request->{'classification_detail' . $classification->id};
+            }
+
+        }
+
+        $view = view('disciplines.index')
             ->with('theme', $this->theme)
             ->with('opinionLinkForm', $opinionLinkForm)
             ->with('disciplines', $filteredDisciplines->paginate(12)->withQueryString())
@@ -140,7 +164,30 @@ class DisciplineController extends Controller
             ->with('methodologies', $methodologies)
             ->with('institutionalUnits', $institutionalUnits)
             ->with('courses', $courses)
-            ->with('educationLevels', $educationLevels);
+            ->with('educationLevels', $educationLevels)
+            ->with('unitId',$request->{'institutional-unit-id'})
+            ->with('courseId', $request->{'course-id'})
+            ->with('educationLevelId', $request->{'education-level-id'})
+            ->with('disciplineName', $request->{'name_discipline'})
+            ->with('emphaseId', $request->{'emphasis'})
+            ->with('professorId', $request->professors)
+            ->with('filteredMethodologies', $request->{'filtered-methodologies'})
+            ->with('selectTipoAprov', $request->{'tipo-aprov'})
+            ->with('comparacao', $request->comparacao)
+            ->with('valorComparacao', $request->{'valor-comparacao'} == 0 ? 0 : $request->{'valor-comparacao'} )
+            ->with('anoAprov', $request->{'ano-aprov'})
+            ->with('periodoAprov', $request->{'periodo-aprov'})
+            ->with('collapseAdvancedFilters', $request->{'collapse-advanced-filters'})
+            ->with('checkClassificationsFilter',$request->{'check-filtro-classificacoes'})
+            ->with('checkApprovalFilters', $request->{'check-filtro-aprovacao'})
+            ->with('selectedPredominantClassifications' ,$selectedPredominantClassifications )
+            ->with('selectedDetailedClassificationTypes', $selectedDetailedClassificationTypes)
+            ->with('selectedActiveClassications', $selectedActiveClassications)
+            ->with('classificationValues', $classificationValues)
+            ->with('checkClassificationFeature', $request->{'filtro-classificacoes-caracteristica'})
+            ->with('checkClassificationDetailed', $request->{'filtro-classificacoes-detalhado'});
+
+            return $view;
     }
 
     /**

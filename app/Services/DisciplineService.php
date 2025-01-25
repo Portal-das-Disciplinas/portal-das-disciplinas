@@ -94,9 +94,7 @@ class DisciplineService
         if ($request->{'check-filtro-classificacoes'} && $request->{'check-filtro-classificacoes'} == "on") {
             $filteredByClassifications = collect([]);
             foreach ($filteredDisciplines as $discipline) {
-                $classifications = ClassificationDiscipline::where('discipline_id', '=', $discipline->id)
-                    ->join('classifications', 'classification_id', '=', 'classifications.id')
-                    ->select('classifications.id as id_classification', 'classifications.name', 'classifications_disciplines.value')->get();
+                $classifications = $this->getDisciplineClassifications($discipline->id);
                 $includeToArray = true;
                 foreach ($classifications as $classification) {
                     $classificationType = $request->{'classification' . $classification->id_classification};
@@ -174,5 +172,12 @@ class DisciplineService
             $filteredDisciplines = $filteredByApproval;
         }
         return $filteredDisciplines;
+    }
+
+    public function getDisciplineClassifications($disciplineId){
+        $classifications = ClassificationDiscipline::where('discipline_id', '=', $disciplineId)
+                    ->join('classifications', 'classification_id', '=', 'classifications.id')
+                    ->select('classifications.id as id_classification', 'classifications.name', 'classifications_disciplines.value')->get();
+        return $classifications;
     }
 }
