@@ -486,11 +486,12 @@
 {{--<script src="{{ asset('js/disciplineAutoComplete.js') }}"></script>--}}
 @endsection
 @section('scripts-bottom')
-<script src="{{ asset('js/disciplines/disciplineFilters.js')}}"></script>
+
 <script>
     let methodologies = @json($methodologies);
 </script>
 <script src="{{asset('js/disciplines/methodologySelect.js')}}"></script>
+<script src="{{ asset('js/disciplines/disciplineFilters.js')}}"></script>
 <script>
     let oldFilteredMethodologies = @json($filteredMethodologies);
     setFilteredMethodologies(oldFilteredMethodologies);

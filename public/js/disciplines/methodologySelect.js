@@ -66,3 +66,12 @@ function changeMethodologyClassToNotSelected(index){
     document.querySelector('#methodology-' + index).classList.add('badge-secondary');
 }
 
+function clearSelectedMethodologies(){
+    console.log(methodologies);
+    for(i=0; i < methodologies.length;i++){
+        changeMethodologyClassToNotSelected(i);
+    }
+    selectedMethodologies = [];
+    document.querySelector('#filteredMethodologies').value = null;
+}
+

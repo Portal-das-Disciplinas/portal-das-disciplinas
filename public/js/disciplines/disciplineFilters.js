@@ -30,8 +30,10 @@ window.onload = function () {
             let checkClassificationFilter = document.querySelector("#check-filtro-classificacoes");
             let checkApprovalFilter = document.querySelector("#check-filtro-aprovacao");
             selectProfessor.selectedIndex = 0;
+            filteredMethodologiesInputValues = [];
             checkClassificationFilter.checked = false;
             checkApprovalFilter.checked = false;
+            clearSelectedMethodologies();
         }
     });
 
