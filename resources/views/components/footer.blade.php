@@ -53,7 +53,7 @@
 .footer{
     height: auto;
     background-color: white;
-    width: 100vw;
+    width: 100%;
     bottom: 0;
 }
 
